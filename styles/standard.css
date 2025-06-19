@@ -1,0 +1,33 @@
+.d-flex {
+  display: flex;
+}
+.justify-content {
+  justify-content: center;
+}
+.align-items {
+  align-items: center;
+}
+.flex-direction {
+  flex-direction: column;
+}
+.border-radius-45 {
+  border-radius: 45px;
+}
+.border-radius-24 {
+  border-radius: 24px;
+}
+.border-radius-10 {
+  border-radius: 10px;
+}
+.border-radius-8 {
+  border-radius: 8px;
+}
+.hug-height-24 {
+  height: 24px;
+}
+.hug-height-24 {
+  height: 24px;
+}
+.hug-width-24{
+    width: 24px;
+}

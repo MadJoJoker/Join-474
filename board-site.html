@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Board Site</title>
+    <link rel="stylesheet" href="./styles/board-site.css" />
+  </head>
+  <body>
+    <header class="header"></header>
+    <div class="nav-bar">Navbar</div>
+    <section class="content">
+      <div claas="board-wrapper">
+        <h1>Board</h1>
+        <div class="input-find-task">
+          <input id="find-task" placeholder="Find Task" type="text" />
+          <div class="seperator"></div>
+          <img src="./assets/icons/search/search (1).svg" />
+          <button id="add-task">
+            <img src="./assets/icons/btn/Add task.svg" alt="Add Task" />
+            <img src="./assets/icons/btn/add.svg" />
+          </button>
+        </div>
+
+        <div id="fast-add-btn">
+          <button id="fast-add-task-to-do">
+            <span>To Do</span>
+            <img src="./assets/icons/btn/plus-btn.svg" />
+          </button>
+          <button id="fast-add-task-in-progress">
+            <span>in Progress</span>
+            <img src="./assets/icons/btn/plus-btn.svg" />
+          </button>
+          <button id="fast-add-task-awiat-feedback">
+            <span>Await Feedback</span>
+            <img src="./assets/icons/btn/plus-btn.svg" />
+          </button>
+          <button id="fast-add-task-done">
+            <span>Done</span>
+            <img src="./assets/icons/btn/plus-btn.svg" />
+          </button>
+        </div>
+      </div>
+      <div id="content-board">
+        <div id="to-do"></div>
+        <div id="in-progress"></div>
+        <div id="await-feedback"></div>
+        <div id="done"></div>
+      </div>
+    </section>
+  </body>
+</html>

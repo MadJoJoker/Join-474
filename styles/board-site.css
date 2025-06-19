@@ -1,0 +1,22 @@
+.nav-bar {
+  height: 100%;
+  min-width: 20%;
+  background-color: #2a3647;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.header{
+    height:150px;
+    width: 100%;
+    background-color: antiquewhite;
+}
+
+.content{
+    padding-left: 20%;
+}
+.input-find-task{
+    display: flex;
+    justify-content: center;
+}
