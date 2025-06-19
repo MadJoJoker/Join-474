@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task</title>
+
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./styles/add_task.css">
+
+    <script type="module" src="./main.js"></script>
+</head>
+
+<body>
+    < class="app_container">
+        <section class="test_sidebar"></section> <!--  Placeholder for Sidebar -->
+        <section class="main_content">
+            <header> <!--  Placeholder for Header -->
+                <h2>Kanban Project Management Tool</h2>
+                <nav>
+                    <a href="#">Help</a>
+                    <a href="#">Profil</a>
+                </nav>
+            </header>
+            <main class="content">
+                <h1>Add Task</h1>
+                <form id="add-task-form">
+                    <div class="form-fill-part">
+                        <div class="left_form">
+                            <p>Titel</p>
+                            <input type="text" id="task-title" placeholder="Enter task title" required>
+                            <p>Description</p>
+                            <textarea id="task-description" placeholder="Enter a Description"></textarea>
+                            <p>Due Date</p>
+                            <input type="date" id="task-due-date" required>
+                        </div>
+                        <div class="border"></div>
+                        <div class="right_form">
+                            <p>Priority</p>
+                            <div>
+                                <div>Urgent <img src="#" alt="#"></div>
+                                <div>Medium <img src="#" alt="#"></div>
+                                <div>Low <img src="#" alt="#"></div>
+                            </div>
+                            <p>Assigned to</p>
+                            <label for="assignedTo">Assigned to</label>
+                            <select id="assignedTo" name="assignedTo">assignedTo</select>
+                            <p>Category</p>
+                            <select name="category" required>...</select>
+                            <p>Subtasks</p>
+                            <div>
+                                <input type="text" name="subtask">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-buttons-part">
+                        <div>This field is required</div>
+                        <div class="buttons-area">
+                            <button></button>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </section>
+        </div>
+</body>
+
+</html>
