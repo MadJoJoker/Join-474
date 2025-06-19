@@ -4,6 +4,9 @@
 .justify-content {
   justify-content: center;
 }
+.space-between{
+  justify-content: space-between;
+}
 .align-items {
   align-items: center;
 }
@@ -25,9 +28,7 @@
 .hug-height-24 {
   height: 24px;
 }
-.hug-height-24 {
-  height: 24px;
-}
 .hug-width-24{
     width: 24px;
 }
+
