@@ -13,9 +13,9 @@
 </head>
 
 <body>
-    < class="app_container">
-        <section class="test_sidebar"></section> <!--  Placeholder for Sidebar -->
-        <section class="main_content">
+    <div class="app-container">
+        <section class="test-sidebar"></section> <!--  Placeholder for Sidebar -->
+        <section class="main-content">
             <header> <!--  Placeholder for Header -->
                 <h2>Kanban Project Management Tool</h2>
                 <nav>
@@ -27,37 +27,38 @@
                 <h1>Add Task</h1>
                 <form id="add-task-form">
                     <div class="form-fill-part">
-                        <div class="left_form">
-                            <p>Titel</p>
+                        <div class="left-form">
+                            <label class="required">Title</label>
                             <input type="text" id="task-title" placeholder="Enter task title" required>
-                            <p>Description</p>
+                            <label>Description</label>
                             <textarea id="task-description" placeholder="Enter a Description"></textarea>
-                            <p>Due Date</p>
+                            <label class="required">Due Date</label>
                             <input type="date" id="task-due-date" required>
                         </div>
                         <div class="border"></div>
-                        <div class="right_form">
-                            <p>Priority</p>
+                        <div class="right-form">
+                            <label>Priority</label>
                             <div>
-                                <div>Urgent <img src="#" alt="#"></div>
-                                <div>Medium <img src="#" alt="#"></div>
-                                <div>Low <img src="#" alt="#"></div>
+                                <div>Urgent <img src="./assets/icons/arrow-up.svg" alt="arrow up"></div>
+                                <div>Medium <img src="./assets/icons/equal-sign.svg" alt="equal sign"></div>
+                                <div>Low <img src="./assets/icons/arrow-down.svg" alt="arrow down"></div>
                             </div>
-                            <p>Assigned to</p>
+                            <label>Assigned to</label>
                             <label for="assignedTo">Assigned to</label>
                             <select id="assignedTo" name="assignedTo">assignedTo</select>
-                            <p>Category</p>
+                            <label class="required">Category</label>
                             <select name="category" required>...</select>
-                            <p>Subtasks</p>
+                            <label>Subtasks</label>
                             <div>
                                 <input type="text" name="subtask">
                             </div>
                         </div>
                     </div>
                     <div class="form-buttons-part">
-                        <div>This field is required</div>
+                        <div class="required">This field is required</div>
                         <div class="buttons-area">
-                            <button></button>
+                            <button type="reset">Clear</button>
+                            <button type="submit">Create Task</button>
                         </div>
                     </div>
                 </form>

@@ -5,12 +5,12 @@ html {
 }
 
 
-.app_container {
+.app-container {
     display: flex;
     height: 100vh;
 }
 
-.test_sidebar {
+.test-sidebar {
     position: fixed;
     top: 0;
     left: 0;
@@ -19,7 +19,7 @@ html {
     background-color: #2A3647;
 }
 
-.main_content {
+.main-content {
     margin-left: 232px;
     width: calc(100% - 232px);
     display: flex;
@@ -43,10 +43,22 @@ header {
     flex-direction: column;
     padding: 24px;
     overflow-y: auto;
+    background-color: #F6F7F8;
 }
 
 .form-fill-part{
     display: flex;
+}
+
+.left-form{
+    display: flex;
+    flex-direction: column;
+    /* flex: 1; */
+}
+
+.required::after {
+  content: "*";
+  color: #FF8190;
 }
 
 .border{
