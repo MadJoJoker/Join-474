@@ -2,10 +2,10 @@ import { getFirebaseData } from './js/data/API.js';
 
 async function init() {
   console.log('Fetching data from Firebase...');
-  const data = await getFirebaseData();
+  const DATA_FIREBASE_JOIN = await getFirebaseData();
 
-  if (data) {
-    console.log('Data received:', data);
+  if (DATA_FIREBASE_JOIN) {
+    console.log('Data received:', DATA_FIREBASE_JOIN);
   } else {
     console.log('Failed to fetch data.');
   }
