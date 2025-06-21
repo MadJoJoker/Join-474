@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="./styles/board-site.css" />
   </head>
   <body>
-    <header class="header"></header>
-    <div class="nav-bar"></div>
+    <div id="header"></div>
+    <div id="sidebar"></div>
 
     <section class="content">
       <div class="board-wrapper frame-191">
@@ -28,7 +28,7 @@
               <div class="seperator"></div>
               <button type="button" class="search-icon-button">
                 <img
-                  src="./assets/icons/search/search (1).svg"
+                  src="./assets/icons/btn/search -btn.svg"
                   alt="Search Icon"
                 />
               </button>
@@ -84,5 +84,23 @@
         </div>
       </div>
     </section>
+    <script>
+      fetch("header.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("header").innerHTML = data;
+        })
+        .catch((error) =>
+          console.error("Fehler beim Laden des Headers:", error)
+        );
+      fetch("summary.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("sidebar").innerHTML = data;
+        })
+        .catch((error) =>
+          console.error("Fehler beim Laden der Sidebar:", error)
+        );
+    </script>
   </body>
 </html>
