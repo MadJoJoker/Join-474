@@ -5,7 +5,6 @@ header {
     align-items: center;
     justify-content: space-between;
     padding-left: 352px;
-    position: sticky;
     top: 0;
     height: 96px;
     flex-shrink: 0;
@@ -63,6 +62,21 @@ html {
 .contacts-main {
     display: flex;
     padding-left: 232px;
+    min-height: calc(100vh - 96px);
+}
+
+.contacts-sidebar {
+    width: 432px;
+    background-color: white;
+    padding: 24px;
+    border-right: 1px solid #eee;
+    overflow-y: auto;
+}
+
+.contacts-details {
+    flex-grow: 1;
+    padding: 48px 32px;
+    background-color: #f6f7f8;
 }
 
 .contacts-list {
@@ -133,6 +147,57 @@ html {
     color: #888;
 }
 
+.contact-details-card {
+    padding: 32px;
+    border-radius: 12px;
+    max-width: 600px;
+}
+
+.contact-details-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.contact-avatar-big {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    font-size: 28px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-name-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact-actions {
+    display: flex;
+    gap: 16px;
+}
+
+.icon-button {
+    border: none;
+    color: #2a3647;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    padding: 4px;
+}
+
+.contact-info-block {
+    margin-top: 24px;
+}
+
 /* Add new contact Button */
 
 .add-new-contact-button {
@@ -146,8 +211,16 @@ html {
     border: unset;
     cursor: pointer;
     font-size: 21px;
+    margin-bottom: 16px;
+    padding: 8px 12px;
 }
 
 .add-new-contact-button:hover {
     background-color: #3a4a5e;
+}
+
+.add-new-contact-button-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
