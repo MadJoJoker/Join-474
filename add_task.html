@@ -25,23 +25,32 @@
             </header>
             <main class="content">
                 <h1>Add Task</h1>
-                <form id="add-task-form">
+                <form id="add-task-form" class="form">
                     <div class="form-fill-part">
                         <div class="left-form">
-                            <label class="required">Title</label>
-                            <input type="text" id="task-title" placeholder="Enter task title" required>
-                            <label>Description</label>
-                            <textarea id="task-description" placeholder="Enter a Description"></textarea>
-                            <label class="required">Due Date</label>
-                            <input type="date" id="task-due-date" required>
+                            <div class="d-flex flex-d-column">
+                                <label class="required">Title</label>
+                                <input type="text" id="task-title" placeholder="Enter task title" required>
+                            </div>
+                            <div class="d-flex flex-d-column">
+                                <label>Description</label>
+                                <textarea id="task-description" placeholder="Enter a Description"></textarea>
+                            </div>
+                            <div class="d-flex flex-d-column">
+                                <label class="required">Due Date</label>
+                                <input type="date" id="task-due-date" required>
+                            </div>
                         </div>
                         <div class="border"></div>
                         <div class="right-form">
                             <label>Priority</label>
                             <div>
-                                <div>Urgent <img src="./assets/icons/arrow-up.svg" alt="arrow up"></div>
-                                <div>Medium <img src="./assets/icons/equal-sign.svg" alt="equal sign"></div>
-                                <div>Low <img src="./assets/icons/arrow-down.svg" alt="arrow down"></div>
+                                <button type="button">Urgent <img src="./assets/icons/arrow-up.svg"
+                                        alt="arrow up"></button>
+                                <button type="button">Medium <img src="./assets/icons/equal-sign.svg"
+                                        alt="equal sign"></button>
+                                <button type="button">Low <img src="./assets/icons/arrow-down.svg"
+                                        alt="arrow down"></button>
                             </div>
                             <label>Assigned to</label>
                             <label for="assignedTo">Assigned to</label>
@@ -64,7 +73,7 @@
                 </form>
             </main>
         </section>
-        </div>
+    </div>
 </body>
 
 </html>

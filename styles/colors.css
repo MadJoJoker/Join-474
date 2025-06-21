@@ -1,0 +1,31 @@
+
+:root {
+--dark: #2A3647;
+--darkHover: #091931;
+--black: #000000;
+--lightBlue: #29ABE2;
+--white: #FFFFFF;
+--lightGrey: #F6F7F8;
+--grey: #E7E7E7;
+--sidebarGrey: #CDCDCD;
+--sidebarNoticeGrey: #A8A8A8;
+--darkBlue: #42526E;
+--statusBarGrey: #F4F4F4;
+--statusBarBlue: #4589FF;
+--userStory: #0038FF;
+--technicalTask: #1FD7C1;
+--urgent: #FF3D00;
+--middle: #FFA800;
+--low: #7AE229;
+
+
+--yellow: #FFBB2B;
+--orange: #FF7A00;
+--pink: #FC71FF;
+--lila: #9327FF;
+--violet: #6E52FF;
+--darkViolet: #42526E;
+--red: #FF4646;
+--petrol: #00BEE8;
+--menthol: #1FD7C1;
+}
