@@ -45,7 +45,7 @@ a {
     top: 0;
     left: 0;
     width: 232px;
-    height: 100%;
+    height: 100vh;
     background-color: #2A3647;
     z-index: 100;
 }
@@ -57,6 +57,7 @@ html {
     margin: 0;
     height: 100%;
     background-color: #f6f7f8;
+    font-family: 'Inter', sans-serif;
 }
 
 .contacts-main {
@@ -68,14 +69,17 @@ html {
 .contacts-sidebar {
     width: 432px;
     background-color: white;
-    padding: 24px;
     border-right: 1px solid #eee;
     overflow-y: auto;
+    height: 100vh;
+    padding-left: 24px;
 }
 
 .contacts-details {
     flex-grow: 1;
-    padding: 48px 32px;
+    padding-top: 101px;
+    padding-left: 32px;
+    padding-right: 32px;
     background-color: #f6f7f8;
 }
 
@@ -86,8 +90,15 @@ html {
 .contacts-text-separator {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 16px;
+    gap: 30px;
+}
+
+.contacts-text-separator h1 {
+    font-size: 61px;
+}
+
+.contacts-text-separator span {
+    font-size: 27px;
 }
 
 .contacts-divider {
@@ -104,32 +115,32 @@ html {
 .contact-initial {
     font-weight: bold;
     margin: 10px 0 5px;
+    border-bottom: 1px solid #eee;
 }
 
 .contact {
     display: flex;
     align-items: center;
     padding: 10px 0;
-    border-bottom: 1px solid #eee;
 }
 
 .contact:hover {
-  background-color: #2a3647;
-  cursor: pointer;
+    background-color: #f2f2f2;
+    cursor: pointer;
+    border-radius: 8px;
 }
 
 .contact-avatar {
-    width: 35px;
-    height: 35px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background-color: #aaa;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 10px;
-    font-size: 14px;
-    font-weight: bold;
+    margin-right: 30px;
+    font-size: 12px;
 }
 
 .contact-info {
@@ -138,13 +149,18 @@ html {
 }
 
 .contact-name {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .contact-email {
-    font-size: 12px;
-    color: #888;
+    font-size: 16px;
+    font-weight: 400;
+    color: #29abe2;
+}
+
+.contact-email a {
+    color: #1f8cf0;
 }
 
 .contact-details-card {
@@ -160,31 +176,38 @@ html {
     margin-bottom: 32px;
 }
 
-.contact-avatar-big {
-    width: 80px;
-    height: 80px;
+.contact-details-avatar-big {
+    width: 120px;
+    height: 120px;
+    background-color: gray;
     border-radius: 50%;
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 47px;
+    font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.contact-name-actions {
+.contact-details-name-actions {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.contact-actions {
+.contact-details-name-actions h2 {
+    font-size: 47px;
+    font-weight: 100;
+}
+
+.contact-details-actions {
     display: flex;
     gap: 16px;
 }
 
-.icon-button {
+.contact-details-card-icon-button {
     border: none;
     color: #2a3647;
+    background-color: #f6f7f8;
     font-weight: 500;
     cursor: pointer;
     display: flex;
@@ -194,8 +217,23 @@ html {
     padding: 4px;
 }
 
-.contact-info-block {
+.contact-details-info-block {
     margin-top: 24px;
+}
+
+.contact-details-info-block h3 {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 24px;
+}
+
+.contact-details-info-block p {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.contact-details-info-block a {
+    color: #1f8cf0;
 }
 
 /* Add new contact Button */
@@ -212,15 +250,18 @@ html {
     cursor: pointer;
     font-size: 21px;
     margin-bottom: 16px;
-    padding: 8px 12px;
+    padding: 8px 50px;
 }
 
 .add-new-contact-button:hover {
-    background-color: #3a4a5e;
+    background-color: #29abe2;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 .add-new-contact-button-div {
+    position: sticky;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 101px;
 }
