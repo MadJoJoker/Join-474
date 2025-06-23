@@ -36,10 +36,10 @@
 } */
 
 .sidebar-wrapper {
-  /* width: 232px; */
-  /* height: 100%; */
-  width: inherit;
-  height: inherit;
+   width: 232px;
+   height: 100%;
+  /* width: inherit; */
+  /* height: inherit; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
