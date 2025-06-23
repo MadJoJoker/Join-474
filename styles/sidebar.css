@@ -4,42 +4,9 @@
   box-sizing: border-box;
 }
 
-/* :root {
---dark: #2A3647;
---darkHover: #091931;
---black: #000000;
---lightBlue: #29ABE2;
---white: #FFFFFF;
---lightGrey: #F6F7F8;
---grey: #E7E7E7;
---sidebarGrey: #CDCDCD;
---sidebarNoticeGrey: #A8A8A8;
---darkBlue: #42526E;
---statusBarGrey: #F4F4F4;
---statusBarBlue: #4589FF;
---userStory: #0038FF;
---technicalTask: #1FD7C1;
---urgent: #FF3D00;
---middle: #FFA800;
---low: #7AE229;
-
-
---yellow: #FFBB2B;
---orange: #FF7A00;
---pink: #FC71FF;
---lila: #9327FF;
---violet: #6E52FF;
---darkViolet: #42526E;
---red: #FF4646;
---petrol: #00BEE8;
---menthol: #1FD7C1;
-} */
-
 .sidebar-wrapper {
-   width: 232px;
-   height: 100%;
-  /* width: inherit; */
-  /* height: inherit; */
+  width: 232px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -58,8 +25,8 @@
 .sidebar-wrapper > img {
   width: 100px;
   height: 122px;
-  margin-left: calc((232px - 100px) / 2); /*oder einfach: 66px*/
-  margin-right: calc((232px - 100px) / 2); /*oder einfach: 66px*/
+  margin-left: 66px;
+  margin-right: 66px;
 }
 
 .sidebar-wrapper > nav {
@@ -95,7 +62,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  width: 232px;
+  width: 100%;
   row-gap: 4px;
 }
 
