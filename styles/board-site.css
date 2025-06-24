@@ -204,3 +204,10 @@ body {
 .menu-color {
   color: var(--darkBlue);
 }
+.task-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

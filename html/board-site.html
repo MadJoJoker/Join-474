@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./styles/standard.css" />
     <link rel="stylesheet" href="./styles/colors.css" />
     <link rel="stylesheet" href="./assets/fonds/fond.css" />
+    <link rel="stylesheet" href="./styles/sidebar.css">
     <link rel="stylesheet" href="./styles/board-site.css" />
   </head>
   <body>
@@ -93,7 +94,7 @@
         .catch((error) =>
           console.error("Fehler beim Laden des Headers:", error)
         );
-      fetch("summary.html")
+      fetch("./js/templates/sidebar.html")
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("sidebar").innerHTML = data;
@@ -102,5 +103,8 @@
           console.error("Fehler beim Laden der Sidebar:", error)
         );
     </script>
+    <script type="module" src="./main.js"></script>
+    <script type="module" src="./js/ui/render-board.js"></script>
+    <script type="module" src="./sidebar.js"></script>
   </body>
 </html>
