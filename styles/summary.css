@@ -1,0 +1,241 @@
+/* BASCIC PAGE LAYOUT */
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 232px;
+  height: 100%;
+  background-color: var(--dark); /* default, damit auf jeden Fall etwas sichtbar ist */
+}
+
+.main-content {
+  margin-left: 232px;
+  width: calc(100% - 232px);
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  height: 96px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  background-color: var(--white); /* default, damit auf jeden Fall etwas sichtbar ist */
+}
+
+.container{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+  padding: 24px;
+  overflow-y: auto;
+  background-color: var(--lightGrey); /* default, damit auf jeden Fall etwas sichtbar ist */
+}
+
+/* SUMMARY CONTENT */
+.summary-wrapper {
+  width: 1150px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 54px;
+}
+
+.smry-body {
+  display: flex;
+  column-gap: 82px;
+}
+
+.smry-title {
+  display: flex;
+  align-items: center;
+  column-gap: 30px;
+}
+
+.smry-title > p:first-of-type {
+  font-weight: 700;
+  font-size: 61px;
+  color: var(--black);
+  letter-spacing: 1.8px;
+}
+
+.blue-separator {
+  height: 56px;
+  width: 3px;
+  background-color: var(--lightBlue);
+}
+
+.smry-title > p:last-of-type {
+  font-size: 27px;
+  color: var(--dark);
+  letter-spacing: 1.2px;
+}
+
+.summary-buttons {
+  width: 560px;
+  height: 562px;
+  color: var(--dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* oder hat es eine gap? Vergleichen */
+}
+
+.btn-row {
+  width: 560px;
+  height: 168px; /* letzte hat offenbar 170px*/
+  display: flex;
+  justify-content: space-between;
+}
+
+.summary-btn {
+  height: 100%;
+  background-color: var(--white);
+  border-radius: 30px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.summary-btn:hover {
+  background-color: var(--dark);
+  color: var(--white);
+  transition: all 225ms ease-in-out;
+}
+
+.first-row {
+  width: 264px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.middle-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 54px;
+}
+
+.separator {
+  height: 102px;
+  width: 2px;
+  background-color: var(--borderGrey);
+}
+
+.last-row {
+  width: 168px;
+}
+
+.btn-content-first {
+  height: 101px;
+  /* border: 1px solid rgb(255, 0, 200); */
+  display: flex;
+  align-items: center;
+  text-align: center;
+  column-gap: 30px; /*zu wenig*/
+}
+
+.btn-content-second {
+  height: 96px;
+  width: 140px;
+  /* border: 1px solid rgb(255, 0, 200); */
+  display: flex;
+  align-items: center;
+  text-align: center;
+  column-gap: 15px;
+}
+
+.btn-content-last {
+  height: 96px;
+}
+
+.btn-content-last {
+  height: 125px;
+  width: 90px;
+  /* border: 1px solid rgb(255, 0, 200); */
+  text-align: center;
+}
+
+.smry-icon {
+  width: 69px;
+  height: 69px;
+  border-radius: 50px;
+  background-color: var(--dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.smry-icon:hover {
+  background-color: var(--white);
+}
+
+.smry-urgent{
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+  background-color: var(--summaryOrange);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.smry-number {
+  font-size: 64px;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.smry-number:hover {
+  color: var(--white);
+}
+
+.smry-text {
+  font-size: 20px
+}
+
+.smry-date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 15px;
+}
+
+.date-text {
+  font-weight: 700;
+  font-size: 21px;
+}
+
+
+.hello-user {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.hello-user > p:first-of-type {
+  font-weight: 500;
+  font-size: 48px;
+  letter-spacing: 1.1px;
+  color: var(--dark);
+}
+
+.hello-user > p:last-of-type {
+  font-weight: 700;
+  font-size: 64px;
+  letter-spacing: 1.3px;
+  color: var(--lightBlue);
+}
