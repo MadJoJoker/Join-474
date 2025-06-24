@@ -107,6 +107,7 @@ html {
     border: 1px solid var(--borderGrey);
     border-radius: 10px;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .input-field::placeholder {
@@ -119,6 +120,7 @@ html {
 }
 
 .task-description-area {
+    font-family: "Inter var", sans-serif;
     resize: none;
     height: 120px;
     padding: 18px 16px;
@@ -129,7 +131,8 @@ html {
     background-repeat: no-repeat;
     background-position: right 4px bottom 4px;
     background-size: 18px;
-    cursor: se-resize;
+    /* cursor: se-resize; */
+    cursor: pointer;
 }
 
 .task-description-area::placeholder {
@@ -187,7 +190,7 @@ html {
 
 .input-button {
     position: absolute;
-    right: 21px;
+    right: 18px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
