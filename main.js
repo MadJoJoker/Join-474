@@ -1,15 +1,12 @@
 import { getFirebaseData } from './js/data/API.js';
 
-async function init() {
-  console.log('Fetching data from Firebase...');
-  const DATA_FIREBASE_JOIN = await getFirebaseData();
+let firebaseData = null;
 
-  if (DATA_FIREBASE_JOIN) {
-    console.log('Data received:', DATA_FIREBASE_JOIN);
-  } else {
-    console.log('Failed to fetch data.');
+export async function loadFirebaseData() {
+  if (!firebaseData) {
+    console.log('Firebase-Daten werden geladen...');
+    firebaseData = await getFirebaseData();
+    console.log('Firebase-Daten empfangen:', firebaseData);
   }
+  return firebaseData;
 }
-
-init();
-console.log('Main js funktioniert');

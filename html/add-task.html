@@ -1,123 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Task</title>
 
+    <link rel="icon" href="./assets/icons/logo/joinLogo.svg" />
 
-    <link rel="icon" href="./assets/icons/logo/joinLogo.svg">
-
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./styles/add-task.css">
-    <link rel="stylesheet" href="./styles/standard.css">
-    <link rel="stylesheet" href="./styles/sidebar.css">
-    <link rel="stylesheet" href="./styles/colors.css">
-    <link rel="stylesheet" href="./styles/header.css">
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./styles/add-task.css" />
+    <link rel="stylesheet" href="./styles/standard.css" />
+    <link rel="stylesheet" href="./styles/sidebar.css" />
+    <link rel="stylesheet" href="./styles/colors.css" />
+    <link rel="stylesheet" href="./styles/header.css" />
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> -->
-
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
     <script src="./sidebar.js"></script>
     <script type="module" src="./main.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="app-container">
-        <section id="sidebar-area"></section>
+      <section id="sidebar-area"></section>
+      <script>
+        fetch("../js/templates/sidebar.html")
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("sidebar-area").innerHTML = data;
+          });
+      </script>
+      <section class="main-content">
+        <header id="header"></header>
         <script>
-            fetch('./js/templates/sidebar.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('sidebar-area').innerHTML = data;
-                });
+          fetch("./header.html")
+            .then((response) => response.text())
+            .then((data) => {
+              document.getElementById("header").innerHTML = data;
+            });
         </script>
-        <section class="main-content">
-            <header id="header">
-            </header>
-            <script>
-                fetch('./header.html')
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('header').innerHTML = data;
-                    });
-            </script>
-            <main class="content">
-                <h1>Add Task</h1>
-                <form id="add-task-form" class="form">
-                    <div class="form-fill-part">
-                        <div class="left-form">
-                            <div class="label-container">
-                                <label class="required font-size-20">Title</label>
-                                <input class="input-field" type="text" id="task-title" placeholder="Enter a title"
-                                    required>
-                            </div>
-                            <div class="label-container">
-                                <label class="font-size-20">Description</label>
-                                <textarea id="task-description" class="task-description-area"
-                                    placeholder="Enter a Description"></textarea>
-                            </div>
-                            <div class="label-container" lang="en">
-                                <label class="required font-size-20">Due Date</label>
-                                <input class="input-field" type="date" id="task-due-date" required>
-                            </div>
-                        </div>
-                        <div class="border"></div>
-                        <div class="right-form">
-                            <div class="label-container">
-                                <label class="font-size-20">Priority</label>
-                                <div class="d-flex gap-16">
-                                    <button type="button" class="priority-btn">Urgent <img
-                                            src="./assets/icons/property/Urgent.svg" alt="arrow up"></button>
-                                    <button type="button" class="priority-btn">Medium <img
-                                            src="./assets/icons/property/Prio media.svg" alt="equal sign"></button>
-                                    <button type="button" class="priority-btn">Low <img
-                                            src="./assets/icons/property/Low.svg" alt="arrow down"></button>
-                                </div>
-                            </div>
-                            <div class="label-container">
-                                <label for="assignedTo" class="font-size-20">Assigned to</label>
-                                <select id="assignedTo" name="assignedTo" class="styled-select">
-                                    <option value="" disabled selected hidden>Select contacts to assign</option>
-                                    <option value="1">Contact 1</option>
-                                </select>
-
-                            </div>
-                            <div class="label-container">
-                                <label for="category" class="required font-size-20">Category</label>
-                                <select name="category" class="styled-select" required>
-                                    <option value="" disabled selected hidden>Select task category</option>
-                                    <option value="1">Technical Task</option>
-                                    <option value="2">User Story</option>
-                                </select>
-
-                            </div>
-                            <div class="label-container">
-                                <label for="subtask" class="font-size-20">Subtasks</label>
-                                <div class="input-wrapper">
-                                    <input type="text" name="subtask" class="input-field-subtask"
-                                        placeholder="Add new subtask">
-                                    <button type="button" class="input-button">
-                                        <img src="./assets/icons/btn/add-black.svg" alt="Plus Icon">
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-buttons-part">
-                        <div class="sign-info">This field is required</div>
-                        <div class="buttons-area">
-                            <button type="reset" class="clear-btn">Clear <img src="./assets/icons/btn/close.svg"
-                                    alt="Close Icon"></button>
-                            <button type="submit" class="create-btn">Create Task <img
-                                    src="./assets/icons/btn/check-mark.svg" alt="Check-mark Icon"></button>
-                        </div>
-                    </div>
-                </form>
-            </main>
-        </section>
+        <main class="content">
+          <h1>Add Task</h1>
+          <form id="add-task-form" class="form">
+            <div class="form-fill-part">
+              <div class="left-form">
+                <div class="label-container">
+                  <label class="required font-size-20">Title</label>
+                  <input
+                    class="input-field"
+                    type="text"
+                    id="task-title"
+                    placeholder="Enter a title"
+                    required
+                  />
+                </div>
+                <div class="label-container">
+                  <label class="font-size-20">Description</label>
+                  <textarea
+                    id="task-description"
+                    class="task-description-area"
+                    placeholder="Enter a Description"
+                  ></textarea>
+                </div>
+                <div class="label-container" lang="en">
+                  <label class="required font-size-20">Due Date</label>
+                  <input
+                    class="input-field"
+                    type="date"
+                    id="task-due-date"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="border"></div>
+              <div class="right-form">
+                <div class="label-container">
+                  <label class="font-size-20">Priority</label>
+                  <div class="d-flex gap-16">
+                    <button type="button" class="priority-btn">
+                      Urgent
+                      <img
+                        src="./assets/icons/property/Urgent.svg"
+                        alt="arrow up"
+                      />
+                    </button>
+                    <button type="button" class="priority-btn">
+                      Medium
+                      <img
+                        src="./assets/icons/property/Prio media.svg"
+                        alt="equal sign"
+                      />
+                    </button>
+                    <button type="button" class="priority-btn">
+                      Low
+                      <img
+                        src="./assets/icons/property/Low.svg"
+                        alt="arrow down"
+                      />
+                    </button>
+                  </div>
+                </div>
+                <div class="label-container">
+                  <label for="assignedTo" class="font-size-20"
+                    >Assigned to</label
+                  >
+                  <select
+                    id="assignedTo"
+                    name="assignedTo"
+                    class="styled-select"
+                  >
+                    <option value="" disabled selected hidden>
+                      Select contacts to assign
+                    </option>
+                    <option value="1">Contact 1</option>
+                  </select>
+                </div>
+                <div class="label-container">
+                  <label for="category" class="required font-size-20"
+                    >Category</label
+                  >
+                  <select name="category" class="styled-select" required>
+                    <option value="" disabled selected hidden>
+                      Select task category
+                    </option>
+                    <option value="1">Technical Task</option>
+                    <option value="2">User Story</option>
+                  </select>
+                </div>
+                <div class="label-container">
+                  <label for="subtask" class="font-size-20">Subtasks</label>
+                  <div class="input-wrapper">
+                    <input
+                      type="text"
+                      name="subtask"
+                      class="input-field-subtask"
+                      placeholder="Add new subtask"
+                    />
+                    <button type="button" class="input-button">
+                      <img
+                        src="./assets/icons/btn/add-black.svg"
+                        alt="Plus Icon"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-buttons-part">
+              <div class="sign-info">This field is required</div>
+              <div class="buttons-area">
+                <button type="reset" class="clear-btn">
+                  Clear
+                  <img src="./assets/icons/btn/close.svg" alt="Close Icon" />
+                </button>
+                <button type="submit" class="create-btn">
+                  Create Task
+                  <img
+                    src="./assets/icons/btn/check-mark.svg"
+                    alt="Check-mark Icon"
+                  />
+                </button>
+              </div>
+            </div>
+          </form>
+        </main>
+      </section>
     </div>
-</body>
-
+  </body>
 </html>
