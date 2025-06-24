@@ -19,7 +19,7 @@
 
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
-    <script src="./js/sidebar.js"></script>
+    <script src="./sidebar.js"></script>
     <script type="module" src="./main.js"></script>
 </head>
 
@@ -78,15 +78,18 @@
                             </div>
                             <div class="label-container">
                                 <label for="assignedTo" class="font-size-20">Assigned to</label>
-                                <select id="assignedTo" name="assignedTo" class="input-field">
+                                <select id="assignedTo" name="assignedTo" class="styled-select">
                                     <option value="" disabled selected hidden>Select contacts to assign</option>
+                                    <option value="1">Contact 1</option>
                                 </select>
 
                             </div>
                             <div class="label-container">
                                 <label for="category" class="required font-size-20">Category</label>
-                                <select name="category" class="input-field" required>
+                                <select name="category" class="styled-select" required>
                                     <option value="" disabled selected hidden>Select task category</option>
+                                    <option value="1">Technical Task</option>
+                                    <option value="2">User Story</option>
                                 </select>
 
                             </div>

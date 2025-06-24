@@ -2,6 +2,7 @@ body,
 html {
     margin: 0;
     height: 100%;
+    font-family: "Inter var", sans-serif;
 }
 
 
@@ -16,7 +17,7 @@ html {
     left: 0;
     width: 232px;
     height: 100%;
-    background-color: #2A3647;
+    background-color: var(--darkBlue);
 } */
 
 .main-content {
@@ -43,7 +44,7 @@ html {
     flex-direction: column;
     padding: 60px;
     overflow-y: auto;
-    background-color: #F6F7F8;
+    background-color: var(--lightGrey);
 }
 
 .content h1 {
@@ -82,13 +83,13 @@ html {
 
 .required::after {
     content: "*";
-    color: #FF8190;
+    color: var(--peachyPink);
 }
 
 .border {
     height: 424px;
     width: 0;
-    border: 1px solid #D1D1D1;
+    border: 1px solid var(--borderGrey);
     border-radius: 8px;
 }
 
@@ -103,47 +104,49 @@ html {
 .input-field {
     height: 48px;
     padding: 0 21px;
-    border: 1px solid #D1D1D1;
+    border: 1px solid var(--borderGrey);
     border-radius: 10px;
     font-size: 20px;
 }
 
 .input-field::placeholder {
-    color: #D4D4D4;
+    color: var(--borderGrey);
 }
 
 .input-field:focus {
-    border-color: blue;
+    border-color: var(--lightBlue); 
     outline: none;
 }
 
 .task-description-area {
-    resize: vertical;
+    resize: none;
     height: 120px;
     padding: 18px 16px;
-    border: 1px solid #D1D1D1;
+    border: 1px solid var(--borderGrey);
     border-radius: 10px;
     font-size: 20px;
+    background-image: url("../assets/icons/btn/resize-handle.svg");
+    background-repeat: no-repeat;
+    background-position: right 4px bottom 4px;
+    background-size: 18px;
+    cursor: se-resize;
 }
 
 .task-description-area::placeholder {
-    color: #D4D4D4;
+    color: var(--borderGrey);
 }
 
 .task-description-area:focus {
-    border-color: blue;
+    border-color: var(--lightBlue);
     outline: none;
 }
 
 .priority-btn {
     display: flex;
     align-items: center;
-    background-color: white;
-
+    background-color: var(--white);
     height: 56px;
-    /* border: 1px solid #D1D1D1; */
     border: none;
-    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
     border-radius: 10px;
     font-size: 20px;
@@ -167,18 +170,18 @@ html {
 .input-field-subtask {
     height: 48px;
     padding: 0 48px 0 21px;
-    border: 1px solid #D1D1D1;
+    border: 1px solid var(--borderGrey);
     border-radius: 10px;
     font-size: 20px;
     width: 100%;
 }
 
 .input-field-subtask::placeholder {
-    color: #D4D4D4;
+    color: var(--borderGrey);
 }
 
 .input-field-subtask:focus {
-    border-color: blue;
+    border-color: var(--lightBlue);
     outline: none;
 }
 
@@ -202,23 +205,49 @@ html {
     height: 14px;
 }
 
+.styled-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0 21px;
+    height: 48px;
+    border: 1px solid var(--borderGrey);
+    border-radius: 10px;
+    font-size: 20px;
+    background-image: url("../assets/icons/btn/arrow_drop_down.svg");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-size: 8px;
+    cursor: pointer;
+}
+
+.styled-select:focus {
+    outline: none;
+    border-color: var(--borderGrey);
+}
+
+.styled-select option {
+    color: var(--black);
+    border-radius: 10px;
+}
+
 .form-buttons-part {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 }
 
-.sign-info{
+.sign-info {
     font-size: 16px;
     line-height: 120%;
 }
 
-.sign-info::before{
+.sign-info::before {
     content: "*";
-    color: #FF8190;
+    color:  var(--peachyPink);
 }
 
-.buttons-area{
+.buttons-area {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -227,50 +256,38 @@ html {
 .clear-btn {
     display: flex;
     align-items: center;
-    background-color: white;
+    background-color: var(--white);
     height: 56px;
     padding: 16px;
-    border: 1px solid black;
+    border: 1px solid var(--black);
     border-radius: 10px;
     font-size: 20px;
     gap: 8px;
     line-height: 120%;
 }
 
-.create-btn{
+.create-btn {
     display: flex;
     align-items: center;
-    background-color: blue;
-    color: white;
+    background-color: var(--darkBlue);
+    color: var(--white);
     height: 56px;
     padding: 16px;
-    border: 1px solid black;
+    border: 1px solid var(--black);
     border-radius: 10px;
     font-size: 20px;
     gap: 8px;
     line-height: 120%;
 }
 
-.clear-btn img{
+.clear-btn img {
     width: 14px;
     height: 14px;
     object-fit: cover;
 }
 
-.create-btn img{
+.create-btn img {
     height: 14px;
     width: auto;
     object-fit: cover;
-}
-
-
-/*zu standarts hinzufügen*/
-
-
-.font-size-20 {
-    font-size: 20px;
-}
-
-.gap-16 {
-    gap: 16px;
 }
