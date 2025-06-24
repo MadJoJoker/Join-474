@@ -1,5 +1,5 @@
 async function addSidebar() {
-  fetch('./assets/img/templates/sidebar.html')
+  fetch('../js/templates/sidebar.html')
     .then(response => response.text())
     .then(data => {
       document.getElementById('sidebar').innerHTML = data;
@@ -18,5 +18,5 @@ async function addLayoutElements(path, id) {
 
 function includeHeaderAndSidebar() {
   // addLayoutElements('./assets/img/templates/header.html', 'header');
-  addLayoutElements('./js/templates/sidebar.html', 'sidebar');
+  addLayoutElements('../js/templates/sidebar.html', 'sidebar');
 }
