@@ -1,0 +1,20 @@
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+.main-content {
+    /* margin-left: 232px; */
+    width: calc(100% - 232px);
+    display: flex
+;
+    flex-direction: column;
+}
+.content {
+    flex: 1;
+    display: flex
+;
+    flex-direction: column;
+    padding: 60px;
+    overflow-y: auto;
+    background-color: var(--lightGrey);
+}
