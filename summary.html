@@ -7,53 +7,19 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
-    <link rel="stylesheet" href="./styles/sidebar.css">
     <link rel="stylesheet" href="./styles/colors.css">
-    <!-- <link rel="stylesheet" href="./styles/add_task.css"> -->
-    <link rel="stylesheet" href="./styles/basic_page.css"> <!-- übernimmt viles von add_task.css-->
+    <link rel="stylesheet" href="./styles/summary.css">
+    <link rel="stylesheet" href="./styles/sidebar.css">
     <link rel="preconnect" href="https://fonts.googleapis.com"> <!--provisorisch-->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <script src="temporaryCW.js"></script> <!--provisorisch; das sollte in eine JS, die mit allen Seiten verbunden wird-->
+    <script src="sidebar.js"></script>
+    <script src="./js/summary.js"></script>
   </head>
-  <body>
+  <body onload="includeHeaderAndSidebar()">
 
     <div class="app-container">
-      <section class="sidebar-container"> <!--  Placeholder for Sidebar -->
-        <div id="sidebar" class="sidebar-wrapper">
-          <img src="./assets/icons/sidebar/joinLogo.svg" alt="Join Logo">
-          <nav class="sidebar-nav">
-            <a href="summary.html" class="nav-element" 
-                onmouseenter="setIcon(this, 'iconSummaryWhite.svg')" 
-                onmouseleave="setIcon(this, 'iconSummaryGrey.svg')">
-              <img src="./assets/icons/sidebar/iconSummaryGrey.svg" alt="summary logo" id="contacts-logo">
-              Summary
-            </a>
-            <a href="#" class="nav-element"
-                onmouseenter="setIcon(this, 'iconAddWhite.svg')" 
-                onmouseleave="setIcon(this, 'iconAddGrey.svg')">
-              <img src="./assets/icons/sidebar/iconAddGrey.svg" alt="add task logo" id="contacts-logo">
-              Add task
-            </a>
-            <a href="#" class="nav-element"
-                onmouseenter="setIcon(this, 'iconBoardWhite.svg')" 
-                onmouseleave="setIcon(this, 'iconBoardGrey.svg')">
-              <img src="./assets/icons/sidebar/iconBoardGrey.svg" alt="board logo" id="contacts-logo">
-              Board
-            </a>
-            <a href="#" class="nav-element"
-                onmouseenter="setIcon(this, 'iconContactsWhite.svg')" 
-                onmouseleave="setIcon(this, 'iconContactsGrey.svg')">
-              <img src="./assets/icons/sidebar/iconContactsGrey.svg" alt="contacts logo" id="contacts-logo">
-              Contacts
-            </a>
-          </nav>
-          <div class="legal">
-            <a href="#">Privacy Police</a>
-            <a href="#">Legal notice</a>
-          </div>
-        </div>
-      </section>
+      <section id="sidebar" class="sidebar-container"></section>
 
       <section class="main-content">
         <header> <!--  Placeholder for Header -->
@@ -63,8 +29,90 @@
             <a href="#">Profil</a>
           </nav>
         </header>
-            <main class="content"> MEIN KRAM
-            </main>
+            <main class="container"> 
+              <div class="summary-wrapper"> <!--umfasst alles, auch Titelg-->
+                <section class="smry-title">
+                  <p>Join 360</p>
+                  <div class="blue-separator"></div>
+                  <p>Key Metrics at a Glance</p>
+                </section>
+
+                <section class="smry-body"> <!--umfasst unteren Teil-->               
+                  <div class="summary-buttons"> <!--umfasst alle btns-->
+                      <section class="btn-row">  <!--umfasst 1. Reihe-->
+                        <a href="#" class="summary-btn first-row"> <!--umfasst linken Knopf-->
+                          <div class="btn-content-first">
+                            <div class="smry-icon">
+                              <img src="./assets/icons/btn/edit.svg" alt="pencil icon">
+                            </div>
+                            <div>
+                              <p id="to-do" class="smry-number">1</p>
+                              <p>To-do</p>
+                            </div>
+                          </div>
+                        </a>  <!--umfasst linken Knopf-->
+
+                        <section class="summary-btn first-row"> <!--umfasst rechten Knopf-->
+                          <div class="btn-content-first">
+                            <div class="smry-icon">
+                              <img src="./assets/icons/btn/ok.svg" alt="ok icon">
+                            </div>
+                            <div>
+                              <p id="done" class="smry-number">1</p>
+                              <p>Done</p>
+                            </div>
+                          </div>                  
+                        </section> <!--umfasst rechten Knopf-->
+                      </section> <!--umfasst 1. Reihe-->
+
+                      <section class="btn-row">
+                        <section class="summary-btn middle-row"> <!--umfasst linken Knopf-->
+                          <div class="btn-content-second">
+                            <div class="smry-urgent">
+                              <img src="./assets/icons/btn/prio-alta.svg" alt="high priority icon">
+                            </div>
+                            <div>
+                              <p id="urgent" class="smry-number">1</p>
+                              <p>Urgent</p>
+                            </div>
+                          </div>
+                          <div class="separator"></div>
+                          <div class="smry-date">
+                            <p id="deadline" class="date-text">Octobre 16, 2022</p>
+                            <p>Upcoming Deadline</p>
+                          </div>
+                        </section>  <!--umfasst linken Knopf-->
+                      </section>
+
+                      <div class="btn-row">
+                        <div class="summary-btn last-row">
+                          <div class="btn-content-last">
+                            <p id="tasks-in-board" class="smry-number">5</p>
+                            <p class="smry-text">Tasks in Board</p>
+                          </div>
+                        </div>
+                        <div class="summary-btn last-row">
+                          <div class="btn-content-last">
+                            <p id="tasks-in-progress" class="smry-number">2</p>
+                            <p class="smry-text">Tasks in Progress</p>
+                          </div>
+                        </div>
+                        <div class="summary-btn last-row">
+                          <div class="btn-content-last">
+                            <p id="await-feedback" class="smry-number">2</p>
+                            <p class="smry-text">Awaiting Feedback</p>
+                          </div>
+                        </div>
+                      </div>
+                  </div>  <!--umfasst alle btns-->
+                  
+                  <section class="hello-user">
+                    <p id="day-time">Good morning,</p>
+                    <p id="hello">Sofia Müller</p>
+                  </section>
+                </section>  <!--umfasst unteren Teil-->
+              </div> <!--umfasst alles, auch Titel-->
+
         </section>
       </div>
   </div>
