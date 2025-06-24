@@ -10,23 +10,23 @@ html {
     height: 100vh;
 }
 
-.test-sidebar {
+/* .test-sidebar {
     position: fixed;
     top: 0;
     left: 0;
     width: 232px;
     height: 100%;
     background-color: #2A3647;
-}
+} */
 
 .main-content {
-    margin-left: 232px;
+    /* margin-left: 232px; */
     width: calc(100% - 232px);
     display: flex;
     flex-direction: column;
 }
 
-header {
+/* header {
     position: sticky;
     top: 0;
     height: 96px;
@@ -35,74 +35,242 @@ header {
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
-}
+} */
 
-.content{
+.content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 80px;
+    padding: 60px;
     overflow-y: auto;
     background-color: #F6F7F8;
 }
 
-.content h1{
+.content h1 {
     font-size: 63px;
     margin-block-start: 0;
     margin-block-end: 0;
 }
 
-.form{
+.form {
     display: flex;
     flex-direction: column;
     padding-top: 24px;
-    gap: 24px;
+    gap: 32px;
 }
 
-.form-fill-part{
+.form-fill-part {
     display: flex;
     justify-content: space-between;
 }
 
-.left-form{
+.left-form {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    padding-right: 48px;
+    gap: 8px;
     padding-bottom: 48px;
-    max-width: 440px;
     width: 100%;
 }
 
-.d-flex{
+.label-container {
     display: flex;
-}
-
-.flex-d-column{
     flex-direction: column;
+    gap: 4px;
+    padding-bottom: 19px;
 }
 
 .required::after {
-  content: "*";
-  color: #FF8190;
+    content: "*";
+    color: #FF8190;
 }
 
-.border{
+.border {
     height: 424px;
     width: 0;
     border: 1px solid #D1D1D1;
     border-radius: 8px;
 }
 
-.right-form{
+.right-form {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    padding-left: 48px;
     padding-bottom: 48px;
-    max-width: 440px;
     width: 100%;
 }
 
-.form-buttons-part{
+.input-field {
+    height: 48px;
+    padding: 0 21px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.input-field::placeholder {
+    color: #D4D4D4;
+}
+
+.input-field:focus {
+    border-color: blue;
+    outline: none;
+}
+
+.task-description-area {
+    resize: vertical;
+    height: 120px;
+    padding: 18px 16px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.task-description-area::placeholder {
+    color: #D4D4D4;
+}
+
+.task-description-area:focus {
+    border-color: blue;
+    outline: none;
+}
+
+.priority-btn {
+    display: flex;
+    align-items: center;
+    background-color: white;
+
+    height: 56px;
+    /* border: 1px solid #D1D1D1; */
+    border: none;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    font-size: 20px;
+    line-height: 120%;
+    gap: 8px;
+    padding: 16px 10px;
+}
+
+.priority-btn img {
+    width: 20px;
+    height: auto;
+    object-fit: cover;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-field-subtask {
+    height: 48px;
+    padding: 0 48px 0 21px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    font-size: 20px;
+    width: 100%;
+}
+
+.input-field-subtask::placeholder {
+    color: #D4D4D4;
+}
+
+.input-field-subtask:focus {
+    border-color: blue;
+    outline: none;
+}
+
+.input-button {
+    position: absolute;
+    right: 21px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.input-button img {
+    width: 14px;
+    height: 14px;
+}
+
+.form-buttons-part {
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
+}
+
+.sign-info{
+    font-size: 16px;
+    line-height: 120%;
+}
+
+.sign-info::before{
+    content: "*";
+    color: #FF8190;
+}
+
+.buttons-area{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.clear-btn {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    height: 56px;
+    padding: 16px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 20px;
+    gap: 8px;
+    line-height: 120%;
+}
+
+.create-btn{
+    display: flex;
+    align-items: center;
+    background-color: blue;
+    color: white;
+    height: 56px;
+    padding: 16px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 20px;
+    gap: 8px;
+    line-height: 120%;
+}
+
+.clear-btn img{
+    width: 14px;
+    height: 14px;
+    object-fit: cover;
+}
+
+.create-btn img{
+    height: 14px;
+    width: auto;
+    object-fit: cover;
+}
+
+
+/*zu standarts hinzufügen*/
+
+
+.font-size-20 {
+    font-size: 20px;
+}
+
+.gap-16 {
+    gap: 16px;
 }
