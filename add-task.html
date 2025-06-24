@@ -12,24 +12,37 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./styles/add-task.css">
     <link rel="stylesheet" href="./styles/standard.css">
+    <link rel="stylesheet" href="./styles/sidebar.css">
+    <link rel="stylesheet" href="./styles/colors.css">
+    <link rel="stylesheet" href="./styles/header.css">
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> -->
 
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
+    <script src="./js/sidebar.js"></script>
     <script type="module" src="./main.js"></script>
 </head>
 
 <body>
     <div class="app-container">
-        <section class="test-sidebar"></section> <!--  Placeholder for Sidebar -->
+        <section id="sidebar-area"></section>
+        <script>
+            fetch('./js/templates/sidebar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('sidebar-area').innerHTML = data;
+                });
+        </script>
         <section class="main-content">
-            <header> <!--  Placeholder for Header -->
-                <h2>Kanban Project Management Tool</h2>
-                <nav>
-                    <a href="#">Help</a>
-                    <a href="#">Profil</a>
-                </nav>
+            <header id="header">
             </header>
+            <script>
+                fetch('./header.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('header').innerHTML = data;
+                    });
+            </script>
             <main class="content">
                 <h1>Add Task</h1>
                 <form id="add-task-form" class="form">
@@ -92,8 +105,10 @@
                     <div class="form-buttons-part">
                         <div class="sign-info">This field is required</div>
                         <div class="buttons-area">
-                            <button type="reset" class="clear-btn">Clear <img src="./assets/icons/btn/close.svg" alt="Close Icon"></button>
-                            <button type="submit" class="create-btn">Create Task <img src="./assets/icons/btn/check-mark.svg" alt="Check-mark Icon"></button>
+                            <button type="reset" class="clear-btn">Clear <img src="./assets/icons/btn/close.svg"
+                                    alt="Close Icon"></button>
+                            <button type="submit" class="create-btn">Create Task <img
+                                    src="./assets/icons/btn/check-mark.svg" alt="Check-mark Icon"></button>
                         </div>
                     </div>
                 </form>

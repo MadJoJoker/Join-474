@@ -10,23 +10,23 @@ html {
     height: 100vh;
 }
 
-.test-sidebar {
+/* .test-sidebar {
     position: fixed;
     top: 0;
     left: 0;
     width: 232px;
     height: 100%;
     background-color: #2A3647;
-}
+} */
 
 .main-content {
-    margin-left: 232px;
+    /* margin-left: 232px; */
     width: calc(100% - 232px);
     display: flex;
     flex-direction: column;
 }
 
-header {
+/* header {
     position: sticky;
     top: 0;
     height: 96px;
@@ -35,13 +35,13 @@ header {
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
-}
+} */
 
 .content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 80px;
+    padding: 60px;
     overflow-y: auto;
     background-color: #F6F7F8;
 }
@@ -56,7 +56,7 @@ header {
     display: flex;
     flex-direction: column;
     padding-top: 24px;
-    gap: 80px;
+    gap: 32px;
 }
 
 .form-fill-part {
