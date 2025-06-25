@@ -5,7 +5,6 @@ html {
     font-family: "Inter var", sans-serif;
 }
 
-
 .app-container {
     display: flex;
     height: 100vh;
@@ -86,6 +85,27 @@ html {
     color: var(--peachyPink);
 }
 
+.input-inline{
+    position: relative;
+    display: inline-block;
+}
+
+.calendar-icon {
+    position: absolute;
+    right: 21px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+}
+
+.calendar-img{
+    width: 24px;
+    height: 24px;
+}
+
 .border {
     height: 424px;
     width: 0;
@@ -103,6 +123,7 @@ html {
 
 .input-field {
     height: 48px;
+    width: 100%;
     padding: 0 21px;
     border: 1px solid var(--borderGrey);
     border-radius: 10px;
@@ -119,20 +140,31 @@ html {
     outline: none;
 }
 
+.textarea-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
 .task-description-area {
     font-family: "Inter var", sans-serif;
     resize: none;
     height: 120px;
+    width: 100%;
     padding: 18px 16px;
     border: 1px solid var(--borderGrey);
     border-radius: 10px;
     font-size: 20px;
-    background-image: url("../assets/icons/btn/resize-handle.svg");
-    background-repeat: no-repeat;
-    background-position: right 4px bottom 4px;
-    background-size: 18px;
-    /* cursor: se-resize; */
-    cursor: pointer;
+    cursor: text;
+}
+
+.resize-handle {
+  position: absolute;
+  right: 4px;
+  bottom: 8px;
+  width: 18px;
+  height: 18px;
+  cursor: ns-resize;
+  user-select: none;
 }
 
 .task-description-area::placeholder {
