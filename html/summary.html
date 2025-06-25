@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join-474 summary</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="../styles/colors.css">
+    <link rel="stylesheet" href="../styles/summary.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com"> <!--provisorisch-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <script src="../js/pages/sidebar.js"></script>
+    <script src="../js/pages/summary.js"></script>
+  </head>
+  <body onload="includeHeaderAndSidebar()">
+
+    <div class="app-container">
+      <section id="sidebar" class="sidebar-container"></section>
+
+      <section class="main-content">
+        <header> <!--  Placeholder for Header -->
+          <h2>Kanban Project Management Tool</h2>
+          <nav>
+            <a href="#">Help</a>
+            <a href="#">Profil</a>
+          </nav>
+        </header>
+            <main class="container"> 
+              <div class="summary-wrapper"> <!--umfasst alles, auch Titelg-->
+                <section class="smry-title">
+                  <p>Join 360</p>
+                  <div class="blue-separator"></div>
+                  <p>Key Metrics at a Glance</p>
+                </section>
+
+                <section class="smry-body"> <!--umfasst unteren Teil-->               
+                  <div class="summary-buttons"> <!--umfasst alle btns-->
+                      <section class="btn-row">  <!--umfasst 1. Reihe-->
+                        <a href="#" class="summary-btn first-row"> <!--umfasst linken Knopf-->
+                          <div class="btn-content-first">
+                            <div class="smry-icon">
+                              <img src="../assets/icons/btn/edit.svg" alt="pencil icon">
+                            </div>
+                            <div>
+                              <p id="to-do" class="smry-number">1</p>
+                              <p>To-do</p>
+                            </div>
+                          </div>
+                        </a>  <!--umfasst linken Knopf-->
+
+                        <section class="summary-btn first-row"> <!--umfasst rechten Knopf-->
+                          <div class="btn-content-first">
+                            <div class="smry-icon">
+                              <img src="../assets/icons/btn/ok.svg" alt="ok icon">
+                            </div>
+                            <div>
+                              <p id="done" class="smry-number">1</p>
+                              <p>Done</p>
+                            </div>
+                          </div>                  
+                        </section> <!--umfasst rechten Knopf-->
+                      </section> <!--umfasst 1. Reihe-->
+
+                      <section class="btn-row">
+                        <section class="summary-btn middle-row"> <!--umfasst linken Knopf-->
+                          <div class="btn-content-second">
+                            <div class="smry-urgent">
+                              <img src="../assets/icons/btn/prio-alta.svg" alt="high priority icon">
+                            </div>
+                            <div>
+                              <p id="urgent" class="smry-number">1</p>
+                              <p>Urgent</p>
+                            </div>
+                          </div>
+                          <div class="separator"></div>
+                          <div class="smry-date">
+                            <p id="deadline" class="date-text">Octobre 16, 2022</p>
+                            <p>Upcoming Deadline</p>
+                          </div>
+                        </section>  <!--umfasst linken Knopf-->
+                      </section>
+
+                      <div class="btn-row">
+                        <div class="summary-btn last-row">
+                          <div class="btn-content-last">
+                            <p id="tasks-in-board" class="smry-number">5</p>
+                            <p class="smry-text">Tasks in Board</p>
+                          </div>
+                        </div>
+                        <div class="summary-btn last-row">
+                          <div class="btn-content-last">
+                            <p id="tasks-in-progress" class="smry-number">2</p>
+                            <p class="smry-text">Tasks in Progress</p>
+                          </div>
+                        </div>
+                        <div class="summary-btn last-row">
+                          <div class="btn-content-last">
+                            <p id="await-feedback" class="smry-number">2</p>
+                            <p class="smry-text">Awaiting Feedback</p>
+                          </div>
+                        </div>
+                      </div>
+                  </div>  <!--umfasst alle btns-->
+                  
+                  <section class="hello-user">
+                    <p id="day-time">Good morning,</p>
+                    <p id="hello">Sofia Müller</p>
+                  </section>
+                </section>  <!--umfasst unteren Teil-->
+              </div> <!--umfasst alles, auch Titel-->
+
+        </section>
+      </div>
+  </div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
