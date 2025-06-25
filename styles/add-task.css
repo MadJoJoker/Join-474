@@ -85,7 +85,7 @@ html {
     color: var(--peachyPink);
 }
 
-.input-inline{
+.input-inline {
     position: relative;
     display: inline-block;
 }
@@ -101,7 +101,7 @@ html {
     align-items: center;
 }
 
-.calendar-img{
+.calendar-img {
     width: 24px;
     height: 24px;
 }
@@ -136,13 +136,13 @@ html {
 }
 
 .input-field:focus {
-    border-color: var(--lightBlue); 
+    border-color: var(--lightBlue);
     outline: none;
 }
 
 .textarea-wrapper {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .task-description-area {
@@ -158,13 +158,13 @@ html {
 }
 
 .resize-handle {
-  position: absolute;
-  right: 4px;
-  bottom: 8px;
-  width: 18px;
-  height: 18px;
-  cursor: ns-resize;
-  user-select: none;
+    position: absolute;
+    right: 4px;
+    bottom: 8px;
+    width: 18px;
+    height: 18px;
+    cursor: ns-resize;
+    user-select: none;
 }
 
 .task-description-area::placeholder {
@@ -176,7 +176,7 @@ html {
     outline: none;
 }
 
-.priority-btn {
+/* .priority-btn {
     display: flex;
     align-items: center;
     background-color: var(--white);
@@ -202,6 +202,55 @@ html {
     width: 20px;
     height: auto;
     object-fit: cover;
+} */
+
+.priority-btn {
+    display: flex;
+    align-items: center;
+    background-color: var(--white);
+    height: 56px;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    font-size: 20px;
+    line-height: 120%;
+    gap: 8px;
+    padding: 16px 10px;
+    cursor: pointer;
+}
+
+.priority-btn:hover {
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.12),
+        -2px 2px 6px rgba(0, 0, 0, 0.05),
+        2px 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.priority-btn.active[data-priority="urgent"] {
+    color: var(--white);
+    background-color: var(--urgent);
+}
+
+.priority-btn.active[data-priority="medium"] {
+    color: var(--white);
+    background-color: var(--middle);
+}
+
+.priority-btn.active[data-priority="low"] {
+    color: var(--white);
+    background-color: var(--low);
+}
+
+.priority-btn.active[data-priority="urgent"] img {
+    filter: brightness(0) invert(1);
+}
+
+.priority-btn.active[data-priority="medium"] img {
+    filter: brightness(0) invert(1);
+}
+
+.priority-btn.active[data-priority="low"] img {
+    filter: brightness(0) invert(1);
 }
 
 .styled-select {
@@ -222,7 +271,7 @@ html {
 
 .styled-select:focus {
     outline: none;
-    border-color: var(--lightBlue); 
+    border-color: var(--lightBlue);
 }
 
 .styled-select option {
@@ -288,7 +337,7 @@ html {
 
 .sign-info::before {
     content: "*";
-    color:  var(--peachyPink);
+    color: var(--peachyPink);
 }
 
 .buttons-area {

@@ -7,6 +7,9 @@ let isResizing = false;
 
 let startY, startHeight, currentTextarea;
 
+let currentPriority = 'medium';
+
+
 function formatDate(input) {
     let value = input.value.replace(/\D/g, "");
 
@@ -55,4 +58,16 @@ function stopResize() {
     isResizing = false;
     document.onmousemove = null;
     document.onmouseup = null;
+}
+
+
+function setPriority(clickedButton, priority) {
+  
+  const allButtons = document.querySelectorAll('.priority-btn');
+  for (let i = 0; i < allButtons.length; i++) {
+    allButtons[i].classList.remove('active');
+  }
+  
+  clickedButton.classList.add('active');
+  currentPriority = priority;
 }
