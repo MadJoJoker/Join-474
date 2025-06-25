@@ -1,6 +1,6 @@
 import { getFirebaseData } from './js/data/API.js';
 
-let firebaseData = null;
+ let firebaseData = null;
 
 export async function loadFirebaseData() {
   if (!firebaseData) {

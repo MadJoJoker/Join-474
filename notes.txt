@@ -2,3 +2,34 @@ https://join-474-default-rtdb.europe-west1.firebasedatabase.app/
 
 
 
+<!-- task-card.html: Dies ist die Basis-HTML-Struktur einer einzelnen Aufgabenkarte.
+     Sie enthält Platzhalter (leere Divs, H3, P), die später von JavaScript gefüllt werden.
+     Die Klassen (z.B. "task-card", "task-title") werden durch das CSS gestylt. -->
+
+<div class="task-card">
+    <!-- Hier kommt die Kategorie der Aufgabe (z.B. "User Story") -->
+    <div class="task-category"></div>
+
+    <!-- Hier kommt der Titel der Aufgabe -->
+    <h3 class="task-title"></h3>
+
+    <!-- Hier kommt die Beschreibung der Aufgabe -->
+    <p class="task-description"></p>
+
+    <!-- Hier kommt der Fortschrittsbalken für Unteraufgaben -->
+    <div class="task-progress-bar">
+        <!-- Der Füllbalken, dessen Breite dynamisch gesetzt wird -->
+        <div class="task-progress-fill"></div>
+    </div>
+    <!-- Hier kommt die Anzahl der erledigten/gesamten Unteraufgaben (z.B. "1/2 Subtasks") -->
+    <div class="task-subtasks-count"></div>
+
+    <!-- Fußzeile der Karte: Zugewiesene Benutzer und Priorität -->
+    <div class="task-footer">
+        <!-- Avatare der zugewiesenen Benutzer werden hier eingefügt -->
+        <div class="assigned-users-avatars"></div>
+
+        <!-- Hier kommt das Prioritäts-Icon (z.B. für "Medium Priority") -->
+        <div class="task-priority-icon"></div>
+    </div>
+</div>
