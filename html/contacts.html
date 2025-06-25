@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contacts</title>
 
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="styles/contacts.css" />
-    <link rel="stylesheet" href="./styles/standard.css" />
-    <link rel="stylesheet" href="./styles/header.css">
-    <link rel="stylesheet" href="./styles/sidebar.css">
-    <link rel="stylesheet" href="./styles/colors.css" />
-    <link rel="stylesheet" href="./assets/fonds/fond.css" />
-    <link rel="shortcut icon" href="./assets/icons/logo/joinLogo.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/contacts.css" />
+    <link rel="stylesheet" href="../styles/standard.css" />
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <link rel="stylesheet" href="../styles/colors.css" />
+    <link rel="stylesheet" href="../assets/fonds/fond.css" />
+    <link rel="shortcut icon" href="../assets/icons/logo/joinLogo.svg" type="image/x-icon" />
 
     <script src="./js/sidebar.js"></script>
     <script type="module" src="main.js"></script>
@@ -23,7 +23,7 @@
     <div class="app-container">
         <section id="sidebar-area"></section>
         <script>
-            fetch('./js/templates/sidebar.html')
+            fetch('../js/templates/sidebar.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('sidebar-area').innerHTML = data;
@@ -32,94 +32,46 @@
         <section class="main-content">
             <header id="header"></header>
             <script>
-                fetch('./header.html')
+                fetch('../js/templates/header.html')
                     .then(response => response.text())
                     .then(data => {
                         document.getElementById('header').innerHTML = data;
                     });
             </script>
             <main class="contacts-main">
+
                 <aside class="contacts-sidebar">
                     <div class="add-new-contact-button-div">
-                        <button class="add-new-contact-button">Add new contact<img src="assets/img/person-add.svg"
+                        <button class="add-new-contact-button">Add new contact<img src="../assets/img/person-add.svg"
                                 alt="Contact image"></button>
                     </div>
                     <div class="contacts-list">
-                        <div class="contact-section">
-                            <div class="contact-initial">C</div>
-                            <div class="contact">
-                                <div class="contact-avatar">CW</div>
-                                <div class="contact-info">
-                                    <div class="contact-name">Claudia Wick</div>
-                                    <div class="contact-email"><a href="#">wick@gmeil.com</a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="contact-section">
-                            <div class="contact-initial">D</div>
-                            <div class="contact">
-                                <div class="contact-avatar">DR</div>
-                                <div class="contact-info">
-                                    <div class="contact-name">Dominik Rapp</div>
-                                    <div class="contact-email"><a href="#">rapp@hotmeil.com</a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="contact-section">
-                            <div class="contact-initial">E</div>
-                            <div class="contact">
-                                <div class="contact-avatar">EB</div>
-                                <div class="contact-info">
-                                    <div class="contact-name">Eugen Birich</div>
-                                    <div class="contact-email"><a href="#">birich@gmeil.com</a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="contact-section">
-                            <div class="contact-initial">M</div>
-                            <div class="contact">
-                                <div class="contact-avatar">MV</div>
-                                <div class="contact-info">
-                                    <div class="contact-name">Mathias Johann Josef Voigt</div>
-                                    <div class="contact-email"><a href="#">voigt@hotmeil.com</a></div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </aside>
+
                 <section class="contacts-details">
+
                     <div class="contacts-text-separator">
+
                         <h1>Contacts</h1>
+
                         <span class="contacts-divider"></span>
+
                         <span>Better with a team</span>
+
                     </div>
-                    <div class="contact-details-card">
-                        <div class="contact-details-header">
-                            <div class="contact-details-avatar-big">DR</div>
-                            <div class="contact-details-name-actions">
-                                <h2>Dominik Rapp</h2>
-                                <div class="contact-details-actions">
-                                    <button class="contact-details-card-icon-button"><img
-                                            src="assets/icons/btn/contact-edit.svg" alt="Edit" />
-                                        Edit</button>
-                                    <button class="contact-details-card-icon-button"><img
-                                            src="assets/icons/btn/contact-delete.svg" alt="Delete" />
-                                        Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="contact-details-info-block">
-                            <h3>Contact Information</h3><br>
-                            <p><strong>Email</strong></p><br>
-                            <p><a href="mailto:rapp@hotmeil.com">rapp@hotmeil.com</a></p><br>
-                            <p><strong>Phone</strong></p><br>
-                            <p>+49 1111 111 11 1</p>
-                        </div>
-                    </div>
+
+                    <div class="contact-details-card"></div>
+
                 </section>
+
             </main>
+
         </section>
+
     </div>
+
 </body>
 
 </html>

@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Help</title>
 
-    <link rel="stylesheet" href="assets/fonds/fond.css"/>
-    <link rel="stylesheet" href="./styles/header.css">
-    <link rel="stylesheet" href="./styles/sidebar.css">
-    <link rel="stylesheet" href="./styles/colors.css"/>
-    <link rel="stylesheet" href="styles/help.css"/>
-    <link rel="shortcut icon" href="./assets/icons/logo/joinLogo.svg" type="image/x-icon"/>
+    <link rel="stylesheet" href="../assets/fonds/fond.css"/>
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <link rel="stylesheet" href="../styles/colors.css"/>
+    <link rel="stylesheet" href="../styles/help.css"/>
+    <link rel="shortcut icon" href="../assets/icons/logo/joinLogo.svg" type="image/x-icon"/>
 
     <script src="./js/sidebar.js"></script>
     <script type="module" src="main.js"></script>
@@ -21,7 +21,7 @@
     <div class="app-container">
         <section id="sidebar-area"></section>
         <script>
-            fetch('./js/templates/sidebar.html')
+            fetch('../js/templates/sidebar.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('sidebar-area').innerHTML = data;
@@ -30,7 +30,7 @@
         <section class="main-content">
             <header id="header"></header>
             <script>
-                fetch('./header.html')
+                fetch('../js/templates/header.html')
                     .then(response => response.text())
                     .then(data => {
                         document.getElementById('header').innerHTML = data;
