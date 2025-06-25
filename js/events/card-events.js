@@ -62,25 +62,25 @@ function stopResize() {
 
 
 function setPriority(clickedButton, priority) {
-  
-  const allButtons = document.querySelectorAll('.priority-btn');
-  for (let i = 0; i < allButtons.length; i++) {
-    allButtons[i].classList.remove('active');
-  }
-  
-  clickedButton.classList.add('active');
-  currentPriority = priority;
+
+    const allButtons = document.querySelectorAll('.priority-btn');
+    for (let i = 0; i < allButtons.length; i++) {
+        allButtons[i].classList.remove('active');
+    }
+
+    clickedButton.classList.add('active');
+    currentPriority = priority;
 }
 
 function setMedium() {
-  
-  const allButtons = document.querySelectorAll('.priority-btn');
-  for (let i = 0; i < allButtons.length; i++) {
-    allButtons[i].classList.remove('active');
-  }
-  
-  const mediumBtn = document.querySelector('.priority-btn[data-priority="medium"]');
-  mediumBtn.classList.add('active');
-  
-  currentPriority = 'medium';
+
+    const allButtons = document.querySelectorAll('.priority-btn');
+    for (let i = 0; i < allButtons.length; i++) {
+        allButtons[i].classList.remove('active');
+    }
+
+    const mediumBtn = document.querySelector('.priority-btn[data-priority="medium"]');
+    mediumBtn.classList.add('active');
+
+    currentPriority = 'medium';
 }

@@ -100,16 +100,22 @@
                   <option value="1">Contact 1</option>
                 </select>
               </div>
+
               <div class="label-container">
                 <label for="category" class="required font-size-20">Category</label>
-                <select name="category" class="styled-select" required>
-                  <option value="" disabled selected hidden>
-                    Select task category
-                  </option>
-                  <option value="1">Technical Task</option>
-                  <option value="2">User Story</option>
-                </select>
+                <div class="select-wrapper">
+                  <select name="category" class="styled-select" required>
+                    <option value="" disabled selected hidden>Select task category</option>
+                    <option value="1">Technical Task</option>
+                    <option value="2">User Story</option>
+                  </select>
+                  <div class="dropdown-icon-container" onmouseover="this.style.background='rgba(0,0,0,0.1)'"
+                    onmouseout="this.style.background='transparent'">
+                    <img src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon" alt="Dropdown">
+                  </div>
+                </div>
               </div>
+
               <div class="label-container">
                 <label for="subtask" class="font-size-20">Subtasks</label>
                 <div class="input-wrapper">
