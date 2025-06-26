@@ -17,6 +17,11 @@ async function addLayoutElements(path, id) {
 }
 
 function includeHeaderAndSidebar() {
-  // addLayoutElements('./assets/img/templates/header.html', 'header');
+  // addLayoutElements('../js/templates/header.html', 'header');
   addLayoutElements('../js/templates/sidebar.html', 'sidebar');
+}
+
+function setSmryIcon(triggeredElement, filename) {
+  const img = triggeredElement.querySelector("img");
+  img.src = '../assets/icons/sidebar/' + filename;
 }
