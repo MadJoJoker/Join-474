@@ -44,7 +44,7 @@
             });
         </script>
 
-    <main class="content">
+   <main class="content">
   <div class="board-wrapper frame-191">
     <div class="frame-192 board-top-section">
       <h1 class="headline">Board</h1>
@@ -68,20 +68,21 @@
       </div>
     </div>
 
-    <div
-      id="board-content-wrapper"  class="d-flex space-between align-items"
-    >
-      <div class="column-wrapper"> <div class="width-224 status-item">
+    <div id="board-content-wrapper" class="">
+      <div class="column-wrapper">
+        <div class="width-224 status-item">
           <button id="fast-add-task-to-do" class="d-flex status-button">
             <span class="menu-color">To Do</span>
             <img src="../assets/icons/btn/plus-btn.svg" />
           </button>
         </div>
         <div id="to-do" class="task-column">
-          </div>
+          <div class="no-tasks-placeholder">No tasks to do</div>
+        </div>
       </div>
 
-      <div class="column-wrapper"> <div class="width-224 status-item">
+      <div class="column-wrapper">
+        <div class="width-224 status-item">
           <button
             id="fast-add-task-in-progress"
             class="d-flex status-button"
@@ -91,10 +92,50 @@
           </button>
         </div>
         <div id="in-progress" class="task-column">
+          <div class="task-card">
+            <div class="category-tag user-story-tag">User Story</div>
+            <div class="task-content">
+              <h3 class="task-title">Kochwelt Page & Recipe Recommender</h3>
+              <p class="task-description">Build start page with recipe recommendation...</p>
+              <div class="progress-container">
+                <div class="progress-bar" style="width: 50%;"></div>
+                <span class="subtasks-text">1/2 Subtasks</span>
+              </div>
+            </div>
+            <div class="task-footer">
+              <div class="assigned-users">
+                <div class="assigned-initials-circle" style="background-color: #FF7A00;">AM</div>
+                <div class="assigned-initials-circle" style="background-color: #9327FF;">EM</div>
+                <div class="assigned-initials-circle" style="background-color: #00BEE8;">MR</div>
+              </div>
+              <div class="priority-icon">
+                <img src="../assets/icons/medium-priority.svg" alt="Medium Priority" />
+              </div>
+            </div>
           </div>
+
+          <div class="task-card">
+            <div class="category-tag user-story-tag">User Story</div>
+            <div class="task-content">
+              <h3 class="task-title">Daily Kochwelt Recipe</h3>
+              <p class="task-description">Implement daily recipe and portion calculator....</p>
+            </div>
+            <div class="task-footer">
+              <div class="assigned-users">
+                <div class="assigned-initials-circle" style="background-color: #FC71FF;">EF</div>
+                <div class="assigned-initials-circle" style="background-color: #FFC701;">AS</div>
+                <div class="assigned-initials-circle" style="background-color: #003EFF;">TW</div>
+              </div>
+              <div class="priority-icon">
+                <img src="../assets/icons/medium-priority.svg" alt="Medium Priority" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="column-wrapper"> <div class="width-224 status-item">
+      <div class="column-wrapper">
+        <div class="width-224 status-item">
           <button
             id="fast-add-task-awiat-feedback"
             class="d-flex status-button"
@@ -104,20 +145,58 @@
           </button>
         </div>
         <div id="await-feedback" class="task-column">
+          <div class="task-card">
+            <div class="category-tag technical-task-tag">Technical Task</div>
+            <div class="task-content">
+              <h3 class="task-title">HTML Base Template Creation</h3>
+              <p class="task-description">Create reusable HTML base templates...</p>
+            </div>
+            <div class="task-footer">
+              <div class="assigned-users">
+                <div class="assigned-initials-circle" style="background-color: #003EFF;">DE</div>
+                <div class="assigned-initials-circle" style="background-color: #1FD7C1;">BZ</div>
+                <div class="assigned-initials-circle" style="background-color: #9327FF;">AS</div>
+              </div>
+              <div class="priority-icon">
+                <img src="../assets/icons/low-priority.svg" alt="Low Priority" />
+              </div>
+            </div>
           </div>
+        </div>
       </div>
 
-      <div class="column-wrapper"> <div class="width-224 status-item">
+      <div class="column-wrapper">
+        <div class="width-224 status-item">
           <button id="fast-add-task-done" class="d-flex status-button">
             <span class="menu-color">Done</span>
             <img src="../assets/icons/btn/plus-btn.svg" />
           </button>
         </div>
         <div id="done" class="task-column">
+          <div class="task-card">
+            <div class="category-tag technical-task-tag">Technical Task</div>
+            <div class="task-content">
+              <h3 class="task-title">CSS Architecture Planning</h3>
+              <p class="task-description">Define CSS naming conventions and structure...</p>
+              <div class="progress-container">
+                <div class="progress-bar" style="width: 100%;"></div>
+                <span class="subtasks-text">2/2 Subtasks</span>
+              </div>
+            </div>
+            <div class="task-footer">
+              <div class="assigned-users">
+                <div class="assigned-initials-circle" style="background-color: #FFC701;">SM</div>
+                <div class="assigned-initials-circle" style="background-color: #003EFF;">BZ</div>
+              </div>
+              <div class="priority-icon">
+                <img src="../assets/icons/high-priority.svg" alt="High Priority" />
+              </div>
+            </div>
           </div>
+        </div>
       </div>
-
-    </div> </div>
+    </div>
+  </div>
 </main>
 
     <script type="module" src="../main.js"></script>
