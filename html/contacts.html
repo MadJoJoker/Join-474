@@ -2,21 +2,19 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacts</title>
 
-    <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="../styles/contacts.css" />
-    <link rel="stylesheet" href="../styles/standard.css" />
+    <link rel="shortcut icon" href="../assets/icons/logo/joinLogo.svg" type="image/x-icon">
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../styles/contacts.css">
+    <link rel="stylesheet" href="../styles/standard.css">
     <link rel="stylesheet" href="../styles/header.css">
     <link rel="stylesheet" href="../styles/sidebar.css">
-    <link rel="stylesheet" href="../styles/colors.css" />
-    <link rel="stylesheet" href="../assets/fonds/fond.css" />
-    <link rel="shortcut icon" href="../assets/icons/logo/joinLogo.svg" type="image/x-icon" />
-
-    <script src="./js/sidebar.js"></script>
-    <script type="module" src="main.js"></script>
+    <link rel="stylesheet" href="../styles/colors.css">
+    <link rel="stylesheet" href="../assets/fonds/fond.css">
 </head>
 
 <body>
@@ -39,39 +37,26 @@
                     });
             </script>
             <main class="contacts-main">
-
                 <aside class="contacts-sidebar">
                     <div class="add-new-contact-button-div">
                         <button class="add-new-contact-button">Add new contact<img src="../assets/img/person-add.svg"
                                 alt="Contact image"></button>
                     </div>
-                    <div class="contacts-list">
-
-                    </div>
+                    <div class="contacts-list"></div>
                 </aside>
-
                 <section class="contacts-details">
-
                     <div class="contacts-text-separator">
-
                         <h1>Contacts</h1>
-
                         <span class="contacts-divider"></span>
-
                         <span>Better with a team</span>
-
                     </div>
-
                     <div class="contact-details-card"></div>
-
                 </section>
-
             </main>
-
         </section>
-
     </div>
-
+    <script type="module" src="../js/ui/render-contacts.js"></script>
+    <script src="../js/pages/sidebar.js"></script>
 </body>
 
 </html>

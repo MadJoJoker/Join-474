@@ -8,17 +8,6 @@ html {
     font-family: 'Inter', sans-serif;
 }
 
-.main-content {
-    width: calc(100% - 232px);
-    display: flex;
-    flex-direction: column;
-}
-
-.app-container {
-    display: flex;
-    height: 100vh;
-}
-
 .contacts-main {
     display: flex;
     min-height: calc(100vh - 96px);
@@ -38,10 +27,8 @@ html {
     padding-left: 32px;
     padding-right: 32px;
     background-color: #f6f7f8;
-}
-
-.contacts-list {
-    height: 100vh;
+    position: relative;
+    overflow: hidden;
 }
 
 .contacts-text-separator {
@@ -79,25 +66,40 @@ html {
     display: flex;
     align-items: center;
     padding: 10px 0;
+    cursor: pointer;
 }
 
-.contact:hover {
-    background-color: #f2f2f2;
-    cursor: pointer;
+.contact:hover:not(.active) {
+  background: linear-gradient(to bottom, #f8f8f8, #f0f0f0);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.contact.active {
+    background-color: #2a3647;
+    color: white;
     border-radius: 8px;
+}
+
+.contact.active .contact-name {
+    color: white;
 }
 
 .contact-avatar {
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background-color: #aaa;
-    color: #fff;
+    /* background-color: #aaa; */
+    /* color: #fff; */
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 30px;
     font-size: 12px;
+    border: 2px solid white;
+    color: white;
+    box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .contact-info {
@@ -121,9 +123,19 @@ html {
 }
 
 .contact-details-card {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.4s ease-in-out;
+    pointer-events: none;
+    width: 100%;
     padding: 32px;
     border-radius: 12px;
-    max-width: 600px;
+}
+
+.contact-details-card.visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
 }
 
 .contact-details-header {
@@ -136,13 +148,15 @@ html {
 .contact-details-avatar-big {
     width: 120px;
     height: 120px;
-    background-color: gray;
+    /* background-color: gray; */
     border-radius: 50%;
     font-size: 47px;
     font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 3px solid white;
+    color: white;
 }
 
 .contact-details-name-actions {

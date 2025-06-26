@@ -26,7 +26,6 @@ body {
 
 .board-wrapper.frame-191 {
   width: calc(100% - 232px);
-  margin-left: 232px;
   padding-top: 96px;
   background-color: transparent;
   box-sizing: border-box;
@@ -146,9 +145,6 @@ body {
 
 .status-navigation-wrapper {
   display: flex;
-  justify-content: space-between;
-  gap: 30px;
-  padding: 30px 64px 0;
   box-sizing: border-box;
   flex-wrap: wrap;
 }
