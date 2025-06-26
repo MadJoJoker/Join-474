@@ -102,18 +102,19 @@
               </div>
 
               <div class="label-container">
-                <label for="category" class="required font-size-20">Category</label>
-                <div class="select-wrapper">
-                  <select name="category" class="styled-select" required>
-                    <option value="" disabled selected hidden>Select task category</option>
-                    <option value="1">Technical Task</option>
-                    <option value="2">User Story</option>
-                  </select>
-                  <div class="dropdown-icon-container" onmouseover="this.style.background='rgba(0,0,0,0.1)'"
-                    onmouseout="this.style.background='transparent'">
-                    <img src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon" alt="Dropdown">
+                <p class="required font-size-20">Category</p>
+                <div class="select-wrapper" onclick="toggleCategoryDropdown()">
+                  <div class="styled-select" id="dropdown-category" required>
+                    <div id="selected">Select task category</div>
+                  </div>
+                  <div class="dropdown-icon-container">
+                    <img id="dropdown-icon" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
+                      alt="Dropdown">
                   </div>
                 </div>
+              </div>
+              <div class="options-wrapper">
+                <div id="category-options-container"></div>
               </div>
 
               <div class="label-container">
@@ -130,7 +131,7 @@
           <div class="form-buttons-part">
             <div class="sign-info">This field is required</div>
             <div class="buttons-area">
-              <button type="reset" class="clear-btn" onclick="setMedium()">
+              <button type="reset" class="clear-btn" onclick="clear()">
                 Clear
                 <img src="../assets/icons/btn/close.svg" alt="Close Icon" />
               </button>
@@ -146,7 +147,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="../js/events/card-events.js"></script>
+  <script src="../js/pages/add-task.js"></script>
   <script src="../js/pages/sidebar.js"></script>
   <script type="module" src="../main.js"></script>
 </body>
