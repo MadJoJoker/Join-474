@@ -132,11 +132,13 @@ function toggleDropdownIcon() {
 
 function setCategory(option) {
 
+    const wrapper = document.querySelector('.options-wrapper');
     const selected = document.getElementById("selected");
     selected.textContent = option.textContent;
 
     const optionsContainer = document.getElementById("category-options-container");
-    optionsContainer.classList.remove("options");
+    optionsContainer.classList.remove("open");
+    wrapper.classList.remove("open");
     optionsContainer.innerHTML = '';
 
     toggleDropdownIcon();
