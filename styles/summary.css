@@ -2,6 +2,7 @@
 .app-container {
   display: flex;
   height: 100vh;
+  font-family: 'Inter', sans-serif;
 }
 
 .sidebar-container {
@@ -29,6 +30,7 @@ header {
   align-items: center;
   flex-shrink: 0;
   background-color: var(--white); /* default, damit auf jeden Fall etwas sichtbar ist */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .container{
@@ -47,7 +49,7 @@ header {
   height: 700px;
   display: flex;
   flex-direction: column;
-  row-gap: 54px;
+  row-gap: 48px;
 }
 
 .smry-body {
@@ -68,11 +70,11 @@ header {
   letter-spacing: 1.8px;
 }
 
-.blue-separator {
+/* .blue-separator {
   height: 56px;
   width: 3px;
   background-color: var(--lightBlue);
-}
+} */
 
 .smry-title > p:last-of-type {
   font-size: 27px;
@@ -80,9 +82,11 @@ header {
   letter-spacing: 1.2px;
 }
 
-.summary-buttons {
+
+
+.button-field {
   width: 560px;
-  height: 562px;
+  height: 576px; /* 562 is not enough */
   color: var(--dark);
   display: flex;
   flex-direction: column;
@@ -91,13 +95,17 @@ header {
 
 .btn-row {
   width: 560px;
-  height: 168px; /* letzte hat offenbar 170px*/
+  height: 184px; 
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  /* border: 1px solid red; */
 }
 
+/* button frame settings */
 .summary-btn {
-  height: 100%;
+  width: 264px;
+  height: 168px;
   background-color: var(--white);
   border-radius: 30px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
@@ -107,38 +115,83 @@ header {
   cursor: pointer;
   color: var(--dark);
   text-decoration: none;
+  transition: all 100ms ease-in-out;
 }
 
-.summary-btn:hover {
-  background-color: var(--dark);
-  color: var(--white);
-  transition: all 225ms ease-in-out;
-}
-
-.first-row {
-  width: 264px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.middle-row {
-  width: 100%;
+.middle {
+  width: 560px;
   display: flex;
   justify-content: center;
   align-items: center;
   column-gap: 54px;
 }
 
-.separator {
+.summary-btn.last {
+  width: 168px;
+}
+
+
+.summary-btn:hover {
+  background-color: var(--dark);
+  color: var(--white);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.summary-btn:hover .urgent-text {
+  color: var(--white);
+}
+
+/* scaling for each button when hovered */
+.summary-btn.first:first-of-type {
+  transform-origin: left center;
+}
+.summary-btn.first:first-of-type:hover {
+  transform: scaleX(1.068) scaleY(1.095); 
+}
+
+.summary-btn.first:last-of-type {
+  transform-origin: right center;
+}
+.summary-btn.first:last-of-type:hover {
+  transform: scaleX(1.068) scaleY(1.095); 
+}
+
+.summary-btn.middle {
+  transform-origin: left center;
+}
+.summary-btn.middle:hover {
+  transform: scaleX(1.032) scaleY(1.095); 
+}
+
+.summary-btn.last:first-of-type {
+  transform-origin: left center;
+}
+.summary-btn.last:first-of-type:hover {
+  transform: scaleX(1.095) scaleY(1.095); 
+}
+
+.summary-btn.last:nth-of-type(2) {
+  transform-origin: center;
+}
+.summary-btn.last:nth-of-type(2):hover {
+  transform: scaleX(1.095) scaleY(1.095); 
+}
+
+.summary-btn.last:last-of-type {
+  transform-origin: right center;
+}
+.summary-btn.last:last-of-type:hover {
+  transform: scaleX(1.095) scaleY(1.095); 
+}
+
+
+
+/* KOOMT WEG, IST VEKTOR */
+/* .separator {
   height: 102px;
   width: 2px;
   background-color: var(--borderGrey);
-}
-
-.last-row {
-  width: 168px;
-}
+} */
 
 .btn-content-first {
   height: 101px;
@@ -147,6 +200,10 @@ header {
   align-items: center;
   text-align: center;
   column-gap: 30px; /*zu wenig*/
+}
+
+.text-first-row {
+  font-size: 20px;
 }
 
 .btn-content-second {
@@ -186,14 +243,6 @@ header {
   background-color: var(--white);
 }
 
-/* .summary-btn:hover .smry-icon img {
-  filter: invert(1);
-} */
-
-/* .summary-btn:hover .smry-icon img {
-  style.fill = "var(--dark)";
-} */
-
 .smry-urgent{
   width: 60px;
   height: 60px;
@@ -230,7 +279,7 @@ header {
   font-size: 21px;
 }
 
-
+/* Greeting */
 .hello-user {
   display: flex;
   justify-content: center;
