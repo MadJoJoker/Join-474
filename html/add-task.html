@@ -95,11 +95,11 @@
 
               <div class="label-container">
                 <p class="font-size-20">Assigned to</p>
-                <div class="select-wrapper" onclick="toggleAssignedToDropdown()">
+                <div class="select-wrapper" onclick="toggleAssignedToDropdown('assignedTo')">
                   <div class="styled-select" id="dropdown-assigned-to">
                     <div id="selected-contacts">Select contacts to assign</div>
                   </div>
-                  <div class="dropdown-icon-container">
+                  <div class="dropdown-icon-container" id="dropdown-icon-container-one">
                     <img id="dropdown-icon-one" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
                       alt="Dropdown">
                   </div>
@@ -112,11 +112,11 @@
 
               <div class="label-container">
                 <p class="required font-size-20">Category</p>
-                <div class="select-wrapper" onclick="toggleCategoryDropdown()">
+                <div class="select-wrapper" onclick="toggleCategoryDropdown('category')">
                   <div class="styled-select" id="dropdown-category" required>
                     <div id="selected-category">Select task category</div>
                   </div>
-                  <div class="dropdown-icon-container">
+                  <div class="dropdown-icon-container" id="dropdown-icon-container-two">
                     <img id="dropdown-icon-two" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
                       alt="Dropdown">
                   </div>

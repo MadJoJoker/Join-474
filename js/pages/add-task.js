@@ -88,27 +88,27 @@ function setMedium() {
 }
 
 
-function toggleCategoryDropdown() {
-  const wrapper = document.querySelector('.options-wrapper-category');
-  const container = document.getElementById("category-options-container");
-  const isOpen = wrapper.classList.contains("open");
+function toggleCategoryDropdown(id) {
 
-  clearCategory();
-  toggleDropdownIcon();
+    const wrapper = document.querySelector('.options-wrapper-category');
+    const container = document.getElementById("category-options-container");
+    const isOpen = wrapper.classList.contains("open");
 
-  if (!isOpen) {
-    container.innerHTML = getCategoryOptions();
-    requestAnimationFrame(() => {
-      wrapper.classList.add("open");
-    });
-  } else {
-    wrapper.classList.remove("open");
-    setTimeout(() => {
-      container.innerHTML = '';
-    }, 300);
-  }
+    clearCategory();
+    toggleDropdownIcon(id);
+
+    if (!isOpen) {
+        container.innerHTML = getCategoryOptions();
+        requestAnimationFrame(() => {
+            wrapper.classList.add("open");
+        });
+    } else {
+        wrapper.classList.remove("open");
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 300);
+    }
 }
- 
 
 
 function getCategoryOptions() {
@@ -119,13 +119,20 @@ function getCategoryOptions() {
 }
 
 
-function toggleDropdownIcon() {
+function toggleDropdownIcon(id) {
 
-    const dropdownIcon = document.getElementById("dropdown-icon-two");
-    dropdownIcon.classList.toggle("open");
+    const dropdownIconOne = document.getElementById("dropdown-icon-one");
+    const dropdownIconContainerOne = document.getElementById("dropdown-icon-container-one");
+    const dropdownIconTwo = document.getElementById("dropdown-icon-two");
+    const dropdownIconContainerTwo = document.getElementById("dropdown-icon-container-two");
 
-    const dropdownIconContainer = document.querySelector('.dropdown-icon-container');
-    dropdownIconContainer.classList.toggle('active');
+    if (id === "category") {
+        dropdownIconTwo.classList.toggle("open");
+        dropdownIconContainerTwo.classList.toggle('active');
+    } else if (id === "assignedTo") {
+        dropdownIconOne.classList.toggle("open");
+        dropdownIconContainerOne.classList.toggle('active');
+    }
 
 }
 
@@ -144,7 +151,6 @@ function setCategory(option) {
     toggleDropdownIcon();
 
     selectedCategoy = option.id === "category-options-one" ? "Technical Task" : "User Story";
-
 }
 
 
@@ -161,3 +167,55 @@ function clearForm() {
     setMedium();
     clearCategory();
 }
+
+
+function toggleAssignedToDropdown(id) {
+
+    const wrapper = document.querySelector('.options-wrapper-contacts');
+    const container = document.getElementById("assigned-to-options-container");
+    const isOpen = wrapper.classList.contains("open");
+
+    toggleDropdownIcon(id);
+
+    if (!isOpen) {
+        container.innerHTML = getAssignedToOptions();
+        requestAnimationFrame(() => {
+            wrapper.classList.add("open");
+        });
+    } else {
+        wrapper.classList.remove("open");
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 300);
+    }
+}
+
+
+function getAssignedToOptions() {
+    return `
+            <div class="option" id="category-options-one" onclick="setCategory(this)">Technical Task</div>
+            <div class="option" id="category-options-two" onclick="setCategory(this)">User Story</div>
+            `
+}
+
+
+document.addEventListener('click', function(event) {
+  
+  const contactsDropdown = document.querySelector('#dropdown-assigned-to').closest('.select-wrapper');
+  const contactsOptions = document.querySelector('.options-wrapper-contacts');
+  const categoryDropdown = document.querySelector('#dropdown-category').closest('.select-wrapper');
+  const categoryOptions = document.querySelector('.options-wrapper-category');
+
+  const clickedOutsideContacts = !contactsDropdown.contains(event.target) && !contactsOptions.contains(event.target);
+  const clickedOutsideCategory = !categoryDropdown.contains(event.target) && !categoryOptions.contains(event.target);
+
+  if (clickedOutsideContacts) {
+    contactsOptions.classList.remove('open');
+    document.getElementById('dropdown-icon-one').classList.remove('open');
+  }
+
+  if (clickedOutsideCategory) {
+    categoryOptions.classList.remove('open');
+    document.getElementById('dropdown-icon-two').classList.remove('open');
+  }
+});
