@@ -28,11 +28,13 @@ function formatDate(input) {
 
     input.value = formatted;
 }
+window.formatDate = formatDate;
 
 
 function openPicker() {
     picker.open();
 }
+window.openPicker = openPicker
 
 
 function startResize(e) {
@@ -46,6 +48,7 @@ function startResize(e) {
 
     e.preventDefault();
 }
+window.startResize = startResize;
 
 
 function resizeTextarea(e) {
@@ -54,6 +57,7 @@ function resizeTextarea(e) {
     const newHeight = (startHeight + e.clientY - startY) + 'px';
     currentTextarea.style.height = newHeight;
 }
+window.resizeTextarea = resizeTextarea;
 
 
 function stopResize() {
@@ -61,6 +65,7 @@ function stopResize() {
     document.onmousemove = null;
     document.onmouseup = null;
 }
+window.stopResize = stopResize;
 
 
 function setPriority(clickedButton, priority) {
@@ -73,6 +78,8 @@ function setPriority(clickedButton, priority) {
     clickedButton.classList.add('active');
     currentPriority = priority;
 }
+window.setPriority = setPriority;
+
 
 function setMedium() {
 
@@ -86,6 +93,7 @@ function setMedium() {
 
     currentPriority = 'medium';
 }
+window.setMedium = setMedium;
 
 
 function toggleCategoryDropdown(id) {
@@ -109,6 +117,7 @@ function toggleCategoryDropdown(id) {
         }, 300);
     }
 }
+window.toggleCategoryDropdown = toggleCategoryDropdown;
 
 
 function getCategoryOptions() {
@@ -117,6 +126,7 @@ function getCategoryOptions() {
             <div class="option" id="category-options-two" onclick="setCategory(this)">User Story</div>
             `
 }
+window.getCategoryOptions = getCategoryOptions;
 
 
 function toggleDropdownIcon(id) {
@@ -135,6 +145,7 @@ function toggleDropdownIcon(id) {
     }
 
 }
+window.toggleDropdownIcon = toggleDropdownIcon;
 
 
 function setCategory(option) {
@@ -152,6 +163,7 @@ function setCategory(option) {
 
     selectedCategoy = option.id === "category-options-one" ? "Technical Task" : "User Story";
 }
+window.setCategory = setCategory;
 
 
 function clearCategory() {
@@ -161,12 +173,14 @@ function clearCategory() {
     const selected = document.getElementById("selected-category");
     selected.textContent = "Select task category";
 }
+window.clearCategory = clearCategory;
 
 
 function clearForm() {
     setMedium();
     clearCategory();
 }
+window.clearForm = clearForm;
 
 
 function toggleAssignedToDropdown(id) {
@@ -189,6 +203,7 @@ function toggleAssignedToDropdown(id) {
         }, 300);
     }
 }
+window.toggleAssignedToDropdown = toggleAssignedToDropdown;
 
 
 function getAssignedToOptions() {
