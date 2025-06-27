@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../styles/board-site.css" />
     <link rel="stylesheet" href="../assets/fonds/fond.css" />
     <link rel="stylesheet" href="../styles/header.css" />
+    <link rel="stylesheet" href="../styles/overlay.css" />
     <link
       rel="icon"
       href="../assets/icons/logo/joinLogo.svg"
@@ -20,10 +21,7 @@
   </head>
 
   <body>
-    <script>
-      console.log("Tasks:", tasks);
-      console.log("Contacts:", contacts);
-    </script>
+
     <div class="app-container">
       <section id="sidebar-area"></section>
       <script>
@@ -43,164 +41,276 @@
               document.getElementById("header").innerHTML = data;
             });
         </script>
+        <div id="overlay-container"></div>
 
-   <main class="content">
-  <div class="board-wrapper frame-191">
-    <div class="frame-192 board-top-section">
-      <h1 class="headline">Board</h1>
-      <div class="header-right-controls">
-        <div class="frame-121 border-radius-10">
-          <input
-            id="find-task"
-            class="searche-task-web"
-            placeholder="Find Task"
-            type="text"
-          />
-          <div class="seperator"></div>
-          <button type="button" class="search-icon-button">
-            <img src="../assets/icons/btn/search -btn.svg" alt="Search Icon" />
-          </button>
-        </div>
-        <button id="add-task" class="border-radius-10 dark-blue">
-          <span>Add task</span>
-          <img src="../assets/icons/btn/add.svg" alt="Add Icon" />
-        </button>
-      </div>
+        <main class="content">
+          <div class="board-wrapper frame-191">
+            <div class="frame-192 board-top-section">
+              <h1 class="headline">Board</h1>
+              <div class="header-right-controls">
+                <div class="frame-121 border-radius-10">
+                  <input
+                    id="find-task"
+                    class="searche-task-web"
+                    placeholder="Find Task"
+                    type="text"
+                  />
+                  <div class="seperator"></div>
+                  <button type="button" class="search-icon-button">
+                    <img
+                      src="../assets/icons/btn/search -btn.svg"
+                      alt="Search Icon"
+                    />
+                  </button>
+                </div>
+                <button id="add-task" class="border-radius-10 dark-blue">
+                  <span>Add task</span>
+                  <img src="../assets/icons/btn/add.svg" alt="Add Icon" />
+                </button>
+              </div>
+            </div>
+
+            <div id="board-content-wrapper" class="">
+              <div class="column-wrapper">
+                <div class="width-224 status-item">
+                  <button id="fast-add-task-to-do" class="d-flex status-button">
+                    <span class="menu-color">To Do</span>
+                    <img src="../assets/icons/btn/plus-btn.svg" />
+                  </button>
+                </div>
+                <div id="to-do" class="task-column">
+                  <div class="no-tasks-placeholder">No tasks to do</div>
+                </div>
+              </div>
+
+              <div class="column-wrapper">
+                <div class="width-224 status-item">
+                  <button
+                    id="fast-add-task-in-progress"
+                    class="d-flex status-button"
+                  >
+                    <span class="menu-color">In Progress</span>
+                    <img src="../assets/icons/btn/plus-btn.svg" />
+                  </button>
+                </div>
+                <div id="in-progress" class="task-column">
+                  <div class="task-card">
+                    <div class="category-tag user-story-tag">User Story</div>
+                    <div class="task-content">
+                      <h3 class="task-title">
+                        Kochwelt Page & Recipe Recommender
+                      </h3>
+                      <p class="task-description">
+                        Build start page with recipe recommendation...
+                      </p>
+                      <div class="progress-container">
+                        <div class="progress-bar" style="width: 50%"></div>
+                        <span class="subtasks-text">1/2 Subtasks</span>
+                      </div>
+                    </div>
+                    <div class="task-footer">
+                      <div class="assigned-users">
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #ff7a00"
+                        >
+                          AM
+                        </div>
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #9327ff"
+                        >
+                          EM
+                        </div>
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #00bee8"
+                        >
+                          MR
+                        </div>
+                      </div>
+                      <div class="priority-icon">
+                        <img
+                          src="../assets/icons/medium-priority.svg"
+                          alt="Medium Priority"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="task-card">
+                    <div class="category-tag user-story-tag">User Story</div>
+                    <div class="task-content">
+                      <h3 class="task-title">Daily Kochwelt Recipe</h3>
+                      <p class="task-description">
+                        Implement daily recipe and portion calculator....
+                      </p>
+                    </div>
+                    <div class="task-footer">
+                      <div class="assigned-users">
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #fc71ff"
+                        >
+                          EF
+                        </div>
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #ffc701"
+                        >
+                          AS
+                        </div>
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #003eff"
+                        >
+                          TW
+                        </div>
+                      </div>
+                      <div class="priority-icon">
+                        <img
+                          src="../assets/icons/medium-priority.svg"
+                          alt="Medium Priority"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="column-wrapper">
+                <div class="width-224 status-item">
+                  <button
+                    id="fast-add-task-awiat-feedback"
+                    class="d-flex status-button"
+                  >
+                    <span class="menu-color">Await Feedback</span>
+                    <img src="../assets/icons/btn/plus-btn.svg" />
+                  </button>
+                </div>
+                <div id="await-feedback" class="task-column">
+                  <div class="task-card">
+                    <div class="category-tag technical-task-tag">
+                      Technical Task
+                    </div>
+                    <div class="task-content">
+                      <h3 class="task-title">HTML Base Template Creation</h3>
+                      <p class="task-description">
+                        Create reusable HTML base templates...
+                      </p>
+                    </div>
+                    <div class="task-footer">
+                      <div class="assigned-users">
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #003eff"
+                        >
+                          DE
+                        </div>
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #1fd7c1"
+                        >
+                          BZ
+                        </div>
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #9327ff"
+                        >
+                          AS
+                        </div>
+                      </div>
+                      <div class="priority-icon">
+                        <img
+                          src="../assets/icons/low-priority.svg"
+                          alt="Low Priority"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="column-wrapper">
+                <div class="width-224 status-item">
+                  <button id="fast-add-task-done" class="d-flex status-button">
+                    <span class="menu-color">Done</span>
+                    <img src="../assets/icons/btn/plus-btn.svg" />
+                  </button>
+                </div>
+                <div id="done" class="task-column">
+                  <div class="task-card">
+                    <div class="category-tag technical-task-tag">
+                      Technical Task
+                    </div>
+                    <div class="task-content">
+                      <h3 class="task-title">CSS Architecture Planning</h3>
+                      <p class="task-description">
+                        Define CSS naming conventions and structure...
+                      </p>
+                      <div class="progress-container">
+                        <div class="progress-bar" style="width: 100%"></div>
+                        <span class="subtasks-text">2/2 Subtasks</span>
+                      </div>
+                    </div>
+                    <div class="task-footer">
+                      <div class="assigned-users">
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #ffc701"
+                        >
+                          SM
+                        </div>
+                        <div
+                          class="assigned-initials-circle"
+                          style="background-color: #003eff"
+                        >
+                          BZ
+                        </div>
+                      </div>
+                      <div class="priority-icon">
+                        <img
+                          src="../assets/icons/high-priority.svg"
+                          alt="High Priority"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </section>
     </div>
+    <script type="module">
+      import { initOverlayListeners } from "../js/events/overlay-handler.js";
 
-    <div id="board-content-wrapper" class="">
-      <div class="column-wrapper">
-        <div class="width-224 status-item">
-          <button id="fast-add-task-to-do" class="d-flex status-button">
-            <span class="menu-color">To Do</span>
-            <img src="../assets/icons/btn/plus-btn.svg" />
-          </button>
-        </div>
-        <div id="to-do" class="task-column">
-          <div class="no-tasks-placeholder">No tasks to do</div>
-        </div>
-      </div>
-
-      <div class="column-wrapper">
-        <div class="width-224 status-item">
-          <button
-            id="fast-add-task-in-progress"
-            class="d-flex status-button"
-          >
-            <span class="menu-color">In Progress</span>
-            <img src="../assets/icons/btn/plus-btn.svg" />
-          </button>
-        </div>
-        <div id="in-progress" class="task-column">
-          <div class="task-card">
-            <div class="category-tag user-story-tag">User Story</div>
-            <div class="task-content">
-              <h3 class="task-title">Kochwelt Page & Recipe Recommender</h3>
-              <p class="task-description">Build start page with recipe recommendation...</p>
-              <div class="progress-container">
-                <div class="progress-bar" style="width: 50%;"></div>
-                <span class="subtasks-text">1/2 Subtasks</span>
-              </div>
-            </div>
-            <div class="task-footer">
-              <div class="assigned-users">
-                <div class="assigned-initials-circle" style="background-color: #FF7A00;">AM</div>
-                <div class="assigned-initials-circle" style="background-color: #9327FF;">EM</div>
-                <div class="assigned-initials-circle" style="background-color: #00BEE8;">MR</div>
-              </div>
-              <div class="priority-icon">
-                <img src="../assets/icons/medium-priority.svg" alt="Medium Priority" />
-              </div>
-            </div>
-          </div>
-
-          <div class="task-card">
-            <div class="category-tag user-story-tag">User Story</div>
-            <div class="task-content">
-              <h3 class="task-title">Daily Kochwelt Recipe</h3>
-              <p class="task-description">Implement daily recipe and portion calculator....</p>
-            </div>
-            <div class="task-footer">
-              <div class="assigned-users">
-                <div class="assigned-initials-circle" style="background-color: #FC71FF;">EF</div>
-                <div class="assigned-initials-circle" style="background-color: #FFC701;">AS</div>
-                <div class="assigned-initials-circle" style="background-color: #003EFF;">TW</div>
-              </div>
-              <div class="priority-icon">
-                <img src="../assets/icons/medium-priority.svg" alt="Medium Priority" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="column-wrapper">
-        <div class="width-224 status-item">
-          <button
-            id="fast-add-task-awiat-feedback"
-            class="d-flex status-button"
-          >
-            <span class="menu-color">Await Feedback</span>
-            <img src="../assets/icons/btn/plus-btn.svg" />
-          </button>
-        </div>
-        <div id="await-feedback" class="task-column">
-          <div class="task-card">
-            <div class="category-tag technical-task-tag">Technical Task</div>
-            <div class="task-content">
-              <h3 class="task-title">HTML Base Template Creation</h3>
-              <p class="task-description">Create reusable HTML base templates...</p>
-            </div>
-            <div class="task-footer">
-              <div class="assigned-users">
-                <div class="assigned-initials-circle" style="background-color: #003EFF;">DE</div>
-                <div class="assigned-initials-circle" style="background-color: #1FD7C1;">BZ</div>
-                <div class="assigned-initials-circle" style="background-color: #9327FF;">AS</div>
-              </div>
-              <div class="priority-icon">
-                <img src="../assets/icons/low-priority.svg" alt="Low Priority" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="column-wrapper">
-        <div class="width-224 status-item">
-          <button id="fast-add-task-done" class="d-flex status-button">
-            <span class="menu-color">Done</span>
-            <img src="../assets/icons/btn/plus-btn.svg" />
-          </button>
-        </div>
-        <div id="done" class="task-column">
-          <div class="task-card">
-            <div class="category-tag technical-task-tag">Technical Task</div>
-            <div class="task-content">
-              <h3 class="task-title">CSS Architecture Planning</h3>
-              <p class="task-description">Define CSS naming conventions and structure...</p>
-              <div class="progress-container">
-                <div class="progress-bar" style="width: 100%;"></div>
-                <span class="subtasks-text">2/2 Subtasks</span>
-              </div>
-            </div>
-            <div class="task-footer">
-              <div class="assigned-users">
-                <div class="assigned-initials-circle" style="background-color: #FFC701;">SM</div>
-                <div class="assigned-initials-circle" style="background-color: #003EFF;">BZ</div>
-              </div>
-              <div class="priority-icon">
-                <img src="../assets/icons/high-priority.svg" alt="High Priority" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
-
+      fetch("../js/templates/add-task-overlay.html")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then((data) => {
+          const overlayContainer = document.getElementById("overlay-container");
+          if (overlayContainer) {
+            overlayContainer.innerHTML = data;
+            initOverlayListeners();
+          } else {
+            console.error(
+              "Fehler: Das Element #overlay-container wurde nicht im DOM gefunden."
+            );
+          }
+        })
+        .catch((error) =>
+          console.error("Fehler beim Laden oder Initialisieren des Overlays:", error)
+        );
+    </script>
     <script type="module" src="../main.js"></script>
     <script type="module" src="../js/ui/render-board.js"></script>
     <script type="module" src="../js/pages/sidebar.js"></script>
+    <script type="module" src="../js/events/overlay-handler.js"></script>
   </body>
 </html>
