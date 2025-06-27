@@ -1,26 +1,38 @@
 .clear-btn {
     display: flex;
     align-items: center;
+    color: var(--black);
     background-color: var(--white);
     height: 56px;
     padding: 16px;
     border: 1px solid var(--black);
     border-radius: 10px;
     font-size: 20px;
-    gap: 8px;
+    gap: 4px;
     line-height: 120%;
+    cursor: pointer;
 }
 
-.clear-btn img {
-    width: 14px;
-    height: 14px;
-    object-fit: cover;
+.clear-btn:hover {
+    color: var(--lightBlue);
+    border-color: var(--lightBlue);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transform: scale(1.01);
+}
+
+.x-icon path {
+    transition: fill 0.3s ease;
 }
 
 /*  passende html dazu:
-    <button type="reset" class="clear-btn">
+    <button type="reset" class="clear-btn" onclick="clearForm()">
         Clear
-        <img src="../assets/icons/btn/close.svg" alt="Close Icon" />
+        <svg class="x-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 24 24"
+            fill="none">
+            <path
+                d="M12.14 13.4l-4.9 4.9a.95.95 0 0 1-1.4-1.4l4.9-4.9-4.9-4.9a.95.95 0 0 1 1.4-1.4l4.9 4.9 4.9-4.9a.95.95 0 1 1 1.4 1.4l-4.9 4.9 4.9 4.9a.95.95 0 0 1-1.4 1.4l-4.9-4.9z"
+                fill="currentColor" />
+        </svg>
     </button>
 */
 
@@ -36,6 +48,15 @@
     font-size: 20px;
     gap: 8px;
     line-height: 120%;
+    cursor: pointer;
+}
+
+.create-btn:hover {
+    color: var(--white);
+    border-color: var(--lightBlue);
+    background-color: var(--lightBlue);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transform: scale(1.01);
 }
 
 .create-btn img {

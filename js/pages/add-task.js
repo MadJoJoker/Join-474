@@ -89,7 +89,7 @@ function setMedium() {
 
 
 function toggleCategoryDropdown() {
-  const wrapper = document.querySelector('.options-wrapper');
+  const wrapper = document.querySelector('.options-wrapper-category');
   const container = document.getElementById("category-options-container");
   const isOpen = wrapper.classList.contains("open");
 
@@ -121,7 +121,7 @@ function getCategoryOptions() {
 
 function toggleDropdownIcon() {
 
-    const dropdownIcon = document.getElementById("dropdown-icon");
+    const dropdownIcon = document.getElementById("dropdown-icon-two");
     dropdownIcon.classList.toggle("open");
 
     const dropdownIconContainer = document.querySelector('.dropdown-icon-container');
@@ -132,8 +132,8 @@ function toggleDropdownIcon() {
 
 function setCategory(option) {
 
-    const wrapper = document.querySelector('.options-wrapper');
-    const selected = document.getElementById("selected");
+    const wrapper = document.querySelector('.options-wrapper-category');
+    const selected = document.getElementById("selected-category");
     selected.textContent = option.textContent;
 
     const optionsContainer = document.getElementById("category-options-container");
@@ -152,12 +152,12 @@ function clearCategory() {
 
     selectedCategoy = null;
 
-    const selected = document.getElementById("selected");
+    const selected = document.getElementById("selected-category");
     selected.textContent = "Select task category";
 }
 
 
-function clear() {
+function clearForm() {
     setMedium();
     clearCategory();
 }

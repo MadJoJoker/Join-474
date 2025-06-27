@@ -83,7 +83,7 @@
                   <button onclick="setPriority(this, 'medium')" type="button" class="priority-btn active"
                     data-priority="medium">
                     Medium
-                    <img src="../assets/icons/property/Prio media.svg" alt="Medium" class="priority-icon">
+                    <img src="../assets/icons/property/medium.svg" alt="Medium" class="priority-icon">
                   </button>
                   <button onclick="setPriority(this, 'low')" type="button" class="priority-btn" data-priority="low">
                     Low
@@ -131,9 +131,14 @@
           <div class="form-buttons-part">
             <div class="sign-info">This field is required</div>
             <div class="buttons-area">
-              <button type="reset" class="clear-btn" onclick="clear()">
+              <button type="reset" class="clear-btn" onclick="clearForm()">
                 Clear
-                <img src="../assets/icons/btn/close.svg" alt="Close Icon" />
+                <svg class="x-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 24 24"
+                  fill="none">
+                  <path
+                    d="M12.14 13.4l-4.9 4.9a.95.95 0 0 1-1.4-1.4l4.9-4.9-4.9-4.9a.95.95 0 0 1 1.4-1.4l4.9 4.9 4.9-4.9a.95.95 0 1 1 1.4 1.4l-4.9 4.9 4.9 4.9a.95.95 0 0 1-1.4 1.4l-4.9-4.9z"
+                    fill="currentColor" />
+                </svg>
               </button>
               <button type="submit" class="create-btn">
                 Create Task
