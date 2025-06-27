@@ -18,13 +18,14 @@
       href="../assets/icons/logo/joinLogo.svg"
       type="image/x-icon"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   </head>
 
   <body>
-
     <div class="app-container">
       <section id="sidebar-area"></section>
       <script>
+        // Dieses Skript ist ok, da es nur HTML lädt und kein Modul benötigt
         fetch("../js/templates/sidebar.html")
           .then((response) => response.text())
           .then((data) => {
@@ -35,6 +36,7 @@
       <section class="main-content">
         <header id="header"></header>
         <script>
+          // Auch dieses Skript ist ok
           fetch("../js/templates/header.html")
             .then((response) => response.text())
             .then((data) => {
@@ -283,31 +285,65 @@
         </main>
       </section>
     </div>
-    <script type="module">
-      import { initOverlayListeners } from "../js/events/overlay-handler.js";
 
-      fetch("../js/templates/add-task-overlay.html")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.text();
-        })
-        .then((data) => {
-          const overlayContainer = document.getElementById("overlay-container");
-          if (overlayContainer) {
-            overlayContainer.innerHTML = data;
-            initOverlayListeners();
-          } else {
-            console.error(
-              "Fehler: Das Element #overlay-container wurde nicht im DOM gefunden."
+    <script type="module" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script type="module" src="../js/events/overlay-handler.js"></script>
+
+    <script type="module">
+        // Importiere nur das Nötigste hier, den Rest exponieren wir über window
+        import { initOverlayListeners, openOverlay, closeOverlay } from '../js/events/overlay-handler.js';
+        import {
+            initAddTaskScript,
+            clearAddTaskForm,
+            openPicker,
+            setPriority,
+            toggleCategoryDropdown,
+            /* weitere Funktionen, die du im Overlay-HTML via onclick aufrufst, z.B. addTask */
+        } from '../js/pages/add-task.js'; // Pfad anpassen!
+
+        // Initialisiere die Overlay-Listener, sobald das DOM vollständig geladen ist
+        document.addEventListener('DOMContentLoaded', () => {
+            // Nach dem dynamischen Laden des Overlays müssen die Listener initialisiert werden
+            // Die Fetch-Kette unten kümmert sich darum.
+
+            // Exponiere die Funktionen global für HTML-onclick-Attribute
+            window.openOverlay = openOverlay; // Für den Fall, dass du es direkt in HTML aufrufen willst
+            window.closeOverlay = closeOverlay; // Für den Fall, dass du es direkt in HTML aufrufen willst
+
+            window.initAddTaskScript = initAddTaskScript;
+            window.clearAddTaskForm = clearAddTaskForm;
+            window.openPicker = openPicker;
+            window.setPriority = setPriority;
+            window.toggleCategoryDropdown = toggleCategoryDropdown;
+            // Wenn du eine addTask Funktion hast, die du über onclick im Overlay aufrufst:
+            // window.addTask = addTask; // Importiere sie zuerst oben und exponiere sie dann hier
+        });
+
+        // Dein bestehender Fetch-Aufruf für das Overlay
+        fetch("../js/templates/add-task-overlay.html")
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then((data) => {
+                const overlayContainer = document.getElementById("overlay-container");
+                if (overlayContainer) {
+                    overlayContainer.innerHTML = data;
+                    // Initialisiere die Overlay-Listener NACHDEM das Overlay in den DOM geladen wurde
+                    initOverlayListeners();
+                    // Das addtask script wird durch openOverlay initialisiert
+                } else {
+                    console.error("Fehler: Das Element #overlay-container wurde nicht im DOM gefunden.");
+                }
+            })
+            .catch((error) =>
+                console.error("Fehler beim Laden oder Initialisieren des Overlays:", error)
             );
-          }
-        })
-        .catch((error) =>
-          console.error("Fehler beim Laden oder Initialisieren des Overlays:", error)
-        );
     </script>
+
     <script type="module" src="../main.js"></script>
     <script type="module" src="../js/ui/render-board.js"></script>
     <script type="module" src="../js/pages/sidebar.js"></script>
