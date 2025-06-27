@@ -317,9 +317,14 @@
 .create-btn:hover {
   background-color: var(--darkHover);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
 }
 
-/* Responsivität für das Modal-Formular */
+.sign-info::before {
+    content: "*";
+    color: var(--peachyPink);
+}
+
 @media (max-width: 992px) {
   .form-fill-part {
     flex-direction: column;
