@@ -294,12 +294,12 @@ html {
     transform: rotate(180deg);
 }
 
-.options-wrapper {
+.options-wrapper-category {
     height: 0;
     transition: height 0.3s ease;
 }
 
-.options-wrapper.open {
+.options-wrapper-category.open {
     height: 96px;
 }
 
@@ -318,7 +318,7 @@ html {
     height: 116px;
 }
 
-.options-wrapper.open #category-options-container {
+.options-wrapper-category.open #category-options-container {
     opacity: 1;
 }
 

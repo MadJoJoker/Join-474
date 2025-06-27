@@ -91,29 +91,38 @@
                   </button>
                 </div>
               </div>
+
+
               <div class="label-container">
-                <label for="assignedTo" class="font-size-20">Assigned to</label>
-                <select id="assignedTo" name="assignedTo" class="styled-select">
-                  <option value="" disabled selected hidden>
-                    Select contacts to assign
-                  </option>
-                  <option value="1">Contact 1</option>
-                </select>
+                <p class="font-size-20">Assigned to</p>
+                <div class="select-wrapper" onclick="toggleAssignedToDropdown()">
+                  <div class="styled-select" id="dropdown-assigned-to">
+                    <div id="selected-contacts">Select contacts to assign</div>
+                  </div>
+                  <div class="dropdown-icon-container">
+                    <img id="dropdown-icon-one" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
+                      alt="Dropdown">
+                  </div>
+                </div>
               </div>
+              <div class="options-wrapper-contacts">
+                <div id="assigned-to-options-container"></div>
+              </div>
+
 
               <div class="label-container">
                 <p class="required font-size-20">Category</p>
                 <div class="select-wrapper" onclick="toggleCategoryDropdown()">
                   <div class="styled-select" id="dropdown-category" required>
-                    <div id="selected">Select task category</div>
+                    <div id="selected-category">Select task category</div>
                   </div>
                   <div class="dropdown-icon-container">
-                    <img id="dropdown-icon" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
+                    <img id="dropdown-icon-two" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
                       alt="Dropdown">
                   </div>
                 </div>
               </div>
-              <div class="options-wrapper">
+              <div class="options-wrapper-category">
                 <div id="category-options-container"></div>
               </div>
 
