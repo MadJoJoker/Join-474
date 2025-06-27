@@ -1,0 +1,18 @@
+<div id="taskDetailOverlayContent" class="overlay-content">
+    <span class="close-button" onclick="closeOverlay()">&times;</span>
+    <div id="overlayContentArea">
+        <div class="task-category-bubble"></div>
+        <h2 id="overlayTaskTitle"></h2>
+        <p id="overlayTaskDescription"></p>
+        <p><b>Due date:</b> <span id="overlayTaskDueDate"></span></p>
+        <p><b>Priority:</b> <span id="overlayTaskPriority"></span></p>
+        <h3>Assigned To:</h3>
+        <div id="overlayAssignedTo"></div>
+        <h3>Subtasks</h3>
+        <ul id="overlaySubtaskList"></ul>
+        <div class="overlay-actions">
+            <button onclick="deleteTask()"><img src="../assets/icons/btn/delete.svg" alt="Delete"> Delete</button>
+            <button onclick="editTask()"><img src="../assets/icons/btn/edit.svg" alt="Edit"> Edit</button>
+        </div>
+    </div>
+</div>
