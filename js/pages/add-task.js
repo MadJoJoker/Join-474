@@ -98,7 +98,7 @@ window.setMedium = setMedium;
 
 function toggleCategoryDropdown(id) {
 
-    const wrapper = document.querySelector('.options-wrapper-category');
+    const wrapper = document.getElementById("category-options-wrapper");
     const container = document.getElementById("category-options-container");
     const isOpen = wrapper.classList.contains("open");
 
@@ -150,7 +150,7 @@ window.toggleDropdownIcon = toggleDropdownIcon;
 
 function setCategory(option) {
 
-    const wrapper = document.querySelector('.options-wrapper-category');
+    const wrapper = document.getElementById("category-options-wrapper");
     const selected = document.getElementById("selected-category");
     selected.textContent = option.textContent;
 
@@ -185,7 +185,7 @@ window.clearForm = clearForm;
 
 function toggleAssignedToDropdown(id) {
 
-    const wrapper = document.querySelector('.options-wrapper-contacts');
+    const wrapper = document.getElementById("assigned-to-options-wrapper");
     const container = document.getElementById("assigned-to-options-container");
     const isOpen = wrapper.classList.contains("open");
 
@@ -217,9 +217,9 @@ function getAssignedToOptions() {
 document.addEventListener('click', function(event) {
   
   const contactsDropdown = document.querySelector('#dropdown-assigned-to').closest('.select-wrapper');
-  const contactsOptions = document.querySelector('.options-wrapper-contacts');
+  const contactsOptions = document.getElementById('assigned-to-options-wrapper');
   const categoryDropdown = document.querySelector('#dropdown-category').closest('.select-wrapper');
-  const categoryOptions = document.querySelector('.options-wrapper-category');
+  const categoryOptions = document.getElementById('category-options-wrapper');
 
   const clickedOutsideContacts = !contactsDropdown.contains(event.target) && !contactsOptions.contains(event.target);
   const clickedOutsideCategory = !categoryDropdown.contains(event.target) && !categoryOptions.contains(event.target);
