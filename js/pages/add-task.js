@@ -260,19 +260,24 @@ function renderAssignedToContacts(i, name, initials, avatarColor) {
 
 function toggleInputField() {
     const container = document.getElementById('select-contacts');
-    const existingInput = container.querySelector('.contact-input');
 
-    if (existingInput) {
-        container.innerHTML = 'Select contacts to assign';
-    } else {
+    if (container.tagName === 'DIV') {
         const input = document.createElement('input');
         input.type = 'text';
-        input.classList.add('contact-input');
+        input.className = 'contact-input';
         input.addEventListener('click', (event) => event.stopPropagation());
-        container.innerHTML = ''; // optional, falls du vorher etwas anderes anzeigen willst
-        container.appendChild(input);
+        input.id = 'select-contacts'; // gleicher ID, damit man es später wiederfindet
+
+        container.replaceWith(input);
+    } else if (container.tagName === 'INPUT') {
+        const div = document.createElement('div');
+        div.textContent = 'Select contacts to assign';
+        div.id = 'select-contacts';
+
+        container.replaceWith(div);
     }
 }
+
 window.toggleInputField = toggleInputField;
 
 

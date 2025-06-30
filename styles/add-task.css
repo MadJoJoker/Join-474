@@ -236,7 +236,7 @@ html {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    padding: 12px 21px 0 21px;
+    /* padding: 12px 21px 0 21px; */
     height: 48px;
     width: 100%;
     border: 1px solid var(--borderGrey);
