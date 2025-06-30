@@ -41,7 +41,7 @@ html {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 60px;
+    padding: 58px;
     overflow-y: auto;
     background-color: var(--lightGrey);
 }
@@ -386,6 +386,10 @@ html {
 }
 
 .form-buttons-part {
+    position: absolute;
+    bottom: 58px;
+    left: 290px;
+    right: 58px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
