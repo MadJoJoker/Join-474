@@ -11,6 +11,26 @@ let currentPriority = 'medium';
 
 let selectedCategoy = null;
 
+let currentContacts = [];
+
+let selectedContact = null;
+
+import { getFirebaseData } from '../../js/data/API.js';
+
+
+async function initTask() {
+    const data = await getFirebaseData();
+    console.log('Zugriff auf Firebase-Daten in add-task.js:', data);
+
+    currentContacts = Object.values(data.contacts);
+
+    console.log('Alle Kontakte:', currentContacts);
+}
+
+
+initTask();
+
+
 
 function formatDate(input) {
     let value = input.value.replace(/\D/g, "");
@@ -187,17 +207,20 @@ function toggleAssignedToDropdown(id) {
 
     const wrapper = document.getElementById("assigned-to-options-wrapper");
     const container = document.getElementById("assigned-to-options-container");
-    const isOpen = wrapper.classList.contains("open");
+    const isOpen = wrapper.classList.contains("open-assigned-to");
+    const spacer = document.querySelector('.spacer');
 
     toggleDropdownIcon(id);
 
     if (!isOpen) {
-        container.innerHTML = getAssignedToOptions();
+        getAssignedToOptions();
         requestAnimationFrame(() => {
-            wrapper.classList.add("open");
+            wrapper.classList.add("open-assigned-to");
+            spacer.classList.add('bg-color-white');
         });
     } else {
-        wrapper.classList.remove("open");
+        wrapper.classList.remove("open-assigned-to");
+        spacer.classList.remove('bg-color-white');
         setTimeout(() => {
             container.innerHTML = '';
         }, 300);
@@ -217,22 +240,22 @@ function getAssignedToOptions() {
         const initials = currentContacts[i].initials;
         const avatarColor = currentContacts[i].avatarColor;
 
-        contact.innerHTML += `
-            <div class="contact-option" id="assigned-to-option-${i}">
-                <div style="background-color: var(${avatarColor});">${initials}</div>
-                <div>${name}</div>
-                <img src="" alt="">
-            </div>
-        `;
+        contact.innerHTML += renderAssignedToContacts(i, name, initials, avatarColor);
     }
 }
 
 
-// function renderAssignedToContacts() {
-//     return `
-//             <div class="contact-option" id="contact" onclick="(this)">${indexColor}</div>
-//             `
-// }
+function renderAssignedToContacts(i, name, initials, avatarColor) {
+    return ` 
+            <div class="contact-option" id="assigned-to-option-${i}">
+                <div class="d-flex align-items gap-8">
+                    <div class="initials-container" style="background-color: var(${avatarColor});">${initials}</div>
+                    <div>${name}</div>
+                </div>
+                <img src="../assets/icons/btn/checkbox-empty-black.svg" alt="checkbox">
+            </div>
+        `;
+}
 
 
 document.addEventListener('click', function (event) {
@@ -241,13 +264,15 @@ document.addEventListener('click', function (event) {
     const contactsOptions = document.getElementById('assigned-to-options-wrapper');
     const categoryDropdown = document.querySelector('#dropdown-category').closest('.select-wrapper');
     const categoryOptions = document.getElementById('category-options-wrapper');
+    const spacer = document.querySelector('.spacer');
 
     const clickedOutsideContacts = !contactsDropdown.contains(event.target) && !contactsOptions.contains(event.target);
     const clickedOutsideCategory = !categoryDropdown.contains(event.target) && !categoryOptions.contains(event.target);
 
     if (clickedOutsideContacts) {
-        contactsOptions.classList.remove('open');
+        contactsOptions.classList.remove('open-assigned-to');
         document.getElementById('dropdown-icon-one').classList.remove('open');
+        spacer.classList.remove('bg-color-white');
     }
 
     if (clickedOutsideCategory) {
@@ -255,23 +280,3 @@ document.addEventListener('click', function (event) {
         document.getElementById('dropdown-icon-two').classList.remove('open');
     }
 });
-
-
-let currentContacts = [];
-
-
-import { getFirebaseData } from '../../js/data/API.js';
-
-async function initTask() {
-    const data = await getFirebaseData();
-    console.log('Zugriff auf Firebase-Daten in add-task.js:', data);
-
-    currentContacts = Object.values(data.contacts);
-
-    console.log('Alle Kontakte:', currentContacts);
-}
-
-
-initTask();
-
-

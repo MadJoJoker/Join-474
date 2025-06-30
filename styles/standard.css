@@ -45,3 +45,11 @@ box-sizing: border-box;
 .gap-16 {
     gap: 16px;
 }
+
+.gap-8 {
+    gap: 8px;
+}
+
+.bg-color-white {
+    background-color: var(--white);
+}
