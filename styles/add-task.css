@@ -44,6 +44,7 @@ html {
     padding: 58px;
     overflow-y: auto;
     background-color: var(--lightGrey);
+    scrollbar-width: none;
 }
 
 .content h1 {
@@ -276,6 +277,15 @@ html {
 
 .contact-option:hover {
     background-color: var(--borderGrey);
+}
+
+.contact-input{
+    height: 100%;
+    width: 100%;
+    padding: 0 21px;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
 }
 
 .dropdown-icon-container {

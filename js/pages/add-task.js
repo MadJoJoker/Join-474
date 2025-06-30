@@ -231,7 +231,7 @@ window.toggleAssignedToDropdown = toggleAssignedToDropdown;
 
 
 function getAssignedToOptions() {
-    
+
     let contact = document.getElementById('assigned-to-options-container');
     contact.innerHTML = '';
 
@@ -256,6 +256,24 @@ function renderAssignedToContacts(i, name, initials, avatarColor) {
             </div>
         `;
 }
+
+
+function toggleInputField() {
+    const container = document.getElementById('select-contacts');
+    const existingInput = container.querySelector('.contact-input');
+
+    if (existingInput) {
+        container.innerHTML = 'Select contacts to assign';
+    } else {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.classList.add('contact-input');
+        input.addEventListener('click', (event) => event.stopPropagation());
+        container.innerHTML = ''; // optional, falls du vorher etwas anderes anzeigen willst
+        container.appendChild(input);
+    }
+}
+window.toggleInputField = toggleInputField;
 
 
 document.addEventListener('click', function (event) {
