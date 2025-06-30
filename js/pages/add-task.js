@@ -206,31 +206,72 @@ function toggleAssignedToDropdown(id) {
 window.toggleAssignedToDropdown = toggleAssignedToDropdown;
 
 
+
 function getAssignedToOptions() {
-    return `
-            <div class="option" id="category-options-one" onclick="setCategory(this)">Technical Task</div>
-            <div class="option" id="category-options-two" onclick="setCategory(this)">User Story</div>
-            `
+    
+    let contact = document.getElementById('assigned-to-options-container');
+    contact.innerHTML = '';
+
+    for (let i = 0; i < currentContacts.length; i++) {
+        const name = currentContacts[i].name;
+        const initials = currentContacts[i].initials;
+        const avatarColor = currentContacts[i].avatarColor;
+
+        contact.innerHTML += `
+            <div class="contact-option" id="assigned-to-option-${i}">
+                <div style="background-color: var(${avatarColor});">${initials}</div>
+                <div>${name}</div>
+                <img src="" alt="">
+            </div>
+        `;
+    }
 }
 
 
-document.addEventListener('click', function(event) {
-  
-  const contactsDropdown = document.querySelector('#dropdown-assigned-to').closest('.select-wrapper');
-  const contactsOptions = document.getElementById('assigned-to-options-wrapper');
-  const categoryDropdown = document.querySelector('#dropdown-category').closest('.select-wrapper');
-  const categoryOptions = document.getElementById('category-options-wrapper');
+// function renderAssignedToContacts() {
+//     return `
+//             <div class="contact-option" id="contact" onclick="(this)">${indexColor}</div>
+//             `
+// }
 
-  const clickedOutsideContacts = !contactsDropdown.contains(event.target) && !contactsOptions.contains(event.target);
-  const clickedOutsideCategory = !categoryDropdown.contains(event.target) && !categoryOptions.contains(event.target);
 
-  if (clickedOutsideContacts) {
-    contactsOptions.classList.remove('open');
-    document.getElementById('dropdown-icon-one').classList.remove('open');
-  }
+document.addEventListener('click', function (event) {
 
-  if (clickedOutsideCategory) {
-    categoryOptions.classList.remove('open');
-    document.getElementById('dropdown-icon-two').classList.remove('open');
-  }
+    const contactsDropdown = document.querySelector('#dropdown-assigned-to').closest('.select-wrapper');
+    const contactsOptions = document.getElementById('assigned-to-options-wrapper');
+    const categoryDropdown = document.querySelector('#dropdown-category').closest('.select-wrapper');
+    const categoryOptions = document.getElementById('category-options-wrapper');
+
+    const clickedOutsideContacts = !contactsDropdown.contains(event.target) && !contactsOptions.contains(event.target);
+    const clickedOutsideCategory = !categoryDropdown.contains(event.target) && !categoryOptions.contains(event.target);
+
+    if (clickedOutsideContacts) {
+        contactsOptions.classList.remove('open');
+        document.getElementById('dropdown-icon-one').classList.remove('open');
+    }
+
+    if (clickedOutsideCategory) {
+        categoryOptions.classList.remove('open');
+        document.getElementById('dropdown-icon-two').classList.remove('open');
+    }
 });
+
+
+let currentContacts = [];
+
+
+import { getFirebaseData } from '../../js/data/API.js';
+
+async function initTask() {
+    const data = await getFirebaseData();
+    console.log('Zugriff auf Firebase-Daten in add-task.js:', data);
+
+    currentContacts = Object.values(data.contacts);
+
+    console.log('Alle Kontakte:', currentContacts);
+}
+
+
+initTask();
+
+
