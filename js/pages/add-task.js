@@ -229,33 +229,6 @@ function toggleAssignedToDropdown(id) {
 window.toggleAssignedToDropdown = toggleAssignedToDropdown;
 
 
-
-// function getAssignedToOptions() {
-
-//     let contact = document.getElementById('assigned-to-options-container');
-//     contact.innerHTML = '';
-
-//     for (let i = 0; i < currentContacts.length; i++) {
-//         const name = currentContacts[i].name;
-//         const initials = currentContacts[i].initials;
-//         const avatarColor = currentContacts[i].avatarColor;
-
-//         contact.innerHTML += renderAssignedToContacts(i, name, initials, avatarColor);
-//     }
-// }
-
-
-// function renderAssignedToContacts(i, name, initials, avatarColor) {
-//     return ` 
-//             <div class="contact-option" id="assigned-to-option-${i}" onclick="toggleSelectContacts(this, '${name}', '${initials}', '${avatarColor}')">
-//                 <div class="d-flex align-items gap-8">
-//                     <div class="initials-container" style="background-color: var(${avatarColor});">${initials}</div>
-//                     <div>${name}</div>
-//                 </div>
-//                 <img src="../assets/icons/btn/checkbox-empty-black.svg" alt="checkbox empty">
-//             </div>
-//         `;
-// }
 function getAssignedToOptions() {
     let contact = document.getElementById('assigned-to-options-container');
     contact.innerHTML = '';
@@ -264,11 +237,11 @@ function getAssignedToOptions() {
         const name = currentContacts[i].name;
         const initials = currentContacts[i].initials;
         const avatarColor = currentContacts[i].avatarColor;
-        
+
         const isSelected = selectedContacts.some(
-            selected => selected.name === name && 
-                       selected.initials === initials && 
-                       selected.avatarColor === avatarColor
+            selected => selected.name === name &&
+                selected.initials === initials &&
+                selected.avatarColor === avatarColor
         );
 
         contact.innerHTML += renderAssignedToContacts(i, name, initials, avatarColor, isSelected);
@@ -276,53 +249,93 @@ function getAssignedToOptions() {
 }
 
 
-function renderAssignedToContacts(i, name, initials, avatarColor, isSelected) {
-    return ` 
-            <div class="contact-option ${isSelected ? 'assigned' : ''}" 
-                 id="assigned-to-option-${i}" 
-                 onclick="toggleSelectContacts(this, '${name}', '${initials}', '${avatarColor}')">
-                <div class="d-flex align-items gap-8">
-                    <div class="initials-container" style="background-color: var(${avatarColor});">${initials}</div>
-                    <div>${name}</div>
-                </div>
-                <img src="../assets/icons/btn/${isSelected ? 'checkbox-filled-white' : 'checkbox-empty-black'}.svg" 
-                     alt="checkbox ${isSelected ? 'filled' : 'empty'}">
+function renderAssignedToContacts(i, name, initials, avatarColor) {
+    const isSelected = isContactSelected(name, initials, avatarColor);
+
+    return `
+        <div class="contact-option ${isSelected ? 'assigned' : ''}" 
+             id="assigned-to-option-${i}" 
+             onclick="toggleSelectContacts(this, '${name}', '${initials}', '${avatarColor}')">
+            <div class="d-flex align-items gap-8">
+                <div class="initials-container" style="background-color: var(${avatarColor});">${initials}</div>
+                <div>${name}</div>
             </div>
-        `;
+            <img src="../assets/icons/btn/${isSelected ? 'checkbox-filled-white' : 'checkbox-empty-black'}.svg" 
+                 alt="checkbox ${isSelected ? 'filled' : 'empty'}"
+                 class="checkbox-icon ${isSelected ? 'checked' : ''}"
+                 onclick="toggleCheckboxOnly(event, '${name}', '${initials}', '${avatarColor}')">
+        </div>
+    `;
 }
 
 
-function toggleSelectContacts(clickedButton, name, initials, avatarColor) {
-
-    const isAssigned = clickedButton.classList.contains('assigned');
-    const imgElement = clickedButton.querySelector('img');
-    const contactKey = `${name}_${initials}_${avatarColor}`;
-    const index = selectedContacts.findIndex(
-        contact => `${contact.name}_${contact.initials}_${contact.avatarColor}` === contactKey
+function isContactSelected(name, initials, avatarColor) {
+    return selectedContacts.some(
+        contact => contact.name === name &&
+            contact.initials === initials &&
+            contact.avatarColor === avatarColor
     );
+}
 
-    if (isAssigned) {
-        clickedButton.classList.remove('assigned');
-        if (imgElement) {
-            imgElement.src = '../assets/icons/btn/checkbox-empty-black.svg';
-            imgElement.alt = 'checkbox empty';
-        }
-        if (index !== -1) {
-            selectedContacts.splice(index, 1);
-        }
+
+function toggleCheckboxOnly(event, name, initials, avatarColor) {
+    event.stopPropagation();
+
+    const contactOption = event.currentTarget.closest('.contact-option');
+    const imgElement = contactOption.querySelector('img');
+    const isSelected = imgElement.classList.contains('checked');
+
+    if (isSelected) {
+        imgElement.src = '../assets/icons/btn/checkbox-empty-black.svg';
+        imgElement.alt = 'checkbox empty';
+        imgElement.classList.remove('checked');
+
+        contactOption.classList.remove('assigned');
+
+        selectedContacts = selectedContacts.filter(
+            c => !(c.name === name && c.initials === initials && c.avatarColor === avatarColor)
+        );
     } else {
-        clickedButton.classList.add('assigned');
-        if (imgElement) {
-            imgElement.src = '../assets/icons/btn/checkbox-filled-white.svg';
-            imgElement.alt = 'checkbox filled';
-        }
-        if (index === -1) {
+        imgElement.src = '../assets/icons/btn/checkbox-filled-white.svg';
+        imgElement.alt = 'checkbox filled';
+        imgElement.classList.add('checked');
+        imgElement.classList.add('fitered');
+
+        if (!isContactSelected(name, initials, avatarColor)) {
             selectedContacts.push({ name, initials, avatarColor });
         }
     }
 
     renderSelectedInitials();
-    console.log('Selected Contacts:', selectedContacts);
+}
+window.toggleCheckboxOnly = toggleCheckboxOnly;
+
+
+function toggleSelectContacts(clickedButton, name, initials, avatarColor) {
+    const imgElement = clickedButton.querySelector('img');
+    const isSelected = clickedButton.classList.contains('assigned');
+    const isBlack = imgElement.classList.contains('fitered');
+
+    clickedButton.classList.toggle('assigned');
+    if (!isSelected) {
+        imgElement.classList.add('checked');
+    } else {
+        imgElement.classList.remove('checked');
+    }
+    if (isBlack) {
+        imgElement.classList.remove('fitered');
+    }
+
+    const contactKey = { name, initials, avatarColor };
+    if (isSelected) {
+        selectedContacts = selectedContacts.filter(
+            c => !(c.name === name && c.initials === initials && c.avatarColor === avatarColor)
+        );
+    } else if (!isContactSelected(name, initials, avatarColor)) {
+        selectedContacts.push(contactKey);
+    }
+
+    renderSelectedInitials();
 }
 window.toggleSelectContacts = toggleSelectContacts;
 
@@ -335,7 +348,7 @@ function renderSelectedInitials(name, initials, avatarColor) {
         selectedContactsContainer.innerHTML = '';
         selectedContactsContainer.classList.remove('add-on');
         return;
-    }  else {
+    } else {
         selectedContactsContainer.classList.add('add-on');
     }
 
