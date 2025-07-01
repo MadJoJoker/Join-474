@@ -258,35 +258,14 @@ function renderAssignedToContacts(i, name, initials, avatarColor) {
 }
 
 
-function toggleInputField() {
-    const container = document.getElementById('select-contacts');
-
-    if (container.tagName === 'DIV') {
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'contact-input';
-        input.addEventListener('click', (event) => event.stopPropagation());
-        input.id = 'select-contacts'; // gleicher ID, damit man es später wiederfindet
-
-        container.replaceWith(input);
-    } else if (container.tagName === 'INPUT') {
-        const div = document.createElement('div');
-        div.textContent = 'Select contacts to assign';
-        div.id = 'select-contacts';
-
-        container.replaceWith(div);
-    }
-}
-
-window.toggleInputField = toggleInputField;
-
-
 document.addEventListener('click', function (event) {
 
     const contactsDropdown = document.querySelector('#dropdown-assigned-to').closest('.select-wrapper');
     const contactsOptions = document.getElementById('assigned-to-options-wrapper');
     const categoryDropdown = document.querySelector('#dropdown-category').closest('.select-wrapper');
     const categoryOptions = document.getElementById('category-options-wrapper');
+    const dropdownIconContainerOne = document.getElementById("dropdown-icon-container-one");
+    const dropdownIconContainerTwo = document.getElementById("dropdown-icon-container-two");
     const spacer = document.querySelector('.spacer');
 
     const clickedOutsideContacts = !contactsDropdown.contains(event.target) && !contactsOptions.contains(event.target);
@@ -296,10 +275,12 @@ document.addEventListener('click', function (event) {
         contactsOptions.classList.remove('open-assigned-to');
         document.getElementById('dropdown-icon-one').classList.remove('open');
         spacer.classList.remove('bg-color-white');
+        dropdownIconContainerOne.classList.remove('active');
     }
 
     if (clickedOutsideCategory) {
         categoryOptions.classList.remove('open');
         document.getElementById('dropdown-icon-two').classList.remove('open');
+        dropdownIconContainerTwo.classList.remove('active');
     }
 });

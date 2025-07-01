@@ -95,9 +95,10 @@
 
               <div class="label-container">
                 <p class="font-size-20">Assigned to</p>
-                <div class="select-wrapper" onclick="toggleAssignedToDropdown('assignedTo'), toggleInputField()">
+                <div class="select-wrapper" onclick="toggleAssignedToDropdown('assignedTo')">
                   <div class="styled-select" id="dropdown-assigned-to">
-                    <div id="select-contacts">Select contacts to assign</div>
+                    <input type="text" id="select-contacts" class="contact-input"
+                      placeholder="Select contacts to assign" />
                   </div>
                   <div class="dropdown-icon-container" id="dropdown-icon-container-one">
                     <img id="dropdown-icon-one" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
@@ -114,7 +115,7 @@
               <div class="label-container">
                 <p class="required font-size-20">Category</p>
                 <div class="select-wrapper" onclick="toggleCategoryDropdown('category')">
-                  <div class="styled-select" id="dropdown-category" required>
+                  <div class="styled-select styled-select-addition" id="dropdown-category" required>
                     <div id="selected-category">Select task category</div>
                   </div>
                   <div class="dropdown-icon-container" id="dropdown-icon-container-two">
