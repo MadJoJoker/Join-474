@@ -230,8 +230,33 @@ window.toggleAssignedToDropdown = toggleAssignedToDropdown;
 
 
 
-function getAssignedToOptions() {
+// function getAssignedToOptions() {
 
+//     let contact = document.getElementById('assigned-to-options-container');
+//     contact.innerHTML = '';
+
+//     for (let i = 0; i < currentContacts.length; i++) {
+//         const name = currentContacts[i].name;
+//         const initials = currentContacts[i].initials;
+//         const avatarColor = currentContacts[i].avatarColor;
+
+//         contact.innerHTML += renderAssignedToContacts(i, name, initials, avatarColor);
+//     }
+// }
+
+
+// function renderAssignedToContacts(i, name, initials, avatarColor) {
+//     return ` 
+//             <div class="contact-option" id="assigned-to-option-${i}" onclick="toggleSelectContacts(this, '${name}', '${initials}', '${avatarColor}')">
+//                 <div class="d-flex align-items gap-8">
+//                     <div class="initials-container" style="background-color: var(${avatarColor});">${initials}</div>
+//                     <div>${name}</div>
+//                 </div>
+//                 <img src="../assets/icons/btn/checkbox-empty-black.svg" alt="checkbox empty">
+//             </div>
+//         `;
+// }
+function getAssignedToOptions() {
     let contact = document.getElementById('assigned-to-options-container');
     contact.innerHTML = '';
 
@@ -239,20 +264,29 @@ function getAssignedToOptions() {
         const name = currentContacts[i].name;
         const initials = currentContacts[i].initials;
         const avatarColor = currentContacts[i].avatarColor;
+        
+        const isSelected = selectedContacts.some(
+            selected => selected.name === name && 
+                       selected.initials === initials && 
+                       selected.avatarColor === avatarColor
+        );
 
-        contact.innerHTML += renderAssignedToContacts(i, name, initials, avatarColor);
+        contact.innerHTML += renderAssignedToContacts(i, name, initials, avatarColor, isSelected);
     }
 }
 
 
-function renderAssignedToContacts(i, name, initials, avatarColor) {
+function renderAssignedToContacts(i, name, initials, avatarColor, isSelected) {
     return ` 
-            <div class="contact-option" id="assigned-to-option-${i}" onclick="toggleSelectContacts(this, '${name}', '${initials}', '${avatarColor}')">
+            <div class="contact-option ${isSelected ? 'assigned' : ''}" 
+                 id="assigned-to-option-${i}" 
+                 onclick="toggleSelectContacts(this, '${name}', '${initials}', '${avatarColor}')">
                 <div class="d-flex align-items gap-8">
                     <div class="initials-container" style="background-color: var(${avatarColor});">${initials}</div>
                     <div>${name}</div>
                 </div>
-                <img src="../assets/icons/btn/checkbox-empty-black.svg" alt="checkbox empty">
+                <img src="../assets/icons/btn/${isSelected ? 'checkbox-filled-white' : 'checkbox-empty-black'}.svg" 
+                     alt="checkbox ${isSelected ? 'filled' : 'empty'}">
             </div>
         `;
 }
