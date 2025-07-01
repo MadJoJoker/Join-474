@@ -1,12 +1,3 @@
-// async function addSidebar() {
-//   fetch('../js/templates/sidebar.html')
-//     .then(response => response.text())
-//     .then(data => {
-//       document.getElementById('sidebar').innerHTML = data;
-//     }
-//   )
-// }
-
 async function addLayoutElements(path, id) {
   fetch(path)
     .then(response => response.text())
