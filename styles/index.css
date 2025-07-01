@@ -1,0 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--lightGrey);
+}
+
+.content-wrapper {
+  height: 100%;
+  width: 900px;
+  padding: 80px 76px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  row-gap: 60px; /*provisorisch; müsste mit space gehen*/
+  align-items: center;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+header img {
+  width: 100px;
+  height: 122px;
+}
+
+header > div {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.sign-up > p {
+  font-size: 20px;
+  letter-spacing: 0.7px;
+}
+
+.sign-up button {
+  border: none;
+  background-color: var(--dark);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 16px;
+  padding: 15px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.log-in {
+  width: 652px;
+  height: 449px;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 30px;
+  padding: 48px 115px;
+}
+
+h1 {
+  font-size: 61px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.login-inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-btns {
+  display: flex;
+  column-gap: 32px;
+}
+
+.login-btns > button:first-of-type {
+  border: none;
+  background-color: var(--dark);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 21px;
+  padding: 11px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.login-btns > button:last-of-type {
+  border: 1px solid var(--dark);
+  background-color: var(--white);
+  color: var(--dark);
+  font-weight: 700;
+  font-size: 21px;
+  padding: 11px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.sign-up button:hover,
+.login-btns > button:first-of-type:hover {
+  background-color: var(--lightBlue);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.login-btns > button:last-of-type:hover {
+  border: 2px solid var(--lightBlue);
+  color: var(--lightBlue);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.legal-part > a {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: var(--sidebarNoticeGrey);
+  letter-spacing: 0.65px;
+}
