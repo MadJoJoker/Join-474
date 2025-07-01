@@ -19,28 +19,29 @@
   width: calc(100% - 232px);
   display: flex;
   flex-direction: column;
-}
 
-header {
-  position: sticky;
-  top: 0;
-  height: 96px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-  background-color: var(--white); /* default, damit auf jeden Fall etwas sichtbar ist */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  header {
+    position: sticky;
+    top: 0;
+    height: 96px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    background-color: var(--white); /* default, damit auf jeden Fall etwas sichtbar ist */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-.container{
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-family: "Inter", sans-serif;
-  padding: 24px;
-  overflow-y: auto;
-  background-color: var(--lightGrey); /* default, damit auf jeden Fall etwas sichtbar ist */
+  .container{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    font-family: "Inter", sans-serif;
+    padding-top: 108px;
+    padding-left: 96px;
+    overflow-y: auto;
+    background-color: var(--lightGrey); /* default, damit auf jeden Fall etwas sichtbar ist */
+  }
 }
 
 /* SUMMARY CONTENT */
@@ -52,37 +53,29 @@ header {
   row-gap: 48px;
 }
 
-.smry-body {
-  display: flex;
-  column-gap: 82px;
-}
-
 .smry-title {
   display: flex;
   align-items: center;
   column-gap: 30px;
+
+  > p:first-of-type {
+    font-weight: 700;
+    font-size: 61px;
+    color: var(--black);
+    letter-spacing: 1.8px;
+  }
+
+  > p:last-of-type {
+    font-size: 27px;
+    color: var(--dark);
+    letter-spacing: 1.2px;
+  }
 }
 
-.smry-title > p:first-of-type {
-  font-weight: 700;
-  font-size: 61px;
-  color: var(--black);
-  letter-spacing: 1.8px;
+.smry-body {
+  display: flex;
+  column-gap: 82px;
 }
-
-/* .blue-separator {
-  height: 56px;
-  width: 3px;
-  background-color: var(--lightBlue);
-} */
-
-.smry-title > p:last-of-type {
-  font-size: 27px;
-  color: var(--dark);
-  letter-spacing: 1.2px;
-}
-
-
 
 .button-field {
   width: 560px;
@@ -91,18 +84,19 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* oder hat es eine gap? Vergleichen */
+
+
+  .btn-row {
+    width: 560px;
+    height: 184px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* border: 1px solid red; */
+  }
 }
 
-.btn-row {
-  width: 560px;
-  height: 184px; 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* border: 1px solid red; */
-}
-
-/* button frame settings */
+/* button frame, hover and scale settings */
 .summary-btn {
   width: 264px;
   height: 168px;
@@ -116,8 +110,88 @@ header {
   color: var(--dark);
   text-decoration: none;
   transition: all 100ms ease-in-out;
+
+  /* vorher: .summary-btn.first:first-of-type */
+  &.first:first-of-type {
+  transform-origin: left center;
+  
+    &:hover {
+      transform: scaleX(1.068) scaleY(1.095); 
+    }
+  }
+
+  &.first:last-of-type {
+    transform-origin: right center;
+
+    &:hover {
+      transform: scaleX(1.068) scaleY(1.095); 
+    }
+  }
+
+  /* vorher: .summary-btn.middle */
+  &.middle {
+  transform-origin: left center;
+
+    &:hover {
+      transform: scaleX(1.032) scaleY(1.095); 
+    }
+  }
+
+  /* vorher: summary-btn.last:first-of-type */
+  &.last:first-of-type {
+  transform-origin: left center;
+
+    &:hover {
+      transform: scaleX(1.095) scaleY(1.095); 
+    }
+  }
+
+  &.last:nth-of-type(2) {
+    transform-origin: center;
+
+    &:hover {
+      transform: scaleX(1.095) scaleY(1.095); 
+    }
+  }
+
+  &.last:last-of-type {
+    transform-origin: right center;
+
+    &:hover {
+      transform: scaleX(1.095) scaleY(1.095); 
+    }
+  }
+ 
+  /* vorher: .summary-btn*/
+  &:hover {
+    background-color: var(--dark);
+    color: var(--white);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+
+    .urgent-text {
+    color: var(--white);
+    }
+
+    .smry-icon {
+    background-color: var(--white);
+    }
+
+    .icon-path {
+    color: var(--dark);
+    }
+
+    .smry-number {
+    color: var(--white);
+    }
+  }
+
+  /* vorher: .summary-btn .etc */
+  .icon-path {
+    color: var(--white);
+  }
 }
 
+/* 2nth and 3th row */
 .middle {
   width: 560px;
   display: flex;
@@ -130,67 +204,12 @@ header {
   width: 168px;
 }
 
-
-.summary-btn:hover {
-  background-color: var(--dark);
-  color: var(--white);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.summary-btn:hover .urgent-text {
+/* .summary-btn .icon-path {
   color: var(--white);
 }
 
-/* scaling for each button when hovered */
-.summary-btn.first:first-of-type {
-  transform-origin: left center;
-}
-.summary-btn.first:first-of-type:hover {
-  transform: scaleX(1.068) scaleY(1.095); 
-}
-
-.summary-btn.first:last-of-type {
-  transform-origin: right center;
-}
-.summary-btn.first:last-of-type:hover {
-  transform: scaleX(1.068) scaleY(1.095); 
-}
-
-.summary-btn.middle {
-  transform-origin: left center;
-}
-.summary-btn.middle:hover {
-  transform: scaleX(1.032) scaleY(1.095); 
-}
-
-.summary-btn.last:first-of-type {
-  transform-origin: left center;
-}
-.summary-btn.last:first-of-type:hover {
-  transform: scaleX(1.095) scaleY(1.095); 
-}
-
-.summary-btn.last:nth-of-type(2) {
-  transform-origin: center;
-}
-.summary-btn.last:nth-of-type(2):hover {
-  transform: scaleX(1.095) scaleY(1.095); 
-}
-
-.summary-btn.last:last-of-type {
-  transform-origin: right center;
-}
-.summary-btn.last:last-of-type:hover {
-  transform: scaleX(1.095) scaleY(1.095); 
-}
-
-
-
-/* KOOMT WEG, IST VEKTOR */
-/* .separator {
-  height: 102px;
-  width: 2px;
-  background-color: var(--borderGrey);
+.summary-btn:hover .icon-path {
+  color: var(--dark);
 } */
 
 .btn-content-first {
@@ -200,10 +219,10 @@ header {
   align-items: center;
   text-align: center;
   column-gap: 30px; /*zu wenig*/
-}
 
-.text-first-row {
-  font-size: 20px;
+  .text-first-row {
+    font-size: 20px;
+  }
 }
 
 .btn-content-second {
@@ -218,15 +237,20 @@ header {
   text-decoration: none;
 }
 
-.btn-content-last {
+/* WARUM GIBT ES DEN DOPPELT? S */
+/* .btn-content-last {
   height: 96px;
-}
+} */
 
 .btn-content-last {
   height: 125px;
   width: 90px;
   /* border: 1px solid rgb(255, 0, 200); */
   text-align: center;
+
+  .text-last-row {
+  font-size: 20px
+  }
 }
 
 .smry-icon {
@@ -237,10 +261,6 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.summary-btn:hover .smry-icon {
-  background-color: var(--white);
 }
 
 .smry-urgent{
@@ -259,43 +279,38 @@ header {
   color: var(--black);
 }
 
-.summary-btn:hover .smry-number {
-  color: var(--white);
-}
 
-.smry-text {
-  font-size: 20px
-}
-
+/* .date-text: p unterhalb von div .smry-date */
 .smry-date {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   row-gap: 15px;
-}
 
-.date-text {
-  font-weight: 700;
-  font-size: 21px;
+  .date-text {
+    font-weight: 700;
+    font-size: 21px;
+  }
 }
 
 /* Greeting */
+/* war vorher: ".hello-user > p (etc.)" */
 .hello-user {
   display: flex;
   justify-content: center;
   flex-direction: column;
-}
 
-.hello-user > p:first-of-type {
-  font-weight: 500;
-  font-size: 48px;
-  letter-spacing: 1.1px;
-  color: var(--dark);
-}
+  > p:first-of-type {
+    font-weight: 500;
+    font-size: 48px;
+    letter-spacing: 1.1px;
+    color: var(--dark);
+  }
 
-.hello-user > p:last-of-type {
-  font-weight: 700;
-  font-size: 64px;
-  letter-spacing: 1.3px;
-  color: var(--lightBlue);
+  > p:last-of-type {
+    font-weight: 700;
+    font-size: 64px;
+    letter-spacing: 1.3px;
+    color: var(--lightBlue);
+  }
 }

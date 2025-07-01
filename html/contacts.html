@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../styles/header.css">
     <link rel="stylesheet" href="../styles/sidebar.css">
     <link rel="stylesheet" href="../styles/colors.css">
-    <link rel="stylesheet" href="../assets/fonds/fond.css">
+    <link rel="stylesheet" href="../assets/fonts/font.css">
 </head>
 
 <body>
@@ -55,6 +55,91 @@
             </main>
         </section>
     </div>
+
+    <div class="overlay-wrapper hidden" id="contactOverlay">
+        <div class="overlay-content">
+            <div class="overlay-left">
+                <img src="../assets/icons/logo/joinLogo.svg" alt="JOIN Logo" class="overlay-logo" />
+                <h2>Add contact</h2>
+                <p>Tasks are better with a team!</p>
+                <div class="underline"></div>
+            </div>
+            <div class="overlay-right">
+                <button class="overlay-close" id="closeOverlayBtn">&times;</button>
+
+                <div class="overlay-form-content">
+                    <div class="form-row-wrapper">
+                        <div class="form-row">
+                            <div class="contact-add-avatar" id="contactAvatar">
+                                <img src="../assets/img/avatar-person.svg" alt="">
+                            </div>
+                            <div class="form-inputs">
+                                <div class="input-wrapper">
+                                    <input type="text" placeholder="Name" id="newContactName" />
+                                    <img src="../assets/img/input-person.svg" />
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="email" placeholder="Email" />
+                                    <img src="../assets/img/input-mail.svg" />
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="tel" placeholder="Phone" />
+                                    <img src="../assets/img/input-call.svg" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay-actions">
+                    <button id="cancelOverlayBtn">Cancel <img src="../assets/icons/btn/close.svg"></button>
+                    <button id="createContactBtn">Create contact <img src="../assets/icons/btn/check-mark.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay-wrapper hidden" id="editContactOverlay">
+        <div class="overlay-content">
+            <div class="overlay-left">
+                <img src="../assets/icons/logo/joinLogo.svg" alt="JOIN Logo" class="overlay-logo" />
+                <h2>Edit contact</h2>
+                <p>Tasks are better with a team!</p>
+                <div class="underline"></div>
+            </div>
+            <div class="overlay-right">
+                <button class="overlay-close" id="closeEditOverlayBtn">&times;</button>
+
+                <div class="overlay-form-content">
+                    <div class="form-row-wrapper">
+                        <div class="form-row">
+                            <div class="contact-details-avatar-big" id="editContactAvatar">AM</div>
+                            <div class="form-inputs">
+                                <div class="input-wrapper">
+                                    <input type="text" placeholder="Name" id="editNameInput" />
+                                    <img src="../assets/img/input-person.svg" />
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="email" placeholder="Email" id="editEmailInput" />
+                                    <img src="../assets/img/input-mail.svg" />
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="tel" placeholder="Phone" id="editPhoneInput" />
+                                    <img src="../assets/img/input-call.svg" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overlay-actions">
+                    <button id="deleteContactBtn">Delete <img src="../assets/icons/btn/close.svg" /></button>
+                    <button id="saveEditBtn">Save <img src="../assets/icons/btn/check-mark.svg" /></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="../js/ui/render-contacts.js"></script>
     <script src="../js/pages/sidebar.js"></script>
 </body>
