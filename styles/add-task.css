@@ -141,6 +141,14 @@ html {
     outline: none;
 }
 
+.input-field:invalid:focus {
+  border-color: var(--peachyPink);
+}
+
+.input-field:invalid:focus-visible {
+  border-color: var(--peachyPink);
+}
+
 .textarea-wrapper {
     position: relative;
     display: inline-block;
@@ -278,10 +286,20 @@ html {
     align-items: center;
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .contact-option:hover {
     background-color: var(--borderGrey);
+}
+
+.contact-option.assigned {
+    background-color: var(--dark);
+    color: var(--white);
+}
+
+.contact-option.assigned:hover {
+    background-color: var(--darkHover);
 }
 
 .contact-input {
@@ -410,7 +428,15 @@ html {
     border-radius: 50%;
 }
 
-
+.add-on{
+    display: flex;
+    align-items: center;
+    margin-top: -12px;
+    padding-bottom: 19px;
+    max-width: 100%;
+    overflow-y: auto;
+    cursor: pointer;
+}
 
 .input-wrapper {
     position: relative;

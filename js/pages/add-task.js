@@ -13,7 +13,7 @@ let selectedCategoy = null;
 
 let currentContacts = [];
 
-let selectedContact = null;
+let selectedContacts = [];
 
 import { getFirebaseData } from '../../js/data/API.js';
 
@@ -247,15 +247,71 @@ function getAssignedToOptions() {
 
 function renderAssignedToContacts(i, name, initials, avatarColor) {
     return ` 
-            <div class="contact-option" id="assigned-to-option-${i}">
+            <div class="contact-option" id="assigned-to-option-${i}" onclick="toggleSelectContacts(this, '${name}', '${initials}', '${avatarColor}')">
                 <div class="d-flex align-items gap-8">
                     <div class="initials-container" style="background-color: var(${avatarColor});">${initials}</div>
                     <div>${name}</div>
                 </div>
-                <img src="../assets/icons/btn/checkbox-empty-black.svg" alt="checkbox">
+                <img src="../assets/icons/btn/checkbox-empty-black.svg" alt="checkbox empty">
             </div>
         `;
 }
+
+
+function toggleSelectContacts(clickedButton, name, initials, avatarColor) {
+
+    const isAssigned = clickedButton.classList.contains('assigned');
+    const imgElement = clickedButton.querySelector('img');
+    const contactKey = `${name}_${initials}_${avatarColor}`;
+    const index = selectedContacts.findIndex(
+        contact => `${contact.name}_${contact.initials}_${contact.avatarColor}` === contactKey
+    );
+
+    if (isAssigned) {
+        clickedButton.classList.remove('assigned');
+        if (imgElement) {
+            imgElement.src = '../assets/icons/btn/checkbox-empty-black.svg';
+            imgElement.alt = 'checkbox empty';
+        }
+        if (index !== -1) {
+            selectedContacts.splice(index, 1);
+        }
+    } else {
+        clickedButton.classList.add('assigned');
+        if (imgElement) {
+            imgElement.src = '../assets/icons/btn/checkbox-filled-white.svg';
+            imgElement.alt = 'checkbox filled';
+        }
+        if (index === -1) {
+            selectedContacts.push({ name, initials, avatarColor });
+        }
+    }
+
+    renderSelectedInitials();
+    console.log('Selected Contacts:', selectedContacts);
+}
+window.toggleSelectContacts = toggleSelectContacts;
+
+
+function renderSelectedInitials(name, initials, avatarColor) {
+    const selectedContactsContainer = document.getElementById('selected-contacts-container');
+    selectedContactsContainer.innerHTML = '';
+
+    if (selectedContacts.length === 0) {
+        selectedContactsContainer.innerHTML = '';
+        selectedContactsContainer.classList.remove('add-on');
+        return;
+    }  else {
+        selectedContactsContainer.classList.add('add-on');
+    }
+
+    for (let i = 0; i < selectedContacts.length; i++) {
+        selectedContactsContainer.innerHTML += `
+            <div id="assigned-initials-container" class="initials-container" style="background-color: var(${selectedContacts[i].avatarColor});">${selectedContacts[i].initials}</div>
+        `
+    }
+}
+window.renderSelectedInitials = renderSelectedInitials;
 
 
 document.addEventListener('click', function (event) {
