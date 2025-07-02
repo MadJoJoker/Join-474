@@ -10,32 +10,11 @@ html {
     height: 100vh;
 }
 
-/* .test-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 232px;
-    height: 100%;
-    background-color: var(--darkBlue);
-} */
-
 .main-content {
-    /* margin-left: 232px; */
     width: calc(100% - 232px);
     display: flex;
     flex-direction: column;
 }
-
-/* header {
-    position: sticky;
-    top: 0;
-    height: 96px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0;
-} */
 
 .content {
     flex: 1;
@@ -551,18 +530,57 @@ html {
     transform: translateY(-50%);
     width: 0;
     height: 24px;
-    border: 1px solid var(--borderGrey);
+    border: 1px solid var(--lightGrey);
 }
 
 .right {
     right: 21px;
 }
 
-
-/* #subtask-buttons.active {
+.subtask-list{
+    position: relative;
+    height: 32px;
+    width: 100%;
+    border-radius: 10px;
+    padding-left: 21px;
+    margin-top: 6px;
+    font-size: 16px;
     display: flex;
-    gap: 8px;
-} */
+    align-items: center;
+}
+
+.subtask-list:hover {
+    background-color: var(--borderGrey);
+    color: var(--black);
+}
+
+.subtask-item{
+    margin-left: 16px;
+}
+
+.subtask-text{
+    color: var(--black);
+}
+
+.subtask-list svg{
+    position: absolute;
+    right: 25px;
+    color: var(--lightGrey);
+    cursor: pointer;
+    transition: color 0.1s ease;
+}
+
+.subtask-list:hover svg {
+    color: var(--black);
+}
+
+.subtask-list svg.left{
+    right: 56px;
+}
+
+.subtask-list svg.right{
+    right: 25px;
+}
 
 .form-buttons-part {
     position: absolute;
