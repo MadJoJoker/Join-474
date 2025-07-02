@@ -403,6 +403,15 @@ html {
     overflow: auto;
 }
 
+#assigned-to-options-container::-webkit-scrollbar {
+    width: 6px;
+}   
+
+#assigned-to-options-container::-webkit-scrollbar-thumb {
+    background: var(--dark);
+    border-radius: 4px;
+}
+
 .spacer {
     margin-top: -34px;
     height: 30px;
@@ -440,6 +449,14 @@ html {
     overflow-x: auto;
     cursor: pointer;
     z-index: 2;
+}
+
+.add-on::-webkit-scrollbar {
+    height: 6px;
+}
+.add-on::-webkit-scrollbar-thumb {
+    background: var(--dark);
+    border-radius: 4px;
 }
 
 .checkbox-icon {

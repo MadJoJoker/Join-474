@@ -320,6 +320,7 @@ function toggleSelectContacts(clickedButton, name, initials, avatarColor) {
     const imgElement = clickedButton.querySelector('img');
     const isSelected = clickedButton.classList.contains('assigned');
     const isBlack = imgElement.classList.contains('fitered');
+    const contactKey = { name, initials, avatarColor };
 
     clickedButton.classList.toggle('assigned');
     if (!isSelected) {
@@ -330,8 +331,6 @@ function toggleSelectContacts(clickedButton, name, initials, avatarColor) {
     if (isBlack) {
         imgElement.classList.remove('fitered');
     }
-
-    const contactKey = { name, initials, avatarColor };
     if (isSelected) {
         selectedContacts = selectedContacts.filter(
             c => !(c.name === name && c.initials === initials && c.avatarColor === avatarColor)
@@ -357,11 +356,14 @@ function renderSelectedInitials(name, initials, avatarColor) {
         selectedContactsContainer.classList.add('add-on');
     }
 
-    for (let i = 0; i < selectedContacts.length; i++) {
-        selectedContactsContainer.innerHTML += `
-            <div id="assigned-initials-container" class="initials-container" style="background-color: var(${selectedContacts[i].avatarColor});">${selectedContacts[i].initials}</div>
-        `
-    }
+    for (let i = selectedContacts.length - 1; i >= 0; i--) {
+    selectedContactsContainer.innerHTML += `
+        <div id="assigned-initials-container" class="initials-container" style="background-color: var(${selectedContacts[i].avatarColor});">
+            ${selectedContacts[i].initials}
+        </div>
+    `;
+}
+
 }
 window.renderSelectedInitials = renderSelectedInitials;
 
