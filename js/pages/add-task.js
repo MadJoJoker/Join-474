@@ -22,9 +22,14 @@ async function initTask() {
     const data = await getFirebaseData();
     console.log('Zugriff auf Firebase-Daten in add-task.js:', data);
 
-    currentContacts = Object.values(data.contacts);
+    currentContacts = Object.values(data.contacts)
+        .sort((a, b) => {
+            const nameA = (a.name || "").toLowerCase();
+            const nameB = (b.name || "").toLowerCase();
+            return nameA.localeCompare(nameB, 'de', { sensitivity: 'base' });
+        });
 
-    console.log('Alle Kontakte:', currentContacts);
+    console.log('Alle Kontakte (alphabetisch sortiert):', currentContacts);
 }
 
 
