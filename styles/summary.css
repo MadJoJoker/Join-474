@@ -83,7 +83,7 @@
   color: var(--dark);
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* oder hat es eine gap? Vergleichen */
+  justify-content: space-between;
 
 
   .btn-row {
@@ -92,7 +92,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* border: 1px solid red; */
   }
 }
 
@@ -172,6 +171,14 @@
       transform: scaleX(0.936) scaleY(0.913);
     }
 
+    .middle-content-frame {
+      transform: scaleX(0.969) scaleY(0.913) translateX(-2%);
+    }
+
+    .btn-content-last {
+      transform: scale(0.915);
+    }
+
     .urgent-text {
     color: var(--white);
     }
@@ -210,7 +217,7 @@
 
 .btn-content-first {
   height: 101px;
-  border: 1px solid rgb(255, 0, 200);
+  /* border: 1px solid rgb(255, 0, 200); */
   display: flex;
   align-items: center;
   text-align: center;
@@ -221,10 +228,20 @@
   }
 }
 
-.btn-content-second {
+.middle-content-frame {
+  justify-content: center;
+  column-gap: 54px;
   height: 96px;
-  width: 140px;
+  display: flex;
   /* border: 1px solid rgb(255, 0, 200); */
+  align-items: center;
+  text-align: center;
+}
+
+/* ORIGINAL, NICHT ÄNDERN */
+.btn-content-second {
+  /* height: 96px; */
+  width: 140px;
   display: flex;
   align-items: center;
   text-align: center;
@@ -241,7 +258,7 @@
 .btn-content-last {
   height: 125px;
   width: 90px;
-  border: 1px solid rgb(255, 0, 200);
+  /* border: 1px solid rgb(255, 0, 200); */
   text-align: center;
 
   .text-last-row {
