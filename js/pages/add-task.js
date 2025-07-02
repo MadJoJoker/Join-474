@@ -414,14 +414,20 @@ function selectCategory(value, text) {
 window.selectCategory = selectCategory;
 
 
-document.querySelector('form').addEventListener('submit', function (e) {
-  const hiddenInput = document.getElementById('hidden-category-input');
-  if (!hiddenInput.value) {
-    e.preventDefault();
-    document.getElementById('dropdown-category').classList.add('invalid');
-  }
-});
+function checkRequiredFields(){
+    const hiddenInput = document.getElementById('hidden-category-input');
+    const dropdownCategory = document.getElementById('dropdown-category');
 
+    if (!hiddenInput.value) {
+        dropdownCategory.classList.add('invalid');
+        return false;
+    } else {
+        dropdownCategory.classList.remove('invalid');
+    }
+
+    return true;
+}
+window.checkRequiredFields = checkRequiredFields;
 
 
 document.addEventListener('click', function (event) {
