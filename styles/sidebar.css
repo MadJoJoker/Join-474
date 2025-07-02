@@ -16,12 +16,6 @@
   padding: 64px 0;
 }
 
-.sidebar-nav a {
-  text-decoration: none;
-  color: inherit;
-  font-size: 16px;
-}
-
 .sidebar-wrapper > img {
   width: 100px;
   height: 122px;
@@ -33,7 +27,13 @@
   display: flex;
   flex-direction: column;
   row-gap: 15px;
-  height: 229px;
+  /* height: 229px; */
+}
+
+.sidebar-nav a {
+  text-decoration: none;
+  color: var(--sidebarGrey);
+  font-size: 16px;
 }
 
 .nav-element {
@@ -55,6 +55,14 @@
 .nav-element > img {
   width: 30px;
   height: 30px;
+}
+
+.sidebar-icon {
+  color: var(--sidebarGrey);
+}
+
+.nav-element:hover .sidebar-icon {
+  color: var(--white);
 }
 
 .legal {
