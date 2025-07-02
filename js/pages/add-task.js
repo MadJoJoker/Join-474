@@ -430,6 +430,30 @@ function checkRequiredFields(){
 window.checkRequiredFields = checkRequiredFields;
 
 
+function toggleSubtaskIcons() {
+  const buttonArea = document.getElementById('subtask-buttons');
+  const inputField = document.getElementById('input-subtask');
+  
+  const addBtn = buttonArea.querySelector('.add-btn');
+  const closeBtn = buttonArea.querySelector('.close-btn');
+  const checkBtn = buttonArea.querySelector('.check-btn');
+  const middleDiv = buttonArea.querySelector('.middle');
+
+  if (inputField.value.trim() === "") {
+    addBtn.style.display = 'block';
+    closeBtn.style.display = 'none';
+    middleDiv.style.display = 'none';
+    checkBtn.style.display = 'none';
+  } else {
+    addBtn.style.display = 'none';
+    closeBtn.style.display = 'block';
+    middleDiv.style.display = 'block';
+    checkBtn.style.display = 'block';
+  }
+}
+window.toggleSubtaskIcons = toggleSubtaskIcons;
+
+
 document.addEventListener('click', function (event) {
 
     const contactsDropdown = document.querySelector('#dropdown-assigned-to').closest('.select-wrapper');

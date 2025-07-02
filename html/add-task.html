@@ -91,8 +91,6 @@
                   </button>
                 </div>
               </div>
-
-
               <div class="label-container">
                 <p class="font-size-20">Assigned to</p>
                 <div class="select-wrapper" onclick="toggleAssignedToDropdown('assignedTo')">
@@ -111,16 +109,13 @@
                 <div id="assigned-to-options-container"></div>
               </div>
               <div id="selected-contacts-container"></div>
-
-
               <div class="label-container">
                 <p class="required font-size-20">Category</p>
                 <div class="select-wrapper" onclick="toggleCategoryDropdown('category')">
                   <div class="styled-select styled-select-addition" id="dropdown-category">
-                    <div id="selected-category" required>Select task category</div>   
+                    <div id="selected-category" required>Select task category</div>
                   </div>
-                  <input type="text" id="hidden-category-input" name="category" required
-                    class="hidden-input">
+                  <input type="text" id="hidden-category-input" name="category" required class="hidden-input">
                   <div class="dropdown-icon-container" id="dropdown-icon-container-two">
                     <img id="dropdown-icon-two" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
                       alt="Dropdown">
@@ -131,15 +126,30 @@
                 <div id="category-options-container"></div>
               </div>
 
+
               <div class="label-container">
                 <label for="subtask" class="font-size-20">Subtasks</label>
-                <div class="input-wrapper">
-                  <input type="text" name="subtask" class="input-field-subtask" placeholder="Add new subtask" />
-                  <button type="button" class="input-button">
-                    <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
-                  </button>
+                <div class="input-wrapper" oninput="toggleSubtaskIcons()">
+                  <input id="input-subtask" type="text" name="subtask" class="input-field-subtask"
+                    placeholder="Add new subtask" />
+                  <div id="subtask-buttons">
+                    <button type="button" class="input-button add-btn">
+                      <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
+                    </button>
+                    <button type="button" class="input-button close-btn left" onclick="clearSubtask()"
+                      style="display: none;">
+                      <img src="../assets/icons/btn/close.svg" alt="Close Icon" />
+                    </button>
+                    <div class="middle" style="display: none;"></div>
+                    <button type="button" class="input-button check-btn right" onclick="submitSubtask()"
+                      style="display: none;">
+                      <img src="../assets/icons/btn/check-black.svg" alt="Check Icon" />
+                    </button>
+                  </div>
                 </div>
               </div>
+
+
             </div>
           </div>
           <div class="form-buttons-part">
