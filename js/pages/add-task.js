@@ -196,7 +196,6 @@ function setCategory(option) {
 window.setCategory = setCategory;
 
 
-
 function clearCategory() {
 
     selectedCategory = null;
@@ -397,14 +396,12 @@ function filterContacts() {
 }
 
 
-
 function setupContactFilter() {
     const input = document.getElementById('select-contacts');
     input.addEventListener('input', () => {
         setTimeout(filterContacts, 0);
     });
 }
-
 window.filterContacts = filterContacts;
 window.addEventListener('DOMContentLoaded', setupContactFilter);
 

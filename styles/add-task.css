@@ -76,7 +76,6 @@ html {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-
     display: flex;
     align-items: center;
 }
@@ -143,6 +142,13 @@ html {
     border-radius: 10px;
     font-size: 20px;
     cursor: text;
+    overflow: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none
+}
+
+.task-description-area::-webkit-scrollbar {
+    display: none;
 }
 
 .resize-handle {
@@ -223,10 +229,8 @@ html {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    /* padding: 12px 21px 0 21px; */
     height: 48px;
     width: 100%;
-
     border-radius: 10px;
     font-size: 20px;
     cursor: pointer;
@@ -275,7 +279,6 @@ html {
     display: flex;
     justify-content: space-between;
     cursor: pointer;
-    /* border-color: var(--white); */
 }
 
 .contact-option:hover {
@@ -537,7 +540,7 @@ html {
     right: 21px;
 }
 
-.subtask-list{
+.subtask-list {
     position: relative;
     height: 32px;
     width: 100%;
@@ -554,15 +557,15 @@ html {
     color: var(--black);
 }
 
-.subtask-item{
+.subtask-item {
     margin-left: 16px;
 }
 
-.subtask-text{
+.subtask-text {
     color: var(--black);
 }
 
-.subtask-list svg{
+.subtask-list svg {
     position: absolute;
     right: 25px;
     color: var(--lightGrey);
@@ -574,11 +577,11 @@ html {
     color: var(--black);
 }
 
-.subtask-list svg.left{
+.subtask-list svg.left {
     right: 56px;
 }
 
-.subtask-list svg.right{
+.subtask-list svg.right {
     right: 25px;
 }
 
