@@ -263,6 +263,15 @@ html {
     padding: 12px 21px 0 21px;
 }
 
+.styled-select.invalid {
+  border-color: var(--peachyPink);
+}
+
+.invalid {
+  border: 1px solid var(--peachyPink);
+  z-index: 1001;
+}
+
 .option {
     padding-left: 21px;
     border: 1px hidden var(--borderGrey);
@@ -469,6 +478,16 @@ html {
 
 .checkbox-icon.checked.fitered {
     filter: brightness(1) invert(1);
+}
+
+.hidden-input{
+    position: absolute;
+    top: 44px;
+    left: 110px;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
 }
 
 .input-wrapper {

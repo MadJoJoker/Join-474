@@ -9,7 +9,7 @@ let startY, startHeight, currentTextarea;
 
 let currentPriority = 'medium';
 
-let selectedCategoy = null;
+let selectedCategory = null;
 
 let currentContacts = [];
 
@@ -174,26 +174,30 @@ window.toggleDropdownIcon = toggleDropdownIcon;
 
 
 function setCategory(option) {
-
     const wrapper = document.getElementById("category-options-wrapper");
     const selected = document.getElementById("selected-category");
-    selected.textContent = option.textContent;
-
     const optionsContainer = document.getElementById("category-options-container");
-    optionsContainer.classList.remove("open");
+    const hiddenInput = document.getElementById("hidden-category-input");
+
+    selected.textContent = option.textContent;
+    hiddenInput.value = option.textContent;
+
+    document.getElementById("dropdown-category").classList.remove("invalid");
+
     wrapper.classList.remove("open");
     optionsContainer.innerHTML = '';
 
     toggleDropdownIcon();
 
-    selectedCategoy = option.id === "category-options-one" ? "Technical Task" : "User Story";
+    selectedCategory = option.id === "category-options-one" ? "Technical Task" : "User Story";
 }
 window.setCategory = setCategory;
 
 
+
 function clearCategory() {
 
-    selectedCategoy = null;
+    selectedCategory = null;
 
     const selected = document.getElementById("selected-category");
     selected.textContent = "Select task category";
@@ -400,6 +404,23 @@ function setupContactFilter() {
 
 window.filterContacts = filterContacts;
 window.addEventListener('DOMContentLoaded', setupContactFilter);
+
+
+function selectCategory(value, text) {
+  document.getElementById('selected-category').textContent = text;
+  document.getElementById('hidden-category-input').value = value;
+  document.getElementById('dropdown-category').classList.remove('invalid');
+}
+window.selectCategory = selectCategory;
+
+
+document.querySelector('form').addEventListener('submit', function (e) {
+  const hiddenInput = document.getElementById('hidden-category-input');
+  if (!hiddenInput.value) {
+    e.preventDefault();
+    document.getElementById('dropdown-category').classList.add('invalid');
+  }
+});
 
 
 
