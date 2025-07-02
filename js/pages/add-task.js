@@ -366,6 +366,41 @@ function renderSelectedInitials(name, initials, avatarColor) {
 window.renderSelectedInitials = renderSelectedInitials;
 
 
+function filterContacts() {
+    const input = document.getElementById('select-contacts');
+    const filter = input.value.toLowerCase();
+    const optionsContainer = document.getElementById('assigned-to-options-container');
+    const options = optionsContainer.querySelectorAll('.contact-option');
+    const dropdowncontainer = document.getElementById('dropdown-icon-container-one');
+    const container = document.getElementById('assigned-to-options-wrapper');
+
+    if (dropdowncontainer && container) {
+        if (!dropdowncontainer.classList.contains('active') && !container.classList.contains('open-assigned-to')) {
+            toggleAssignedToDropdown('assignedTo')
+        }
+    }
+
+    for (let i = 0; i < options.length; i++) {
+        const option = options[i];
+        const name = option.textContent.toLowerCase();
+        option.style.display = name.includes(filter) ? '' : 'none';
+    }
+}
+
+
+
+function setupContactFilter() {
+    const input = document.getElementById('select-contacts');
+    input.addEventListener('input', () => {
+        setTimeout(filterContacts, 0);
+    });
+}
+
+window.filterContacts = filterContacts;
+window.addEventListener('DOMContentLoaded', setupContactFilter);
+
+
+
 document.addEventListener('click', function (event) {
 
     const contactsDropdown = document.querySelector('#dropdown-assigned-to').closest('.select-wrapper');
