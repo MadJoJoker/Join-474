@@ -10,32 +10,11 @@ html {
     height: 100vh;
 }
 
-/* .test-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 232px;
-    height: 100%;
-    background-color: var(--darkBlue);
-} */
-
 .main-content {
-    /* margin-left: 232px; */
     width: calc(100% - 232px);
     display: flex;
     flex-direction: column;
 }
-
-/* header {
-    position: sticky;
-    top: 0;
-    height: 96px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0;
-} */
 
 .content {
     flex: 1;
@@ -142,11 +121,11 @@ html {
 }
 
 .input-field:invalid:focus {
-  border-color: var(--peachyPink);
+    border-color: var(--peachyPink);
 }
 
 .input-field:invalid:focus-visible {
-  border-color: var(--peachyPink);
+    border-color: var(--peachyPink);
 }
 
 .textarea-wrapper {
@@ -247,7 +226,7 @@ html {
     /* padding: 12px 21px 0 21px; */
     height: 48px;
     width: 100%;
-    
+
     border-radius: 10px;
     font-size: 20px;
     cursor: pointer;
@@ -264,12 +243,12 @@ html {
 }
 
 .styled-select.invalid {
-  border-color: var(--peachyPink);
+    border-color: var(--peachyPink);
 }
 
 .invalid {
-  border: 1px solid var(--peachyPink);
-  z-index: 1001;
+    border: 1px solid var(--peachyPink);
+    z-index: 1001;
 }
 
 .option {
@@ -349,7 +328,7 @@ html {
 }
 
 .dropdown-icon-container:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--borderGrey);
 }
 
 .dropdown-icon-container.active:hover {
@@ -414,7 +393,7 @@ html {
 
 #assigned-to-options-container::-webkit-scrollbar {
     width: 6px;
-}   
+}
 
 #assigned-to-options-container::-webkit-scrollbar-thumb {
     background: var(--dark);
@@ -448,7 +427,7 @@ html {
     border-radius: 50%;
 }
 
-.add-on{
+.add-on {
     display: flex;
     align-items: center;
     margin-top: -12px;
@@ -463,6 +442,7 @@ html {
 .add-on::-webkit-scrollbar {
     height: 6px;
 }
+
 .add-on::-webkit-scrollbar-thumb {
     background: var(--dark);
     border-radius: 4px;
@@ -480,7 +460,7 @@ html {
     filter: brightness(1) invert(1);
 }
 
-.hidden-input{
+.hidden-input {
     position: absolute;
     top: 44px;
     left: 110px;
@@ -516,22 +496,90 @@ html {
 
 .input-button {
     position: absolute;
-    right: 18px;
+    right: 26px;
     top: 50%;
     transform: translateY(-50%);
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: hidden;
+    background-color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    cursor: pointer;
+}
+
+.input-button:hover {
+    background-color: var(--borderGrey);
 }
 
 .input-button img {
     width: 14px;
     height: 14px;
+}
+
+.left {
+    right: 53px;
+}
+
+.middle {
+    position: absolute;
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 24px;
+    border: 1px solid var(--lightGrey);
+}
+
+.right {
+    right: 21px;
+}
+
+.subtask-list{
+    position: relative;
+    height: 32px;
+    width: 100%;
+    border-radius: 10px;
+    padding-left: 21px;
+    margin-top: 6px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.subtask-list:hover {
+    background-color: var(--borderGrey);
+    color: var(--black);
+}
+
+.subtask-item{
+    margin-left: 16px;
+}
+
+.subtask-text{
+    color: var(--black);
+}
+
+.subtask-list svg{
+    position: absolute;
+    right: 25px;
+    color: var(--lightGrey);
+    cursor: pointer;
+    transition: color 0.1s ease;
+}
+
+.subtask-list:hover svg {
+    color: var(--black);
+}
+
+.subtask-list svg.left{
+    right: 56px;
+}
+
+.subtask-list svg.right{
+    right: 25px;
 }
 
 .form-buttons-part {
