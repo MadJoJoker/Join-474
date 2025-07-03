@@ -415,19 +415,62 @@ window.selectCategory = selectCategory;
 
 
 function checkRequiredFields() {
+    const isTitleValid = checkRequiredTitle();
+    const isCategoryValid = checkRequiredCategory();
+    const isDateValid = checkRequiredDate();
+
+    return isTitleValid && isCategoryValid && isDateValid;
+}
+
+window.checkRequiredFields = checkRequiredFields;
+
+
+function checkRequiredTitle() {
+    const input = document.getElementById('task-title');
+    const isValid = input.value.trim() !== "";
+    toggleInvalidClass(input, isValid);
+    return isValid;
+}
+
+window.checkRequiredTitle = checkRequiredTitle;
+
+
+function checkRequiredDate() {
+    const dateInput = document.getElementById('datepicker');
+    const isValid = dateInput.value.trim() !== "";
+    toggleInvalidClass(dateInput, isValid);
+    return isValid;
+}
+window.checkRequiredDate = checkRequiredDate;
+
+
+function checkRequiredCategory() {
     const hiddenInput = document.getElementById('hidden-category-input');
     const dropdownCategory = document.getElementById('dropdown-category');
-
-    if (!hiddenInput.value) {
-        dropdownCategory.classList.add('invalid');
-        return false;
-    } else {
-        dropdownCategory.classList.remove('invalid');
-    }
-
-    return true;
+    const isValid = hiddenInput.value.trim() !== "";
+    toggleInvalidClass(dropdownCategory, isValid);
+    return isValid;
 }
-window.checkRequiredFields = checkRequiredFields;
+window.checkRequiredCategory = checkRequiredCategory;
+
+
+function toggleInvalidClass(input, isValid) {
+    if (!input) return;
+
+    if (!isValid) {
+        input.classList.add('invalid');
+    } else {
+        input.classList.remove('invalid');
+    }
+}
+window.toggleInvalidClass = toggleInvalidClass;
+
+
+function handleInput(input) {
+    const isValid = input.value.trim() !== '';
+    toggleInvalidClass(input, isValid);
+}
+window.handleInput = handleInput;
 
 
 function toggleSubtaskIcons() {
@@ -603,7 +646,7 @@ window.saveSubtaskEdit = saveSubtaskEdit;
 
 
 function deleteSubtask(index) {
-    
+
     if (index < 0 || index >= addedSubtasks.length) return;
 
     const editContainer = document.querySelector('.subtask-edit-container');
@@ -616,7 +659,7 @@ function deleteSubtask(index) {
     }
 
     addedSubtasks.splice(index, 1);
-    
+
     renderSubtasks();
 }
 window.deleteSubtask = deleteSubtask;
