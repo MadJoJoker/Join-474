@@ -604,8 +604,19 @@ html {
 .subtask-edit-container {
     display: flex;
     align-items: center;
-    gap: 8px;
     width: 100%;
+}
+
+.subtask-icons-container {
+    display: flex;
+    align-items: center;
+    pointer-events: auto;
+}
+
+.subtask-icons-container svg {
+    cursor: pointer;
+    pointer-events: auto;
+    user-select: none;
 }
 
 .form-buttons-part {
