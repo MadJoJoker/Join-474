@@ -381,29 +381,40 @@ function filterContacts() {
     const options = optionsContainer.querySelectorAll('.contact-option');
     const dropdowncontainer = document.getElementById('dropdown-icon-container-one');
     const container = document.getElementById('assigned-to-options-wrapper');
+    const spacer = document.querySelector('.spacer');
+    
+    let hasVisibleOptions = false;
 
     if (dropdowncontainer && container) {
         if (!dropdowncontainer.classList.contains('active') && !container.classList.contains('open-assigned-to')) {
-            toggleAssignedToDropdown('assignedTo')
+            toggleAssignedToDropdown('assignedTo');
         }
     }
 
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
         const name = option.textContent.toLowerCase();
-        option.style.display = name.includes(filter) ? '' : 'none';
+        const isVisible = name.includes(filter);
+        option.style.display = isVisible ? '' : 'none';
+        
+        if (isVisible) hasVisibleOptions = true;
+    }
+
+    if (spacer) {
+        if (!hasVisibleOptions && filter.length > 0) {
+            spacer.classList.remove('bg-color-white');
+            spacer.style.backgroundColor = 'var(--lightGrey)';
+        } else {
+            if (container.classList.contains('open-assigned-to')) {
+                spacer.classList.add('bg-color-white');
+            } else {
+                spacer.classList.remove('bg-color-white');
+            }
+            spacer.style.backgroundColor = '';
+        }
     }
 }
-
-
-function setupContactFilter() {
-    const input = document.getElementById('select-contacts');
-    input.addEventListener('input', () => {
-        setTimeout(filterContacts, 0);
-    });
-}
 window.filterContacts = filterContacts;
-window.addEventListener('DOMContentLoaded', setupContactFilter);
 
 
 function selectCategory(value, text) {
