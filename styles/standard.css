@@ -53,3 +53,7 @@ box-sizing: border-box;
 .bg-color-white {
     background-color: var(--white);
 }
+
+.padding-left-21 {
+    padding-left: 21px;
+}

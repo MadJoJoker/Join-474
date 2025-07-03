@@ -545,7 +545,6 @@ html {
     height: 32px;
     width: 100%;
     border-radius: 10px;
-    padding-left: 21px;
     margin-top: 6px;
     font-size: 16px;
     display: flex;
@@ -583,6 +582,30 @@ html {
 
 .subtask-list svg.right {
     right: 25px;
+}
+
+.edit-input{
+    flex-grow: 1;
+    position: relative;
+    height: 32px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--lightBlue);
+    font-size: 16px;
+    padding-left: 21px;
+}
+
+.edit-input:focus-visible{
+    border: none;
+    border-bottom: 1px solid var(--lightBlue);
+    outline: none;
+}
+
+.subtask-edit-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
 }
 
 .form-buttons-part {
