@@ -670,12 +670,10 @@ function collectFormData() {
         title: document.getElementById('title').value.trim(),
         description: document.getElementById('task-description').value.trim(),
         dueDate: document.getElementById('datepicker').value.trim(),
-        category: document.getElementById('hidden-category-input').value,
-        subtasks: addedSubtasks,
         priority: currentPriority,
-        assignedTo: selectedContacts,
+        assignedTo: JSON.stringify(selectedContacts),
         category: selectedCategory,
-        subtasks: addedSubtasks,
+        subtasks: JSON.stringify(addedSubtasks)
     };
 }
 
@@ -686,7 +684,8 @@ function submitForm() {
     }
 
     const taskData = collectFormData();
-    console.table('Form data collected:', taskData);
+
+    console.log('Form data collected:', taskData);
     // saveToDatabase(taskData); // Funktion muss noch erstellt werden
 }
 window.submitForm = submitForm;

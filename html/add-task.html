@@ -46,16 +46,16 @@
             <div class="left-form">
               <div class="label-container">
                 <label for="title" class="required font-size-20">Title</label>
-                <input oninput="handleInput(this)" name="title" class="input-field" type="text" id="title" placeholder="Enter a title"
-                  required />
+                <input oninput="handleInput(this)" name="title" class="input-field" type="text" id="title"
+                  placeholder="Enter a title" required />
               </div>
               <div class="label-container">
                 <label for="task-description" class="font-size-20">Description</label>
                 <div class="textarea-wrapper">
                   <textarea name="task-description" id="task-description" class="task-description-area"
                     placeholder="Enter a Description"></textarea>
-                  <img src="../assets/icons/btn/resize-handle.svg" alt="resize-handle" class="resize-handle" draggable="false"
-                    onmousedown="startResize(event)">
+                  <img src="../assets/icons/btn/resize-handle.svg" alt="resize-handle" class="resize-handle"
+                    draggable="false" onmousedown="startResize(event)">
                 </div>
               </div>
               <div class="label-container">
@@ -72,25 +72,31 @@
             </div>
             <div class="border"></div>
             <div class="right-form">
+
+
               <div class="label-container">
-                <p class="font-size-20">Priority</p>
-                <div class="d-flex gap-16">
-                  <button onclick="setPriority(this, 'urgent')" type="button" class="priority-btn"
-                    data-priority="urgent">
-                    Urgent
-                    <img src="../assets/icons/property/Urgent.svg" alt="Urgent" class="priority-icon">
-                  </button>
-                  <button onclick="setPriority(this, 'medium')" type="button" class="priority-btn active"
-                    data-priority="medium">
-                    Medium
-                    <img src="../assets/icons/property/medium.svg" alt="Medium" class="priority-icon">
-                  </button>
-                  <button onclick="setPriority(this, 'low')" type="button" class="priority-btn" data-priority="low">
-                    Low
-                    <img src="../assets/icons/property/Low.svg" alt="Low" class="priority-icon">
-                  </button>
-                </div>
+                <fieldset aria-labelledby="priority-legend" style="border: none;">
+                  <legend id="priority-legend" class="font-size-20">Priority</legend>
+                  <div class="d-flex gap-16" role="group">
+                    <button onclick="setPriority(this, 'urgent')" type="button" class="priority-btn"
+                      data-priority="urgent">
+                      Urgent
+                      <img src="../assets/icons/property/Urgent.svg" alt="Urgent" class="priority-icon">
+                    </button>
+                    <button onclick="setPriority(this, 'medium')" type="button" class="priority-btn active"
+                      data-priority="medium">
+                      Medium
+                      <img src="../assets/icons/property/medium.svg" alt="Medium" class="priority-icon">
+                    </button>
+                    <button onclick="setPriority(this, 'low')" type="button" class="priority-btn" data-priority="low">
+                      Low
+                      <img src="../assets/icons/property/Low.svg" alt="Low" class="priority-icon">
+                    </button>
+                  </div>
+                </fieldset>
               </div>
+
+
               <div class="label-container">
                 <label for="select-contacts" class="font-size-20">Assigned to</label>
                 <div class="select-wrapper" onclick="toggleAssignedToDropdown('assignedTo')">
@@ -115,7 +121,8 @@
                   <div class="styled-select styled-select-addition" id="dropdown-category">
                     <div id="selected-category" required>Select task category</div>
                   </div>
-                  <input type="text" id="hidden-category-input" name="hidden-category-input" required class="hidden-input">
+                  <input type="text" id="hidden-category-input" name="hidden-category-input" required
+                    class="hidden-input">
                   <div class="dropdown-icon-container" id="dropdown-icon-container-two">
                     <img id="dropdown-icon-two" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
                       alt="Dropdown">
