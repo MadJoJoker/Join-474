@@ -20,6 +20,20 @@ body {
   align-items: center;
 }
 
+/* .index-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+} */
+
 header {
   width: 100%;
   display: flex;
@@ -55,23 +69,28 @@ header > div {
   transition: all 80ms ease-in-out;
 }
 
-.log-in {
+.dialogue-frame {
   width: 652px;
   height: 449px;
   background-color: var(--white);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   border-radius: 30px;
   padding: 48px 115px;
   box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.04);
+
+  &.signup-height {
+    width: 598px;
+    height: 630px;
+    padding: 48px 88px;
+  }
 }
 
 .title {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
 }
 
@@ -84,8 +103,7 @@ h1 {
 .login-inputs {
   display: flex;
   flex-direction: column;
-  row-gap: 32px;
-  margin: 32px 0;
+  margin-top: 32px;
 }
 
 .input-frame {
@@ -95,9 +113,12 @@ h1 {
   border: 1px solid var(--borderGrey);
   padding: 12px 21px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  column-gap: 32px;
+  margin-bottom: 32px;
+
+  &.reduced-margin {
+    margin-bottom: 24px
+  }
 }
 
 .input-frame > input {
@@ -128,7 +149,8 @@ input:focus { outline: none; }
   margin-top: 24px;
 }
 
-.login-btns > button:first-of-type {
+.login-btns > .btn:first-of-type,
+.login-btns > .signup-now {
   border: none;
   background-color: var(--dark);
   color: var(--white);
@@ -140,7 +162,11 @@ input:focus { outline: none; }
   transition: all 80ms ease-in-out;
 }
 
-.login-btns > button:last-of-type {
+.login-btns > .signup-now {
+  padding: 15px 24px;
+}
+
+.login-btns > .btn:last-of-type {
   border: 1px solid var(--dark);
   background-color: var(--white);
   color: var(--dark);
@@ -153,21 +179,53 @@ input:focus { outline: none; }
 }
 
 .sign-up button:hover,
-.login-btns > button:first-of-type:hover {
+.login-btns > .btn:first-of-type:hover,
+.login-btns > .signup-now:hover {
   background-color: var(--lightBlue);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.login-btns > button:last-of-type:hover {
+.login-btns > .btn:last-of-type:hover {
   border: 1px solid var(--lightBlue);
   color: var(--lightBlue);
   box-shadow: 0 0 0 1px rgba(41, 171, 226),
     0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+.acceptPP {
+  color: var(--sidebarNoticeGrey);
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  > a {
+    color: var(--lightBlue);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      font-weight: 500;
+    }
+  }
+}
+/* Der Unterstrich ist zu nahe */
+/* font-weight 600 wäre zu viel, 500 sieht man nicht */
+
+.legal-part {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 230px;
+}
+
 .legal-part > a {
-  padding: 8px 12px;
+  padding: 8px 0;
   text-decoration: none;
   color: var(--sidebarNoticeGrey);
   letter-spacing: 0.65px;
+
+  &:hover {
+    color: var(--lightBlue);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
 }

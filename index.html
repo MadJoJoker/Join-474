@@ -9,16 +9,18 @@
     <link rel="stylesheet" href="../styles/colors.css">
   </head>
   <body>
+    <!-- <div class="index-overlay">für fliegendes Logo</div> -->
+
     <div class="content-wrapper">
       <header>
         <img src="..\assets\icons\logo\whiteJoinLogo.svg" alt="join Logo">
         <div class="sign-up">
           <p>Not a Join user?</p>
-          <button class="sign-up">Sign up</button>
+          <button class="sign-up" onclick="location.href='./html/sign-up.html'">Sign up</button>
         </div>
       </header>
 
-      <section class="log-in">
+      <section class="dialogue-frame">
         <div class="title">
           <h1>Log in</h1>
           <svg width="154" height="3" viewBox="0 0 154 3" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -40,8 +42,8 @@
           </div>
         </div>
         <div class="login-btns">
-          <button>Log in</button>
-          <button onclick="location.href='./html/summary.html'">Guest Log in</button>
+          <button class="btn">Log in</button>
+          <button class="btn" onclick="location.href='./html/summary.html'">Guest Log in</button>
         </div>
       </section>
 
@@ -50,12 +52,6 @@
         <a href="#">Legal notice</a>
       </div>
     </div>
-
-    <!-- <span>Arbeitshilfe: Direkt zu den Seiten springen -></span>
-    <a href="./html/summary.html">summary</a>
-    <a href="./html/add-task.html">add Task</a>
-    <a href="./html/board-site.html">Board</a>
-    <a href="./html/contacts.html">Contacts</a> -->
 
     <script type="module" src="./main.js"></script>
   </body>
