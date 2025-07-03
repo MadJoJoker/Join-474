@@ -46,7 +46,7 @@
             <div class="left-form">
               <div class="label-container">
                 <label for="title" class="required font-size-20">Title</label>
-                <input oninput="handleInput(this)" name="title" class="input-field" type="text" id="task-title" placeholder="Enter a title"
+                <input oninput="handleInput(this)" name="title" class="input-field" type="text" id="title" placeholder="Enter a title"
                   required />
               </div>
               <div class="label-container">
@@ -54,7 +54,7 @@
                 <div class="textarea-wrapper">
                   <textarea name="task-description" id="task-description" class="task-description-area"
                     placeholder="Enter a Description"></textarea>
-                  <img src="../assets/icons/btn/resize-handle.svg" class="resize-handle" draggable="false"
+                  <img src="../assets/icons/btn/resize-handle.svg" alt="resize-handle" class="resize-handle" draggable="false"
                     onmousedown="startResize(event)">
                 </div>
               </div>
@@ -92,10 +92,10 @@
                 </div>
               </div>
               <div class="label-container">
-                <p class="font-size-20">Assigned to</p>
+                <label for="select-contacts" class="font-size-20">Assigned to</label>
                 <div class="select-wrapper" onclick="toggleAssignedToDropdown('assignedTo')">
                   <div class="styled-select" id="dropdown-assigned-to">
-                    <input type="text" id="select-contacts" class="contact-input"
+                    <input name="select-contacts" type="text" id="select-contacts" class="contact-input"
                       placeholder="Select contacts to assign" onkeydown="filterContacts()" />
                   </div>
                   <div class="dropdown-icon-container" id="dropdown-icon-container-one">
@@ -110,12 +110,12 @@
               </div>
               <div id="selected-contacts-container"></div>
               <div class="label-container">
-                <p class="required font-size-20">Category</p>
+                <label for="hidden-category-input" class="required font-size-20">Category</label>
                 <div class="select-wrapper" onclick="toggleCategoryDropdown('category')">
                   <div class="styled-select styled-select-addition" id="dropdown-category">
                     <div id="selected-category" required>Select task category</div>
                   </div>
-                  <input type="text" id="hidden-category-input" name="category" required class="hidden-input">
+                  <input type="text" id="hidden-category-input" name="hidden-category-input" required class="hidden-input">
                   <div class="dropdown-icon-container" id="dropdown-icon-container-two">
                     <img id="dropdown-icon-two" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
                       alt="Dropdown">
@@ -126,9 +126,9 @@
                 <div id="category-options-container"></div>
               </div>
               <div class="label-container">
-                <label for="subtask" class="font-size-20">Subtasks</label>
+                <label for="input-subtask" class="font-size-20">Subtasks</label>
                 <div class="input-wrapper" oninput="toggleSubtaskIcons()">
-                  <input id="input-subtask" type="text" name="subtask" class="input-field-subtask"
+                  <input id="input-subtask" type="text" name="input-subtask" class="input-field-subtask"
                     placeholder="Add new subtask" />
                   <div id="subtask-buttons">
                     <button type="button" class="input-button add-btn">
@@ -161,7 +161,7 @@
                     fill="currentColor" />
                 </svg>
               </button>
-              <button type="submit" class="create-btn" onclick="checkRequiredFields()">
+              <button type="submit" class="create-btn" onclick="submitForm()">
                 Create Task
                 <img src="../assets/icons/btn/check-mark.svg" alt="Check-mark Icon" />
               </button>

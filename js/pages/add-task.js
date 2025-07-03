@@ -426,7 +426,7 @@ window.checkRequiredFields = checkRequiredFields;
 
 
 function checkRequiredTitle() {
-    const input = document.getElementById('task-title');
+    const input = document.getElementById('title');
     const isValid = input.value.trim() !== "";
     toggleInvalidClass(input, isValid);
     return isValid;
@@ -663,6 +663,33 @@ function deleteSubtask(index) {
     renderSubtasks();
 }
 window.deleteSubtask = deleteSubtask;
+
+
+function collectFormData() {
+    return {
+        title: document.getElementById('title').value.trim(),
+        description: document.getElementById('task-description').value.trim(),
+        dueDate: document.getElementById('datepicker').value.trim(),
+        category: document.getElementById('hidden-category-input').value,
+        subtasks: addedSubtasks,
+        priority: currentPriority,
+        assignedTo: selectedContacts,
+        category: selectedCategory,
+        subtasks: addedSubtasks,
+    };
+}
+
+
+function submitForm() {
+    if (!checkRequiredFields()) {
+        return;
+    }
+
+    const taskData = collectFormData();
+    console.table('Form data collected:', taskData);
+    // saveToDatabase(taskData); // Funktion muss noch erstellt werden
+}
+window.submitForm = submitForm;
 
 
 document.addEventListener('click', function (event) {

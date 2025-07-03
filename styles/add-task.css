@@ -119,13 +119,6 @@ html {
     outline: none;
 }
 
-/* .input-field:invalid:focus {
-    border-color: var(--peachyPink);
-} */
-
-/* .input-field:invalid:focus-visible {
-    border-color: var(--peachyPink);
-} */
 .input-field:focus.invalid {
     border-color: var(--peachyPink);
 }
