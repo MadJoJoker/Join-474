@@ -30,6 +30,7 @@ html {
     font-size: 63px;
     margin-block-start: 0;
     margin-block-end: 0;
+    max-width: 1572px;
 }
 
 .form {
@@ -37,6 +38,7 @@ html {
     flex-direction: column;
     padding-top: 24px;
     gap: 32px;
+    max-width: 1572px;
 }
 
 .form-fill-part {
@@ -624,6 +626,7 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    max-width: 1572px;
 }
 
 .sign-info {
