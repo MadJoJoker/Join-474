@@ -1,5 +1,4 @@
-
-  <div id="overlay" class="overlay-hidden">
+<div id="overlay" class="overlay-hidden">
   <div class="modal-content">
     <button class="close-modal-btn" type="button">&times;</button>
     <main class="content-overlay">
@@ -35,7 +34,7 @@
                   src="../assets/icons/btn/resize-handle.svg"
                   class="resize-handle"
                   draggable="false"
-                  onmousedown="startResize(event)"
+                  data-event-handle="true"
                 />
               </div>
             </div>
@@ -47,7 +46,6 @@
                 <input
                   name="datepicker"
                   id="datepicker"
-                  oninput="formatDate(this)"
                   type="text"
                   placeholder="dd/mm/yyyy"
                   class="input-field"
@@ -55,10 +53,10 @@
                 />
                 <span id="calendar-icon" class="calendar-icon">
                   <img
-                    onclick="openPicker()"
                     src="../assets/icons/btn/calender.svg"
                     alt="Calendar Icon"
                     class="calendar-img"
+                    data-event-handle="true"
                   />
                 </span>
               </div>
@@ -70,10 +68,10 @@
               <p class="font-size-20">Priority</p>
               <div class="d-flex gap-16">
                 <button
-                  onclick="setPriority(this, 'urgent')"
                   type="button"
                   class="priority-btn"
                   data-priority="urgent"
+                  data-event-handle="true"
                 >
                   Urgent
                   <img
@@ -83,23 +81,23 @@
                   />
                 </button>
                 <button
-                  onclick="setPriority(this, 'medium')"
                   type="button"
                   class="priority-btn active"
                   data-priority="medium"
+                  data-event-handle="true"
                 >
                   Medium
                   <img
-                    src="../../assets/icons/property/medium.svg"
+                    src="../assets/icons/property/medium.svg"
                     alt="Medium"
                     class="priority-icon"
                   />
                 </button>
                 <button
-                  onclick="setPriority(this, 'low')"
                   type="button"
                   class="priority-btn"
                   data-priority="low"
+                  data-event-handle="true"
                 >
                   Low
                   <img
@@ -112,23 +110,34 @@
             </div>
             <div class="label-container">
               <label for="assignedTo" class="font-size-20">Assigned to</label>
-              <select id="assignedTo" name="assignedTo" class="styled-select">
-                <option value="" disabled selected hidden>
-                  Select contacts to assign
-                </option>
-                <option value="1">Contact 1</option>
-              </select>
+              <div class="select-wrapper" id="dropdown-assigned-to">
+                <div class="styled-select">
+                  <div id="selected-contacts-display">Select contacts to assign</div>
+                </div>
+                <div class="dropdown-icon-container">
+                    <img
+                        id="assigned-to-dropdown-icon"
+                        src="../assets/icons/btn/arrow_drop_down.svg"
+                        class="dropdown-icon"
+                        alt="Dropdown"
+                    />
+                </div>
+              </div>
+              <div class="options-wrapper">
+                <div id="assigned-to-options-container" class="dropdown-options"></div>
+              </div>
+              <div id="selected-initials-container" class="selected-initials-container"></div>
             </div>
 
             <div class="label-container">
               <p class="required font-size-20">Category</p>
-              <div class="select-wrapper" onclick="toggleCategoryDropdown()">
-                <div class="styled-select" id="dropdown-category" required>
-                  <div id="selected">Select task category</div>
+              <div class="select-wrapper" id="dropdown-category">
+                <div class="styled-select" required>
+                  <div id="selected-category">Select task category</div>
                 </div>
                 <div class="dropdown-icon-container">
                   <img
-                    id="dropdown-icon"
+                    id="category-dropdown-icon"
                     src="../assets/icons/btn/arrow_drop_down.svg"
                     class="dropdown-icon"
                     alt="Dropdown"
@@ -137,33 +146,40 @@
               </div>
             </div>
             <div class="options-wrapper">
-              <div id="category-options-container"></div>
+              <div id="category-options-container" class="dropdown-options"></div>
             </div>
 
             <div class="label-container">
-              <label for="subtask" class="font-size-20">Subtasks</label>
+              <label for="subtask-input" class="font-size-20">Subtasks</label>
               <div class="input-wrapper">
                 <input
                   type="text"
                   name="subtask"
+                  id="subtask-input"
                   class="input-field-subtask"
                   placeholder="Add new subtask"
                 />
-                <button type="button" class="input-button">
+                <div class="subtask-icons" style="display: none;">
+                    <img src="../assets/icons/btn/close.svg" alt="Clear" class="subtask-icon" onclick="clearSubtask()">
+                    <div class="subtask-separator"></div>
+                    <img src="../assets/icons/btn/check.svg" alt="Add" class="subtask-icon" onclick="addSubtask()">
+                </div>
+                <button type="button" class="input-button" id="add-subtask-btn" style="display: block;">
                   <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
                 </button>
               </div>
+              <ul id="subtasks-list" class="subtasks-list"></ul>
             </div>
           </div>
         </div>
         <div class="form-buttons-part">
           <div class="sign-info">This field is required</div>
           <div class="buttons-area">
-            <button type="reset" class="clear-btn" onclick="clear()">
+            <button type="reset" class="clear-btn" data-event-handle="true">
               Clear
               <img src="../assets/icons/btn/close.svg" alt="Close Icon" />
             </button>
-            <button type="submit" class="create-btn">
+            <button type="submit" class="create-btn" data-event-handle="true">
               Create Task
               <img src="../assets/icons/btn/check-mark.svg" alt="Check-mark Icon" />
             </button>

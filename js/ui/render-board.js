@@ -42,14 +42,41 @@ function createSimpleTaskCard(boardData, taskID) {
     avatars += `<div class="avatar avatar-color-${color}" title="${name}">${initials}</div>`;
   }
 
-  let prio = task.priority;
-  let icon = `../assets/icons/property/${prio}.svg`;
-  let prioText = prio === 'low' ? 'Niedrig' : prio === 'medium' ? 'Mittel' : prio === 'urgent' ? 'Urgent' : 'Hoch';
+ let prio = task.priority;
+  let icon; // Hier deklarieren wir 'icon'
+
+  // Hier stellen wir sicher, dass der Dateiname im Pfad mit dem tatsächlichen Dateinamen übereinstimmt
+  if (prio === 'low') {
+      icon = `../../assets/icons/property/low.svg`;
+  } else if (prio === 'medium') {
+      // KORREKTUR: Der Dateiname ist 'medium.svg', nicht 'medium-priority.svg'
+      icon = `../../assets/icons/property/medium.svg`;
+  } else if (prio === 'urgent') {
+      icon = `../../assets/icons/property/urgent.svg`;
+  } else {
+      // Optional: Ein Fallback-Pfad, falls 'priority' einen unerwarteten Wert hat
+      console.warn('Unbekannte Priorität gefunden:', prio);
+      icon = `../../assets/icons/property/default.svg`; // Stelle sicher, dass du ein 'default.svg' hast oder wähle einen anderen Fallback
+  }
+
+  // Übersetzung des Prioritätstextes
+  let prioText;
+  if (prio === 'low') {
+    prioText = 'Niedrig';
+  } else if (prio === 'medium') {
+    prioText = 'Mittel';
+  } else if (prio === 'urgent') {
+    prioText = 'Dringend'; // Habe 'urgent' auch übersetzt, um konsistent zu sein
+  } else {
+    prioText = 'Unbekannt';
+  }
+
+
   return `
     <div class="task-card">
       <div class="task-category ${categoryClass}">${type}</div>
       <h3 class="task-title">${title}</h3>
-      <p class="task-description">${description}</p>
+      <p class="task-description">${description}</p>Thecnicaal Task
       <div class="task-progress-bar">
         <div class="task-progress-fill" style="width:${percent}%;"></div>
       </div>

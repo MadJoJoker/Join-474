@@ -13,15 +13,19 @@
     <link rel="stylesheet" href="../assets/fonts/font.css" />
     <link rel="stylesheet" href="../styles/header.css" />
     <link rel="stylesheet" href="../styles/overlay.css" />
+    <link rel="stylesheet" href="../styles/add-task.css" />
     <link
       rel="icon"
       href="../assets/icons/logo/joinLogo.svg"
       type="image/x-icon"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
   </head>
 
   <body>
-
     <div class="app-container">
       <section id="sidebar-area"></section>
       <script>
@@ -42,7 +46,6 @@
             });
         </script>
         <div id="overlay-container"></div>
-
         <main class="content">
           <div class="board-wrapper frame-191">
             <div class="frame-192 board-top-section">
@@ -73,7 +76,7 @@
             <div id="board-content-wrapper" class="">
               <div class="column-wrapper">
                 <div class="width-224 status-item">
-                  <button id="fast-add-task-to-do" class="d-flex status-button">
+                  <button id="fast-add-task-todo" class="d-flex status-button">
                     <span class="menu-color">To Do</span>
                     <img src="../assets/icons/btn/plus-btn.svg" />
                   </button>
@@ -86,7 +89,7 @@
               <div class="column-wrapper">
                 <div class="width-224 status-item">
                   <button
-                    id="fast-add-task-in-progress"
+                    id="fast-add-task-inProgress"
                     class="d-flex status-button"
                   >
                     <span class="menu-color">In Progress</span>
@@ -135,7 +138,7 @@
                           alt="Medium Priority"
                         />
                       </div>
-                    </div>
+                    </div>prio
                   </div>
 
                   <div class="task-card">
@@ -169,7 +172,7 @@
                       </div>
                       <div class="priority-icon">
                         <img
-                          src="../assets/icons/medium-priority.svg"
+                          src="../assets/icons/property/medium.svg"
                           alt="Medium Priority"
                         />
                       </div>
@@ -181,7 +184,7 @@
               <div class="column-wrapper">
                 <div class="width-224 status-item">
                   <button
-                    id="fast-add-task-awiat-feedback"
+                    id="fast-add-task-await-feedback"
                     class="d-flex status-button"
                   >
                     <span class="menu-color">Await Feedback</span>
@@ -222,7 +225,7 @@
                       </div>
                       <div class="priority-icon">
                         <img
-                          src="../assets/icons/low-priority.svg"
+                          src="../assets/icons/property/Low.svg"
                           alt="Low Priority"
                         />
                       </div>
@@ -270,7 +273,7 @@
                       </div>
                       <div class="priority-icon">
                         <img
-                          src="../assets/icons/high-priority.svg"
+                          src="../assets/icons/property/Urgent.svg"
                           alt="High Priority"
                         />
                       </div>
@@ -283,34 +286,11 @@
         </main>
       </section>
     </div>
-    <script type="module">
-      import { initOverlayListeners } from "../js/events/overlay-handler.js";
-
-      fetch("../js/templates/add-task-overlay.html")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.text();
-        })
-        .then((data) => {
-          const overlayContainer = document.getElementById("overlay-container");
-          if (overlayContainer) {
-            overlayContainer.innerHTML = data;
-            initOverlayListeners();
-          } else {
-            console.error(
-              "Fehler: Das Element #overlay-container wurde nicht im DOM gefunden."
-            );
-          }
-        })
-        .catch((error) =>
-          console.error("Fehler beim Laden oder Initialisieren des Overlays:", error)
-        );
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="module" src="../main.js"></script>
     <script type="module" src="../js/ui/render-board.js"></script>
     <script type="module" src="../js/pages/sidebar.js"></script>
     <script type="module" src="../js/events/overlay-handler.js"></script>
+    <script type="module" src="../js/pages/board-initializer.js"></script>
   </body>
 </html>
