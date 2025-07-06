@@ -1,21 +1,35 @@
 // To do: deadline function
 // getFirebase importieren und hier streichen; die sollte aber "path"-Parameter bekommen
-// "setUserName" mit wirklichem currentUserName befüttern
 // Code dokumentieren
 
 async function includeHeaderAndSidebar() {
   await addLayoutElements('../js/templates/header.html', 'header');
   await addLayoutElements('../js/templates/sidebar.html', 'sidebar');
+  displayInitialsInHeader();
 }
 
 async function addLayoutElements(path, id) {
-  fetch(path)
+  // const response = await fetch(path);
+  // const data = await response.text();
+  // document.getElementById(id).innerHTML = data;
+
+  // "return" fehlte, darum hat es mit den Initialen im header nie geklappt.
+  return fetch(path)
     .then(response => response.text())
     .then(data => {
       document.getElementById(id).innerHTML = data;
     }
   )
 }
+
+function displayInitialsInHeader() {
+  const name = sessionStorage.getItem('headerInitials');
+  if (name) {
+    document.getElementById('initials').innerText = name;
+  }
+}
+
+
 
 async function initSummary() {
   const data = await getFirebaseData();
@@ -26,9 +40,9 @@ async function initSummary() {
   summarizeTasks(data);
   fillSummary();
   setGreeting();
-  // setUserName();
+  displayUser();
 
-  getNextIdNumber(data);
+  getNextIdNumber(data); // hier nur zum Rumtesten; gehört zu signUp
 }
 
 async function getFirebaseData() {
@@ -102,20 +116,26 @@ function setGreeting() {
   document.getElementById("day-time").innerText = greeting;
 }
 
-// UNDER CONSTRUCTION; default = "dear Guest" oder ""
-const currentUser = "dear Guest";
-
-function setUserName() {
-  document.getElementById("hello").innerText = currentUser;
+function displayUser() {
+  const userName = sessionStorage.getItem('currentUser');
+  let user = document.getElementById('hello');
+  if (userName) {
+    user.innerText = userName;
+  } else {
+    user.innerText = "";
+  }
 }
 
+// Würde auch schon so reichen:
+// function displayUser() {
+//   const name = sessionStorage.getItem('currentUser');
+//   if (name) {
+//     document.getElementById('hello').innerText = name;
+//   }
+// }
 
-// ACHTUNG: funktioniert so nur, wenn bei der db-Abfrage direkt "users" oder "tasks" gefetched wird, also:
-// const URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/tasks.json';
-// wenn die ganze db geholt wird, muß der "tasks"- oder "user"-Teil herausgelöst werden.
-// Das muß dann als "data" übergeben werden.
-// Bei "contacts" würde es erst funktionieren, wenn die keys dort "contact-1" lauten
 
+// Alte Version; neue ist in index.js
 function getNextIdNumber(data) {
   const itemKeys = Object.keys(data);
   let lastKey = itemKeys.at(-1); // ist dasselbe wie: itemKeys[taskKeys.length -1];
