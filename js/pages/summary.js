@@ -14,6 +14,7 @@ async function addLayoutElements(path, id) {
   // document.getElementById(id).innerHTML = data;
 
   // "return" fehlte, darum hat es mit den Initialen im header nie geklappt.
+  // Achtung: das ist nur wegen displayInitialsInHeader (l. 8); ohne die macht "return" den Code sogar kaputt.
   return fetch(path)
     .then(response => response.text())
     .then(data => {
@@ -32,7 +33,7 @@ function displayInitialsInHeader() {
 
 
 async function initSummary() {
-  const data = await getFirebaseData();
+  const data = await getFirebaseData("tasks");
   if (!data) {
     console.error('No data received');
     return;
@@ -45,8 +46,8 @@ async function initSummary() {
   getNextIdNumber(data); // hier nur zum Rumtesten; gehört zu signUp
 }
 
-async function getFirebaseData() {
-  const URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/tasks.json';
+async function getFirebaseData(path = '') {
+  const URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/' + path + '.json';
   try {
     const RESPONSE_FIREBASE = await fetch(URL_FIREBASE_JOIN);
     if (!RESPONSE_FIREBASE.ok) {
@@ -54,7 +55,6 @@ async function getFirebaseData() {
       return null;
     }
     const DATA_FIREBASE_JOIN = await RESPONSE_FIREBASE.json();
-
     return DATA_FIREBASE_JOIN;
   } catch (error) {
     console.error('There was a problem with your fetch operation:', error);
