@@ -13,12 +13,14 @@ let selectedContacts = []; // Array zum Speichern der IDs der ausgewählten Kont
 let addedSubtasks = [];
 
 /**
- * Initialisiert das Add Task Formular innerhalb des Overlays.
- * Diese Funktion sollte AUFGERUFEN werden, NACHDEM der HTML-Inhalt in den DOM geladen wurde.
+ * Initialisiert das Add Task Formular. Diese Funktion MUSS aufgerufen werden,
+ * NACHDEM der HTML-Inhalt des Formulars in den DOM geladen wurde,
+ * sei es als eigenständige Seite oder als dynamisches Overlay.
  */
-export async function initAddTaskOverlay() {
-    console.log("initAddTaskOverlay wird aufgerufen. Initialisiere flatpickr und Event-Listener.");
+export async function initAddTaskForm() {
+    console.log("initAddTaskForm wird aufgerufen. Initialisiere Formular und Event-Listener.");
 
+    // Initialisiere Datepicker
     const datepickerElement = document.getElementById("datepicker");
     if (datepickerElement) {
         pickerInstance = flatpickr(datepickerElement, {
@@ -26,29 +28,26 @@ export async function initAddTaskOverlay() {
             allowInput: true
         });
     } else {
-        console.error("DEBUG: Datepicker-Element nicht im DOM gefunden.");
+        console.warn("DEBUG: Datepicker-Element nicht im DOM gefunden (kann im Overlay später geladen werden).");
     }
 
-    await initTask(); // Ruft deine Firebase-Daten ab und sortiert Kontakte
+    await initTaskData(); // Firebase-Daten abrufen und Kontakte sortieren (umbenannt)
     attachFormEventListeners(); // Alle notwendigen Event-Listener anhängen
+
+    // UI-Elemente rendern und Standardwerte setzen
     renderAssignedToContactsOptions(); // Die Kontakte im Dropdown rendern
     renderCategoryOptions(); // Die Kategorien im Dropdown rendern
     renderSelectedInitials(); // Sicherstellen, dass ausgewählte Kontakte beim Laden gerendert werden
-    // Setze die Standardpriorität beim Initialisieren
-    document.querySelectorAll('.priority-btn').forEach(btn => {
-        if (btn.dataset.priority === currentPriority) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
+    setMedium(); // Standardpriorität auf "Medium" setzen und UI anpassen
+    renderSubtasks(); // Sicherstellen, dass Subtasks gerendert werden (falls welche vorab da sind)
 }
 
 /**
  * Initialisiert die Aufgabe, indem die Firebase-Daten abgerufen und die Kontakte sortiert werden.
+ * Umbenannt von initTask(), um Verwechslung mit Task-Objekten zu vermeiden.
  * @async
  */
-async function initTask() {
+async function initTaskData() { // Umbenannt von initTask
     try {
         const data = await getFirebaseData(); // Daten von Firebase holen
         if (data && data.contacts) {
@@ -69,11 +68,13 @@ async function initTask() {
     }
 }
 
-
 /**
  * Hängt alle Event-Listener an die Formularfelder an.
+ * Diese Funktion MUSS aufgerufen werden, NACHDEM das HTML der Formularfelder im DOM ist.
  */
 function attachFormEventListeners() {
+    console.log("attachFormEventListeners wird ausgeführt.");
+
     // Formular-Submit
     const form = document.getElementById('add-task-form');
     if (form) {
@@ -86,79 +87,91 @@ function attachFormEventListeners() {
         };
     }
 
-    // Input-Felder
-    document.getElementById('title').addEventListener('input', (event) => handleInput(event.target));
-    document.getElementById('task-description').addEventListener('input', (event) => handleInput(event.target));
-    document.getElementById('datepicker').addEventListener('input', (event) => { formatDate(event.target); handleInput(event.target); });
+    // Input-Felder (Null-Checks hinzugefügt)
+    document.getElementById('title')?.addEventListener('input', (event) => handleInput(event.target));
+    document.getElementById('task-description')?.addEventListener('input', (event) => handleInput(event.target));
+    // Datepicker Input-Listener (direkt am Element, da flatpickr das Feld auch manipuliert)
+    document.getElementById('datepicker')?.addEventListener('input', (event) => { formatDate(event.target); handleInput(event.target); });
 
-    // Priority-Buttons
+    // Priority-Buttons (Null-Check unnötig bei querySelectorAll, da forEach auch bei leerer NodeList funktioniert)
     document.querySelectorAll('.priority-btn').forEach(button => {
         button.addEventListener('click', (event) => setPriority(event.currentTarget, event.currentTarget.dataset.priority));
     });
 
-    // Kalender-Icon
+    // Kalender-Icon (Null-Check hinzugefügt)
     const calendarIcon = document.getElementById('calendar-icon');
     if (calendarIcon) {
-        calendarIcon.addEventListener('click', () => pickerInstance.open());
+        calendarIcon.addEventListener('click', () => pickerInstance?.open()); // Optional Chaining für pickerInstance
     }
 
-    // Resize-Handle für Textarea
+    // Resize-Handle für Textarea (Null-Check hinzugefügt)
     const resizeHandle = document.querySelector('.resize-handle');
     if (resizeHandle) {
         resizeHandle.addEventListener('mousedown', startResize);
     }
+    // Diese Listener bleiben am Dokument, da sie globale Mausbewegungen verfolgen
     document.addEventListener('mousemove', resizeTextarea);
     document.addEventListener('mouseup', stopResize);
 
-
-    // Assigned To Dropdown
+    // Assigned To Dropdown (Null-Check hinzugefügt)
     const dropdownAssignedTo = document.getElementById('dropdown-assigned-to');
     if (dropdownAssignedTo) {
-        dropdownAssignedTo.addEventListener('click', () => toggleAssignedToDropdown('assignedTo'));
+        dropdownAssignedTo.addEventListener('click', (event) => {
+            event.stopPropagation(); // Verhindert Schließen des Overlays bei Klick auf den Dropdown-Header
+            toggleAssignedToDropdown();
+        });
     }
 
-    // Category Dropdown
+    // Category Dropdown (Null-Check hinzugefügt)
     const dropdownCategory = document.getElementById('dropdown-category');
     if (dropdownCategory) {
-        dropdownCategory.addEventListener('click', () => toggleCategoryDropdown('category'));
+        dropdownCategory.addEventListener('click', (event) => {
+            event.stopPropagation(); // Verhindert Schließen des Overlays bei Klick auf den Dropdown-Header
+            toggleCategoryDropdown();
+        });
     }
 
-    // Subtask Input
+    // Subtask Input und Buttons (Null-Checks hinzugefügt)
     const subtaskInput = document.getElementById('subtask-input');
     if (subtaskInput) {
         subtaskInput.addEventListener('input', toggleSubtaskIcons);
+        // Da die Icons dynamisch angezeigt/versteckt werden, sind hier dedizierte Listener sinnvoll
+        document.querySelector('#subtask-input-controls .add-btn')?.addEventListener('click', addSubtask); // Angepasst an neue Icon-Container-ID
+        document.querySelector('#subtask-input-controls .close-btn')?.addEventListener('click', clearSubtask); // Angepasst
     }
-    // Subtask Add Button (Wenn Icons ausgeblendet sind und nur der Button sichtbar ist)
+
+    // Add Subtask Button (wenn Icons ausgeblendet sind und nur der Button sichtbar ist)
     const addSubtaskBtn = document.getElementById('add-subtask-btn');
     if (addSubtaskBtn) {
         addSubtaskBtn.addEventListener('click', addSubtask);
     }
 
-
-    // Clear Button
+    // Clear Button (Null-Check hinzugefügt)
     const clearBtn = document.querySelector('.clear-btn');
     if (clearBtn) {
         clearBtn.addEventListener('click', clearForm);
     }
 }
 
+/**
+ * Behandelt Input-Änderungen für Validierung und Feedback.
+ * @param {HTMLInputElement} inputElement - Das Input-Element, das geändert wurde.
+ */
 function handleInput(inputElement) {
-    // Implementiere deine Logik zum Behandeln von Input-Änderungen hier
-    // z.B. Entfernen von Fehlermeldungen, wenn der Benutzer tippt
     console.log(`Input ${inputElement.id} geändert: ${inputElement.value}`);
     if (inputElement.classList.contains('invalid')) {
-        toggleInvalidClass(inputElement, true); // Entfernt 'invalid' Klasse
+        toggleInvalidClass(inputElement, true); // Entfernt 'invalid' Klasse bei gültigem Input
     }
 }
 
 /**
  * Formatiert das Datum im Input-Feld, falls nötig.
+ * Flatpickr handhabt dies bereits weitestgehend.
  * @param {HTMLInputElement} input - Das Input-Element.
  */
 function formatDate(input) {
-    // Der Flatpickr handhabt die Formatierung, hier nur Platzhalter falls nötig
-    // Du könntest hier zusätzliche Validierung oder Formatierung vornehmen,
-    // wenn der Benutzer manuell eingibt.
+    // Zusätzliche Logik, wenn der Benutzer manuell Datum eingibt und es formatiert werden muss.
+    // Flatpickr aktualisiert den Wert automatisch, aber hier könnte man z.B. eigene Validierung hinzufügen.
 }
 
 /**
@@ -169,8 +182,10 @@ function startResize(e) {
     e.preventDefault(); // Verhindert Standard-Drag-Verhalten
     isResizing = true;
     currentTextarea = document.getElementById('task-description');
-    startY = e.clientY;
-    startHeight = currentTextarea.clientHeight;
+    if (currentTextarea) {
+        startY = e.clientY;
+        startHeight = currentTextarea.clientHeight;
+    }
 }
 
 /**
@@ -178,7 +193,7 @@ function startResize(e) {
  * @param {MouseEvent} e - Das Maus-Event.
  */
 function resizeTextarea(e) {
-    if (!isResizing) return;
+    if (!isResizing || !currentTextarea) return; // Zusätzlicher Check für currentTextarea
     const newHeight = startHeight + (e.clientY - startY);
     currentTextarea.style.height = `${newHeight}px`;
 }
@@ -201,6 +216,9 @@ function setPriority(clickedButton, priority) {
     currentPriority = priority;
     console.log('Priorität gesetzt:', currentPriority);
 }
+// Exportiere setPriority, falls direkt im HTML aufgerufen (z.B. bei initialem Laden)
+window.setPriority = setPriority;
+
 
 /**
  * Setzt die Priorität auf "Medium". Wird normalerweise initial einmal aufgerufen.
@@ -211,39 +229,50 @@ function setMedium() {
         setPriority(mediumButton, 'medium');
     }
 }
+window.setMedium = setMedium; // Auch global, falls es direkt im HTML verwendet wird oder von außen aufgerufen wird
+
 
 /**
  * Zeigt/Versteckt die Icons für Subtask-Eingabe (Haken und X).
  */
 function toggleSubtaskIcons() {
     const subtaskInput = document.getElementById('subtask-input');
-    const subtaskIcons = subtaskInput.parentNode.querySelector('.subtask-icons');
-    const addSubtaskBtn = subtaskInput.parentNode.querySelector('#add-subtask-btn');
+    // Die Icons sollten in einem gemeinsamen Container liegen, z.B. '.subtask-input-controls'
+    const subtaskIcons = document.getElementById('subtask-input-controls');
+    const addSubtaskBtn = document.getElementById('add-subtask-btn'); // Der "Plus"-Button
 
-    if (subtaskInput.value.trim() !== '') {
-        if (subtaskIcons) subtaskIcons.style.display = 'flex';
-        if (addSubtaskBtn) addSubtaskBtn.style.display = 'none';
-    } else {
-        if (subtaskIcons) subtaskIcons.style.display = 'none';
-        if (addSubtaskBtn) addSubtaskBtn.style.display = 'block';
+    if (subtaskInput && subtaskIcons && addSubtaskBtn) {
+        if (subtaskInput.value.trim() !== '') {
+            subtaskIcons.style.display = 'flex'; // Zeige die Haken/X Icons
+            addSubtaskBtn.style.display = 'none'; // Verstecke den Plus-Button
+        } else {
+            subtaskIcons.style.display = 'none'; // Verstecke die Haken/X Icons
+            addSubtaskBtn.style.display = 'block'; // Zeige den Plus-Button
+        }
     }
 }
+window.toggleSubtaskIcons = toggleSubtaskIcons; // Global, falls im HTML oninput verwendet wird
+
 
 /**
  * Löscht den Inhalt des Subtask-Inputs.
  */
 function clearSubtask() {
     const subtaskInput = document.getElementById('subtask-input');
-    subtaskInput.value = '';
-    toggleSubtaskIcons(); // Icons wieder ausblenden
+    if (subtaskInput) {
+        subtaskInput.value = '';
+        toggleSubtaskIcons(); // Icons wieder ausblenden
+    }
 }
+window.clearSubtask = clearSubtask; // Global, falls im HTML onclick verwendet wird
+
 
 /**
  * Fügt einen Subtask zur Liste hinzu.
  */
 function addSubtask() {
     const subtaskInput = document.getElementById('subtask-input');
-    const subtaskText = subtaskInput.value.trim();
+    const subtaskText = subtaskInput?.value.trim(); // Optional Chaining
 
     if (subtaskText) {
         addedSubtasks.push({ text: subtaskText, completed: false });
@@ -251,6 +280,8 @@ function addSubtask() {
         clearSubtask();
     }
 }
+window.addSubtask = addSubtask; // Global, falls im HTML onclick verwendet wird
+
 
 /**
  * Rendert die hinzugefügten Subtasks in der Liste.
@@ -272,6 +303,8 @@ function renderSubtasks() {
         `;
     });
 }
+window.renderSubtasks = renderSubtasks; // Global, falls von außerhalb direkt aufgerufen wird
+
 
 /**
  * Schaltet den Abschlussstatus eines Subtasks um.
@@ -283,6 +316,8 @@ function toggleSubtaskCompletion(index) {
         console.log(`Subtask ${index} completion: ${addedSubtasks[index].completed}`);
     }
 }
+window.toggleSubtaskCompletion = toggleSubtaskCompletion; // MUSS GLOBAL SEIN (wegen onchange im HTML)
+
 
 /**
  * Bearbeitet einen Subtask.
@@ -292,10 +327,12 @@ function editSubtask(index) {
     const subtaskInput = document.getElementById('subtask-input');
     if (subtaskInput && addedSubtasks[index]) {
         subtaskInput.value = addedSubtasks[index].text;
-        deleteSubtask(index, false); // Löschen, aber nicht rendern
+        deleteSubtask(index, false); // Löschen, aber nicht sofort neu rendern
         toggleSubtaskIcons();
     }
 }
+window.editSubtask = editSubtask; // MUSS GLOBAL SEIN (wegen onclick im HTML)
+
 
 /**
  * Löscht einen Subtask.
@@ -308,6 +345,7 @@ function deleteSubtask(index, doRender = true) {
         renderSubtasks();
     }
 }
+window.deleteSubtask = deleteSubtask; // MUSS GLOBAL SEIN (wegen onclick im HTML)
 
 
 /**
@@ -321,6 +359,8 @@ function toggleCategoryDropdown() {
         dropdownIcon.classList.toggle('rotate');
     }
 }
+window.toggleCategoryDropdown = toggleCategoryDropdown; // Global, falls im HTML onclick verwendet wird
+
 
 /**
  * Rendert die verfügbaren Kategorien.
@@ -340,10 +380,12 @@ function renderCategoryOptions() {
         optionDiv.classList.add('dropdown-option', cat.className);
         optionDiv.textContent = cat.text;
         optionDiv.setAttribute('data-value', cat.value);
+        // Event Listener direkt hier anhängen, NICHT onclick im HTML-String
         optionDiv.addEventListener('click', (event) => selectCategory(cat.value, cat.text, event));
         optionsContainer.appendChild(optionDiv);
     });
 }
+window.renderCategoryOptions = renderCategoryOptions; // Global, falls von außen direkt aufgerufen wird
 
 
 /**
@@ -363,6 +405,8 @@ function selectCategory(value, text, event) {
     toggleCategoryDropdown(); // Schließt das Dropdown
     toggleInvalidClass(selectedDisplay, true); // Entfernt Fehlermarkierung, falls vorhanden
 }
+window.selectCategory = selectCategory; // Global, falls im HTML onclick verwendet wird
+
 
 /**
  * Schaltet das Dropdown-Menü für "Assigned to" um.
@@ -375,6 +419,8 @@ function toggleAssignedToDropdown() {
         dropdownIcon.classList.toggle('rotate');
     }
 }
+window.toggleAssignedToDropdown = toggleAssignedToDropdown; // Global, falls im HTML onclick verwendet wird
+
 
 /**
  * Rendert die Kontakte im "Assigned to" Dropdown.
@@ -388,15 +434,21 @@ function renderAssignedToContactsOptions() {
         const isSelected = selectedContacts.some(sc => sc.id === contact.id);
         const optionDiv = document.createElement('div');
         optionDiv.classList.add('dropdown-option-contact');
+        // Direkte Event Listener an `optionDiv` anstatt `onclick` im HTML-String
+        optionDiv.addEventListener('click', (event) => toggleSelectContact(event, contact.id, contact.name, contact.initials, contact.avatarColor));
+
         optionDiv.innerHTML = `
             <div class="contact-initials-circle" style="background-color: ${contact.avatarColor || '#ccc'};">${contact.initials}</div>
             <span>${contact.name}</span>
             <input type="checkbox" id="contact-${contact.id}" data-contact-id="${contact.id}" ${isSelected ? 'checked' : ''}>
         `;
-        optionDiv.addEventListener('click', (event) => toggleSelectContact(event, contact.id, contact.name, contact.initials, contact.avatarColor));
+        // Da die Checkbox ein Kind des Klick-Elements ist, wird der Klick auf die Checkbox den Listener des Divs triggern.
+        // Das event.stopPropagation() in toggleSelectContact ist wichtig.
         optionsContainer.appendChild(optionDiv);
     });
 }
+window.renderAssignedToContactsOptions = renderAssignedToContactsOptions; // Global, falls von außen direkt aufgerufen wird
+
 
 /**
  * Fügt einen Kontakt zur Auswahl hinzu oder entfernt ihn.
@@ -407,7 +459,7 @@ function renderAssignedToContactsOptions() {
  * @param {string} avatarColor - Die Avatar-Farbe des Kontakts.
  */
 function toggleSelectContact(event, contactId, name, initials, avatarColor) {
-    event.stopPropagation(); // Verhindert, dass das Dropdown bei Klick auf Checkbox geschlossen wird
+    event.stopPropagation(); // Verhindert, dass der Klick auf das Dropdown-Option oder Checkbox das Overlay schließt
     const checkbox = document.getElementById(`contact-${contactId}`);
     if (checkbox) {
         checkbox.checked = !checkbox.checked; // Checkbox-Status umschalten
@@ -421,6 +473,8 @@ function toggleSelectContact(event, contactId, name, initials, avatarColor) {
     }
     renderSelectedInitials();
 }
+window.toggleSelectContact = toggleSelectContact; // Global, falls im HTML onclick verwendet wird
+
 
 /**
  * Rendert die Initialen der ausgewählten Kontakte.
@@ -437,6 +491,7 @@ function renderSelectedInitials() {
         `;
     });
 }
+window.renderSelectedInitials = renderSelectedInitials; // Global, falls von außen direkt aufgerufen wird
 
 
 /**
@@ -446,8 +501,9 @@ function renderSelectedInitials() {
 function checkRequiredFields() {
     let isValid = true;
 
-    const titleInput = document.getElementById('task-title');
-    if (!titleInput.value.trim()) {
+    // Optional Chaining und Null-Checks für die Elemente
+    const titleInput = document.getElementById('title'); // ID angepasst von 'task-title' zu 'title'
+    if (!titleInput?.value.trim()) {
         toggleInvalidClass(titleInput, false);
         isValid = false;
     } else {
@@ -455,7 +511,7 @@ function checkRequiredFields() {
     }
 
     const dateInput = document.getElementById('datepicker');
-    if (!dateInput.value.trim()) {
+    if (!dateInput?.value.trim()) {
         toggleInvalidClass(dateInput, false);
         isValid = false;
     } else {
@@ -463,7 +519,7 @@ function checkRequiredFields() {
     }
 
     const categorySelectedDisplay = document.getElementById('selected-category');
-    if (!selectedCategory) { // Oder: if (!categorySelectedDisplay.textContent || categorySelectedDisplay.textContent === 'Select task category')
+    if (!selectedCategory || categorySelectedDisplay?.textContent === 'Select task category') {
         toggleInvalidClass(categorySelectedDisplay, false);
         isValid = false;
     } else {
@@ -479,6 +535,8 @@ function checkRequiredFields() {
 
     return isValid;
 }
+window.checkRequiredFields = checkRequiredFields; // Global, falls im HTML onclick (z.B. bei submit) verwendet wird
+
 
 /**
  * Fügt oder entfernt die 'invalid'-Klasse basierend auf der Gültigkeit.
@@ -494,13 +552,14 @@ function toggleInvalidClass(element, isValid) {
         }
     }
 }
+window.toggleInvalidClass = toggleInvalidClass; // Global, falls im HTML onclick verwendet wird
 
 
 /**
  * Leert das Formular.
  */
 function clearForm() {
-    document.getElementById('add-task-form').reset(); // Setzt alle Formularfelder zurück
+    document.getElementById('add-task-form')?.reset(); // Optional Chaining für das Formular
     currentPriority = 'medium'; // Priorität auf Standard zurücksetzen
     setMedium(); // UI für Medium-Priorität aktualisieren
     selectedCategory = null;
@@ -508,7 +567,7 @@ function clearForm() {
     if (selectedCategoryDisplay) {
         selectedCategoryDisplay.textContent = 'Select task category';
         selectedCategoryDisplay.classList.remove('selected');
-        toggleInvalidClass(selectedCategoryDisplay, true);
+        toggleInvalidClass(selectedCategoryDisplay, true); // Fehlermarkierung entfernen
     }
     selectedContacts = []; // Ausgewählte Kontakte leeren
     renderAssignedToContactsOptions(); // Kontakte im Dropdown neu rendern (Checkboxen zurücksetzen)
@@ -522,6 +581,8 @@ function clearForm() {
         toggleInvalidClass(input, true); // Entfernt Invalid-Klassen
     });
 }
+window.clearForm = clearForm; // Global, falls im HTML onclick verwendet wird
+
 
 /**
  * Sendet das Formular ab (simuliert).
@@ -529,11 +590,10 @@ function clearForm() {
 async function submitForm() {
     console.log('Formular abgesendet!');
     // Hier würde die Logik zum Speichern der Daten in Firebase oder der Datenbank stehen.
-    // Beispiel der gesammelten Daten:
     const taskData = {
-        title: document.getElementById('title').value.trim(),
-        description: document.getElementById('task-description').value.trim(),
-        dueDate: document.getElementById('datepicker').value.trim(),
+        title: document.getElementById('title')?.value.trim(), // Optional Chaining
+        description: document.getElementById('task-description')?.value.trim(), // Optional Chaining
+        dueDate: document.getElementById('datepicker')?.value.trim(), // Optional Chaining
         priority: currentPriority,
         assignedUsers: selectedContacts.map(c => c.id), // Nur IDs speichern
         category: selectedCategory,
@@ -548,7 +608,13 @@ async function submitForm() {
     // Beispiel: Speichern in Firebase (Platzhalter)
     // await saveTaskToFirebase(taskData); // Du müsstest diese Funktion implementieren
     clearForm(); // Formular leeren
-    closeSpecificOverlay('overlay'); // Overlay schließen
+
+    // Schließe das Overlay NUR, wenn das Formular als Overlay genutzt wird.
+    // Dies erfordert einen Mechanismus, um zu erkennen, ob es ein Overlay ist.
+    // Eine einfache Lösung ist, closeSpecificOverlay immer aufzurufen,
+    // da es intern prüft, ob das Overlay existiert/sichtbar ist.
+    closeSpecificOverlay('overlay');
+
     // Optional: Board neu laden, um die neue Aufgabe anzuzeigen
     // if (typeof initializeBoard === 'function') { // Nur wenn initializeBoard global ist
     //     initializeBoard();
@@ -558,5 +624,5 @@ async function submitForm() {
     // if (firebaseBoardData) {
     //     renderTasksByColumn(firebaseBoardData);
     // }
-
 }
+window.submitForm = submitForm; // Global, falls im HTML onsubmit oder onclick verwendet wird

@@ -185,10 +185,10 @@
 <script type="module">
     // Dieser Code wird NUR ausgeführt, wenn add-task.html direkt geladen wird.
     // Wenn es als Overlay über innerHTML eingefügt wird, wird dieser Block ignoriert.
-    import { initAddTaskOverlay } from '../js/pages/add-task.js';
+    import { initAddTaskForm} from '../js/pages/add-task.js';
 
     document.addEventListener('DOMContentLoaded', async () => {
-        await initAddTaskOverlay();
+        await initAddTaskForm();
     });
 </script>
 </body>
