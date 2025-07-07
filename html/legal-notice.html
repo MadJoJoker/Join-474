@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Notice</title>
+
+    <link rel="shortcut icon" href="../assets/icons/logo/joinLogo.svg" type="image/x-icon">
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../styles/standard.css">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
+    <link rel="stylesheet" href="../styles/colors.css">
+    <link rel="stylesheet" href="../assets/fonts/font.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <section id="sidebar-area"></section>
+        <script>
+            fetch('../js/templates/sidebar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('sidebar-area').innerHTML = data;
+                });
+        </script>
+        <section class="main-content">
+            <header id="header"></header>
+            <script>
+                fetch('../js/templates/header.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('header').innerHTML = data;
+                    });
+            </script>
+        </section>
+    </div>
+    <script src="../js/pages/sidebar.js"></script>
+</body>
+
+</html>
