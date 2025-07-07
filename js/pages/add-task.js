@@ -531,7 +531,7 @@ async function submitForm() {
     // Hier würde die Logik zum Speichern der Daten in Firebase oder der Datenbank stehen.
     // Beispiel der gesammelten Daten:
     const taskData = {
-        title: document.getElementById('task-title').value.trim(),
+        title: document.getElementById('title').value.trim(),
         description: document.getElementById('task-description').value.trim(),
         dueDate: document.getElementById('datepicker').value.trim(),
         priority: currentPriority,
