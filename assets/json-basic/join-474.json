@@ -1,0 +1,318 @@
+{
+  "boards": {
+    "board-1": {
+      "columns": {
+        "done": {
+          "name": "Done",
+          "order": 3
+        },
+        "inProgress": {
+          "name": "In Progress",
+          "order": 1
+        },
+        "review": {
+          "name": "Review",
+          "order": 2
+        },
+        "todo": {
+          "name": "To Do",
+          "order": 0
+        }
+      },
+      "name": "Demo Board"
+    },
+    "board1": {
+      "columns": {
+        "done": {
+          "name": "Done",
+          "order": 3
+        },
+        "inProgress": {
+          "name": "In Progress",
+          "order": 1
+        },
+        "review": {
+          "name": "Review",
+          "order": 2
+        },
+        "todo": {
+          "name": "To Do",
+          "order": 0
+        }
+      },
+      "name": "Demo Board"
+    }
+  },
+  "contacts": {
+    "contact-1": {
+      "assignedTo": [
+        "demo-user-1-uid"
+      ],
+      "avatarColor": "--lila",
+      "email": "Mathias@voigt-vital.de",
+      "initials": "MV",
+      "name": "Mathias Voigt",
+      "phone": "0151-17276037"
+    },
+    "contact-10": {
+      " initials": "FF",
+      " name": "Frederike Fuchs-Schreck",
+      "assignedTo": [
+        "contact-9",
+        "contact-11"
+      ],
+      "avatarColor": "--menthol",
+      "email": "Fuchs-Schreck@Hühnerstall.de",
+      "phone": "030-33223"
+    },
+    "contact-11": {
+      " initials": "GG",
+      " name": "Gisela Gänsehaut",
+      "assignedTo": [
+        "contact-9"
+      ],
+      "avatarColor": "--lightGreen",
+      "email": "Gänsehaut@hotmail.de",
+      "phone": "+49 151 56 57 89"
+    },
+    "contact-2": {
+      "assignedTo": [
+        "contact-1"
+      ],
+      "avatarColor": "--orange",
+      "email": "claudia@wick.test.de",
+      "initials": "CW",
+      "name": "Claudia Wick",
+      "phone": "02042-1234567"
+    },
+    "contact-3": {
+      "assignedTo": [
+        "contact-1",
+        "contact-2"
+      ],
+      "avatarColor": "--yellow",
+      "email": "dominik.rapp@join.de",
+      "initials": "DR",
+      "name": "Dominik Rapp",
+      "phone": "0151-34434"
+    },
+    "contact-4": {
+      "assignedTo": [
+        "contact-2"
+      ],
+      "avatarColor": "--red",
+      "email": "eugen-birich@join.de",
+      "initials": "EB",
+      "name": "Eugen Birich",
+      "phone": "0201-787878"
+    },
+    "contact-5": {
+      "assignedTo": [
+        "contact-1",
+        "contact-7"
+      ],
+      "avatarColor": "--petrol",
+      "email": "anna.schmidt@example.de",
+      "initials": "AS",
+      "name": "Anna Schmidt",
+      "phone": "0152-46578"
+    },
+    "contact-6": {
+      "assignedTo": [
+        "contact-3",
+        "contact-8"
+      ],
+      "avatarColor": "--menthol",
+      "email": "peter.pauli@Hamburg.de",
+      "initials": "PP",
+      "name": "Peter Paulsen",
+      "phone": "0201-223344"
+    },
+    "contact-7": {
+      "assignedTo": [
+        "contact-4",
+        "contact-5"
+      ],
+      "avatarColor": "--darkViolet",
+      "email": "s.meier@demo.au",
+      "initials": "SM",
+      "name": "Sara Meier",
+      "phone": "+49152-234968"
+    },
+    "contact-8": {
+      "assignedTo": [
+        "contact-2",
+        "contact-3"
+      ],
+      "avatarColor": "--pink",
+      "email": "Fritz.W@lter.de",
+      "initials": "FW",
+      "name": "Fritz Walter",
+      "phone": "0800-234567"
+    },
+    "contact-9": {
+      " initials": "MM",
+      " name": "Monika Möwenherz",
+      "assignedTo": [
+        "contact-10",
+        "contact-11"
+      ],
+      "avatarColor": "--indigo",
+      "email": "M.M@join.de",
+      "phone": "0208-64646"
+    }
+  },
+  "rooms": "",
+  "tasks": {
+    "task-1": {
+      "assignedUsers": [
+        "contact-1",
+        "contact-2",
+        "contact-3",
+        "contact-4"
+      ],
+      "boardID": "board-1",
+      "columnID": "inProgress",
+      "createdAt": [
+        "21.06.2025"
+      ],
+      "deadline": "22.08.2025",
+      "description": "Nach Erstellung des Kanban Projektes und der Überprüfung der Checkliste wird das Projekt eingereicht",
+      "priority": "urgent",
+      "subtasksCompleted": 1,
+      "title": "Join abgeben",
+      "totalSubtask": [
+        1,
+        "Auf Projektseite hochgeladen"
+      ],
+      "type": "User Story",
+      "updatedAt": [
+        "20.06.2025",
+        "20.06.2025"
+      ]
+    },
+    "task-2": {
+      "assignedUsers": [
+        "contact-4",
+        "contact-3",
+        "contact-2"
+      ],
+      "boardID": "board-1",
+      "columnID": "review",
+      "createdAt": "10.05.2025",
+      "deadline": "18.08.2025",
+      "description": "Es gilt, GitHub zu überprüfen und alle Branches in den 'main'-Branch zu mergen, damit alle Änderungen dort konsolidiert sind",
+      "priority": "medium",
+      "subtasksCompleted": 1,
+      "title": "Finale Github  Kontrolle",
+      "totalSubtasks": [
+        "Jeder hat alles gepusht",
+        "All Pulls sind abgeschlossen"
+      ],
+      "type": "User Story",
+      "updatedAt": [
+        "20.06.2025"
+      ]
+    },
+    "task-3": {
+      " description": "Alle Bugs und Design Probleme werden in einer Checkliste zusammengefasst um sie im Anschluss abzuarbeiten.",
+      "assignedUsers": [
+        "contact-9"
+      ],
+      "boardID": "board-1",
+      "columnID": "done",
+      "createdAt": "12.06.2025",
+      "deadline": "31.12.2025",
+      "priority": "urgent",
+      "subtaskCompleted": "5",
+      "title": "Punchliste erstellen",
+      "totalSubtask": [
+        "Claudias´ Liste erstellen",
+        "Eugens Liste erstellen",
+        "Dominiks Liste erstellen",
+        "Mathias´ Liste  erstellen",
+        "Alle Listen zusammenführen und sortieren"
+      ],
+      "type": "Technical Task",
+      "updatedAt": [
+        "2025-06-16T11:30:00Z"
+      ]
+    },
+    "task-4": {
+      " description": "Der Content wird über eine Funktion dynamisch erzeugt, funktioniert diese nicht wird der Content auf keiner Seite angezeigt",
+      "assignedUsers": [
+        "contact-10"
+      ],
+      "boardID": "board-1",
+      "columnID": "review",
+      "createdAt": "22.06.2025",
+      "deadline": "19.10.2025",
+      "priority": "urgent",
+      "subtaskCompleted": "0",
+      "title": "Fetch des Contents prüfen",
+      "type": "Technical Task",
+      "updatedAt": [
+        "19.07.2025"
+      ]
+    },
+    "task-5": {
+      " description": "In dieser Besprechung wird festgelegt in welcher Reihenfolge die Aufgaben der Punch Liste erledigt werden",
+      "assignedUsers": [
+        "contact-4"
+      ],
+      "boardID": "board-1",
+      "columnID": "inProgress",
+      "createdAt": "19.06.2025",
+      "deadline": "22.12.2025",
+      "priority": "low",
+      "subtaskCompleted": "1",
+      "title": "Besprechung der Aufgaben Priorisierung ",
+      "totalSubtask": [
+        "Punch Liste erstellen"
+      ],
+      "type": "Meeting",
+      "updatedAt": [
+        "19.06.2025"
+      ]
+    },
+    "task-6": {
+      " description": "In dieser Besprechung soll geklärt werden wie lange jeder für seine Aufgaben braucht damit wir einen Abgabetermin eingrenzen können",
+      "assignedUsers": [
+        "contact-3"
+      ],
+      "boardID": "board-1",
+      "columnID": "done",
+      "createdAt": "09.06.2025",
+      "deadline": "17.09.2025",
+      "priority": "medium",
+      "subtaskCompleted": "4",
+      "title": "Besprechung zum Abgabetermin",
+      "totalSubtask": [
+        "Vorgespräch Mathias",
+        "Vorgespräch Claudia",
+        "Vorgespräch Eugen",
+        "Vorgespräch Dominik"
+      ],
+      "type": "Meeting",
+      "updatedAt": [
+        "11.06.2025"
+      ]
+    }
+  },
+  "users": {
+    "demoUser-1": {
+      "associatedContacts": [
+        "contact-1",
+        "contact-2",
+        "contact-3",
+        "contact-4",
+        "contact-5",
+        "contact-6",
+        "contact-7",
+        "contact-8"
+      ],
+      "displayName": "User Uwe",
+      "email": "demo1@example.de"
+    }
+  }
+}
