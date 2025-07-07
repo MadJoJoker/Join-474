@@ -4,7 +4,7 @@ body,
 html {
     margin: 0;
     height: 100%;
-    background-color: #f6f7f8;
+    background-color: var(--lightGrey);
     font-family: 'Inter', sans-serif;
 }
 
@@ -15,10 +15,11 @@ html {
 
 .contacts-sidebar {
     width: 456px;
-    background-color: white;
-    border-right: 1px solid #eee;
+    background-color: var(--white);
+    border-right: 4px solid #eee;
     overflow-y: auto;
-    padding-left: 24px;
+    padding: 0 24px;
+    box-shadow: 4px 0 4px rgba(0, 0, 0, 0.1);
 }
 
 .contacts-details {
@@ -26,7 +27,7 @@ html {
     padding-top: 101px;
     padding-left: 32px;
     padding-right: 32px;
-    background-color: #f6f7f8;
+    background-color: var(--lightGrey);
     position: relative;
     overflow: hidden;
 }
@@ -48,25 +49,39 @@ html {
 .contacts-divider {
     height: 59px;
     width: 3px;
-    background-color: #29abe2;
+    background-color: var(--lightBlue);
     border-radius: 10px;
 }
 
 .contact-section {
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .contact-initial {
-    font-weight: bold;
-    margin: 10px 0 5px;
-    border-bottom: 1px solid #eee;
+    font-weight: 400;
+    border-bottom: 1px solid var(--white);
+    font-size: 20px;
+    border-bottom: 1px solid var(--grey);
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-left: 35px;
+    margin-left: 25px;
+    max-width: 352px;
 }
 
 .contact {
     display: flex;
+    justify-content: start;
     align-items: center;
-    padding: 10px 0;
     cursor: pointer;
+    width: 352px;
+    margin-left: 25px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 .contact:hover:not(.active) {
@@ -76,13 +91,13 @@ html {
 }
 
 .contact.active {
-    background-color: #2a3647;
-    color: white;
+    background-color: var(--dark);
+    color: var(--white);
     border-radius: 8px;
 }
 
 .contact.active .contact-name {
-    color: white;
+    color: var(--white);
 }
 
 .contact-avatar {
@@ -94,9 +109,9 @@ html {
     justify-content: center;
     margin-right: 30px;
     font-size: 12px;
-    color: white;
+    color: var(--white);
     box-sizing: border-box;
-    border: 2px solid white;
+    border: 2px solid var(--white);
 }
 
 .contact-info {
@@ -112,27 +127,25 @@ html {
 .contact-email {
     font-size: 16px;
     font-weight: 400;
-    color: #29abe2;
+    color: var(--lightBlue);
 }
 
 .contact-email a {
-    color: #1f8cf0;
+    color: var(--lightBlue);
 }
 
 .contact-details-card {
     opacity: 0;
     transform: translateX(100%);
     transition: all 0.4s ease-in-out;
-    pointer-events: none;
     width: 100%;
-    padding: 32px;
+    padding: 32px 0;
     border-radius: 12px;
 }
 
 .contact-details-card.visible {
     opacity: 1;
     transform: translateX(0);
-    pointer-events: all;
 }
 
 .contact-details-header {
@@ -151,8 +164,8 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid white;
-    color: white;
+    border: 3px solid var(--white);
+    color: var(--white);
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
 }
 
@@ -174,8 +187,8 @@ html {
 
 .contact-details-card-icon-button {
     border: none;
-    color: #2a3647;
-    background-color: #f6f7f8;
+    color: var(--dark);
+    background-color: var(--lightGrey);
     font-weight: 500;
     cursor: pointer;
     display: flex;
@@ -201,7 +214,7 @@ html {
 }
 
 .contact-details-info-block a {
-    color: #1f8cf0;
+    color: var(--lightBlue);
 }
 
 /* Add new contact Button */
@@ -210,8 +223,8 @@ html {
     display: flex;
     align-items: center;
     gap: 16px;
-    color: white;
-    background-color: #2a3647;
+    color: var(--white);
+    background-color: var(--dark);
     border-radius: 8px;
     font-weight: 700;
     border: unset;
@@ -219,10 +232,12 @@ html {
     font-size: 21px;
     margin-bottom: 16px;
     padding: 8px 50px;
+    width: 352px;
+    height: 52px;
 }
 
 .add-new-contact-button:hover {
-    background-color: #29abe2;
+    background-color: var(--lightBlue);
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -233,7 +248,7 @@ html {
     align-items: center;
     height: 101px;
     top: 0px;
-    background-color: white;
+    background-color: var(--white);
 }
 
 /* neu add contact small window */
@@ -251,9 +266,9 @@ html {
 
 .overlay-content {
     display: flex;
-    width: 960px;
+    width: auto;
     height: 512px;
-    background-color: white;
+    background-color: var(--white);
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -262,38 +277,45 @@ html {
 }
 
 .overlay-left {
-    width: 40%;
-    background-color: #2a3647;
-    color: white;
-    padding: 40px;
+    width: 453px;
+    background-color: var(--dark);
+    color: var(--white);
+    padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 20px;
+    gap: 12px;
+    flex-shrink: 0;
 }
 
 .overlay-left h2 {
-    font-size: 40px;
+    font-size: 61px;
     margin: 0;
+    font-weight: 700;
+    padding: 0;
 }
 
 .overlay-left p {
-    font-size: 18px;
+    font-size: 27px;
 }
 
 .overlay-left .underline {
     width: 90px;
     height: 3px;
-    background-color: #29abe2;
-    margin-top: 10px;
+    background-color: var(--lightBlue);
+    margin-top: 12px;
     border-radius: 2px;
 }
 
 .overlay-right {
-    width: 60%;
-    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    min-width: 0;
     position: relative;
+    padding: 40px 0;
 }
 
 .overlay-close {
@@ -308,53 +330,58 @@ html {
 }
 
 .overlay-form-content {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 32px;
     height: auto;
+    flex-grow: 1;
 }
 
 .form-row {
     display: flex;
-    gap: 32px;
     align-items: center;
+    gap: 48px;
 }
 
 .form-row-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100%;
-    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .contact-add-avatar {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background-color: #d1d1d1;
+    background-color: var(--borderGrey);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    border: 3px solid white;
+    border: 3px solid var(--white);
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    margin-left: 16px;
 }
 
 .form-inputs {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: 420px;
 }
 
 .input-wrapper {
     position: relative;
-    width: 100%;
+    width: 420px;
 }
 
 .input-wrapper input {
     width: 100%;
     padding: 12px 40px 12px 16px;
     font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--lightGrey);
     border-radius: 8px;
     box-sizing: border-box;
 }
@@ -366,14 +393,13 @@ html {
     transform: translateY(-50%);
     width: 18px;
     height: 18px;
-    pointer-events: none;
 }
 
 .overlay-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 16px;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .overlay-actions button {
@@ -389,26 +415,26 @@ html {
 }
 
 .overlay-logo {
-    height: 120px;
+    height: 55px;
 }
 
 #cancelOverlayBtn {
-    background-color: white;
-    color: #2a3647;
-    border: 1px solid #2a3647;
+    background-color: var(--white);
+    color: var(--dark);
+    border: 1px solid var(--dark);
 }
 
 #cancelOverlayBtn:hover {
-    background-color: #f5f5f5;
+    background-color: var(--lightGrey);
 }
 
 #createContactBtn {
-    background-color: #2a3647;
-    color: white;
+    background-color: var(--dark);
+    color: var(--white);
 }
 
 #createContactBtn:hover {
-    background-color: #29abe2;
+    background-color: var(--lightBlue);
 }
 
 .hidden {
@@ -437,7 +463,6 @@ html {
 
 .overlay-wrapper.active {
     opacity: 1;
-    pointer-events: all;
 }
 
 .overlay-wrapper.slide-in .overlay-content {
@@ -450,4 +475,41 @@ html {
 
 .overlay-wrapper.hidden {
     display: none !important;
+}
+
+
+/* Contact successfully created */
+#contactSuccessMsg {
+    position: fixed;
+    bottom: 100px;
+    left: 720px;
+    background-color: var(--dark);
+    color: var(--white);
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transform: translateX(150%);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    width: 326px;
+    height: 74px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#contactSuccessMsg.slide-in {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+#contactSuccessMsg.slide-out {
+    transform: translateX(150%);
+    opacity: 0;
+}
+
+#contactSuccessMsg.hidden {
+    display: none;
 }
