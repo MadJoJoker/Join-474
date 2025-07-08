@@ -2,13 +2,14 @@
 // getFirebase importieren und hier streichen; die sollte aber "path"-Parameter bekommen
 // Code dokumentieren
 
-async function includeHeaderAndSidebar() {
+async function XincludeHeaderAndSidebar() {
   await addLayoutElements('../js/templates/header.html', 'header');
   await addLayoutElements('../js/templates/sidebar.html', 'sidebar');
   displayInitialsInHeader();
+  initDropdown();
 }
 
-async function addLayoutElements(path, id) {
+async function XaddLayoutElements(path, id) {
   // const response = await fetch(path);
   // const data = await response.text();
   // document.getElementById(id).innerHTML = data;
@@ -23,14 +24,28 @@ async function addLayoutElements(path, id) {
   )
 }
 
-function displayInitialsInHeader() {
+function XdisplayInitialsInHeader() {
   const name = sessionStorage.getItem('headerInitials');
   if (name) {
     document.getElementById('initials').innerText = name;
   }
 }
 
-
+function XinitDropdown() {
+  // document.addEventListener("DOMContentLoaded", () => {
+    const initials = document.getElementById("initials");
+    const dropdown = document.getElementById("dropdown");
+    initials.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle("show");
+    });
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".profile-wrapper")) {
+            dropdown.classList.remove("show");
+        // }
+    };  // hier stand vorher noch eine runde Klammer, die musste auch weg
+});
+}
 
 async function initSummary() {
   const data = await getFirebaseData("tasks");
