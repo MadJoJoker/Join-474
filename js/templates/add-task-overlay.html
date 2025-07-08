@@ -1,13 +1,13 @@
 <div id="overlay" class="overlay-hidden">
   <div class="modal-content">
-    <button class="close-modal-btn" type="button">&times;</button>
+    <button class="close-modal-btn" type="button" data-event-handle="true">&times;</button>
     <main class="content-overlay">
       <h1>Add Task</h1>
       <form id="add-task-form" class="form">
         <div class="form-fill-part">
           <div class="left-form">
             <div class="label-container">
-              <label for="task-title" class="required font-size-20"
+              <label for="title" class="required font-size-20"
                 >Title</label
               >
               <input
@@ -17,6 +17,7 @@
                 id="title"
                 placeholder="Enter a title"
                 required
+                data-event-handle="true"
               />
             </div>
             <div class="label-container">
@@ -50,121 +51,125 @@
                   placeholder="dd/mm/yyyy"
                   class="input-field"
                   required
+                  data-event-handle="true"
                 />
-                <span id="calendar-icon" class="calendar-icon">
-                  <img
-                    src="../assets/icons/btn/calender.svg"
-                    alt="Calendar Icon"
-                    class="calendar-img"
-                    data-event-handle="true"
-                  />
+                <span id="calendar-icon" class="calendar-icon" data-event-handle="true">
+                  <img src="../assets/icons/btn/calender.svg" alt="Calendar Icon" class="calendar-img" />
                 </span>
               </div>
             </div>
-          </div>
-          <div class="border"></div>
-          <div class="right-form">
             <div class="label-container">
-              <p class="font-size-20">Priority</p>
-              <div class="d-flex gap-16">
+              <label class="font-size-20">Prio</label>
+              <div class="prio-section">
                 <button
                   type="button"
-                  class="priority-btn"
-                  data-priority="urgent"
+                  class="priority-btn urgent-btn"
+                  data-priority="high"
                   data-event-handle="true"
                 >
                   Urgent
                   <img
-                    src="../assets/icons/property/Urgent.svg"
-                    alt="Urgent"
-                    class="priority-icon"
+                    src="../assets/icons/property/urgent.svg"
+                    alt="Urgent Icon"
                   />
                 </button>
                 <button
                   type="button"
-                  class="priority-btn active"
+                  class="priority-btn medium-btn active"
                   data-priority="medium"
                   data-event-handle="true"
                 >
                   Medium
                   <img
                     src="../assets/icons/property/medium.svg"
-                    alt="Medium"
-                    class="priority-icon"
+                    alt="Medium Icon"
                   />
                 </button>
                 <button
                   type="button"
-                  class="priority-btn"
+                  class="priority-btn low-btn"
                   data-priority="low"
                   data-event-handle="true"
                 >
                   Low
                   <img
-                    src="../assets/icons/property/Low.svg"
-                    alt="Low"
-                    class="priority-icon"
+                    src="../assets/icons/property/low.svg"
+                    alt="Low Icon"
                   />
                 </button>
               </div>
             </div>
+          </div>
+          <div class="border"></div>
+          <div class="right-form">
             <div class="label-container">
-              <label for="assignedTo" class="font-size-20">Assigned to</label>
-              <div class="select-wrapper" id="dropdown-assigned-to">
-                <div class="styled-select">
-                  <div id="selected-contacts-display">Select contacts to assign</div>
-                </div>
-                <div class="dropdown-icon-container">
-                    <img
-                        id="assigned-to-dropdown-icon"
-                        src="../assets/icons/btn/arrow_drop_down.svg"
-                        class="dropdown-icon"
-                        alt="Dropdown"
-                    />
-                </div>
-              </div>
-              <div class="options-wrapper">
-                <div id="assigned-to-options-container" class="dropdown-options"></div>
-              </div>
-              <div id="selected-initials-container" class="selected-initials-container"></div>
-            </div>
-
-            <div class="label-container">
-              <p class="required font-size-20">Category</p>
-              <div class="select-wrapper" id="dropdown-category">
-                <div class="styled-select" required>
-                  <div id="selected-category">Select task category</div>
-                </div>
-                <div class="dropdown-icon-container">
+              <label for="assigned-to" class="required font-size-20"
+                >Assigned to</label
+              >
+              <div
+                class="select-wrapper input-field"
+                id="dropdown-assigned-to"
+                data-event-handle="true"
+              >
+                <div class="selected-option" id="selected-assigned-to">Select contacts to assign</div>
+                <div class="dropdown-icon-container" id="dropdown-icon-container-one">
                   <img
-                    id="category-dropdown-icon"
-                    src="../assets/icons/btn/arrow_drop_down.svg"
-                    class="dropdown-icon"
-                    alt="Dropdown"
+                    src="../assets/icons/btn/arrow-down-black.svg"
+                    alt="Dropdown Arrow"
+                    class="dropdown-arrow"
+                    id="dropdown-icon-one"
                   />
                 </div>
               </div>
+              <div class="options-wrapper" id="assigned-to-options-wrapper">
+                <div class="assigned-to-options-container" id="assigned-to-options-container">
+                  </div>
+                <div class="spacer d-none"></div>
+                <div id="assigned-to-area" class="assigned-initials-area">
+                  </div>
+              </div>
             </div>
-            <div class="options-wrapper">
-              <div id="category-options-container" class="dropdown-options"></div>
-            </div>
-
             <div class="label-container">
-              <label for="subtask-input" class="font-size-20">Subtasks</label>
-              <div class="input-wrapper">
+              <label for="category" class="required font-size-20"
+                >Category</label
+              >
+              <input type="hidden" id="hidden-category-input" required />
+              <div
+                class="select-wrapper input-field"
+                id="dropdown-category"
+                data-event-handle="true"
+              >
+                <div class="selected-option" id="selected-category">Select task category</div>
+                <div class="dropdown-icon-container" id="dropdown-icon-container-two">
+                  <img
+                    src="../assets/icons/btn/arrow-down-black.svg"
+                    alt="Dropdown Arrow"
+                    class="dropdown-arrow"
+                    id="dropdown-icon-two"
+                  />
+                </div>
+              </div>
+              <div class="options-wrapper" id="category-options-wrapper">
+                <div class="category-options-container" id="category-options-container">
+                  </div>
+              </div>
+            </div>
+            <div class="label-container">
+              <label for="subtask" class="font-size-20">Subtasks</label>
+              <div class="subtask-input-container">
                 <input
                   type="text"
-                  name="subtask"
                   id="subtask-input"
                   class="input-field-subtask"
                   placeholder="Add new subtask"
+                  data-event-handle="true"
                 />
                 <div class="subtask-icons" style="display: none;">
-                    <img src="../assets/icons/btn/close.svg" alt="Clear" class="subtask-icon" onclick="clearSubtask()">
+                    <img src="../assets/icons/btn/close.svg" alt="Clear" class="subtask-icon" data-event-handle="true">
                     <div class="subtask-separator"></div>
-                    <img src="../assets/icons/btn/check.svg" alt="Add" class="subtask-icon" onclick="addSubtask()">
+                    <img src="../assets/icons/btn/check.svg" alt="Add" class="subtask-icon" data-event-handle="true">
                 </div>
-                <button type="button" class="input-button" id="add-subtask-btn" style="display: block;">
+                <button type="button" class="input-button" id="add-subtask-btn" style="display: block;" data-event-handle="true">
                   <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
                 </button>
               </div>

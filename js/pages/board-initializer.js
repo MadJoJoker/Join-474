@@ -1,92 +1,84 @@
 // Path: ../js/pages/board-initializer.js
 
 import { openSpecificOverlay, initOverlayListeners } from "/js/events/overlay-handler.js";
-import { initAddTaskForm } from "/js/pages/add-task.js"; // Korrekter Importname initAddTaskForm
+import { initAddTaskForm, clearForm } from "/js/pages/add-task.js"; // Correct import for initAddTaskForm and clearForm
 
 /**
- * Lädt das HTML für das "Add Task" Overlay in den DOM und initialisiert es.
- * Stellt sicher, dass das Overlay nur einmal geladen und initialisiert wird.
+ * Loads the HTML for the "Add Task" Overlay into the DOM and initializes it.
+ * Ensures that the overlay is loaded and initialized only once.
  */
 let isOverlayLoaded = false;
 
-async function loadAndInitAddTaskOverlay() {
-    // Wenn das Overlay bereits geladen und initialisiert wurde, überspringen wir das erneute Laden.
+export async function loadAndInitAddTaskOverlay() {
+    // If the overlay has already been loaded and initialized, we skip reloading it.
     if (isOverlayLoaded) {
-        console.log("Overlay bereits geladen und initialisiert. Überspringe erneutes Laden.");
-        // Optional: Wenn das Formular nach dem erneuten Öffnen zurückgesetzt werden soll,
-        // könnten Sie hier eine Reset-Funktion aus add-task.js aufrufen, z.B. clearForm().
-        // Beachten Sie, dass clearForm() global gemacht oder exportiert werden müsste.
-        // await clearForm(); // Beispiel, wenn clearForm exportiert wäre
+        console.log("Overlay already loaded and initialized. Skipping reload.");
+        // If the form should be reset after reopening,
+        // you could call a reset function from add-task.js here, e.g. clearForm().
+        clearForm(); // Call clearForm to reset the form when reopening
         return;
     }
 
     try {
-        // Schritt 1: Das HTML für das Overlay von der Server laden
+        // Step 1: Load the HTML for the overlay from the server
         const response = await fetch("../js/templates/add-task-overlay.html");
         if (!response.ok) {
-            // Wenn die HTTP-Antwort nicht OK ist, werfen wir einen Fehler
-            throw new Error(`HTTP error! status: ${response.status} beim Laden von add-task-overlay.html`);
+            // If the HTTP response is not OK, we throw an error
+            throw new Error(`HTTP error! status: ${response.status} when fetching add-task-overlay.html`);
         }
-        const data = await response.text(); // Den Inhalt der HTML-Datei als Text abrufen
+        const addTaskOverlayHtml = await response.text();
 
-        // Schritt 2: Den Container im DOM finden, in den das Overlay geladen werden soll
-        const overlayContainer = document.getElementById("overlay-container");
-
-        // Schritt 3: Prüfen, ob der Container existiert und dann das HTML einfügen und initialisieren
+        // Step 2: Insert the loaded HTML into a container element in board-site.html
+        const overlayContainer = document.getElementById('overlay-container');
         if (overlayContainer) {
-            overlayContainer.innerHTML = data; // Das geladene HTML in den Container einfügen
+            overlayContainer.innerHTML = addTaskOverlayHtml;
+            isOverlayLoaded = true; // Mark as loaded
+            console.log("Add Task Overlay HTML loaded into DOM.");
 
-            // Wichtig: initOverlayListeners muss NACH dem Einfügen des HTML aufgerufen werden,
-            // da es die DOM-Elemente des Overlays sucht.
-            initOverlayListeners('overlay'); // 'overlay' ist die ID des Haupt-Overlay-Divs
-
-            // Rufe die Initialisierungsfunktion für das Add Task Formular auf.
-            // Diese Funktion initialisiert Flatpickr, Event-Listener etc.
-            // Sie sollte await sein, da initAddTaskForm() selbst asynchrone Operationen (Firebase-Daten) ausführt.
-            await initAddTaskForm(); // <--- HIER wird die umbenannte Funktion aufgerufen
-
-            isOverlayLoaded = true; // Markiere das Overlay als geladen und initialisiert
-            console.log("Add Task Overlay HTML geladen und Initialisierung gestartet.");
+            // Step 3: Initialize the Add Task form functionalities after the HTML is in the DOM
+            // This will attach all event listeners and perform initial setup
+            await initAddTaskForm();
+            console.log("Add Task form initialized successfully.");
         } else {
-            // Fehlermeldung, wenn der #overlay-container nicht im Haupt-HTML gefunden wird
-            console.error("Fehler: Das Element #overlay-container wurde nicht im DOM gefunden. Stellen Sie sicher, dass es in der Haupt-HTML-Datei vorhanden ist.");
+            console.error("DEBUG: Overlay container (#overlay-container) not found in the DOM.");
         }
     } catch (error) {
-        // Fehlerbehandlung für Fetch-Probleme oder andere Initialisierungsfehler
-        console.error("Fehler beim Laden oder Initialisieren des Add Task Overlays:", error);
+        console.error("Error loading or initializing Add Task Overlay:", error);
     }
 }
 
+// Initial setup for existing overlay listeners (if any)
+initOverlayListeners();
 
-// Event-Listener für den Haupt "Add Task" Button auf dem Board
+// Event listener for the main "Add task" button in the board
 document.addEventListener('DOMContentLoaded', () => {
     const addTaskButton = document.getElementById('add-task');
     if (addTaskButton) {
         addTaskButton.addEventListener('click', async () => {
-            console.log("Klick auf 'Add task' Button.");
-            // Lade und initialisiere das Overlay, falls noch nicht geschehen
+            console.log("Click on 'Add task' button.");
+            // Load and initialize the overlay if not already done
             await loadAndInitAddTaskOverlay();
-            // Öffne das Overlay, nachdem es geladen und initialisiert wurde
+            // Open the overlay after it has been loaded and initialized
             openSpecificOverlay('overlay');
         });
     } else {
-        console.warn("DEBUG: Haupt-Add-Task-Button (#add-task) nicht gefunden.");
+        console.warn("DEBUG: Main Add Task Button (#add-task) not found.");
     }
 
-    // Event-Listener für die "Plus"-Buttons in den Spalten (schnelles Hinzufügen)
+    // Event listeners for the "Plus" buttons in the columns (quick add)
     const fastAddTaskButtons = document.querySelectorAll('[id^="fast-add-task-"]');
     fastAddTaskButtons.forEach(button => {
         button.addEventListener('click', async (event) => {
-            const columnId = event.currentTarget.id.replace('fast-add-task-', ''); // Z.B. 'todo', 'inProgress'
-            console.log(`Schnell-Add-Task für Spalte: ${columnId}`);
-            // Lade und initialisiere das Overlay
+            const columnId = event.currentTarget.id.replace('fast-add-task-', ''); // E.g. 'todo', 'inProgress'
+            console.log(`Quick Add Task for column: ${columnId}`);
+            // Load and initialize the overlay
             await loadAndInitAddTaskOverlay();
-            // Öffne das Overlay
+            // Open the overlay
             openSpecificOverlay('overlay');
 
-            // Optional: Hier könntest du das Formular vorbesetzen, z.B. mit der Spalte.
-            // Dazu müsste eine Funktion in add-task.js exportiert werden, die die Spalte setzt.
-            // Beispiel: setTaskColumn(columnId); // Diese Funktion müsstest du in add-task.js exportieren und hier importieren
+            // Optional: Here you could pre-fill the form, e.g. with the column.
+            // For this, a function in add-task.js would need to be exported that sets the column.
+            // Example: setTaskColumn(columnId); // This function you would have to export in add-task.js
         });
     });
 });
