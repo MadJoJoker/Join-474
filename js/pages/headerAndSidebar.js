@@ -28,17 +28,15 @@ function displayInitialsInHeader() {
 }
 
 function initDropdown() {
-  // document.addEventListener("DOMContentLoaded", () => {
-    const initials = document.getElementById("initials");
-    const dropdown = document.getElementById("dropdown");
-    initials.addEventListener("click", (e) => {
-        e.stopPropagation();
-        dropdown.classList.toggle("show");
-    });
-    document.addEventListener("click", (e) => {
-        if (!e.target.closest(".profile-wrapper")) {
-            dropdown.classList.remove("show");
-        // }
-    };  // hier stand vorher noch eine runde Klammer, die musste auch weg
+  const initials = document.getElementById("initials");
+  const dropdown = document.getElementById("dropdown");
+  initials.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("show");
+  });
+  document.addEventListener("click", (e) => {
+  if (!e.target.closest(".profile-wrapper")) {
+    dropdown.classList.remove("show");
+  };
 });
 }
