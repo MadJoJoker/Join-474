@@ -58,9 +58,13 @@
                 </span>
               </div>
             </div>
+
+          </div>
+          <div class="border"></div>
+          <div class="right-form">
             <div class="label-container">
               <label class="font-size-20">Prio</label>
-              <div class="prio-section">
+              <div class="d-flex gap-16" role="group">
                 <button
                   type="button"
                   class="priority-btn urgent-btn"
@@ -99,9 +103,6 @@
                 </button>
               </div>
             </div>
-          </div>
-          <div class="border"></div>
-          <div class="right-form">
             <div class="label-container">
               <label for="assigned-to" class="required font-size-20"
                 >Assigned to</label
@@ -114,9 +115,9 @@
                 <div class="selected-option" id="selected-assigned-to">Select contacts to assign</div>
                 <div class="dropdown-icon-container" id="dropdown-icon-container-one">
                   <img
-                    src="../assets/icons/btn/arrow-down-black.svg"
+                    src="../../assets/icons/btn/arrow_drop_down.svg"
                     alt="Dropdown Arrow"
-                    class="dropdown-arrow"
+                    class="dropdown-icon"
                     id="dropdown-icon-one"
                   />
                 </div>
@@ -142,9 +143,9 @@
                 <div class="selected-option" id="selected-category">Select task category</div>
                 <div class="dropdown-icon-container" id="dropdown-icon-container-two">
                   <img
-                    src="../assets/icons/btn/arrow-down-black.svg"
+                    src="../../assets/icons/btn/arrow_drop_down.svg"
                     alt="Dropdown Arrow"
-                    class="dropdown-arrow"
+                    class="dropdown-icon"
                     id="dropdown-icon-two"
                   />
                 </div>
@@ -154,29 +155,30 @@
                   </div>
               </div>
             </div>
-            <div class="label-container">
-              <label for="subtask" class="font-size-20">Subtasks</label>
-              <div class="subtask-input-container">
-                <input
-                  type="text"
-                  id="subtask-input"
-                  class="input-field-subtask"
-                  placeholder="Add new subtask"
-                  data-event-handle="true"
-                />
-                <div class="subtask-icons" style="display: none;">
-                    <img src="../assets/icons/btn/close.svg" alt="Clear" class="subtask-icon" data-event-handle="true">
-                    <div class="subtask-separator"></div>
-                    <img src="../assets/icons/btn/check.svg" alt="Add" class="subtask-icon" data-event-handle="true">
+           <div class="label-container">
+                <label for="input-subtask" class="font-size-20">Subtasks</label>
+                <div class="input-wrapper" oninput="toggleSubtaskIcons()">
+                  <input id="input-subtask" type="text" name="input-subtask" class="input-field-subtask"
+                    placeholder="Add new subtask" />
+                  <div id="subtask-buttons">
+                    <button type="button" class="input-button add-btn">
+                      <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
+                    </button>
+                    <button type="button" class="input-button close-btn left" onclick="clearSubtask()"
+                      style="display: none;">
+                      <img src="../assets/icons/btn/close.svg" alt="Close Icon" />
+                    </button>
+                    <div class="middle" style="display: none;"></div>
+                    <button type="button" class="input-button check-btn right" onclick="addSubtask()"
+                      style="display: none;">
+                      <img src="../assets/icons/btn/check-black.svg" alt="Check Icon" />
+                    </button>
+                  </div>
                 </div>
-                <button type="button" class="input-button" id="add-subtask-btn" style="display: block;" data-event-handle="true">
-                  <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
-                </button>
+                <div id="addedSubtasksArea"></div>
               </div>
-              <ul id="subtasks-list" class="subtasks-list"></ul>
             </div>
           </div>
-        </div>
         <div class="form-buttons-part">
           <div class="sign-info">This field is required</div>
           <div class="buttons-area">

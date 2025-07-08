@@ -14,6 +14,7 @@ let selectedCategory = null;
 let currentContacts = [];
 let selectedContacts = [];
 let addedSubtasks = [];
+let overlayPickerInstance;
 
 /**
  * Initializes the task by retrieving the Firebase data and sorting the contacts.
@@ -752,10 +753,14 @@ export async function initAddTaskForm() {
     await initTask(); // Fetch contacts first
 
     // Initialize Flatpickr if not already initialized or if a new instance is needed for the overlay
-    flatpickr("#datepicker", {
-        dateFormat: "d.m.Y",
-        allowInput: true
-    });
+flatpickr("#datepicker", {
+  dateFormat: "d.m.Y",
+  allowInput: true
+});
+
+flatpickr("#calendar-icon", {
+});
+
 
     setMedium(); // Set default priority
 
