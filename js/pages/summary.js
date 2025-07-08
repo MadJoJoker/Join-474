@@ -57,8 +57,6 @@ async function initSummary() {
   fillSummary();
   setGreeting();
   displayUser();
-
-  getNextIdNumber(data); // hier nur zum Rumtesten; gehört zu signUp
 }
 
 async function getFirebaseData(path = '') {
@@ -138,7 +136,14 @@ function displayUser() {
     user.innerText = userName;
   } else {
     user.innerText = "";
+    removeComma();
   }
+}
+
+function removeComma() {
+  let commaText = document.getElementById('day-time').textContent;
+  commaText = commaText.replace(',', '');
+  document.getElementById('day-time').innerText = commaText;
 }
 
 // Würde auch schon so reichen:
@@ -149,25 +154,6 @@ function displayUser() {
 //   }
 // }
 
-
-// Alte Version; neue ist in index.js
-function getNextIdNumber(data) {
-  const itemKeys = Object.keys(data);
-  let lastKey = itemKeys.at(-1); // ist dasselbe wie: itemKeys[taskKeys.length -1];
-  console.log("current last ID: ", lastKey);
-
-  // in future, "lastKey" will have the form of "dummy" (i.e. with "-")
-  let dummy = "task-6";
-  const parts = dummy.split("-");
-
-  // const parts = lastKey.split("-");
-  console.log("splitted: ", parts);
-  let [prefix, numberStr] = parts // destructuring: gibt den array-items von "parts" Variablennamen
-  console.log("prefix: ", prefix, "; old number: ", numberStr);
-  let nextNumber = Number(numberStr) + 1;
-  const newId = `${prefix}-${nextNumber}`;
-  console.log("next ID: ", newId);
-}
 
 
 // Testschnipsel
