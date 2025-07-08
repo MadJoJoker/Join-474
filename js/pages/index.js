@@ -144,19 +144,23 @@ document.addEventListener("DOMContentLoaded", () => {
 // disclaimer: ob das mit allen buttons, checkboxes, menus etc. funktioniert, müssen wir testen.
 
 async function createNewObject(obj, fieldMap, fallbackCategoryString) {
-  fillObject(obj, fieldMap);
+  fillObjectFromInputfields(obj, fieldMap);
+
   const pushObjectId = getNextIdNumber(fallbackCategoryString);
   const completeObject = {
     [pushObjectId]: newUser
   };
-  console.log("the complete push-object for the database:" , completeObject);
+  console.log("the push-object for the database:" , completeObject);
   resetInputs(fieldMap);
   // Luxus: checken, ob user schon in fetchedData ist (name oder email abfragen, in diesem Fall)
-  //return completeObject; // provisorisch; damit man es in l. 134 loggen kann.
-  await pushObjectToDatabase("users", completeObject);
+  
+  specificEntriesInUsers(obj); // DIESER TEIL WIRD BEI JEDEM ANDERS SEIN; s. unten l. 199 ff.
+  
+  console.log("added details:" , completeObject);
+  // await pushObjectToDatabase("users", completeObject);
 }
 
-function fillObject(obj, fieldMap) {
+function fillObjectFromInputfields(obj, fieldMap) {
   fieldMap.forEach(({id, key}) => {
     const element = document.getElementById(id);
     obj[key] = element?.value ?? ""; // optional chaining: gibt es einen input oder nicht? (wenn required, dann unnötig)
@@ -191,6 +195,26 @@ function resetInputs(fieldMap) {
     if (element) element.value = "";
   });
 }
+
+// Funktionen für "specificEntriesInUsers"; pusht hier aberdie Zusätze von "contacts" in den "user"
+function specificEntriesInUsers(obj) {
+  initialsToObject(obj);
+  colorToObject(obj);
+  // compareAndStorePassword(obj);  // mache ich vielleicht noch für "sign uo"
+}
+
+// Contacts (Versuch, ob die ganze Funktion um solche Spezialitäten erweitert werden kann):
+function initialsToObject(obj) {
+  const fullName = obj['displayName'];  // ersetze diesen string durch jenen des Namen-key in der Firebase von "contact"
+  const initials = getInitials(fullName);
+  obj['initials'] = initials; // ersetze diesen string durch jenen des Namen-key in der Firebase von "contact"
+}
+// es fehlt noch eine Funktion, die eine Zufallsfarbe wählt und z.B. "vvar(--dark)" zurückgibt
+ function colorToObject(obj) {
+  const color = "var(--dark)"; // da müsse natürlich stehen: "const color = deineRandomColor(FarbenArray)", die eine Farbe returnt
+  console.log(color);
+  obj['color'] = color; // ersetze diesen string durch jenen des Namen-key in der Firebase von "contact"
+ }
 
 async function pushObjectToDatabase(path, data={}) {
   let URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/';
