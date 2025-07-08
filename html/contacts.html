@@ -52,6 +52,9 @@
                     </div>
                     <div class="contact-details-card"></div>
                 </section>
+                <div class="contact-success-msg hidden" id="contactSuccessMsg">
+                    Contact successfully created
+                </div>
             </main>
         </section>
     </div>
@@ -86,14 +89,17 @@
                                     <input type="tel" placeholder="Phone" />
                                     <img src="../assets/img/input-call.svg" />
                                 </div>
+                                <div class="overlay-actions">
+                                    <button id="cancelOverlayBtn">
+                                        Cancel <img src="../assets/icons/btn/close.svg">
+                                    </button>
+                                    <button id="createContactBtn">
+                                        Create contact <img src="../assets/icons/btn/check-mark.svg">
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="overlay-actions">
-                    <button id="cancelOverlayBtn">Cancel <img src="../assets/icons/btn/close.svg"></button>
-                    <button id="createContactBtn">Create contact <img src="../assets/icons/btn/check-mark.svg"></button>
                 </div>
             </div>
         </div>
@@ -104,7 +110,6 @@
             <div class="overlay-left">
                 <img src="../assets/icons/logo/joinLogo.svg" alt="JOIN Logo" class="overlay-logo" />
                 <h2>Edit contact</h2>
-                <p>Tasks are better with a team!</p>
                 <div class="underline"></div>
             </div>
             <div class="overlay-right">
@@ -127,14 +132,17 @@
                                     <input type="tel" placeholder="Phone" id="editPhoneInput" />
                                     <img src="../assets/img/input-call.svg" />
                                 </div>
+                                <div class="overlay-actions">
+                                    <button id="deleteContactBtn">
+                                        Delete <img src="../assets/icons/btn/close.svg" />
+                                    </button>
+                                    <button id="saveEditBtn">
+                                        Save <img src="../assets/icons/btn/check-mark.svg" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="overlay-actions">
-                    <button id="deleteContactBtn">Delete <img src="../assets/icons/btn/close.svg" /></button>
-                    <button id="saveEditBtn">Save <img src="../assets/icons/btn/check-mark.svg" /></button>
                 </div>
             </div>
         </div>
@@ -142,6 +150,7 @@
 
     <script type="module" src="../js/ui/render-contacts.js"></script>
     <script src="../js/pages/sidebar.js"></script>
+    <script src="/js/events/dropdown-menu.js" defer></script>
 </body>
 
 </html>
