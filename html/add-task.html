@@ -76,7 +76,7 @@
                 <fieldset aria-labelledby="priority-legend" style="border: none;">
                   <legend id="priority-legend" class="font-size-20">Priority</legend>
                   <div class="d-flex gap-16" role="group">
-                    <button onclick--indigo="setPriority(this, 'urgent')" type="button" class="priority-btn"
+                    <button onclick="setPriority(this, 'urgent')" type="button" class="priority-btn"
                       data-priority="urgent">
                       Urgent
                       <img src="../assets/icons/property/Urgent.svg" alt="Urgent" class="priority-icon">
@@ -179,18 +179,6 @@
   <script type="module" src="../js/pages/add-task.js"></script>
   <script src="../js/pages/sidebar.js"></script>
   <script type="module" src="../main.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script type="module" src="../js/pages/add-task.js"></script>
-<script type="module">
-    // Dieser Code wird NUR ausgeführt, wenn add-task.html direkt geladen wird.
-    // Wenn es als Overlay über innerHTML eingefügt wird, wird dieser Block ignoriert.
-    import { initAddTaskForm} from '../js/pages/add-task.js';
-
-    document.addEventListener('DOMContentLoaded', async () => {
-        await initAddTaskForm();
-    });
-</script>
 </body>
 
 </html>
