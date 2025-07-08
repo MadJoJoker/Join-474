@@ -11,7 +11,7 @@ body {
 
 .content-wrapper {
   height: 100vh;
-  width: 900px;
+  max-width: 1400px;
   padding: 80px 76px;
   display: flex;
   flex-direction: column;
@@ -20,19 +20,58 @@ body {
   align-items: center;
 }
 
+.d-none {
+  display: none;
+}
+
 /* .index-overlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 5;
-  position: absolute;
+  position: fixed;
   top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.blue-box {
+  background-color: var(--dark);
+  padding: 25px;
+  border-radius: 20px;
+  color: var(--white);
+  font-size: 20px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  transition: transform 1000ms ease, top 1000ms ease, bottom 500ms ease;
+}
+
+.blue-box.center {
+  transform: translateX(-50%) translateY(-50%);
+  top: 50%;
+  bottom: auto;
+}
+
+.d-none {
+  display: none;
+}
+
+@keyframes moveToCenter {
+  from {
+    bottom: 0;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    top: 50%;
+    bottom: auto;
+    transform: translateX(-50%) translateY(-50%);
+  }
+}
+
+.blue-box.animate {
+  animation: moveToCenter 2500ms forwards;
 } */
+
 
 header {
   width: 100%;
@@ -70,6 +109,7 @@ header > div {
 }
 
 .dialogue-frame {
+  position: relative;
   width: 652px;
   height: 449px;
   background-color: var(--white);
@@ -86,6 +126,12 @@ header > div {
     height: 630px;
     padding: 48px 88px;
   }
+}
+
+.blue-arrow {
+  position: absolute;
+  top: 68px;
+  left: 52px;
 }
 
 .title {
@@ -119,10 +165,16 @@ h1 {
   &.reduced-margin {
     margin-bottom: 24px
   }
+
+  &:hover,
+  &:has(input:focus) {
+    border: 1px solid var(--lightBlue);
+  }
 }
 
 .input-frame > input {
-  color: var(--borderGrey);
+  /* color: var(--borderGrey); */
+  color: var(--black);
   font-size: 20px;
   display: flex;
   flex: 1;
@@ -136,12 +188,10 @@ input::placeholder {
   opacity: 1;
 }
 
-/* Edge 12 -18 */
-::-ms-input-placeholder { 
-  color: red;
+input:focus { 
+  outline: none;
+  background-color: var(--white);
 }
-
-input:focus { outline: none; }
 
 .login-btns {
   display: flex;
@@ -202,7 +252,7 @@ input:focus { outline: none; }
     text-decoration: none;
 
     &:hover {
-      text-decoration: underline;
+      border-bottom: 1px solid var(--lightBlue);
       font-weight: 500;
     }
   }
@@ -229,3 +279,4 @@ input:focus { outline: none; }
     letter-spacing: 0.5px;
   }
 }
+

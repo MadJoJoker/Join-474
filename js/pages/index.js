@@ -66,13 +66,13 @@ function handleLogin(){
   initialsForHeader(displayName);
   sessionStorage.setItem('currentUser', displayName);
 
-  window.location.href = './html/summary.html';
+  window.location.href = '../html/summary.html';
 }
 
 function checkMail(foundKey) {
   if (foundKey) {
-    displayName = userData[foundKey].displayName;
-    return displayName = userData[foundKey].displayName;
+    displayName = fetchedData[foundKey].displayName;
+    return displayName = fetchedData[foundKey].displayName;
   } else {
     return displayName = insertDemoMail(); 
   }
@@ -80,16 +80,16 @@ function checkMail(foundKey) {
 
 function insertDemoMail() {
   document.getElementById('login-email').value = "demon@work.ch";
-  userData['demo-demon'] = {
+  fetchedData['demo-demon'] = {
     email: "demon@work.ch",
-    displayName: "demon"
+    displayName: "mailer demon"
   };
   console.log("Dummy user created: mailer demon");
 }
 
 function directLogin() {
   sessionStorage.setItem('headerInitials', "G");
-  sessionStorage.setItem('currentUser', "guest"); // eher: leerer string
+  sessionStorage.setItem('currentUser', "");
   window.location.href = './html/summary.html';
 }
 
@@ -108,7 +108,10 @@ function getInitials(fullName) {
   return first + last;
 }
 
-
+function checkboxChecked() {
+  const check = document.getElementById("accept");
+  check.checked == true ? startObjectBuilding() : alert("not checked");
+}
 
 // Idee: eine generische Funktion, bei der wir uns auf das Erstellen des neuen Objekts konzentrieren.
 // Das Objekt wird befüllt: "id" stammt aus dem html (input-field, das ausgelesen wird),
@@ -127,37 +130,34 @@ const userFields = [
   {id: "new-email", key: "email"}
 ];
 
-// Diese Funktion muß auch angepasst werden: Zeile 2: id des buttons, der das Hinzufügen auslöst
-// "createNewObject()"" bekommt drei Parameter: die beiden Konstanten da oben plus der fallback-
+// Diese Funktion muß angepasst werden: die beiden Variablen von gerade eben plus der fallback-
 // string für die "nexId"Funktion (wenn es hier unter "users" nix findet, macht es selber einen "demouser-0")
-// Warum kein onclick? Weil der Funktion Parameter übergeben werden. 
-// onclick="createNewObject(newUser, userFields, 'demoUser')" geht nicht (geht nur mit strings)
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("userCreation").addEventListener("click", () => {
-    const pushObject = createNewObject(newUser, userFields, "demoUser");
-    // console.log("the final push object:", pushObject);
-  });
-});
+async function startObjectBuilding() {
+  const pushObject = createNewObject(newUser, userFields, "demoUser");
+  console.log("ready for upload: ", pushObject);
 
-// Damit ist die Sache erledigt; den Rest besorgt der weitere Code
-// (auch das resetting aller inputs, die oben im Objekt aufgelistet sind)
-// disclaimer: ob das mit allen buttons, checkboxes, menus etc. funktioniert, müssen wir testen.
+  showAndAnimate();
+  // await pushObjectToDatabase("users", pushObject); // scharf stellen, wenn Du hochladen willst.
+};
 
-async function createNewObject(obj, fieldMap, fallbackCategoryString) {
+// Damit ist die Sache für die INPUTS erledigt; den Rest besorgt der weitere Code
+// (auch das resetting aller inputs, die oben im Objekt aufgelistet sind). ABER:
+// für "contacts" und vor allem "add Task" müssen weitere Einträge an das Obj. übergeben werden (nicht aus inputs)
+// für "contacts" ist der Weg skizziert (l. 197 ff.), für "add Task" wird es schwieriger, auch das resetten.
+
+function createNewObject(obj, fieldMap, fallbackCategoryString) {
   fillObjectFromInputfields(obj, fieldMap);
-
   const pushObjectId = getNextIdNumber(fallbackCategoryString);
   const completeObject = {
     [pushObjectId]: newUser
   };
-  console.log("the push-object for the database:" , completeObject);
+  console.log("the push-object from input-fields:" , completeObject);
+   
+  specificEntriesInUsers(obj); // DIESER TEIL WIRD BEI JEDEM ANDERS SEIN; s. unten l. 197 ff.
+  // console.log("the push-object with specific details:" , completeObject);
+
   resetInputs(fieldMap);
-  // Luxus: checken, ob user schon in fetchedData ist (name oder email abfragen, in diesem Fall)
-  
-  specificEntriesInUsers(obj); // DIESER TEIL WIRD BEI JEDEM ANDERS SEIN; s. unten l. 199 ff.
-  
-  console.log("added details:" , completeObject);
-  // await pushObjectToDatabase("users", completeObject);
+  return completeObject;
 }
 
 function fillObjectFromInputfields(obj, fieldMap) {
@@ -196,11 +196,11 @@ function resetInputs(fieldMap) {
   });
 }
 
-// Funktionen für "specificEntriesInUsers"; pusht hier aberdie Zusätze von "contacts" in den "user"
+// Funktionen für "specificEntriesInUsers"; pusht hier testweise die Zusätze von "contacts" in den "user"
 function specificEntriesInUsers(obj) {
   initialsToObject(obj);
   colorToObject(obj);
-  // compareAndStorePassword(obj);  // mache ich vielleicht noch für "sign uo"
+  // compareAndStorePassword(obj);  // mache ich vielleicht noch für "sign up"
 }
 
 // Contacts (Versuch, ob die ganze Funktion um solche Spezialitäten erweitert werden kann):
@@ -225,4 +225,40 @@ async function pushObjectToDatabase(path, data={}) {
     },
     body: JSON.stringify(data)
   });
+}
+
+// ENDE DER OBJECT-CREATING AND OPLOAD-FUNCTION
+
+
+// function showAndAnimate() {
+//   const overlay = document.querySelector('.index-overlay');
+//   const messageBox = document.getElementById('message-box');
+//   overlay.classList.remove('d-none');
+//   messageBox.classList.remove('d-none');
+//   messageBox.classList.add('animate');
+
+//   setTimeout(() => {
+//     overlay.classList.add('d-none');
+//     messageBox.classList.add('d-none');
+//     messageBox.classList.remove('animate');
+//     window.location.href = 'summary.html';
+//   }, 1000);
+
+//   setTimeout(() => {
+//     messageBox.classList.remove('center');
+//     overlay.classList.add('d-none');
+//     messageBox.classList.add('d-none');
+//     window.location.href = 'summary.html';
+//   }, 2500);
+// }
+
+
+// under construction
+function toggleInputType() {
+  var x = document.getElementById("login-password");
+  if (x.type == "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
 }
