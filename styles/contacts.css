@@ -182,20 +182,47 @@ html {
 
 .contact-details-actions {
     display: flex;
-    gap: 16px;
+    gap: 12px;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
+
 
 .contact-details-card-icon-button {
     border: none;
     color: var(--dark);
     background-color: var(--lightGrey);
-    font-weight: 500;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 14px;
-    padding: 4px;
+    gap: 2px;
+    font-size: 16px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    will-change: transform;
+    width: 60px;
+}
+
+.contact-details-card-icon-button img {
+    width: 16px;
+    height: 16px;
+    transition: filter 0.3s ease;
+}
+
+.contact-details-card-icon-button:hover {
+    color: var(--lightBlue);
+}
+
+.contact-details-card-icon-button:hover img {
+    filter: brightness(0) saturate(100%) invert(64%) sepia(43%) saturate(640%) hue-rotate(168deg) brightness(97%) contrast(87%);
+}
+
+.edit-button:hover {
+    transform: translateX(2px);
+    font-weight: 700;
+}
+
+.delete-button:hover {
+    transform: translateX(-2px);
 }
 
 .contact-details-info-block {
@@ -422,19 +449,52 @@ html {
     background-color: var(--white);
     color: var(--dark);
     border: 1px solid var(--dark);
+    font-size: 20px;
 }
 
 #cancelOverlayBtn:hover {
-    background-color: var(--lightGrey);
+    color: var(--lightBlue);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--lightBlue);
+}
+
+#cancelOverlayBtn:hover img {
+    filter: invert(61%) sepia(56%) saturate(748%) hue-rotate(167deg) brightness(95%) contrast(91%);
 }
 
 #createContactBtn {
     background-color: var(--dark);
     color: var(--white);
+    font-size: 21px;
 }
 
 #createContactBtn:hover {
     background-color: var(--lightBlue);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+#deleteContactBtn {
+    background-color: var(--white);
+    color: var(--dark);
+    border: 1px solid var(--dark);
+    font-size: 20px;
+}
+
+#deleteContactBtn:hover {
+    color: var(--lightBlue);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--lightBlue);
+}
+
+#saveEditBtn {
+    background-color: var(--dark);
+    color: var(--white);
+    font-size: 21px;
+}
+
+#saveEditBtn:hover {
+    background-color: var(--lightBlue);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 .hidden {

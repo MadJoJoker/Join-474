@@ -112,14 +112,14 @@ function createContactDetailsHTML(contact) {
       <div class="contact-details-name-actions">
         <h2>${contact.name}</h2>
         <div class="contact-details-actions">
-          <button class="contact-details-card-icon-button" onclick="onEditContact('${contact.id}')">
-          <img src="../assets/icons/btn/contact-edit.svg" alt="Edit" /> Edit
-          </button>
-          <button class="contact-details-card-icon-button">
-            <img src="../assets/icons/btn/contact-delete.svg" alt="Delete" /> Delete
-          </button>
+        <button class="contact-details-card-icon-button edit-button" onclick="onEditContact('${contact.id}')">
+        <img src="../assets/icons/btn/contact-edit.svg" alt="Edit" /> Edit
+        </button>
+        <button class="contact-details-card-icon-button delete-button">
+        <img src="../assets/icons/btn/contact-delete.svg" alt="Delete" /> Delete
+        </button>
         </div>
-      </div>
+        </div>
     </div>
     <div class="contact-details-info-block">
       <h3>Contact Information</h3><br>
