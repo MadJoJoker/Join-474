@@ -7,11 +7,13 @@
     <link rel="shortcut icon" href="../assets/icons/logo/joinLogo.svg" type="image/x-icon" />
     <link rel="stylesheet" href="../styles/index.css" />
     <link rel="stylesheet" href="../styles/colors.css">
+    <link rel="stylesheet" href="../styles/animation.css">
     <script src="../js/pages/index.js"></script>
+    <script src="../js/pages/animation.js"></script>
   </head>
   <body onload="initIndex()">
-    <div class="index-overlay d-none">
-      <div class="blue-box d-none" id="message-box">Here is your message</div>
+    <div id="idx-overlay" class="index-overlay d-none" onclick="closeOverlay()">
+      <div class="blue-box" id="message-box">Here is your message</div>
     </div>
 
     <div class="content-wrapper">
