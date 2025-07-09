@@ -14,7 +14,7 @@ function acceptPrivacyP() {
 function confirmSignup() {
   const text = "You signed up successfully";
   const color = "rgba(0, 0, 0, 0.5)";
-  const link = "./summary.html"
+  const link = "../../index.html"
   animateMessageBox(text, color, link);
 
   goToPage(link);
@@ -68,6 +68,6 @@ function goToPage(link) {
 function closeOverlay() {
   const overlay = document.getElementById('idx-overlay');
   overlay.classList.add('d-none');
-  document.querySelector('.message-box').style.opacity = 0;
+  document.querySelector('.blue-box').style.opacity = 0;
 }
 // ENDE animateMessageBox-Code
