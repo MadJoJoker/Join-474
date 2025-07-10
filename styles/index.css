@@ -24,53 +24,50 @@ body {
   display: none;
 }
 
-/* .index-overlay {
+.idx-overlay {
   z-index: 5;
   position: fixed;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 1);
 }
 
-.blue-box {
-  background-color: var(--dark);
-  padding: 25px;
-  border-radius: 20px;
-  color: var(--white);
-  font-size: 20px;
+.floating-logo {
+  padding: 19px 25px;
   position: absolute;
-  bottom: 0;
+  height: 200px;
+
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(0);
-  transition: transform 1000ms ease, top 1000ms ease, bottom 500ms ease;
+  transform: translate(-50%, -50%);
 }
 
-.blue-box.center {
-  transform: translateX(-50%) translateY(-50%);
-  top: 50%;
-  bottom: auto;
+.floating-logo.animate {
+  animation: moveToCorner 1s ease forwards;
 }
 
 .d-none {
   display: none;
 }
 
-@keyframes moveToCenter {
+@keyframes moveToCorner {
   from {
-    bottom: 0;
-    transform: translateX(-50%) translateY(0);
+    top: 50%;
+    
+    /* top: 100%; */
+    /* top plaziert korrekt, ohne height der box wird sie aber gedehnt */
+    transform: translate(-50%, 0);
+    opacity: 0.2;
   }
   to {
-    top: 50%;
-    bottom: auto;
-    transform: translateX(-50%) translateY(-50%);
+    top: 0;
+    transform: translate(-50%, -50%);
+    opacity: 1;
   }
 }
 
-.blue-box.animate {
-  animation: moveToCenter 2500ms forwards;
-} */
+
 
 
 header {
