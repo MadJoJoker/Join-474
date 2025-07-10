@@ -11,10 +11,79 @@ html {
     height: 100vh;
 }
 
-.contacts-main {
-    display: flex;
-    min-height: calc(100vh - 96px);
+.main-content {
+  flex-grow: 1;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-/* navmenu */
+/* text */
 
+.highlight-join {
+    color: var(--lightBlue);
+}
+
+.help-content {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 100px;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-bottom: 20px;
+}
+
+.help-content h1 {
+    font-size: 61px;
+    margin-bottom: 24px;
+}
+
+.help-content h2 {
+    font-size: 27px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+.help-content p {
+    margin-bottom: 16px;
+    font-weight: 400;
+}
+
+.numbered-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.numbered-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.numbered-item .number {
+  font-size: 27px;
+  font-weight: bold;
+  text-align: right;
+  line-height: 1;
+}
+
+.numbered-item .content {
+  flex: 1;
+}
+
+.numbered-item .content h3 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.numbered-item .content p {
+  margin: 0;
+}
+
+.numbered-item .number:empty::before {
+  content: '';
+  display: inline-block;
+  width: 1em;
+}
