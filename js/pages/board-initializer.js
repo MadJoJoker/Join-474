@@ -34,6 +34,8 @@ export async function loadAndInitAddTaskOverlay() {
             overlayContainer.innerHTML = addTaskOverlayHtml;
             isOverlayLoaded = true; // Mark as loaded
             console.log("Add Task Overlay HTML loaded into DOM.");
+        // Initial setup for existing overlay listeners (if any)
+            initOverlayListeners('overlay');
 
             // Step 3: Initialize the Add Task form functionalities after the HTML is in the DOM
             // This will attach all event listeners and perform initial setup
@@ -47,8 +49,6 @@ export async function loadAndInitAddTaskOverlay() {
     }
 }
 
-// Initial setup for existing overlay listeners (if any)
-initOverlayListeners();
 
 // Event listener for the main "Add task" button in the board
 document.addEventListener('DOMContentLoaded', () => {

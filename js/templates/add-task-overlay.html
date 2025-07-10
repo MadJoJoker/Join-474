@@ -1,5 +1,5 @@
 <div id="overlay" class="overlay-hidden">
-  <div class="modal-content">
+  <div id="modal-content" class="modal-content">
     <button class="close-modal-btn" type="button" data-event-handle="true">&times;</button>
     <main class="content-overlay">
       <h1>Add Task</h1>
@@ -53,9 +53,6 @@
                   required
                   data-event-handle="true"
                 />
-                <span id="calendar-icon" class="calendar-icon" data-event-handle="true">
-                  <img src="../assets/icons/btn/calender.svg" alt="Calendar Icon" class="calendar-img" />
-                </span>
               </div>
             </div>
 
@@ -126,7 +123,7 @@
                 <div class="assigned-to-options-container" id="assigned-to-options-container">
                   </div>
                 <div class="spacer d-none"></div>
-                <div id="assigned-to-area" class="assigned-initials-area">
+                <div id="assigned-to-area" class="initials-container">
                   </div>
               </div>
             </div>
