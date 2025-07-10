@@ -71,6 +71,7 @@ function deadline() {
   const parsedDates = parseDates(dateStrings);
   const deadlines = filterFutureDeadlines(parsedDates);
   summaryData["deadline"] = findUpcomingDeadline(deadlines);
+  console.log(summaryData["deadline"]);
 }
 
 function getDatesAndFilter() {
