@@ -347,13 +347,21 @@ html {
 
 .overlay-close {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 34px;
+    right: 34px;
     background: none;
     border: none;
     font-size: 32px;
     cursor: pointer;
     color: #333;
+    height: 35px;
+    width: 35px;
+}
+
+.overlay-close:hover {
+    background-color: var(--lightGrey);
+    border-radius: 50%;
+    
 }
 
 .overlay-form-content {
