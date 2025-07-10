@@ -1,0 +1,56 @@
+.index-overlay {
+  z-index: 5;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.blue-box {
+  background-color: var(--dark);
+  padding: 19px 25px;
+  border-radius: 20px;
+  /* max-height: 72px; */
+  color: var(--white);
+  font-size: 20px;
+  letter-spacing: 0.8px;
+  line-height: 36px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%, 0);
+  opacity: 0;
+}
+
+.blue-box.animate {
+  animation: moveToCenter 1s ease forwards;
+}
+
+.d-none {
+  display: none;
+}
+
+@keyframes moveToCenter {
+  from {
+    bottom: 0;
+    /*bottom würde keine height der box erfordern, plaziert sie aber zu hoch (halbe Höhe)*/
+    
+    /* top: 100%; */
+    /* top plaziert korrekt, ohne height der box wird sie aber gedehnt */
+    transform: translate(-50%, 0);
+    opacity: 0;
+  }
+  to {
+    bottom: 50%;
+    /*bottom würde keine height der box erfordern, plaziert sie aber zu hoch (halbe Höhe)*/
+    
+    /* top: 50%; */
+    /* top plaziert korrekt, ohne height der box wird sie aber gedehnt */
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
