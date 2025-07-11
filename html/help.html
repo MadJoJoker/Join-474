@@ -33,7 +33,13 @@
                         document.getElementById('header').innerHTML = data;
                     });
             </script>
-
+            <script type="module">
+                import { initBackButton } from '/js/events/back-button.js';
+                initBackButton();
+            </script>
+            <button id="backBtn" aria-label="Zurück zur vorigen Seite">
+                <img id="back-arrow" src="../assets/icons/btn/blue-back-arrow-default.svg" alt="back-arrow">
+            </button>
             <section class="help-content">
                 <h1>Help</h1>
 
