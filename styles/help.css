@@ -1,14 +1,14 @@
 body,
 html {
-    margin: 0;
-    height: 100%;
-    background-color: #f6f7f8;
-    font-family: 'Inter', sans-serif;
+  margin: 0;
+  height: 100%;
+  background-color: #f6f7f8;
+  font-family: 'Inter', sans-serif;
 }
 
 .app-container {
-    display: flex;
-    height: 100vh;
+  display: flex;
+  height: 100vh;
 }
 
 .main-content {
@@ -21,33 +21,33 @@ html {
 /* text */
 
 .highlight-join {
-    color: var(--lightBlue);
+  color: var(--lightBlue);
 }
 
 .help-content {
-    box-sizing: border-box;
-    width: 100%;
-    margin: 0 auto;
-    padding-top: 100px;
-    padding-left: 80px;
-    padding-right: 80px;
-    padding-bottom: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 100px;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-bottom: 20px;
 }
 
 .help-content h1 {
-    font-size: 61px;
-    margin-bottom: 24px;
+  font-size: 61px;
+  margin-bottom: 24px;
 }
 
 .help-content h2 {
-    font-size: 27px;
-    margin-top: 32px;
-    margin-bottom: 16px;
+  font-size: 27px;
+  margin-top: 32px;
+  margin-bottom: 16px;
 }
 
 .help-content p {
-    margin-bottom: 16px;
-    font-weight: 400;
+  margin-bottom: 16px;
+  font-weight: 400;
 }
 
 .numbered-section {
@@ -86,4 +86,27 @@ html {
   content: '';
   display: inline-block;
   width: 1em;
+}
+
+/* Back Button */
+#backBtn {
+  position: fixed;
+  top: 200px;
+  right: 90px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#backBtn img {
+  width: 100%;
+  height: 100%;
+}
+
+#backBtn:hover img {
+  content: url("../assets/icons/btn/hover/blue-back-arrow-hover.svg");
 }
