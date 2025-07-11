@@ -10,14 +10,14 @@
     <link rel="stylesheet" href="../styles/colors.css">
     <script src="./js/pages/index.js"></script>
   </head>
-  <body onload="initIndex()">
+  <body onload="initIndex(), removeOverlay()">
     <div class="idx-overlay">
       <img class="floating-logo" src="../assets/icons/logo/whiteJoinLogo.svg" alt="join Logo">
     </div>
 
     <div class="content-wrapper">
       <header>
-        <img src="../assets/icons/logo/whiteJoinLogo.svg" alt="join Logo">
+        <img id="join-logo" class="invisible" src="../assets/icons/logo/whiteJoinLogo.svg" alt="join Logo">
         <div class="sign-up">
           <p>Not a Join user?</p>
           <button class="sign-up" onclick="location.href='./html/sign-up.html'">Sign up</button>

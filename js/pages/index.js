@@ -14,24 +14,6 @@ async function initIndex() {
   console.log("recieved data: ", fetchedData);
 }
 
-// async function getFirebaseData() {
-//   const URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/users.json';
-//   try {
-//     const RESPONSE_FIREBASE = await fetch(URL_FIREBASE_JOIN);
-//     if (!RESPONSE_FIREBASE.ok) {
-//       console.error('Network response was not ok:', RESPONSE_FIREBASE.statusText);
-//       return null;
-//     }
-//     const DATA_FIREBASE_JOIN = await RESPONSE_FIREBASE.json();
-//     return DATA_FIREBASE_JOIN;
-//   } catch (error) {
-//     console.error('There was a problem with your fetch operation:', error);
-//     return null;
-//   }
-// }
-
-// Verändert: path als Parameter; Zeile 2: const URL_FIREBASE_JOIN wird zusammengesetzt.
-// Aufruf neu: getFirebaseData("users") wenn man nur diese will. getFirebaseData(), wenn man alles haben will.
 async function getFirebaseData(path = '') {
   const URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/' + path + '.json';
   try {
@@ -46,6 +28,16 @@ async function getFirebaseData(path = '') {
     console.error('There was a problem with your fetch operation:', error);
     return null;
   }
+}
+
+function removeOverlay() {
+  const overlay = document.querySelector('.idx-overlay');
+  const logo = document.querySelector('.floating-logo');
+  logo.addEventListener('animationend', () => {
+    overlay.classList.add('d-none');
+    const logo = document.getElementById('join-logo');
+    logo.classList.remove('invisible');
+  });
 }
 
 // noch zu modularisieren
@@ -105,6 +97,8 @@ function getInitials(fullName) {
   return first + last;
 }
 
+
+// sign in
 function checkRequiredFields() {
   const newName = document.getElementById("new-name").value;
   const newEmail = document.getElementById("new-email").value;
@@ -156,6 +150,7 @@ async function startObjectBuilding() {
   console.log("ready for upload: ", pushObject);
 
   confirmSignup();
+  // resetInputs(fieldMap);
   // await pushObjectToDatabase("users", pushObject); // scharf stellen, wenn Du hochladen willst.
 };
 
@@ -175,7 +170,7 @@ function createNewObject(obj, fieldMap, fallbackCategoryString) {
   specificEntriesInUsers(obj); // DIESER TEIL WIRD BEI JEDEM ANDERS SEIN; s. unten l. 197 ff.
   // console.log("the push-object with specific details:" , completeObject);
 
-  resetInputs(fieldMap);
+  // resetInputs(fieldMap); // die stört hier!
   return completeObject;
 }
 
@@ -208,6 +203,7 @@ function getNextIdNumber(categoryItemName) {
   return newId;
 }
 
+// braucht es wohl nicht, das macht "submit"
 function resetInputs(fieldMap) {
   fieldMap.forEach(({id}) => {
     const element = document.getElementById(id);

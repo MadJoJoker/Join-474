@@ -24,50 +24,59 @@ body {
   display: none;
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 .idx-overlay {
   z-index: 5;
-  position: fixed;
-  top: 0;
+  position: fixed; /* Referenz für das Kind-Element (Logo) */
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 1);
+  overflow: hidden;
+
+  animation: showBackground 2s ease-in forwards;
 }
 
 .floating-logo {
-  padding: 19px 25px;
   position: absolute;
   height: 200px;
+  /* border: 1px solid red; */
 
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 50%; /* die beiden positionieren das linke obere Eck in der Mitte*/
+  transform: translate(-50%, -50%) scale(1); /* das verschiebt das Logo in die wirkliche Mitte */
+  animation: moveToCorner 2s ease forwards;
 }
 
-.floating-logo.animate {
-  animation: moveToCorner 1s ease forwards;
+
+@keyframes moveToCorner {
+  0% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    top: 41px; /* erwartet: 80px, s. l. 15 */
+    left: 43px; /* erwartet: 76px, s. l. 15 */
+    transform: translate(0, 0) scale(0.61);
+  }
 }
+
+@keyframes showBackground {
+  0% {
+    background-color: rgba(255, 255, 255, 1);
+  }
+  100% {
+    background-color: rgba(255, 255, 255, 0);
+  }
+}
+
 
 .d-none {
   display: none;
 }
-
-@keyframes moveToCorner {
-  from {
-    top: 50%;
-    
-    /* top: 100%; */
-    /* top plaziert korrekt, ohne height der box wird sie aber gedehnt */
-    transform: translate(-50%, 0);
-    opacity: 0.2;
-  }
-  to {
-    top: 0;
-    transform: translate(-50%, -50%);
-    opacity: 1;
-  }
-}
-
-
 
 
 header {
