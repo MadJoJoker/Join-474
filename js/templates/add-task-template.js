@@ -169,7 +169,7 @@ export function getAddTaskFormHTML() {
                     </div>
                     <div class="label-container">
                         <label for="subtask" class="font-size-20">Subtasks</label>
-                        <div class="subtask-input-container">
+                        <div class="select-wrapper">
                             <input
                                 type="text"
                                 id="subtask-input"
@@ -178,19 +178,9 @@ export function getAddTaskFormHTML() {
                                 data-event-handle="true"
                             />
                             <div class="subtask-icons" style="display: none">
-                                <img
-                                    src="../assets/icons/btn/close.svg"
-                                    alt="Clear"
-                                    class="subtask-icon"
-                                    data-event-handle="true"
-                                />
+                                <img src="../assets/icons/btn/close.svg" alt="Clear" class="subtask-icon" data-event-handle="true" />
                                 <div class="subtask-separator"></div>
-                                <img
-                                    src="../assets/icons/btn/check.svg"
-                                    alt="Add"
-                                    class="subtask-icon"
-                                    data-event-handle="true"
-                                />
+                                <img src="../assets/icons/btn/add-black.svg" alt="Add" class="subtask-icon" data-event-handle="true" />
                             </div>
                             <button
                                 type="button"
@@ -199,10 +189,7 @@ export function getAddTaskFormHTML() {
                                 style="display: block"
                                 data-event-handle="true"
                             >
-                                <img
-                                    src="../assets/icons/btn/add-black.svg"
-                                    alt="Plus Icon"
-                                />
+                                <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
                             </button>
                         </div>
                         <ul id="subtasks-list" class="subtasks-list"></ul>
