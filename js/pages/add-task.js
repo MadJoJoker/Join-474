@@ -761,6 +761,7 @@ export async function handleCreateTask(event) {
         if (overlay) {
             overlay.classList.add('overlay-hidden');
             overlay.classList.remove('overlay-visible');
+            initAddTaskForm(); 
         }
     } else {
         console.log("Form validation failed.");
