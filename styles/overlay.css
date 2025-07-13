@@ -216,6 +216,9 @@ min-width: 80%;
   top: 50%;
   transform: translateY(-50%);
 }
+.open-assigned-to{
+  display: block;
+}
 
 .dropdown-icon {
   width: 20px;
@@ -233,6 +236,9 @@ min-width: 80%;
   width: calc(100% - 40px);
   background-color: var(--white);
   z-index: 10;
+}
+.options-wrapper.open {
+  display: block;
 }
 
 .options-wrapper.visible {
