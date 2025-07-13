@@ -288,12 +288,13 @@
         </main>
       </section>
     </div>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script type="module" src="../js/ui/render-board.js"></script>
+    <script type="module" src="../js/ui/render-board.js"></script> <!-- Lade render-board.js ZUERST -->
+    <script type="module" src="../js/events/drag-and-drop.js"></script> <!-- Dann lade drag-and-drop.js -->
     <script type="module" src="../js/pages/sidebar.js"></script>
     <script type="module" src="../js/events/overlay-handler.js"></script>
     <script type="module" src="../js/pages/board-initializer.js"></script>
     <script type="module" src="../js/pages/add-task.js"></script>
-  </body>
+ </body>
 </html>
