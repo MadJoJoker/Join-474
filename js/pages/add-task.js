@@ -486,16 +486,16 @@ export function renderSubtasks() {
  */
 export function renderSubtask(text, index) {
     return `
-        <li class="subtask-list" data-index="${index}">
+        <ul class="subtask-list" data-index="${index}">
             <div class="subtask-item-content">
                 <span class="subtask-text">${text}</span>
-                <div class="subtask-actions">
-                    <img src="../assets/icons/btn/edit.svg" alt="Edit" class="subtask-icon edit-icon" data-action="edit">
+                <div id="subtask-${index}" class="subtask-actions">
+                    <img src="../assets/icons/btn/edit-black.svg" alt="Edit" class="subtask-icon edit-icon" data-action="edit">
                     <div class="subtask-separator"></div>
-                    <img src="../assets/icons/btn/delete.svg" alt="Delete" class="subtask-icon delete-icon" data-action="delete">
+                    <img src="../assets/icons/btn/delete-black.svg" alt="Delete" class="subtask-icon delete-icon" data-action="delete">
                 </div>
             </div>
-        </li>
+        </ul>
     `;
 }
 
@@ -551,7 +551,7 @@ export function toggleSubtaskEdit(editIcon) {
     editIconsContainer.innerHTML = `
         <img src="../assets/icons/btn/close.svg" alt="Cancel" class="subtask-icon" data-action="cancel-edit">
         <div class="subtask-separator"></div>
-        <img src="../assets/icons/btn/check.svg" alt="Save" class="subtask-icon" data-action="save-edit">
+        <img src="../assets/icons/btn/check-black.svg" alt="Save" class="subtask-icon" data-action="save-edit">
     `;
     listItem.querySelector('.subtask-item-content').appendChild(editIconsContainer);
 
@@ -611,18 +611,40 @@ export function saveSubtask(index, newText) {
  */
 export function toggleSubtaskInputIcons(showClearAdd) {
     const addSubtaskBtn = document.getElementById('add-subtask-btn');
-    const subtaskIcons = document.querySelector('.subtask-icons');
-    if (!addSubtaskBtn || !subtaskIcons) return;
+    const subtaskIcons = document.getElementById('subtask-icons');
+    const subtaskInputField = document.getElementById('subtask-input');
+
+  if (!addSubtaskBtn || !subtaskIcons || !subtaskInputField) {
+        console.warn('Eines der Subtask-Kontrollen oder das Input-Feld konnte nicht gefunden werden!');
+        return;
+    }
 
     if (showClearAdd) {
-        addSubtaskBtn.style.display = 'none';
-        subtaskIcons.style.display = 'flex';
-    } else {
-        addSubtaskBtn.style.display = 'block';
-        subtaskIcons.style.display = 'none';
+        // Zustand: Zeige Clear/Add-Icons, verstecke den Hinzufügen-Button
+        addSubtaskBtn.style.opacity = '0';
+        addSubtaskBtn.style.pointerEvents = 'none'; // Macht den Button unklickbar
+
+        subtaskIcons.style.opacity = '1';
+        subtaskIcons.style.pointerEvents = 'auto'; // Macht die Icons klickbar
+
+        // NEU: Setze den Fokus auf das Subtask-Input-Feld
+        subtaskInputField.focus();
+
+        console.log('Test SubTASK');
+
+
+        } else {
+            // Zustand: Zeige den Hinzufügen-Button, verstecke die Icons
+        addSubtaskBtn.style.opacity = '1';
+        addSubtaskBtn.style.pointerEvents = 'auto';
+
+        subtaskIcons.style.opacity = '0';
+        subtaskIcons.style.pointerEvents = 'none';
+
+        // Optional: Den Fokus vom Input-Feld entfernen, wenn die Icons ausgeblendet werden
+        // subtaskInputField.blur();
     }
 }
-
 
 /**
  * Validates required fields in the form.
@@ -811,7 +833,7 @@ flatpickr("#calendar-icon", {
     // Subtask input and buttons
     const subtaskInput = document.getElementById('subtask-input');
     const addSubtaskBtn = document.getElementById('add-subtask-btn');
-    const clearSubtaskIcon = document.querySelector('.subtask-icons img[alt="Clear"]');
+    const clearSubtaskIcon = document.querySelector('.subtask-icons img[alt="Close"]');
     const addSubtaskIcon = document.querySelector('.subtask-icons img[alt="Add"]');
 
     if (subtaskInput) {
@@ -823,9 +845,13 @@ flatpickr("#calendar-icon", {
             }
         });
     }
-    addSubtaskBtn?.addEventListener('click', addSubtask);
-    clearSubtaskIcon?.addEventListener('click', clearSubtask);
-    addSubtaskIcon?.addEventListener('click', addSubtask);
+addSubtaskBtn?.addEventListener('click', () => {
+    toggleSubtaskInputIcons(true);
+});
+
+// Diese Listener sind für die Buttons/Icons, die nach der Eingabe erscheinen
+clearSubtaskIcon?.addEventListener('click', clearSubtask);
+addSubtaskIcon?.addEventListener('click', addSubtask); // Dies ist das Häkchen-Icon
 
     // Delegate subtask list actions (edit/delete)
     document.getElementById('subtasks-list')?.addEventListener('click', (event) => {

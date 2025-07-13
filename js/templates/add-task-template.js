@@ -167,35 +167,37 @@ export function getAddTaskFormHTML() {
                             ></div>
                         </div>
                     </div>
-                    <div class="label-container">
-                        <label for="subtask" class="font-size-20">Subtasks</label>
-                        <div class="select-wrapper">
-                            <input
-                                type="text"
-                                id="subtask-input"
-                                class="input-field-subtask"
-                                placeholder="Add new subtask"
-                                data-event-handle="true"
-                            />
-                            <div class="subtask-icons" style="display: none">
-                                <img src="../assets/icons/btn/close.svg" alt="Clear" class="subtask-icon" data-event-handle="true" />
-                                <div class="subtask-separator"></div>
-                                <img src="../assets/icons/btn/add-black.svg" alt="Add" class="subtask-icon" data-event-handle="true" />
-                            </div>
-                            <button
-                                type="button"
-                                class="input-button"
-                                id="add-subtask-btn"
-                                style="display: block"
-                                data-event-handle="true"
-                            >
-                                <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
-                            </button>
-                        </div>
-                        <ul id="subtasks-list" class="subtasks-list"></ul>
-                    </div>
-                </div>
-            </div>
+                 <div class="label-container">
+    <label for="subtask" class="font-size-20">Subtasks</label>
+    <div class="select-wrapper">
+        <input
+            type="text"
+            id="subtask-input"
+            class="input-field-subtask"
+            placeholder="Add new subtask"
+            data-event-handle="true"
+        />
+        <div id="subtask-icons" class="input-button" style="opacity: 0;">
+            <button type="button" class="subtask-action-btn" id="subtask-clear-btn" data-event-handle="true">
+                <img src="../assets/icons/btn/close.svg" alt="Clear" class="subtask-icon" />
+            </button>
+            <div class="subtask-separator"></div>
+            <button type="button" class="subtask-action-btn" id="subtask-add-task-btn" data-event-handle="true">
+                <img src="../assets/icons/btn/add-black.svg" alt="Add" class="subtask-icon" />
+            </button>
+        </div>
+        <button
+            type="button"
+            class="input-button"
+            id="add-subtask-btn"
+            style="display: block"
+            data-event-handle="true"
+        >
+            <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
+        </button>
+    </div>
+    <ul id="subtasks-list" class="subtasks-list"></ul>
+</div>
             <div class="form-buttons-part">
                 <div class="sign-info">This field is required</div>
                 <div class="buttons-area">
