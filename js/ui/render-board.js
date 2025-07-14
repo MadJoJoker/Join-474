@@ -1,15 +1,8 @@
 import { loadFirebaseData } from '../../main.js';
 import { initDragAndDrop } from '../events/drag-and-drop.js';
 
-// Lokale Speicherung der Aufgaben-Daten.
 let tasksData = {};
 
-/**
- * Erstellt das HTML für eine einzelne Aufgabenkarte.
- * @param {Object} boardData - Das gesamte Board-Datenobjekt (tasks, contacts).
- * @param {string} taskID - Die eindeutige ID der Aufgabe.
- * @returns {string} Das HTML für die Aufgabenkarte.
- */
 function createSimpleTaskCard(boardData, taskID) {
     if (!boardData || !taskID) return '';
 
@@ -18,7 +11,10 @@ function createSimpleTaskCard(boardData, taskID) {
     if (!task || !contacts) return '';
 
     let title = task.title || 'Kein Titel';
+    // DEBUG-LOG: Überprüfe den Wert der Beschreibung hier
     let description = (task.description || task["description"] || 'Keine Beschreibung').trim();
+    console.log(`DEBUG: Aufgabe ID: ${taskID}, Beschreibung: "${description}"`);
+
     let type = task.type || 'Unbekannt';
     let categoryClass = 'category-default';
     if (type === 'User Story') categoryClass = 'category-user-story';
@@ -70,16 +66,17 @@ function createSimpleTaskCard(boardData, taskID) {
         prioText = 'Unbekannt';
     }
 
-    // Füge die taskID als 'id' Attribut zum task-card Div hinzu
     return `
         <div class="task-card" id="${taskID}">
-            <div class="category-tag ${categoryClass}">${type}</div>
+            <div class="task-category ${categoryClass}">${type}</div>
             <div class="task-content">
                 <h3 class="task-title">${title}</h3>
                 <p class="task-description">${description}</p>
                 ${total > 0 ? `
                     <div class="progress-container">
-                        <div class="progress-bar" style="width: ${percent}%;"></div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" style="width: ${percent}%;"></div>
+                        </div>
                         <span class="subtasks-text">${subText}</span>
                     </div>` : ''}
             </div>
@@ -93,22 +90,16 @@ function createSimpleTaskCard(boardData, taskID) {
     `;
 }
 
-/**
- * Rendert Aufgaben in die entsprechenden Spalten auf dem Board.
- * Verwaltet das Hinzufügen/Entfernen des "No tasks placeholder".
- * @param {Object} boardData - Das gesamte Board-Datenobjekt von Firebase.
- */
 function renderTasksByColumn(boardData) {
     if (!boardData || !boardData.tasks || !boardData.contacts) {
         console.error("Fehlende Daten im Board.");
         return;
     }
 
-    tasksData = boardData.tasks; // Aktualisiere die lokale tasksData
+    tasksData = boardData.tasks;
 
     let validColumns = ['to-do', 'in-progress', 'await-feedback', 'done'];
 
-    // Bereite die Aufgaben nach Spalten vor und sortiere sie
     let tasksByColumn = {};
     validColumns.forEach(col => { tasksByColumn[col] = []; });
 
@@ -117,11 +108,10 @@ function renderTasksByColumn(boardData) {
 
         let colID = task.columnID;
 
-        // KORRIGIERTES MAPPING: Datenbank-IDs zu DOM-IDs
         let colMapping = {
-            toDo: 'to-do',          // 'toDo' aus DB zu 'to-do' im DOM
+            toDo: 'to-do',
             inProgress: 'in-progress',
-            review: 'await-feedback', // 'review' aus DB zu 'await-feedback' im DOM
+            review: 'await-feedback',
             done: 'done'
         };
         let mappedColID = colMapping[colID];
@@ -143,16 +133,13 @@ function renderTasksByColumn(boardData) {
         tasksByColumn[colID].sort((a, b) => a.createdAt - b.createdAt);
     });
 
-    // Rendere die Spalten und verwalte die Platzhalter
     validColumns.forEach(colID => {
         let container = document.getElementById(colID);
         if (!container) return;
 
-        // 1. Alle bestehenden Aufgabenkarten entfernen
         const existingTaskCards = container.querySelectorAll('.task-card');
         existingTaskCards.forEach(card => card.remove());
 
-        // 2. Den Platzhalter finden oder erstellen und hinzufügen
         let placeholder = container.querySelector('.no-tasks-placeholder');
         if (!placeholder) {
             placeholder = document.createElement('div');
@@ -161,44 +148,30 @@ function renderTasksByColumn(boardData) {
             container.appendChild(placeholder);
         }
 
-        // 3. Logik für Platzhalter und Aufgaben (sichtbar/unsichtbar per display)
         if (tasksByColumn[colID].length > 0) {
-            // Wenn Aufgaben vorhanden sind, blende den Platzhalter aus
             placeholder.style.display = 'none';
-            // Aufgabenkarten hinzufügen
             tasksByColumn[colID].forEach(({ taskID }) => {
                 container.insertAdjacentHTML('beforeend', createSimpleTaskCard(boardData, taskID));
             });
         } else {
-            // Wenn keine Aufgaben vorhanden sind, blende den Platzhalter ein
             placeholder.style.display = 'block';
         }
     });
 
-    // Initialisiere Drag-and-Drop, nachdem alle Aufgaben gerendert wurden
     initDragAndDrop();
     console.log('Board gerendert und Drag-and-Drop initialisiert.');
 }
 
-/**
- * Aktualisiert die Spalten-ID einer Aufgabe in der LOKALEN Datenstruktur.
- * Der Datenbank-Upload ist auskommentiert und zeigt nur einen Konsolen-Log.
- * Nach der lokalen Aktualisierung wird das Board neu gerendert,
- * was die Platzhalter-Logik erneut ausführt.
- * @param {string} taskId - Die ID der zu aktualisierenden Aufgabe.
- * @param {string} newColumnId - Die neue Spalten-ID (z.B. 'to-do', 'in-progress').
- */
 export async function updateTaskColumnData(taskId, newColumnId) {
     console.log(`Versuche, Aufgabe ${taskId} in LOKALEN Daten auf Spalte ${newColumnId} zu aktualisieren.`);
 
     if (tasksData[taskId]) {
         let oldColumnId = tasksData[taskId].columnID;
 
-        // KORRIGIERTES MAPPING: DOM-IDs zu Datenbank-IDs
         let firebaseColumnId;
-        if (newColumnId === 'to-do') firebaseColumnId = 'toDo'; // 'to-do' DOM-ID zu 'toDo' DB-ID
+        if (newColumnId === 'to-do') firebaseColumnId = 'toDo';
         else if (newColumnId === 'in-progress') firebaseColumnId = 'inProgress';
-        else if (newColumnId === 'await-feedback') firebaseColumnId = 'review'; // 'await-feedback' DOM-ID zu 'review' DB-ID
+        else if (newColumnId === 'await-feedback') firebaseColumnId = 'review';
         else if (newColumnId === 'done') firebaseColumnId = 'done';
         else {
             console.error(`Unbekannte neue Spalten-ID für lokale Aktualisierung: ${newColumnId}`);
@@ -208,7 +181,6 @@ export async function updateTaskColumnData(taskId, newColumnId) {
         tasksData[taskId].columnID = firebaseColumnId;
         console.log(`LOKALE Daten für Aufgabe ${taskId} von ${oldColumnId} auf ${firebaseColumnId} aktualisiert.`);
 
-        // --- Datenbank-Upload-Teil (auskommentiert) ---
         console.log(`INFO: Datenbank-Upload für Aufgabe ${taskId} mit neuer Spalte ${firebaseColumnId} ist momentan AUSKOMMENTIERT.`);
         /*
         try {
@@ -219,10 +191,7 @@ export async function updateTaskColumnData(taskId, newColumnId) {
             console.error(`Fehler beim Speichern der Aufgabe ${taskId} in Firebase:`, error);
         }
         */
-        // --- Ende Datenbank-Upload-Teil ---
 
-        // WICHTIG: Board nach lokaler Datenaktualisierung neu rendern,
-        // damit die UI (inkl. Platzhalter) den neuen Zustand widerspiegelt.
         await initializeBoard();
 
     } else {
@@ -230,9 +199,6 @@ export async function updateTaskColumnData(taskId, newColumnId) {
     }
 }
 
-/**
- * Initialisiert das Board durch Laden der Firebase-Daten und Rendern der Aufgaben.
- */
 async function initializeBoard() {
     const firebaseBoardData = await loadFirebaseData();
     if (firebaseBoardData) {
@@ -242,5 +208,4 @@ async function initializeBoard() {
     }
 }
 
-// Initialisiere das Board, wenn der DOM vollständig geladen ist
 document.addEventListener('DOMContentLoaded', initializeBoard);
