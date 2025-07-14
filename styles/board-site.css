@@ -321,7 +321,42 @@ body {
   height: 20px;
 }
 
-.content {
+/* --- Drag-and-Drop Visualisierung --- */
+
+@keyframes wobble {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-1deg); } /* Leicht nach links kippen */
+    50% { transform: rotate(1deg); }  /* Leicht nach rechts kippen */
+    75% { transform: rotate(-0.5deg); } /* Zurück in die Mitte */
+    100% { transform: rotate(0deg); }
+}
+
+.task-card.is-dragging {
+    opacity: 0.4;
+    border: 2px dashed var(--darkBlue);
+    background-color: var(--lightGrey);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    cursor: grabbing;
+
+    animation: wobble 0.5s infinite alternate ease-in-out;
+}
+
+.task-column.drag-over {
+    border: 3px dashed var(--darkBlue);
+    background-color: rgba(0, 122, 255, 0.15);
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.task-column .no-tasks-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--darkHover);
+    font-style: italic;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 #board-content-wrapper {
