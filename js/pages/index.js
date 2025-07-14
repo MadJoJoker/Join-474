@@ -126,65 +126,69 @@ function toggleInputType() {
 
 // **********************************************************
 
-// Idee: eine generische Funktion, bei der wir uns auf das Erstellen des neuen Objekts konzentrieren.
-// Das Objekt wird befüllt: "id" stammt aus dem html (input-field, das ausgelesen wird),
-// "key" ist der key im Objekt der Datenbank (z.B. "taskname")
-
-// Bitte beachten: um eine ID wie etwa "task-2" erstellen zu können, muss weiter oben
-// "fetchedData = data;" stehen (hier: l.12). data ist der Inhalt von "users" oder "tasks" oder "contacts"
-// Die beiden Namen (newUser, userFields) müsst ihr an euere Bedürfnisse anpassen: newTask, taskFields (z.B.)
-
-let newUser = {
-  associatedContacts: "" // wenn dieses leere Ding nicht wäre, würde "let newUser = {}" reichen
-};
-
+// oder generischer: objectFields.
 const userFields = [
   {id: "new-name", key: "displayName"},
   {id: "new-email", key: "email"}
 ];
 
-// Diese Funktion muß angepasst werden: die beiden Variablen von gerade eben plus der fallback-
-// string für die "nexId"Funktion (wenn es hier unter "users" nix findet, macht es selber einen "demouser-0")
 async function startObjectBuilding() {
-  const pushObject = createNewObject(newUser, userFields, "demoUser");
+  const pushObject = createNewObject(userFields, "demoUser");
   console.log("ready for upload: ", pushObject);
 
-  confirmSignup();
+  // confirmSignup(); MOMENTAN GESTOPPT; DAS ist bei "users" und "contacts" verschieden
+
   // resetInputs(fieldMap);
-  // await pushObjectToDatabase("users", pushObject); // scharf stellen, wenn Du hochladen willst.
-};
+  // await pushObjectToDatabase("users", pushObject); // "contacts", wenn dort angewendet.
+}
 
-// Damit ist die Sache für die INPUTS erledigt; den Rest besorgt der weitere Code
-// (auch das resetting aller inputs, die oben im Objekt aufgelistet sind). ABER:
-// für "contacts" und vor allem "add Task" müssen weitere Einträge an das Obj. übergeben werden (nicht aus inputs)
-// für "contacts" ist der Weg skizziert (l. 197 ff.), für "add Task" wird es schwieriger, auch das resetten.
-
-function createNewObject(obj, fieldMap, fallbackCategoryString) {
-  fillObjectFromInputfields(obj, fieldMap);
+function createNewObject(fieldMap, fallbackCategoryString) {
+  const userData = fillObjectFromInputfields(fieldMap);
+  specificEntries(userData);
   const pushObjectId = getNextIdNumber(fallbackCategoryString);
+  console.log("new ID", pushObjectId);
   const completeObject = {
-    [pushObjectId]: newUser
+    [pushObjectId]: userData
   };
   console.log("the push-object from input-fields:" , completeObject);
-   
-  specificEntriesInUsers(obj); // DIESER TEIL WIRD BEI JEDEM ANDERS SEIN; s. unten l. 197 ff.
-  // console.log("the push-object with specific details:" , completeObject);
+  Object.assign(fetchedData, completeObject); // lokales update fürs Rendern
+  // console.log(fetchedData);
 
   // resetInputs(fieldMap); // die stört hier!
-  return completeObject;
+  return completeObject; 
 }
 
-function fillObjectFromInputfields(obj, fieldMap) {
-  fieldMap.forEach(({id, key}) => {
+function fillObjectFromInputfields(fieldMap) {
+  const obj = {};
+  loopOverInputs(fieldMap, obj);
+  console.log("new object - only the key is missing:", obj);
+  return obj;
+}
+
+// wird auch bei edit-function verwendet
+function loopOverInputs(fieldMap, obj) {
+  fieldMap.forEach(({ id, key }) => {
     const element = document.getElementById(id);
-    obj[key] = element?.value ?? ""; // optional chaining: gibt es einen input oder nicht? (wenn required, dann unnötig)
+    const value = element?.value?.trim() ?? "";
+    obj[key] = value || "";
   });
-  console.log("your beautiful new object - only the key is missing:", newUser)
+  return obj;
 }
 
-// die console.logs kommen weg; ist nur um zu sehen, was sich tut.
+// function fillObjectFromInputfields(fieldMap) {
+//   const obj = {};
+//   fieldMap.forEach(({id, key}) => {
+//     const element = document.getElementById(id);
+//     const value = element.value.trim();
+//     obj[key] = value || "";
+//   });
+//   console.log("new object - only the key is missing:", obj);
+//   return obj;
+// }
+
+// die ist etwas zu lang
 function getNextIdNumber(categoryItemName) {
-  const itemKeys = Object.keys(fetchedData); // "fetchedData" = Variable mit dem download Inhalt
+  const itemKeys = Object.keys(fetchedData);
     // fallback, nicht getestet: falls z.B. "users" noch keinen "user" enthält.
     if(itemKeys.length == 0) {
       console.log("you initialized a new category: ", categoryItemName);
@@ -192,14 +196,12 @@ function getNextIdNumber(categoryItemName) {
     }
   let lastKey = itemKeys.at(-1); // ist dasselbe wie: itemKeys[taskKeys.length -1];
   console.log("current last ID: ", lastKey);
-
   const parts = lastKey.split("-");
-  console.log("splitted: ", parts);
-  let [prefix, numberStr] = parts // destructuring: gibt den array-items von "parts" Variablennamen
-  console.log("prefix: ", prefix, "; old number: ", numberStr);
-  let nextNumber = Number(numberStr) + 1;
+  let [prefix, numberStr] = parts
+  let next = Number(numberStr) + 1;
+  let nextNumber = next.toString().padStart(2, '0');
   const newId = `${prefix}-${nextNumber}`;
-  console.log("next ID: ", newId);
+  // console.log("next ID: ", newId);
   return newId;
 }
 
@@ -211,25 +213,13 @@ function resetInputs(fieldMap) {
   });
 }
 
-// Funktionen für "specificEntriesInUsers"; pusht hier testweise die Zusätze von "contacts" in den "user"
-function specificEntriesInUsers(obj) {
-  initialsToObject(obj);
-  colorToObject(obj);
+// SPEZIFISCHER TEIL "USERS"
+function specificEntries(obj) {
+  // console.log("draft of obj: ", obj);
+  obj.associatedContacts = "";
   // compareAndStorePassword(obj);  // mache ich vielleicht noch für "sign up"
+  return obj;
 }
-
-// Contacts (Versuch, ob die ganze Funktion um solche Spezialitäten erweitert werden kann):
-function initialsToObject(obj) {
-  const fullName = obj['displayName'];  // ersetze diesen string durch jenen des Namen-key in der Firebase von "contact"
-  const initials = getInitials(fullName);
-  obj['initials'] = initials; // ersetze diesen string durch jenen des Namen-key in der Firebase von "contact"
-}
-// es fehlt noch eine Funktion, die eine Zufallsfarbe wählt und z.B. "vvar(--dark)" zurückgibt
- function colorToObject(obj) {
-  const color = "var(--dark)"; // da müsse natürlich stehen: "const color = deineRandomColor(FarbenArray)", die eine Farbe returnt
-  console.log(color);
-  obj['color'] = color; // ersetze diesen string durch jenen des Namen-key in der Firebase von "contact"
- }
 
 async function pushObjectToDatabase(path, data={}) {
   let URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/';
@@ -240,8 +230,15 @@ async function pushObjectToDatabase(path, data={}) {
     },
     body: JSON.stringify(data)
   });
+  if (!res.ok) throw new Error(`POST failed: ${res.status}`);
+  const result = await res.json();
+  console.log("POST result:", result);
+  return result; 
 }
 // ENDE DER OBJECT-CREATING AND OPLOAD-FUNCTION
+
+
+
 
 // *****************************************
 // Zum Testen (anstelle einer click-function):
