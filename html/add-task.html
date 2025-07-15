@@ -21,27 +21,13 @@
     />
   </head>
 
-  <body>
+  <body onload="includeHeaderAndSidebar()">
     <div class="app-container">
-      <section id="sidebar-area"></section>
-      <script>
-        // Von 'html/' -> '..' (Projekt-Root) -> 'js/' -> 'templates/'
-        fetch("../js/templates/sidebar.html")
-          .then((response) => response.text())
-          .then((data) => {
-            document.getElementById("sidebar-area").innerHTML = data;
-          });
-      </script>
+      <section id="sidebar"></section>
+
       <section class="main-content">
         <header id="header"></header>
-        <script>
-          // Von 'html/' -> '..' (Projekt-Root) -> 'js/' -> 'templates/'
-          fetch("../js/templates/header.html")
-            .then((response) => response.text())
-            .then((data) => {
-              document.getElementById("header").innerHTML = data;
-            });
-        </script>
+
         <div id="content"></div>
 
       <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -49,6 +35,8 @@
       <script type="module" src="../js/templates/add-task-template.js"></script>
       <script type="module" src="../js/pages/add-task.js"></script>
       <script type="module" src="../js/pages/sidebar.js"></script>
+            <script src="../js/pages/header-and-sidebar.js"></script>
+
 
       <script type="module">
         // Import-Pfade sind RELATIV zu dieser HTML-Datei (die im 'html/' Ordner liegt)
