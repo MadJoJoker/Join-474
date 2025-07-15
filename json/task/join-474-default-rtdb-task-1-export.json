@@ -1,0 +1,31 @@
+{
+  "assignedUsers": [
+    "contact-1",
+    "contact-2",
+    "contact-3",
+    "contact-4"
+  ],
+  "boardID": "board-1",
+  "checkedSubtasks": [
+    true,
+    false
+  ],
+  "columnID": "inProgress",
+  "createdAt": [
+    "21.06.2025"
+  ],
+  "deadline": "22.08.2025",
+  "description": "Nach Erstellung des Kanban Projektes und der Überprüfung der Checkliste wird das Projekt eingereicht",
+  "priority": "urgent",
+  "subtasksCompleted": 1,
+  "title": "Join abgeben",
+  "totalSubtask": [
+    "Checkliste durchgehen",
+    "Auf Projektseite hochgeladen"
+  ],
+  "type": "User Story",
+  "updatedAt": [
+    "20.06.2025",
+    "20.06.2025"
+  ]
+}

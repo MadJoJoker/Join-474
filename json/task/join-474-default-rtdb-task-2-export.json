@@ -1,0 +1,27 @@
+{
+  "assignedUsers": [
+    "contact-4",
+    "contact-3",
+    "contact-2"
+  ],
+  "boardID": "board-1",
+  "checkedSubtasks": [
+    true,
+    false
+  ],
+  "columnID": "review",
+  "createdAt": "10.05.2025",
+  "deadline": "18.08.2025",
+  "description": "Es gilt, GitHub zu überprüfen und alle Branches in den 'main'-Branch zu mergen, damit alle Änderungen dort konsolidiert sind",
+  "priority": "medium",
+  "subtasksCompleted": 1,
+  "title": "Finale Github  Kontrolle",
+  "totalSubtasks": [
+    "Jeder hat alles gepusht",
+    "All Pulls sind abgeschlossen"
+  ],
+  "type": "User Story",
+  "updatedAt": [
+    "20.06.2025"
+  ]
+}

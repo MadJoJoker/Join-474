@@ -1,0 +1,23 @@
+{
+  "assignedUsers": [
+    "contact-4"
+  ],
+  "boardID": "board-1",
+  "checkedSubtasks": [
+    true
+  ],
+  "columnID": "inProgress",
+  "createdAt": "19.06.2025",
+  "deadline": "22.12.2025",
+  "description": "In dieser Besprechung wird festgelegt in welcher Reihenfolge die Aufgaben der Punch Liste erledigt werden",
+  "priority": "low",
+  "subtaskCompleted": "1",
+  "title": "Besprechung der Aufgaben Priorisierung ",
+  "totalSubtask": [
+    "Punch Liste erstellen"
+  ],
+  "type": "Meeting",
+  "updatedAt": [
+    "19.06.2025"
+  ]
+}

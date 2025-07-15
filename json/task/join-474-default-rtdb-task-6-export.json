@@ -1,0 +1,29 @@
+{
+  "assignedUsers": [
+    "contact-3"
+  ],
+  "boardID": "board-1",
+  "checkedSubtasks": [
+    true,
+    true,
+    false,
+    true
+  ],
+  "columnID": "done",
+  "createdAt": "09.06.2025",
+  "deadline": "17.09.2025",
+  "description": "In dieser Besprechung soll geklärt werden wie lange jeder für seine Aufgaben braucht damit wir einen Abgabetermin eingrenzen können",
+  "priority": "medium",
+  "subtaskCompleted": "3",
+  "title": "Besprechung zum Abgabetermin",
+  "totalSubtask": [
+    "Vorgespräch Mathias",
+    "Vorgespräch Claudia",
+    "Vorgespräch Eugen",
+    "Vorgespräch Dominik"
+  ],
+  "type": "Meeting",
+  "updatedAt": [
+    "11.06.2025"
+  ]
+}
