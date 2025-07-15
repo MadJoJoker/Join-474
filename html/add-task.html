@@ -1,184 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Task</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Task</title>
+    <link rel="icon" href="../assets/icons/logo/joinLogo.svg" />
 
-  <link rel="icon" href="../assets/icons/logo/joinLogo.svg" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/add-task.css" />
+    <link rel="stylesheet" href="../styles/standard.css" />
+    <link rel="stylesheet" href="../styles/sidebar.css" />
+    <link rel="stylesheet" href="../styles/colors.css" />
+    <link rel="stylesheet" href="../styles/header.css" />
+    <link rel="stylesheet" href="../styles/assets.css" />
+    <link rel="stylesheet" href="../assets/fonts/font.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+  </head>
 
-  <link rel="stylesheet" href="../style.css" />
-  <link rel="stylesheet" href="../styles/add-task.css" />
-  <link rel="stylesheet" href="../styles/standard.css" />
-  <link rel="stylesheet" href="../styles/sidebar.css" />
-  <link rel="stylesheet" href="../styles/colors.css" />
-  <link rel="stylesheet" href="../styles/header.css" />
-  <link rel="stylesheet" href="../styles/assets.css" />
-  <link rel="stylesheet" href="../assets/fonts/font.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-
-</head>
-
-<body>
-  <div class="app-container">
-    <section id="sidebar-area"></section>
-    <script>
-      fetch("../js/templates/sidebar.html")
-        .then((response) => response.text())
-        .then((data) => {
-          document.getElementById("sidebar-area").innerHTML = data;
-        });
-    </script>
-    <section class="main-content">
-      <header id="header"></header>
+  <body>
+    <div class="app-container">
+      <section id="sidebar-area"></section>
       <script>
-        fetch("../js/templates/header.html")
+        // Von 'html/' -> '..' (Projekt-Root) -> 'js/' -> 'templates/'
+        fetch("../js/templates/sidebar.html")
           .then((response) => response.text())
           .then((data) => {
-            document.getElementById("header").innerHTML = data;
+            document.getElementById("sidebar-area").innerHTML = data;
           });
       </script>
-      <main class="content">
-        <h1>Add Task</h1>
-        <form id="add-task-form" class="form" onsubmit="return checkRequiredFields()">
-          <div class="form-fill-part">
-            <div class="left-form">
-              <div class="label-container">
-                <label for="title" class="required font-size-20">Title</label>
-                <input oninput="handleInput(this)" name="title" class="input-field" type="text" id="title"
-                  placeholder="Enter a title" required />
-              </div>
-              <div class="label-container">
-                <label for="task-description" class="font-size-20">Description</label>
-                <div class="textarea-wrapper">
-                  <textarea name="task-description" id="task-description" class="task-description-area"
-                    placeholder="Enter a Description"></textarea>
-                  <img src="../assets/icons/btn/resize-handle.svg" alt="resize-handle" class="resize-handle"
-                    draggable="false" onmousedown="startResize(event)">
-                </div>
-              </div>
-              <div class="label-container">
-                <label for="datepicker" class="required font-size-20">Due Date</label>
-                <div class="input-inline">
-                  <input name="datepicker" id="datepicker" oninput="formatDate(this), handleInput(this)" type="text"
-                    placeholder="dd/mm/yyyy" class="input-field" required />
-                  <span id="calendar-icon" class="calendar-icon">
-                    <img onclick="openPicker()" src="../assets/icons/btn/calender.svg" alt="Calendar Icon"
-                      class="calendar-img" />
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="border"></div>
-            <div class="right-form">
-              <div class="label-container">
-                <fieldset aria-labelledby="priority-legend" style="border: none;">
-                  <legend id="priority-legend" class="font-size-20">Priority</legend>
-                  <div class="d-flex gap-16" role="group">
-                    <button onclick="setPriority(this, 'urgent')" type="button" class="priority-btn"
-                      data-priority="urgent">
-                      Urgent
-                      <img src="../assets/icons/property/Urgent.svg" alt="Urgent" class="priority-icon">
-                    </button>
-                    <button onclick="setPriority(this, 'medium')" type="button" class="priority-btn active"
-                      data-priority="medium">
-                      Medium
-                      <img src="../assets/icons/property/medium.svg" alt="Medium" class="priority-icon">
-                    </button>
-                    <button onclick="setPriority(this, 'low')" type="button" class="priority-btn" data-priority="low">
-                      Low
-                      <img src="../assets/icons/property/Low.svg" alt="Low" class="priority-icon">
-                    </button>
-                  </div>
-                </fieldset>
-              </div>
-              <div class="label-container">
-                <label for="select-contacts" class="font-size-20">Assigned to</label>
-                <div class="select-wrapper" onclick="toggleAssignedToDropdown('assignedTo')">
-                  <div class="styled-select" id="dropdown-assigned-to">
-                    <input name="select-contacts" type="text" id="select-contacts" class="contact-input"
-                      placeholder="Select contacts to assign" onkeydown="filterContacts()" />
-                  </div>
-                  <div class="dropdown-icon-container" id="dropdown-icon-container-one">
-                    <img id="dropdown-icon-one" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
-                      alt="Dropdown">
-                  </div>
-                </div>
-              </div>
-              <div class="options-wrapper" id="assigned-to-options-wrapper">
-                <div class="spacer"></div>
-                <div id="assigned-to-options-container"></div>
-              </div>
-              <div id="selected-contacts-container"></div>
-              <div class="label-container">
-                <label for="hidden-category-input" class="required font-size-20">Category</label>
-                <div class="select-wrapper" onclick="toggleCategoryDropdown('category')">
-                  <div class="styled-select styled-select-addition" id="dropdown-category">
-                    <div id="selected-category" required>Select task category</div>
-                  </div>
-                  <input type="text" id="hidden-category-input" name="hidden-category-input" required
-                    class="hidden-input">
-                  <div class="dropdown-icon-container" id="dropdown-icon-container-two">
-                    <img id="dropdown-icon-two" src="../assets/icons/btn/arrow_drop_down.svg" class="dropdown-icon"
-                      alt="Dropdown">
-                  </div>
-                </div>
-              </div>
-              <div class="options-wrapper" id="category-options-wrapper">
-                <div id="category-options-container"></div>
-              </div>
-              <div class="label-container">
-                <label for="input-subtask" class="font-size-20">Subtasks</label>
-                <div class="input-wrapper" oninput="toggleSubtaskIcons()">
-                  <input id="input-subtask" type="text" name="input-subtask" class="input-field-subtask"
-                    placeholder="Add new subtask" />
-                  <div id="subtask-buttons">
-                    <button type="button" class="input-button add-btn">
-                      <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
-                    </button>
-                    <button type="button" class="input-button close-btn left" onclick="clearSubtask()"
-                      style="display: none;">
-                      <img src="../assets/icons/btn/close.svg" alt="Close Icon" />
-                    </button>
-                    <div class="middle" style="display: none;"></div>
-                    <button type="button" class="input-button check-btn right" onclick="addSubtask()"
-                      style="display: none;">
-                      <img src="../assets/icons/btn/check-black.svg" alt="Check Icon" />
-                    </button>
-                  </div>
-                </div>
-                <div id="addedSubtasksArea"></div>
-              </div>
-            </div>
-          </div>
-          <div class="form-buttons-part">
-            <div class="sign-info">This field is required</div>
-            <div class="buttons-area">
-              <button type="reset" class="clear-btn" onclick="clearForm()">
-                Clear
-                <svg class="x-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 24 24"
-                  fill="none">
-                  <path
-                    d="M12.14 13.4l-4.9 4.9a.95.95 0 0 1-1.4-1.4l4.9-4.9-4.9-4.9a.95.95 0 0 1 1.4-1.4l4.9 4.9 4.9-4.9a.95.95 0 1 1 1.4 1.4l-4.9 4.9 4.9 4.9a.95.95 0 0 1-1.4 1.4l-4.9-4.9z"
-                    fill="currentColor" />
-                </svg>
-              </button>
-              <button type="submit" class="create-btn" onclick="submitForm()">
-                Create Task
-                <img src="../assets/icons/btn/check-mark.svg" alt="Check-mark Icon" />
-              </button>
-            </div>
-          </div>
-        </form>
-      </main>
-    </section>
-  </div>
+      <section class="main-content">
+        <header id="header"></header>
+        <script>
+          // Von 'html/' -> '..' (Projekt-Root) -> 'js/' -> 'templates/'
+          fetch("../js/templates/header.html")
+            .then((response) => response.text())
+            .then((data) => {
+              document.getElementById("header").innerHTML = data;
+            });
+        </script>
+        <div id="content"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script type="module" src="../js/pages/add-task.js"></script>
-  <script src="../js/pages/sidebar.js"></script>
-  <script type="module" src="../main.js"></script>
-</body>
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+      <script type="module" src="../js/templates/add-task-template.js"></script>
+      <script type="module" src="../js/pages/add-task.js"></script>
+      <script type="module" src="../js/pages/sidebar.js"></script>
+
+      <script type="module">
+        // Import-Pfade sind RELATIV zu dieser HTML-Datei (die im 'html/' Ordner liegt)
+        // Von 'html/' -> '..' (Projekt-Root) -> 'js/' -> 'templates/'
+        import { getAddTaskFormHTML } from '../js/templates/add-task-template.js';
+        import { initAddTaskForm } from '../js/pages/add-task.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+          const container = document.getElementById('content');
+          if (container) {
+            container.innerHTML = getAddTaskFormHTML();
+            initAddTaskForm();
+          }
+        });
+      </script>
+  </body>
 </html>
