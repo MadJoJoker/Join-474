@@ -15,6 +15,7 @@ let currentContacts = [];
 let selectedContacts = [];
 let addedSubtasks = [];
 let overlayPickerInstance;
+export let fetchData = null;
 
 /**
  * Initializes the task by retrieving the Firebase data and sorting the contacts.
@@ -33,6 +34,8 @@ export async function initTask() {
                 const nameB = (b.name || "").toLowerCase();
                 return nameA.localeCompare(nameB, 'de', { sensitivity: 'base' });
             });
+                fetchData = data;
+                    console.log('FETCH CHECK:',  fetchData);
 
         console.log('Alle Kontakte (alphabetisch sortiert):', currentContacts);
     } catch (error) {
@@ -761,7 +764,7 @@ export async function handleCreateTask(event) {
         if (overlay) {
             overlay.classList.add('overlay-hidden');
             overlay.classList.remove('overlay-visible');
-            initAddTaskForm(); 
+            initAddTaskForm();
         }
     } else {
         console.log("Form validation failed.");
