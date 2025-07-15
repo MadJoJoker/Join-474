@@ -16,29 +16,20 @@
     <link rel="stylesheet" href="../assets/fonts/font.css">
 </head>
 
-<body>
+<body onload="includeHeaderAndSidebar()">
     <div class="app-container">
-        <section id="sidebar-area"></section>
-        <script>
-            fetch('../js/templates/sidebar.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('sidebar-area').innerHTML = data;
-                });
-        </script>
+        <section id="sidebar"></section>
+
         <section class="main-content">
             <header id="header"></header>
-            <script>
-                fetch('../js/templates/header.html')
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('header').innerHTML = data;
-                    });
-            </script>
+
         </section>
     </div>
     <script src="../js/pages/sidebar.js"></script>
     <script src="/js/events/toggle-header-icons.js"></script>
+    <script src="../js/pages/header-and-sidebar.js"></script>
+
+
 </body>
 
 </html>

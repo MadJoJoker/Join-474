@@ -1,0 +1,220 @@
+/**
+ * Liefert den HTML-String für das "Add Task" Hauptformular.
+ * Alle Pfade sind relativ zum Ort, von dem dieses Template geladen wird.
+ *
+ * @returns {string} Der HTML-String für das Add Task Formular.
+ */
+export function getAddTaskFormHTML() {
+    return `
+    <main class="content">
+        <h1>Add Task</h1>
+        <form id="add-task-form" class="form">
+            <div class="form-fill-part">
+                <div class="left-form">
+                    <div class="label-container">
+                        <label for="title" class="required font-size-20">Title</label>
+                        <input
+                            name="title"
+                            class="input-field"
+                            type="text"
+                            id="title"
+                            placeholder="Enter a title"
+                            required
+                            data-event-handle="true"
+                        />
+                    </div>
+                    <div class="label-container">
+                        <label for="task-description" class="font-size-20">Description</label>
+                        <div class="textarea-wrapper">
+                            <textarea
+                                name="task-description"
+                                id="task-description"
+                                class="task-description-area"
+                                placeholder="Enter a Description"
+                            ></textarea>
+                            <img
+                                src="../assets/icons/btn/resize-handle.svg"
+                                class="resize-handle"
+                                draggable="false"
+                                data-event-handle="true"
+                            />
+                        </div>
+                    </div>
+                    <div class="label-container">
+                        <label for="datepicker" class="required font-size-20">Due Date</label>
+                        <div class="input-inline">
+                            <input
+                                name="datepicker"
+                                id="datepicker"
+                                type="text"
+                                placeholder="dd/mm/yyyy"
+                                class="input-field"
+                                required
+                                data-event-handle="true"
+                            />
+                            <span id="calendar-icon" class="calendar-icon" data-event-handle="true">
+                                <img src="../assets/icons/btn/calender.svg" alt="Calendar Icon" class="calendar-img" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="border"></div>
+                <div class="right-form">
+                    <div class="label-container">
+                        <fieldset aria-labelledby="priority-legend" style="border: none">
+                            <legend id="priority-legend" class="font-size-20">Priority</legend>
+                            <div class="d-flex gap-16" role="group">
+                                <button
+                                    type="button"
+                                    class="priority-btn urgent-btn"
+                                    data-priority="urgent"
+                                    data-event-handle="true"
+                                >
+                                    Urgent
+                                    <img
+                                        src="../assets/icons/property/urgent.svg"
+                                        alt="Urgent Icon"
+                                    />
+                                </button>
+                                <button
+                                    type="button"
+                                    class="priority-btn medium-btn active"
+                                    data-priority="medium"
+                                    data-event-handle="true"
+                                >
+                                    Medium
+                                    <img
+                                        src="../assets/icons/property/medium.svg"
+                                        alt="Medium Icon"
+                                    />
+                                </button>
+                                <button
+                                    type="button"
+                                    class="priority-btn low-btn"
+                                    data-priority="low"
+                                    data-event-handle="true"
+                                >
+                                    Low
+                                    <img
+                                        src="../assets/icons/property/low.svg"
+                                        alt="Low Icon"
+                                    />
+                                </button>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="label-container">
+                        <label for="assigned-to" class="required font-size-20">Assigned to</label>
+                        <div
+                            class="select-wrapper input-field"
+                            id="dropdown-assigned-to"
+                            data-event-handle="true"
+                        >
+                            <div class="selected-option" id="selected-assigned-to">
+                                Select contacts to assign
+                            </div>
+                            <div
+                                class="dropdown-icon-container"
+                                id="dropdown-icon-container-one"
+                            >
+                                <img
+                                    src="../assets/icons/btn/arrow_drop_down.svg"
+                                    alt="Dropdown Arrow"
+                                    class="dropdown-icon"
+                                    id="dropdown-icon-one"
+                                />
+                            </div>
+                        </div>
+                        <div class="options-wrapper" id="assigned-to-options-wrapper">
+                            <div
+                                class="assigned-to-options-container"
+                                id="assigned-to-options-container"
+                            ></div>
+                            <div class="spacer d-none"></div>
+                            <div
+                                id="assigned-to-area"
+                                class="initials-container"
+                            ></div>
+                        </div>
+                    </div>
+                    <div class="label-container">
+                        <label for="category" class="required font-size-20">Category</label>
+                        <input type="hidden" id="hidden-category-input" required />
+                        <div
+                            class="select-wrapper input-field"
+                            id="dropdown-category"
+                            data-event-handle="true"
+                        >
+                            <div class="selected-option" id="selected-category">
+                                Select task category
+                            </div>
+                            <div
+                                class="dropdown-icon-container"
+                                id="dropdown-icon-container-two"
+                            >
+                                <img
+                                    src="../assets/icons/btn/arrow_drop_down.svg"
+                                    alt="Dropdown Arrow"
+                                    class="dropdown-icon"
+                                    id="dropdown-icon-two"
+                                />
+                            </div>
+                        </div>
+                        <div class="options-wrapper" id="category-options-wrapper">
+                            <div
+                                class="category-options-container"
+                                id="category-options-container"
+                            ></div>
+                        </div>
+                    </div>
+                 <div class="label-container">
+    <label for="subtask" class="font-size-20">Subtasks</label>
+    <div class="select-wrapper">
+        <input
+            type="text"
+            id="subtask-input"
+            class="input-field-subtask"
+            placeholder="Add new subtask"
+            data-event-handle="true"
+        />
+        <div id="subtask-icons" class="input-button" style="opacity: 0;">
+            <button type="button" class="subtask-action-btn" id="subtask-clear-btn" data-event-handle="true">
+                <img src="../assets/icons/btn/close.svg" alt="Clear" class="subtask-icon" />
+            </button>
+            <div class="subtask-separator"></div>
+            <button type="button" class="subtask-action-btn" id="subtask-add-task-btn" data-event-handle="true">
+                <img src="../assets/icons/btn/add-black.svg" alt="Add" class="subtask-icon" />
+            </button>
+        </div>
+        <button
+            type="button"
+            class="input-button"
+            id="add-subtask-btn"
+            style="display: block"
+            data-event-handle="true"
+        >
+            <img src="../assets/icons/btn/add-black.svg" alt="Plus Icon" />
+        </button>
+    </div>
+    <ul id="subtasks-list" class="subtasks-list"></ul>
+</div>
+            <div class="form-buttons-part">
+                <div class="sign-info">This field is required</div>
+                <div class="buttons-area">
+                    <button type="reset" class="clear-btn" data-event-handle="true">
+                        Clear
+                        <img src="../assets/icons/btn/close.svg" alt="Close Icon" />
+                    </button>
+                    <button type="submit" class="create-btn" data-event-handle="true">
+                        Create Task
+                        <img
+                            src="../assets/icons/btn/check-mark.svg"
+                            alt="Check-mark Icon"
+                        />
+                    </button>
+                </div>
+            </div>
+        </form>
+    </main>
+    `;
+}

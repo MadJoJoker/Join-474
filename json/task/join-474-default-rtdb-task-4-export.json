@@ -1,0 +1,18 @@
+{
+  "assignedUsers": [
+    "contact-10"
+  ],
+  "boardID": "board-1",
+  "checkedSubtasks": "",
+  "columnID": "review",
+  "createdAt": "22.06.2025",
+  "deadline": "19.10.2025",
+  "description": "Der Content wird über eine Funktion dynamisch erzeugt, funktioniert diese nicht wird der Content auf keiner Seite angezeigt",
+  "priority": "urgent",
+  "subtaskCompleted": "0",
+  "title": "Fetch des Contents prüfen",
+  "type": "Technical Task",
+  "updatedAt": [
+    "19.07.2025"
+  ]
+}

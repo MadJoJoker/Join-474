@@ -33,7 +33,7 @@
   position: relative;
   transform: translateX(100vw);
   opacity: 0;
-
+  min-height: 80%;
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     opacity 0.4s ease-in-out;
 }
@@ -62,7 +62,8 @@
   padding: 0;
   margin: 0;
   display: block;
-
+  min-height: 100%;
+min-width: 80%;
 }
 
 .content-overlay h1 {
@@ -215,6 +216,9 @@
   top: 50%;
   transform: translateY(-50%);
 }
+.open-assigned-to{
+  display: block;
+}
 
 .dropdown-icon {
   width: 20px;
@@ -232,6 +236,9 @@
   width: calc(100% - 40px);
   background-color: var(--white);
   z-index: 10;
+}
+.options-wrapper.open {
+  display: block;
 }
 
 .options-wrapper.visible {
