@@ -2,6 +2,7 @@ async function includeHeaderAndSidebar() {
   await addLayoutElements('../js/templates/header.html', 'header');
   await addLayoutElements('../js/templates/sidebar.html', 'sidebar');
   displayInitialsInHeader();
+  partiallyHideSidebar();
   initDropdown();
 }
 
@@ -39,4 +40,16 @@ function initDropdown() {
     dropdown.classList.remove("show");
   };
 });
+}
+
+async function partiallyHideSidebar() {
+  const name = sessionStorage.getItem('headerInitials');
+  console.log("name: ", name);
+  if(!name && (
+    window.location.pathname.endsWith("/privacy-policy.html")
+    || window.location.pathname.endsWith("/legal-notice.html")
+    )) {
+    document.getElementById('login-nav').classList.remove("d-none");
+    document.getElementById('app-nav').classList.add("hide");
+  }
 }
