@@ -1,6 +1,15 @@
 // render (raw input test)
 
-import { getFirebaseData } from '../data/API.js';
+import {
+  createContact,
+  updateContact,
+  deleteContact,
+  getInitials
+} from '../events/contact-actions.js';
+
+import { getFirebaseData } from '../data/api.js';
+
+let currentlyEditingContact = null;
 
 /**
  * Bereinigt die rohen Kontaktdaten aus Firebase.
@@ -51,9 +60,12 @@ function groupContactsByInitials(contactsArray) {
  * Fügt onclick-Handler zur Auswahl hinzu.
  */
 function createContactTemplate(contact) {
-  console.log(`${contact.name} | avatarColor: "${contact.avatarColor}"`);
-  const colorVar = contact.avatarColor?.trim();
-  const bgColor = colorVar ? `style="background-color: var(${colorVar})"` : `style="background-color: #ccc"`;
+  const bgColor = contact.avatarColor
+    ? contact.avatarColor.startsWith('--')
+      ? `style="background-color: var(${contact.avatarColor})"`
+      : `style="background-color: ${contact.avatarColor}"`
+    : `style="background-color: #ccc"`;
+
   return `
     <div class="contact" data-id="${contact.id}" onclick="onContactClickById('${contact.id}')">
       <div class="contact-avatar" ${bgColor}>${contact.initials}</div>
@@ -69,34 +81,57 @@ const allContacts = {};
 
 /**
  * Lädt Kontakte aus Firebase, bereinigt sie, gruppiert sie und rendert sie in die DOM.
+ * es wird closest() genutzt, damit auch Klicks auf das Icon innerhalb des Buttons erkannt werden.
  */
 async function renderContacts() {
-  const data = await getFirebaseData();
-  const rawContacts = data?.contacts;
+  /* 1) Daten vom Server holen */
+  const fullData = await getFirebaseData();
+  const rawContacts = fullData?.contacts;
+
   if (!rawContacts) {
-    console.error("Keine Kontaktdaten gefunden");
+    console.error('No contact data found (API returned null/undefined)');
     return;
   }
+
+  /* 2) Daten wie bisher aufbereiten und rendern */
   const contacts = Object.values(cleanContacts(rawContacts));
   const grouped = groupContactsByInitials(contacts);
-  const container = document.querySelector(".contacts-list");
-  container.innerHTML = "";
-  contacts.forEach(contact => {
-    allContacts[contact.id] = contact;
-  });
+
+  const container = document.querySelector('.contacts-list');
+  container.innerHTML = '';
+
+  contacts.forEach(c => (allContacts[c.id] = c));
+
   for (const initial in grouped) {
-    let contactsHtml = `
-        <div class="contact-section">
-            <div class="contact-initial">${initial}</div>
-        `;
-    grouped[initial].forEach(contact => {
-      contactsHtml += createContactTemplate(contact);
-    });
-    contactsHtml += `</div>`;
-    container.insertAdjacentHTML("beforeend", contactsHtml);
+    let html = `
+      <div class="contact-section">
+        <div class="contact-initial">${initial}</div>
+    `;
+    grouped[initial].forEach(c => (html += createContactTemplate(c)));
+    html += '</div>';
+
+    container.insertAdjacentHTML('beforeend', html);
   }
 }
 renderContacts();
+
+// GLOBALER Listener für den Delete-Button in der Detail-Card
+document.addEventListener('click', async (e) => {
+  if (e.target.closest('#detailsDeleteBtn')) {
+    const btn = e.target.closest('#detailsDeleteBtn');
+    const id = btn.dataset.id;
+    if (!id) return;
+
+    await deleteContact(id);
+
+    // Karte schließen, wenn sie gerade den Kontakt zeigt
+    const card = document.querySelector('.contact-details-card');
+    card.innerHTML = '';
+    activeContactId = null;
+
+    renderContacts();                // Liste links neu bauen
+  }
+});
 
 // reateContactDetails
 
@@ -104,22 +139,29 @@ renderContacts();
  * Generiert das HTML für die Detailansicht eines ausgewählten Kontakts.
  */
 function createContactDetailsHTML(contact) {
-  const colorVar = contact.avatarColor?.trim();
-  const bgColor = colorVar ? `style="background-color: var(${colorVar})"` : `style="background-color: #ccc"`;
+  const bgColor = contact.avatarColor
+    ? contact.avatarColor.startsWith('--')
+      ? `style="background-color: var(${contact.avatarColor})"`
+      : `style="background-color: ${contact.avatarColor}"`
+    : `style="background-color: #ccc"`;
+
   return `
     <div class="contact-details-header">
       <div class="contact-details-avatar-big" ${bgColor}>${contact.initials}</div>
       <div class="contact-details-name-actions">
         <h2>${contact.name}</h2>
         <div class="contact-details-actions">
-        <button class="contact-details-card-icon-button edit-button" onclick="onEditContact('${contact.id}')">
-        <img src="../assets/icons/btn/contact-edit.svg" alt="Edit" /> Edit
-        </button>
-        <button class="contact-details-card-icon-button delete-button">
-        <img src="../assets/icons/btn/contact-delete.svg" alt="Delete" /> Delete
-        </button>
+          <button class="contact-details-card-icon-button edit-button" onclick="onEditContact('${contact.id}')">
+            <img src="../assets/icons/btn/contact-edit.svg" alt="Edit" /> Edit
+          </button>
+          <button
+            class="contact-details-card-icon-button delete-button"
+            data-id="${contact.id}"
+            id="detailsDeleteBtn">
+            <img src="../assets/icons/btn/contact-delete.svg" alt="Delete" /> Delete
+          </button>
         </div>
-        </div>
+      </div>
     </div>
     <div class="contact-details-info-block">
       <h3>Contact Information</h3><br>
@@ -173,6 +215,10 @@ function onContactClick(contact) {
 
 // Öffnet das Overlay für neuen Kontakt
 document.querySelector('.add-new-contact-button').addEventListener('click', () => {
+  // Felder zurücksetzen
+  ['newContactName', 'newContactEmail', 'newContactPhone']
+    .forEach(id => (document.getElementById(id).value = ''));
+
   openOverlay('contactOverlay');
 });
 
@@ -196,32 +242,96 @@ document.getElementById('contactOverlay').addEventListener('click', (e) => {
  * Befüllt das Formular mit vorhandenen Werten.
  */
 function openEditContactOverlay(contact) {
-  const overlay = document.getElementById('editContactOverlay');
+  currentlyEditingContact = { ...contact };
+
   document.getElementById('editNameInput').value = contact.name;
   document.getElementById('editEmailInput').value = contact.email;
   document.getElementById('editPhoneInput').value = contact.phone;
   document.getElementById('editContactAvatar').textContent = contact.initials;
-  const colorVar = contact.avatarColor?.trim();
-  document.getElementById('editContactAvatar').style.backgroundColor = colorVar ? `var(${colorVar})` : '#ccc';
+
+  const bg = contact.avatarColor?.startsWith('--')
+    ? `var(${contact.avatarColor})`
+    : contact.avatarColor || '#ccc';
+  document.getElementById('editContactAvatar').style.backgroundColor = bg;
+
   openOverlay('editContactOverlay');
-
-  // Speichern: schließt sofort & aktualisiert Kontakt
-  document.getElementById('saveEditBtn').onclick = () => {
-    contact.name = document.getElementById('editNameInput').value.trim();
-    contact.email = document.getElementById('editEmailInput').value.trim();
-    contact.phone = document.getElementById('editPhoneInput').value.trim();
-    contact.initials = getInitials(contact.name);
-    closeOverlay('editContactOverlay', true);
-    renderContacts();
-  };
-
-  // Löschen: entfernt Kontakt & schließt sofort
-  document.getElementById('deleteContactBtn').onclick = () => {
-    delete allContacts[contact.id];
-    closeOverlay('editContactOverlay', true);
-    renderContacts();
-  };
 }
+
+// Save Button (nur 1x registrieren)
+document.addEventListener('DOMContentLoaded', () => {
+  const saveBtn = document.getElementById('saveEditBtn');
+
+  if (!saveBtn) {
+    console.error('❌ Save-Button (#saveEditBtn) wurde NICHT im DOM gefunden!');
+    return;
+  }
+
+  saveBtn.addEventListener('click', async () => {
+    console.log('✅ Klick auf SAVE erkannt');
+
+    const form = document.getElementById('editContactForm');
+    if (!form.checkValidity()) {
+      console.warn('❌ Formular ist ungültig');
+      form.reportValidity();
+      return;
+    }
+
+    if (!currentlyEditingContact) {
+      console.error('❌ currentlyEditingContact ist NULL oder UNDEFINED!');
+      return;
+    }
+
+    // Erstelle das neue Objekt für den Speicherprozess
+    const updated = {
+      ...currentlyEditingContact,
+      name: document.getElementById('editNameInput').value.trim(),
+      email: document.getElementById('editEmailInput').value.trim(),
+      phone: document.getElementById('editPhoneInput').value.trim(),
+      initials: getInitials(document.getElementById('editNameInput').value.trim())
+    };
+
+    console.log('📦 Neuer Kontakt-Datensatz (updateContact):', updated);
+
+    // Versuche das Update via Firebase
+    try {
+      await updateContact(updated);
+      console.log('✅ updateContact() erfolgreich');
+
+      // Lokalen Cache aktualisieren
+      allContacts[updated.id] = updated;
+
+      // Falls aktuell im Detail angezeigt, DOM neu setzen
+      if (activeContactId === updated.id) {
+        const card = document.querySelector('.contact-details-card');
+        card.innerHTML = createContactDetailsHTML(updated);
+      }
+
+      // Overlay schließen und Liste neu rendern
+      closeOverlay('editContactOverlay', true);
+      await renderContacts();
+
+    } catch (error) {
+      console.error('❌ Fehler beim Update-Vorgang:', error);
+    }
+  });
+});
+
+
+// Delete Button (nur 1x registrieren)
+document.getElementById('deleteContactBtn').addEventListener('click', async () => {
+  if (!currentlyEditingContact) return;
+
+  await deleteContact(currentlyEditingContact.id);
+
+  if (activeContactId === currentlyEditingContact.id) {
+    document.querySelector('.contact-details-card').innerHTML = '';
+    activeContactId = null;
+  }
+
+  closeOverlay('editContactOverlay', true);
+  renderContacts();
+});
+
 
 // Klick außerhalb: Overlay schließen
 document.getElementById('editContactOverlay').addEventListener('click', (e) => {
@@ -270,40 +380,30 @@ function closeOverlay(id, immediate = false) {
   }, 400);
 }
 
-/**
- * Wandelt Namen in Initialen um.
- * z. B. "Anna Müller" → "AM"
- */
-function getInitials(name) {
-  const names = name.trim().split(" ");
-  if (names.length === 1) return names[0][0].toUpperCase();
-  return (names[0][0] + names[names.length - 1][0]).toUpperCase();
-}
 
 // Contact successfully created
 // Speichert einen neuen Kontakt und zeigt Feedback-Message
-document.getElementById('createContactBtn').addEventListener('click', () => {
-  const nameInput = document.getElementById('newContactName');
-  const name = nameInput.value.trim();
-  const email = document.querySelector('#contactOverlay input[type="email"]').value.trim();
-  const phone = document.querySelector('#contactOverlay input[type="tel"]').value.trim();
-  if (!name || !email || !phone) return;
-  const id = Date.now().toString();
-  const initials = getInitials(name);
-  allContacts[id] = {
-    id,
-    name,
-    email,
-    phone,
-    initials,
-    avatarColor: '--avatar-default-color'
-  };
+// Create Contact
+// Create-Button – <form> validieren
+const newContactForm = document.getElementById('newContactForm');
+
+newContactForm.addEventListener('submit', async (e) => {
+  e.preventDefault(); // Formular-Reload verhindern
+
+  if (!newContactForm.checkValidity()) {
+    newContactForm.reportValidity(); // Zeigt HTML5-Fehlerhinweise
+    return;
+  }
+
+  const name = document.getElementById('newContactName').value.trim();
+  const email = document.getElementById('newContactEmail').value.trim();
+  const phone = document.getElementById('newContactPhone').value.trim();
+
+  await createContact({ name, email, phone });
+
   closeOverlay('contactOverlay', true);
   renderContacts();
   showContactCreatedMessage();
-  nameInput.value = '';
-  document.querySelector('#contactOverlay input[type="email"]').value = '';
-  document.querySelector('#contactOverlay input[type="tel"]').value = '';
 });
 
 /**
@@ -325,4 +425,3 @@ function showContactCreatedMessage() {
   }, 2000);
 }
 
-// sessionStorage ???

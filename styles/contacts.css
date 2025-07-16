@@ -1,3 +1,8 @@
+/* Dann bleibt das Layout komplett intakt, und die HTML5-Validierung funktioniert trotzdem sauber. */
+form {
+    display: contents;
+}
+
 /* Contacts */
 
 body,
@@ -361,7 +366,7 @@ html {
 .overlay-close:hover {
     background-color: var(--lightGrey);
     border-radius: 50%;
-    
+
 }
 
 .overlay-form-content {
@@ -419,6 +424,15 @@ html {
     border: 1px solid var(--lightGrey);
     border-radius: 8px;
     box-sizing: border-box;
+}
+
+.input-wrapper input:focus {
+    border: 1px solid var(--lightBlue);
+    outline: none;
+}
+
+.input-wrapper input:hover:not(:focus) {
+    border: 1px solid var(--lightBlue);
 }
 
 .input-wrapper img {
