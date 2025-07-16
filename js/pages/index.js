@@ -40,53 +40,43 @@ function removeOverlay() {
   });
 }
 
-// noch zu modularisieren
 function handleLogin(){
-  console.log("existent data: ", fetchedData);
-  const userEmail = document.getElementById('login-email').value;
-  const itemKeys = Object.keys(fetchedData);
-  const foundKey = itemKeys.find(key => fetchedData[key].email == userEmail);
-  if(!foundKey) {
-    insertDemoMail();
+  const userEmail = document.getElementById('login-email').value.trim();
+  simulateUser(userEmail);
+  if (!userEmail) {
     return;
   }
-  const displayName = checkMail(foundKey);
-  console.log("displayName: ", displayName);
-
-  initialsForHeader(displayName);
-  sessionStorage.setItem('currentUser', displayName);
-
-  window.location.href = '../html/summary.html';
-}
-
-function checkMail(foundKey) {
-  if (foundKey) {
-    displayName = fetchedData[foundKey].displayName;
-    return displayName = fetchedData[foundKey].displayName;
-  } else {
-    return displayName = insertDemoMail(); 
+    const foundMail = Object.keys(fetchedData).find(key => fetchedData[key].email == userEmail);
+    const displayName = checkMail(foundMail);
+    initialsForHeader(displayName);
+    sessionStorage.setItem('currentUser', displayName);
+    window.location.href = '../html/summary.html';
   }
+
+function simulateUser(mail) {
+  if(!mail) {
+  fillLogin()
+  return;
+} 
+  insertDemoMail();
 }
 
 function insertDemoMail() {
-  document.getElementById('login-email').value = "demon@work.ch";
-  fetchedData['demo-demon'] = {
-    email: "demon@work.ch",
-    displayName: "mailer demon"
+  fetchedData['Sofia Müller'] = {
+    email: "sofiam@gmail.com",
+    displayName: "Sofia Müller"
   };
-  console.log("Dummy user created: mailer demon");
+  console.log("temporarly added: Sofia Müller");
 }
 
-function directLogin() {
-  sessionStorage.setItem('headerInitials', "G");
-  sessionStorage.setItem('currentUser', "");
-  window.location.href = './html/summary.html';
+function checkMail(foundKey) {
+  displayName = fetchedData[foundKey].displayName;
+  return displayName = fetchedData[foundKey].displayName;
 }
 
 function initialsForHeader(displayName) {
   const initials = getInitials(displayName);
   sessionStorage.setItem('headerInitials', initials);
-  // console.log("initials: ", initials);
 }
 
 function getInitials(fullName) {
@@ -97,19 +87,65 @@ function getInitials(fullName) {
   return first + last;
 }
 
-// sign in
+function directLogin() {
+  sessionStorage.setItem('headerInitials', "G");
+  sessionStorage.setItem('currentUser', "");
+  window.location.href = './html/summary.html';
+}
+
+// sign in (mit ".some", nicht ".find", weil ich true oder false haben möchte)
+function checkUser() {
+  const newEmail = document.getElementById("new-email").value.trim();
+  const existingMail = Object.keys(fetchedData).some(
+    key => fetchedData[key].email == newEmail);
+  if(existingMail) {
+    stopSignIn();
+  } else {
+    validateInputs();
+  }
+}
+
+function validateInputs() {
+  let samePasswords = comparePasswords();
+  if(samePasswords) {
+    checkRequiredFields();
+  }
+}
+
 function checkRequiredFields() {
-  const newName = document.getElementById("new-name").value;
-  const newEmail = document.getElementById("new-email").value;
+  const newName = document.getElementById("new-name").value.trim();
+  const newEmail = document.getElementById("new-email").value.trim();
   if(newName && newEmail) {
     checkboxChecked();
-    // console.log("complete sign up data");
   } else return;
 }
+
+function comparePasswords() {
+  const password1 = document.getElementById('password-first').value;
+  const password2 = document.getElementById('password-second').value;
+  console.log(password1, password2);
+  return password1 != "" && password1 == password2;
+}
+
+// Passwordvergleich noch unfertig. Rückmeldung (rot) in UI schreiben.
+
 
 function checkboxChecked() {
   const check = document.getElementById("accept");
   check.checked == true ? objectBuilding() : acceptPrivacyP();
+}
+
+// 2 autofill demo functions
+function fillLogin() {
+  document.getElementById('login-email').value = "sofiam@gmail.com";
+  document.getElementById('login-password').value = "mypassword123";
+}
+
+function fillSignup() {
+  document.getElementById('new-name').value = "Sofia Müller";
+  document.getElementById('new-email').value = "sofiam@gmail.com";
+  document.getElementById('password-first').value = "mypassword123";
+  document.getElementById('password-second').value = "mypassword123";
 }
 
 
@@ -201,7 +237,7 @@ function specificEntries(obj) {
 async function sendNewObject(pushObjectId, entryData, category) {
   let path = `${category}/${pushObjectId}`;
   // console.log("new path: ", path, entryData);
-  await pushObjectToDatabase(path, entryData);
+  // await pushObjectToDatabase(path, entryData);
 
   // lokales update fürs schnelle Rendern (= kein neuer fetch nötig)
   const localObject = {

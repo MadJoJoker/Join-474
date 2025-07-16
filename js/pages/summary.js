@@ -27,6 +27,15 @@ async function initSummary() {
   displayUser();
 }
 
+// function partiallyHideSidebar() {
+//   const name = sessionStorage.getItem('headerInitials');
+//   console.log("name: ", name);
+//   if(!name) {
+//     document.getElementById('login-nav').classList.remove("d-none");
+//     document.getElementById('app-nav').classList.add("hide");
+//   }
+// }
+
 async function getFirebaseData(path = '') {
   const URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/' + path + '.json';
   try {

@@ -20,6 +20,15 @@ function confirmSignup() {
   goToPage(link);
 }
 
+function stopSignIn() {
+  const text = "You already signed up";
+  const color = "transparent";
+  const link = "../../index.html"
+  animateMessageBox(text, color, link);
+
+  goToPage(link);
+}
+
 function confirmAddedTask() {
   const text = `Task added to board
     <svg width="30" height="26" viewBox="0 0 30 26" fill="none" xmlns="http://www.w3.org/2000/svg">
