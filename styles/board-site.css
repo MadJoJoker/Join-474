@@ -2,7 +2,7 @@ body {
     font-family: "Inter var", sans-serif;
     margin: 0;
     min-height: 100vh;
-    background-color: var(--lightGrey);
+    background-color: var(--lightwhite);
 }
 
 .header {
@@ -39,7 +39,7 @@ body {
     align-items: center;
     padding: 0 64px;
     height: 96px;
-    background-color: var(--lightGrey);
+    background-color: var(--lightwhite);
     box-sizing: border-box;
 }
 
@@ -188,7 +188,7 @@ body {
     color: var(--darkBlue);
 }
 
-#content-board { 
+#content-board {
     display: flex;
     justify-content: space-between;
     gap: 30px;
@@ -197,21 +197,28 @@ body {
 }
 
 .task-column {
-    flex: 1;
-    min-width: 250px;
-    max-width: 300px;
+  /* Annahme: .task-column ist der Eltern-Container für .no-tasks-placeholder.
+     Wenn .no-tasks-placeholder direkt im Root ist, kannst du diese äußere Nesting-Ebene weglassen. */
+
+  .no-tasks-placeholder {
+    /* Layout und Box-Modell */
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
-    background-color: #e8e8e8;
-    border-radius: 8px;
-    min-height: 120px;
-    flex-grow: 1;
-}
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box; /* Wichtig, damit Padding die Höhe nicht sprengt */
 
+    /* Text-Styling */
+    font-style: italic;
+    text-align: center;
+    color: var(--lightGrey);
+
+    /* Hintergrund und Rahmen */
+    background-color: var(--grey);
+    border: 2px dashed  var(--lightGrey);
+  }
+}
 .task-card {
     background-color: #fff;
     border-radius: 16px;
@@ -298,7 +305,7 @@ body {
 
 .progress-bar-fill {
     height: 100%;
-    background-color: var(--darkBlue);
+    background-color: var(--statusBarBlue);
     border-radius: 9999px;
     transition: width 0.3s ease-in-out;
 }
@@ -388,17 +395,7 @@ body {
     transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
-.task-column .no-tasks-placeholder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    color: var(--darkHover);
-    font-style: italic;
-    text-align: center;
-    padding: 10px;
-    box-sizing: border-box;
-}
+
 
 .category-user-story { background-color: #007bff; }
 .category-technical-task { background-color: #1abc9c; }

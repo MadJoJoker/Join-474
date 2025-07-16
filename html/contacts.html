@@ -17,25 +17,12 @@
     <link rel="stylesheet" href="../assets/fonts/font.css">
 </head>
 
-<body>
+<body onload="includeHeaderAndSidebar()">
     <div class="app-container">
-        <section id="sidebar-area"></section>
-        <script>
-            fetch('../js/templates/sidebar.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('sidebar-area').innerHTML = data;
-                });
-        </script>
+        <section id="sidebar" class="sidebar-container"></section>
         <section class="main-content">
-            <header id="header"></header>
-            <script>
-                fetch('../js/templates/header.html')
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('header').innerHTML = data;
-                    });
-            </script>
+            <header id="header">
+            </header>
             <main class="contacts-main">
                 <aside class="contacts-sidebar">
                     <div class="add-new-contact-button-div">
@@ -77,26 +64,34 @@
                                 <img src="../assets/img/avatar-person.svg" alt="">
                             </div>
                             <div class="form-inputs">
-                                <div class="input-wrapper">
-                                    <input type="text" placeholder="Name" id="newContactName" />
-                                    <img src="../assets/img/input-person.svg" />
-                                </div>
-                                <div class="input-wrapper">
-                                    <input type="email" placeholder="Email" />
-                                    <img src="../assets/img/input-mail.svg" />
-                                </div>
-                                <div class="input-wrapper">
-                                    <input type="tel" placeholder="Phone" />
-                                    <img src="../assets/img/input-call.svg" />
-                                </div>
-                                <div class="overlay-actions">
-                                    <button id="cancelOverlayBtn">
-                                        Cancel <img src="../assets/icons/btn/close.svg">
-                                    </button>
-                                    <button id="createContactBtn">
-                                        Create contact <img src="../assets/icons/btn/check-mark.svg">
-                                    </button>
-                                </div>
+                                <form id="newContactForm">
+                                    <div class="input-wrapper">
+                                        <input id="newContactName" name="name" type="text" placeholder="Name"
+                                            pattern="^[A-Za-zÄÖÜäöüß\-]{2,}\s+[A-Za-zÄÖÜäöüß\-]{2,}$"
+                                            title="Please enter first and last name separated by a space" required />
+                                        <img src="../assets/img/input-person.svg" />
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input id="newContactEmail" name="email" type="email" placeholder="Email"
+                                            title="Please enter a valid email address" required />
+                                        <img src="../assets/img/input-mail.svg" />
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input id="newContactPhone" name="phone" type="tel" placeholder="Phone"
+                                            pattern="^\+?[0-9\-]{6,}$"
+                                            title="Please enter a valid phone number (optional + followed by at least 6 digits)"
+                                            required />
+                                        <img src="../assets/img/input-call.svg" />
+                                    </div>
+                                    <div class="overlay-actions">
+                                        <button id="cancelOverlayBtn">
+                                            Cancel <img src="../assets/icons/btn/close.svg">
+                                        </button>
+                                        <button id="createContactBtn" type="submit">
+                                            Create contact <img src="../assets/icons/btn/check-mark.svg">
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -120,26 +115,34 @@
                         <div class="form-row">
                             <div class="contact-details-avatar-big" id="editContactAvatar">AM</div>
                             <div class="form-inputs">
-                                <div class="input-wrapper">
-                                    <input type="text" placeholder="Name" id="editNameInput" />
-                                    <img src="../assets/img/input-person.svg" />
-                                </div>
-                                <div class="input-wrapper">
-                                    <input type="email" placeholder="Email" id="editEmailInput" />
-                                    <img src="../assets/img/input-mail.svg" />
-                                </div>
-                                <div class="input-wrapper">
-                                    <input type="tel" placeholder="Phone" id="editPhoneInput" />
-                                    <img src="../assets/img/input-call.svg" />
-                                </div>
-                                <div class="overlay-actions">
-                                    <button id="deleteContactBtn">
-                                        Delete
-                                    </button>
-                                    <button id="saveEditBtn">
-                                        Save <img src="../assets/icons/btn/check-mark.svg" />
-                                    </button>
-                                </div>
+                                <form id="editContactForm">
+                                    <div class="input-wrapper">
+                                        <input id="editNameInput" name="name" type="text" placeholder="Name"
+                                            pattern="^[A-Za-zÄÖÜäöüß\-]{2,}\s+[A-Za-zÄÖÜäöüß\-]{2,}$"
+                                            title="Please enter first and last name separated by a space" required />
+                                        <img src="../assets/img/input-person.svg" />
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input id="editEmailInput" name="email" type="email" placeholder="Email"
+                                            title="Please enter a valid email address" required />
+                                        <img src="../assets/img/input-mail.svg" />
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input id="editPhoneInput" name="phone" type="tel" placeholder="Phone"
+                                            pattern="^\+?[0-9\-]{6,}$"
+                                            title="Please enter a valid phone number (optional + followed by at least 6 digits)"
+                                            required />
+                                        <img src="../assets/img/input-call.svg" />
+                                    </div>
+                                    <div class="overlay-actions">
+                                        <button id="deleteContactBtn" type="button">
+                                            Delete
+                                        </button>
+                                        <button id="saveEditBtn" type="button">
+                                            Save <img src="../assets/icons/btn/check-mark.svg" />
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -149,8 +152,8 @@
     </div>
 
     <script type="module" src="../js/ui/render-contacts.js"></script>
+    <script src="../js/pages/header-and-sidebar.js"></script>
     <script src="../js/pages/sidebar.js"></script>
-    <script src="/js/events/dropdown-menu.js" defer></script>
 </body>
 
 </html>

@@ -22,7 +22,7 @@ html {
   flex-direction: column;
   padding: 58px;
   overflow-y: auto;
-  background-color: var(--lightGrey);
+  background-color: var(--white);
   scrollbar-width: none;
 }
 
@@ -110,6 +110,9 @@ html {
   border-radius: 10px;
   font-size: 20px;
   cursor: pointer;
+  background-color: var(--white);
+  line-height: 40px;
+  margin-bottom: 15px;
 }
 
 .input-field::placeholder {
@@ -419,17 +422,55 @@ html {
 }
 
 .initials-container {
-  flex-shrink: 0;
+  /* Container-Layout */
   display: flex;
+  flex-shrink: 0; /* Verhindert, dass der Container schrumpft */
   align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  color: var(--white);
-  border: 2px solid var(--white);
-  border-radius: 50%;
-}
+  justify-content: flex-start;
+  white-space: nowrap; /* Wichtig: Icons bleiben in einer Zeile */
 
+  /* Dimensionen und Rand */
+  height: 42px;
+
+  /* Scrollbarkeits-Einstellungen */
+  overflow-x: auto; /* Horizontal scrollbar, wenn Inhalt überläuft */
+  overflow-y: hidden; /* Vertikales Scrollen verhindern */
+
+  /* Scrollbalken unsichtbar machen */
+  scrollbar-width: none; /* Für Firefox */
+  -ms-overflow-style: none; /* Für Internet Explorer / ältere Edge-Versionen */
+
+  /* Pseudo-Element für Webkit-Browser (Chrome, Safari, aktuelle Edge) */
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  /* Styling der einzelnen Initialen-Kreise innerhalb des Containers */
+  .assigned-initials-circle {
+    flex-shrink: 0; /* Verhindert, dass die Kreise schrumpfen */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box; /* Padding und Border werden in Width/Height einberechnet */
+
+    /* Dimensionen und Styling der Kreise */
+    width: 35px;
+    height: 35px;
+    color: var(--white);
+    border: 2px solid var(--white);
+    border-radius: 50%; /* Macht die Kreise rund */
+
+    /* Abstand zwischen den Kreisen */
+    margin-right: 8px;
+
+    /* Besonderheit für das letzte Element, um unnötigen Abstand zu entfernen */
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
 .add-on {
   display: flex;
   align-items: center;
@@ -497,35 +538,44 @@ html {
   outline: none;
 }
 
+:root {
+  /* Annahme: Du hast diese Variablen definiert. Passe die Werte ggf. an. */
+  --white: #ffffff;
+  --borderGrey: #e0e0e0;
+}
+
 .input-button {
+  /* Positionierung */
   position: absolute;
   right: 26px;
   top: 50%;
   transform: translateY(-50%);
+
+  /* Dimensionen und Form */
   width: 24px;
   height: 24px;
   border-radius: 50%;
   border: hidden;
+
   background-color: var(--white);
+  cursor: pointer;
+
+  /* Flexbox für Inhalt (z.B. ein Icon/SVG/Img) */
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-}
 
-.input-button:hover {
-  background-color: var(--borderGrey);
-}
+  /* Hover-Zustand */
+  &:hover {
+    background-color: var(--borderGrey);
+  }
 
-.input-button img {
-  width: 14px;
-  height: 14px;
-  border-radius: 10px;
-
-}
-
-.left {
-  right: 53px;
+  /* Styling für Bilder (img-Tags) innerhalb des Buttons */
+  img {
+    width: 14px;
+    height: 14px;
+    border-radius: 10px; /* Macht die Ecken des Bildes leicht abgerundet */
+  }
 }
 
 .middle {
@@ -538,90 +588,165 @@ html {
   border: 1px solid var(--lightGrey);
 }
 
-.right {
-  right: 21px;
-}
-
+/* Anpassung an der ul.subtask-list */
 .subtask-list {
+  /* Grundlegende Container-Styles */
   position: relative;
   width: 100%;
+  height: 35px;
   border-radius: 10px;
   margin-top: 25px;
   font-size: 16px;
   display: flex;
   align-items: center;
-}
+  padding-right: 20px; /* Platz für die Icons am rechten Rand */
+  padding-left: 0; /* Standard-Padding von UL entfernen */
+  list-style-type: none; /* Listenpunkte der UL entfernen */
 
-.subtask-list:hover {
-  background-color: var(--borderGrey);
-  color: var(--black);
-}
+  /* Hover-Zustand für den Container selbst */
+  &:hover {
+    background-color: var(--borderGrey);
+    color: var(--black);
+  }
 
-.subtask-item {
-  margin-left: 16px;
-}
+  /* Runder Punkt vor dem Listenelement (Kreise vor den Punkten) */
+  &::before {
+    content: ""; /* Wichtig für Pseudoelemente */
+    display: inline-block;
+    width: 8px; /* Größe des Kreises */
+    height: 8px; /* Größe des Kreises */
+    border-radius: 50%; /* Macht den Kreis rund */
+    background-color: var(--black); /* Farbe des Kreises */
+    margin-left: 16px; /* Abstand zum linken Rand des Containers */
+    margin-right: 8px; /* Abstand zum Text */
+    flex-shrink: 0; /* Verhindert, dass der Kreis schrumpft */
+  }
 
-.subtask-text {
-  color: var(--black);
-}
+  /* Innerer Container für Text und Aktionen, um sie nebeneinander zu halten */
+  .subtask-item-content {
+    display: flex; /* Macht diesen Container flexibel */
+    align-items: center;
+    width: 100%; /* Füllt den verfügbaren Platz aus */
+    justify-content: space-between; /* Text links, Aktionen rechts */
+  }
 
-.subtask-list svg {
-  position: absolute;
-  right: 25px;
-  color: var(--lightGrey);
+  /* Styling für den Text der Subtask */
+  .subtask-text {
+    color: var(--black);
+    flex-grow: 1; /* Der Text soll so viel Platz wie möglich einnehmen */
+    overflow: hidden; /* Verhindert Textüberlauf */
+    white-space: nowrap;
+    text-overflow: ellipsis; /* Zeigt "..." bei Überlauf */
+  }
+
+  .subtask-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    padding-left: 8px;
+  }
+
+  /* Styling für den Separator zwischen den SVGs */
+  .separator {
+    width: 1px;
+    height: 20px; /* Höhe des Separators */
+    background-color: var(--separatorGrey); /* Farbe des Separators */
+    flex-shrink: 0; /* Verhindert, dass der Separator schrumpft */
+  }
+
+  /* Allgemeine SVG-Styles innerhalb von .subtask-list */
+  svg {
+    color: var(--lightGrey);
+    cursor: pointer;
+    transition: color 0.1s ease;
+    flex-shrink: 0; /* Verhindert, dass die SVGs schrumpfen */
+
+    /* Hover-Zustand für SVGs, wenn der Container .subtask-list gehovert wird */
+    .subtask-list:hover & {
+      color: var(--black);
+    }
+
+    /* .left und .right Klassen auf SVGs sind jetzt überflüssig für die Positionierung,
+       da `gap` im `.subtask-actions` und die Reihenfolge im HTML das übernehmen.
+       Sie können aber für andere, icon-spezifische Stile beibehalten werden, falls gewünscht. */
+  }
+}
+.subtask-action-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: hidden;
+  margin: 0px 5px 0px 5px;
+  background-color: var(--white);
   cursor: pointer;
-  transition: color 0.1s ease;
+}
+.subtask-action-btn:hover {
+  background-color: var(--borderGrey);
 }
 
-.subtask-list:hover svg {
-  color: var(--black);
-}
-
-.subtask-list svg.left {
-  right: 56px;
-}
-
-.subtask-list svg.right {
-  right: 25px;
-}
-
+/* Styles für den Edit-Input-Bereich, der mit .subtask-list interagieren könnte */
 .edit-input {
   flex-grow: 1;
   position: relative;
   height: 32px;
-  width: 100%;
+  width: 100%; /* Passt sich der Breite des übergeordneten Flex-Items an */
   border: none;
   border-bottom: 1px solid var(--lightBlue);
   font-size: 16px;
-  padding-left: 21px;
-}
+  padding-left: 21px; /* Für Text-Einrückung */
+  box-sizing: border-box; /* Sicherstellen, dass Padding/Border die Breite nicht sprengen */
 
-.edit-input:focus-visible {
-  border: none;
-  border-bottom: 1px solid var(--lightBlue);
-  outline: none;
+  &:focus-visible {
+    border: none;
+    border-bottom: 1px solid var(--lightBlue);
+    outline: none;
+  }
 }
 
 .subtask-edit-container {
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 100%; /* Stellt sicher, dass der Container die volle Breite nutzt */
 }
 
+/* Container für Icons im Bearbeitungsmodus */
 .subtask-icons-container {
+  /* Diese Positionierung ist OK, wenn dieser Container über dem Input schwebt */
   position: absolute;
   right: 26px;
   top: 50%;
+  transform: translateY(-50%); /* Vertikale Zentrierung */
   display: flex;
   align-items: center;
-  pointer-events: none;
+  pointer-events: none; /* Icons sind nicht klickbar, wenn Container ausgeblendet ist */
   opacity: 0;
+  transition: opacity 0.3s ease; /* Sanftes Ein-/Ausblenden */
+
+  svg {
+    cursor: pointer;
+    pointer-events: auto; /* Icons im Container sind klickbar */
+    user-select: none;
+    margin-left: 10px; /* Abstand zwischen den Icons im Edit-Modus */
+    /* Weitere Styles für Icons im Edit-Modus */
+  }
 }
 
-.subtask-icons-container svg {
-  cursor: pointer;
-  pointer-events: auto;
-  user-select: none;
+#subtask-icons:hover {
+  background-color: var(
+    --white
+  );
+}
+
+.subtask-separator {
+    position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 1.2em;
+  background-color: var(--borderGrey);
+  vertical-align: middle;
 }
 
 .form-buttons-part {
@@ -633,6 +758,9 @@ html {
   justify-content: space-between;
   align-items: flex-end;
   max-width: 1572px;
+}
+.selected-option {
+  background-color: var(--white);
 }
 
 .sign-info {
