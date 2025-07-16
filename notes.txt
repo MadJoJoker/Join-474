@@ -1,5 +1,40 @@
 https://join-474-default-rtdb.europe-west1.firebasedatabase.app/
 
+Index.html: abgeschlossen
+    fetcht "users" aus Firebase,
+    das JSON kommt in die globale Variable "fetchedData".
+
+    kein Upload, keine Veränderung von "fetchedData"
+
+
+SignUp.html: abgeschlossen
+    fetcht "users" aus Firebase,
+    das JSON kommt in die globale Variable "fetchedData".
+
+    PUT-Upload des neuen User-Objekts
+    push desselben Objekts in "fetchedData" (wäre Quelle für render-
+    function, die es hier aber nicht gibt). Erspart neuen fetch
+
+    keine edit-function
+
+
+add-task.html:
+    fetcht alles aus Firebase,
+    --> provisorisch:
+    das JSON kommt in die globale Variable "fetchData".
+    Die upoload und edit function soll sich voerst daraus bedienen
+
+overlay-add-task:
+
+board-site.html:
+
+detail-task-Card:
+
+overlay-add-task (in "board"):
+
+contacts.html:
+
+
 
 
 <!-- task-card.html: Dies ist die Basis-HTML-Struktur einer einzelnen Aufgabenkarte.
