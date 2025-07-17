@@ -24,11 +24,21 @@ add-task.html:
     das JSON kommt in die globale Variable "fetchData".
     Die upoload und edit function soll sich voerst daraus bedienen
 
-overlay-add-task:
+add-task template:
+    CW an Mathias: auf dem "save"-Knopf sollte das template die task-id einfügen,
+    in etwa so: onclick=addNewTask${taskId}. Upload/edit-function braucht die task-ID
 
 board-site.html:
 
+Achtung: drag and drop muß auch verfolgt und die neue Position in die Firebase
+gemeldet werden (cw: Partial-Funktion, wie für die Häckchen)
+
 detail-task-Card:
+    CW an Mathias: auf dem "edit"-Knopf sollte das template die task-id einfügen,
+    in etwa so: onclick"=startEdit${taskId}. Upload/edit-function braucht die task-ID
+
+    CW an Mathias: auf dem "delete"-Knopf sollte das template die task-id einfügen,
+    in etwa so: onclick"=startDelete${taskId}. Upload/edit-function braucht die task-ID
 
 overlay-add-task (in "board"):
 
