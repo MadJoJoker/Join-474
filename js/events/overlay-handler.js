@@ -1,103 +1,152 @@
-// Path: ../js/events/overlay-handler.js
-
-console.log('overlay-handler loaded');
-
-let currentOverlay = null; // Variable, um das aktuell geöffnete Overlay zu speichern
+let currentOverlay = null;
 
 /**
- * Initialisiert die Event-Listener für ein spezifisches Overlay.
- * Diese Funktion muss aufgerufen werden, NACHDEM das Overlay-HTML in den DOM geladen wurde.
- * @param {string} overlayId - Die ID des Overlays, das verwaltet werden soll (z.B. 'overlay' aus add-task-overlay.html).
+ * @param {string} id - Die ID des zu suchenden Elements.
+ * @returns {HTMLElement|null} Das gefundene Element oder null, wenn es nicht gefunden wurde.
  */
-export function initOverlayListeners(overlayId) {
-    console.log(`initOverlayListeners wird für Overlay '${overlayId}' aufgerufen.`);
+function getValidatedElementById(id) {
+    const element = document.getElementById(id);
+    if (!element) {
+        console.error(`Element #${id} not found.`);
+    }
+    return element;
+}
 
-    const overlay = document.getElementById(overlayId);
-    if (!overlay) {
-        console.error(`DEBUG: Overlay-Element #${overlayId} wurde nicht gefunden, wenn initOverlayListeners aufgerufen wurde.`);
-        return;
+/**
+ * @param {HTMLElement} parent - Das Elternelement, in dem gesucht werden soll.
+ * @param {string} selector - Der CSS-Selektor des zu suchenden Elements.
+ * @returns {HTMLElement|null} Das gefundene Element oder null, wenn es nicht gefunden wurde.
+ */
+function getValidatedQuerySelector(parent, selector) {
+    const element = parent.querySelector(selector);
+    if (!element) {
+        console.error(`Element with selector '${selector}' not found within parent.`);
+    }
+    return element;
+}
+
+/**
+ * @param {HTMLElement} overlay - Das Overlay-Element.
+ * @param {boolean} isVisible - Ob das Overlay sichtbar sein soll (true) oder nicht (false).
+ */
+function setOverlayVisibility(overlay, isVisible) {
+    if (isVisible) {
+        overlay.classList.remove('overlay-hidden');
     } else {
-        console.log(`DEBUG: Overlay-Element #${overlayId} gefunden.`);
+        overlay.classList.add('overlay-hidden');
     }
+}
 
-    // --- Selektiert das modal-content Element ---
-    const modalContent = overlay.querySelector('.modal-content');
-    if (!modalContent) {
-        console.error(`DEBUG: .modal-content Element im Overlay #${overlayId} wurde nicht gefunden.`);
+/**
+ * @param {boolean} disableScroll - Ob der Body-Scroll deaktiviert (true) oder aktiviert (false) werden soll.
+ */
+function manageBodyScroll(disableScroll) {
+    document.body.style.overflow = disableScroll ? 'hidden' : '';
+}
+
+/**
+ * @param {HTMLElement} overlay - Das aktuell geöffnete Overlay-Element.
+ */
+function updateCurrentOverlay(overlay) {
+    currentOverlay = overlay;
+}
+
+/**
+ * @param {string} overlayId - Die ID des Overlays, das als aktuelles Overlay gelöscht werden soll.
+ */
+function clearCurrentOverlay(overlayId) {
+    if (currentOverlay && currentOverlay.id === overlayId) {
+        currentOverlay = null;
     }
-    // --- Ende der Selektion ---
+}
 
-
-    const closeModalButton = overlay.querySelector('.close-modal-btn'); // Schließen-Button IM Overlay
-
-    if (closeModalButton) {
-        closeModalButton.addEventListener('click', () => closeSpecificOverlay(overlayId));
-    } else {
-        console.warn(`DEBUG: Der Schließen-Button im Overlay #${overlayId} wurde nicht gefunden.`);
+/**
+ * @param {string} newOverlayId - Die ID des Overlays, das geöffnet werden soll (um bestehende zu schließen).
+ */
+function closeExistingOverlay(newOverlayId) {
+    if (currentOverlay && currentOverlay.id !== newOverlayId) {
+        closeSpecificOverlay(currentOverlay.id);
     }
+}
 
-    // Klick auf Overlay-Hintergrund (außerhalb des modal-content)
-    overlay.addEventListener('click', function(event) {
-        if (event.target === overlay) { // Sicherstellen, dass nur der Hintergrund geklickt wurde
+/**
+ * @param {HTMLElement|null} button - Der Schließen-Button des Overlays.
+ * @param {string} overlayId - Die ID des Overlays, das geschlossen werden soll.
+ */
+function attachCloseButtonListener(button, overlayId) {
+    if (button) {
+        button.addEventListener('click', () => closeSpecificOverlay(overlayId));
+    }
+}
+
+/**
+ * @param {HTMLElement} overlay - Das Overlay-Element.
+ * @param {string} overlayId - Die ID des Overlays, das geschlossen werden soll.
+ */
+function attachBackgroundClickListener(overlay, overlayId) {
+    overlay.addEventListener('click', (event) => {
+        if (event.target === overlay) {
             closeSpecificOverlay(overlayId);
         }
     });
+}
 
-    // --- Verhindert, dass Klicks innerhalb von modalContent das Overlay schließen ---
-    if (modalContent) { // Nur hinzufügen, wenn modalContent tatsächlich existiert
-        modalContent.addEventListener('click', function(event) {
-            event.stopPropagation(); // <-- Dies ist der Befehl, der das Event-Bubbling stoppt
-        });
+/**
+ * @param {HTMLElement|null} modalContent - Der Inhalt des Modals.
+ */
+function attachModalContentStopper(modalContent) {
+    if (modalContent) {
+        modalContent.addEventListener('click', (event) => event.stopPropagation());
     }
-    // --- Ende der event.stopPropagation() Logik ---
+}
 
-    // ESC-Taste zum Schließen des Overlays
-    document.addEventListener('keydown', function(event) {
+/**
+ * @param {HTMLElement} overlay - Das Overlay-Element.
+ * @param {string} overlayId - Die ID des Overlays, das geschlossen werden soll.
+ */
+function attachEscapeKeyListener(overlay, overlayId) {
+    document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && overlay && !overlay.classList.contains('overlay-hidden')) {
             closeSpecificOverlay(overlayId);
         }
     });
-} // <--- Dies ist die EINE und EINZIGE schließende Klammer für initOverlayListeners
+}
 
 /**
- * Öffnet ein spezifisches Overlay.
- * Diese Funktion kann exportiert und von anderen Modulen aufgerufen werden.
  * @param {string} overlayId - Die ID des zu öffnenden Overlays.
  */
 export function openSpecificOverlay(overlayId) {
-    // Die Logik für currentOverlay gehört HIERHER
-    if (currentOverlay && currentOverlay.id !== overlayId) { // Wenn bereits ein ANDERES Overlay offen ist, schließe es zuerst
-        closeSpecificOverlay(currentOverlay.id);
-    }
-
-    const overlay = document.getElementById(overlayId);
-    if (overlay) {
-        console.log(`DEBUG: openSpecificOverlay für ${overlayId} wird ausgeführt.`);
-        overlay.classList.remove('overlay-hidden');
-        document.body.style.overflow = 'hidden'; // Scrollen des Hintergrunds deaktivieren
-        console.log(`Overlay '${overlayId}' geöffnet.`);
-        currentOverlay = overlay; // Das geöffnete Overlay speichern
-    } else {
-        console.error(`Fehler: Overlay mit ID '${overlayId}' nicht gefunden.`);
-    }
+    closeExistingOverlay(overlayId);
+    const overlay = getValidatedElementById(overlayId);
+    if (!overlay) return;
+    setOverlayVisibility(overlay, true);
+    manageBodyScroll(true);
+    updateCurrentOverlay(overlay);
+    console.log(`Overlay '${overlayId}' opened.`);
 }
 
 /**
- * Schließt ein spezifisches Overlay.
  * @param {string} overlayId - Die ID des zu schließenden Overlays.
  */
 export function closeSpecificOverlay(overlayId) {
-    const overlay = document.getElementById(overlayId);
-    if (overlay) {
-        console.log(`DEBUG: closeSpecificOverlay für ${overlayId} wird ausgeführt.`);
-        overlay.classList.add('overlay-hidden');
-        document.body.style.overflow = ''; // Scrollen des Hintergrunds aktivieren
-        console.log(`Overlay '${overlayId}' geschlossen.`);
-        // Die Logik für currentOverlay gehört HIERHER
-        if (currentOverlay && currentOverlay.id === overlayId) {
-            currentOverlay = null; // Das geschlossene Overlay aus der Variable entfernen
-        }
-    }
+    const overlay = getValidatedElementById(overlayId);
+    if (!overlay) return;
+    setOverlayVisibility(overlay, false);
+    manageBodyScroll(false);
+    clearCurrentOverlay(overlayId);
+    console.log(`Overlay '${overlayId}' closed.`);
 }
 
-console.log('overlay-handler ended');
+/**
+ * @param {string} overlayId - Die ID des Overlays, für das die Listener initialisiert werden sollen.
+ */
+export function initOverlayListeners(overlayId) {
+    const overlay = getValidatedElementById(overlayId);
+    if (!overlay) return;
+    const modalContent = getValidatedQuerySelector(overlay, '.modal-content');
+    const closeModalButton = getValidatedQuerySelector(overlay, '.close-modal-btn');
+    attachCloseButtonListener(closeModalButton, overlayId);
+    attachBackgroundClickListener(overlay, overlayId);
+    attachModalContentStopper(modalContent);
+    attachEscapeKeyListener(overlay, overlayId);
+}

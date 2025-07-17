@@ -1,211 +1,226 @@
 import { loadFirebaseData } from '../../main.js';
 import { initDragAndDrop } from '../events/drag-and-drop.js';
+import { createSimpleTaskCard } from './render-card.js';
+
 
 let tasksData = {};
 
-function createSimpleTaskCard(boardData, taskID) {
-    if (!boardData || !taskID) return '';
 
-    let task = boardData.tasks[taskID];
-    let contacts = boardData.contacts;
-    if (!task || !contacts) return '';
-
-    let title = task.title || 'Kein Titel';
-    // DEBUG-LOG: Überprüfe den Wert der Beschreibung hier
-    let description = (task.description || task["description"] || 'Keine Beschreibung').trim();
-    console.log(`DEBUG: Aufgabe ID: ${taskID}, Beschreibung: "${description}"`);
-
-    let type = task.type || 'Unbekannt';
-    let categoryClass = 'category-default';
-    if (type === 'User Story') categoryClass = 'category-user-story';
-    else if (type === 'Technical Task') categoryClass = 'category-technical-task';
-    else if (type === 'Meeting') categoryClass = 'category-meeting';
-
-    let done = parseInt(task.subtasksCompleted || task.subtaskCompleted || 0, 10);
-
-    let totalSubtasksArray = task.totalSubtask || task.totalSubtasks;
-    let total = Array.isArray(totalSubtasksArray)
-        ? totalSubtasksArray.length
-        : parseInt(totalSubtasksArray || 0, 10);
-
-    let percent = total > 0 ? (done / total) * 100 : 0;
-    let subText = total > 0 ? `${done}/${total} Subtasks` : 'Keine Unteraufgaben';
-
-    let avatars = '';
-    let users = Array.isArray(task.assignedUsers) ? task.assignedUsers : [];
-    for (let i = 0; i < users.length; i++) {
-        let id = users[i];
-        let c = contacts[id];
-        if (!c) {
-            avatars += `<div class="assigned-initials-circle" style="background-color: var(--grey);" title="Unbekannt">?</div>`;
-            continue;
-        }
-        let initials = (c.initials || '').trim();
-        let name = (c.name || '').trim();
-        let colorRaw = c.avatarColor || 'default';
-        let colorStyle = colorRaw.startsWith('--') ? `var(${colorRaw})` : colorRaw;
-        avatars += `<div class="assigned-initials-circle" style="background-color: ${colorStyle};" title="${name}">${initials}</div>`;
-    }
-
-    let prio = task.priority;
-    let icon;
-    let prioText;
-
-    if (prio === 'low') {
-        icon = `../assets/icons/property/low.svg`;
-        prioText = 'Niedrig';
-    } else if (prio === 'medium') {
-        icon = `../assets/icons/property/medium.svg`;
-        prioText = 'Mittel';
-    } else if (prio === 'urgent') {
-        icon = `../assets/icons/property/urgent.svg`;
-        prioText = 'Dringend';
-    } else {
-        console.warn('Unbekannte Priorität gefunden:', prio);
-        icon = `../assets/icons/property/default.svg`;
-        prioText = 'Unbekannt';
-    }
-
-    return `
-        <div class="task-card" id="${taskID}">
-            <div class="task-category ${categoryClass}">${type}</div>
-            <div class="task-content">
-                <h3 class="task-title">${title}</h3>
-                <p class="task-description">${description}</p>
-                ${total > 0 ? `
-                    <div class="progress-container">
-                        <div class="progress-bar-track">
-                            <div class="progress-bar-fill" style="width: ${percent}%;"></div>
-                        </div>
-                        <span class="subtasks-text">${subText}</span>
-                    </div>` : ''}
-            </div>
-            <div class="task-footer">
-                <div class="assigned-users">${avatars}</div>
-                <div class="priority-icon">
-                    <img src="${icon}" alt="${prioText}" title="${prioText}">
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-function renderTasksByColumn(boardData) {
+/**
+ * Validiert das gesamte Board-Datenobjekt.
+ * @param {object} boardData - Das Board-Datenobjekt, das 'tasks' und 'contacts' enthalten sollte.
+ * @returns {boolean} True, wenn die Daten gültig sind, sonst false.
+ */
+function validateRenderBoardData(boardData) {
     if (!boardData || !boardData.tasks || !boardData.contacts) {
         console.error("Fehlende Daten im Board.");
+        return false;
+    }
+    return true;
+}
+
+const VALID_COLUMNS = ['to-do', 'in-progress', 'await-feedback', 'done'];
+const COLUMN_MAPPING = {
+    toDo: 'to-do',
+    inProgress: 'in-progress',
+    review: 'await-feedback',
+    done: 'done'
+};
+
+/**
+ * Initialisiert ein leeres Objekt für die Gruppierung von Tasks nach Spalte.
+ * @returns {object} Ein Objekt, dessen Schlüssel die Spalten-IDs sind und die Werte leere Arrays.
+ */
+function initializeTasksByColumn() {
+    const tasksByColumn = {};
+    VALID_COLUMNS.forEach(col => { tasksByColumn[col] = []; });
+    return tasksByColumn;
+}
+
+/**
+ * Verarbeitet eine einzelne Task und fügt sie der entsprechenden Spalte hinzu.
+ * @param {string} taskID - Die ID der Task.
+ * @param {object} task - Das Task-Objekt mit der Spalten-ID und Erstellungsdatum.
+ * @param {object} tasksByColumn - Das Objekt, in dem Tasks nach Spalte gruppiert werden.
+ */
+function processTaskForColumn(taskID, task, tasksByColumn) {
+    const colID = task.columnID;
+    const mappedColID = COLUMN_MAPPING[colID];
+    if (!mappedColID || !VALID_COLUMNS.includes(mappedColID)) {
+        console.warn(`Task ${taskID} has unknown or invalid columnID: ${colID}`);
         return;
     }
+    const createdAtDate = Array.isArray(task.createdAt) ? new Date(task.createdAt[0]) : new Date(task.createdAt);
+    tasksByColumn[mappedColID].push({ taskID, createdAt: createdAtDate });
+}
 
-    tasksData = boardData.tasks;
-
-    let validColumns = ['to-do', 'in-progress', 'await-feedback', 'done'];
-
-    let tasksByColumn = {};
-    validColumns.forEach(col => { tasksByColumn[col] = []; });
-
-    Object.entries(tasksData).forEach(([taskID, task]) => {
-        if (!task || typeof task.columnID === 'undefined') return;
-
-        let colID = task.columnID;
-
-        let colMapping = {
-            toDo: 'to-do',
-            inProgress: 'in-progress',
-            review: 'await-feedback',
-            done: 'done'
-        };
-        let mappedColID = colMapping[colID];
-        if (!mappedColID || !validColumns.includes(mappedColID)) {
-            console.warn(`Aufgabe ${taskID} hat unbekannte oder ungültige columnID: ${colID}`);
-            return;
+/**
+ * Gruppiert alle Tasks nach ihrer Spalte.
+ * @param {object} tasks - Ein Objekt aller Tasks, indiziert nach Task-ID.
+ * @returns {object} Ein Objekt, das Tasks nach ihren Spalten-IDs gruppiert.
+ */
+function groupTasksByColumn(tasks) {
+    const tasksByColumn = initializeTasksByColumn();
+    Object.entries(tasks).forEach(([taskID, task]) => {
+        if (task && typeof task.columnID !== 'undefined') {
+            processTaskForColumn(taskID, task, tasksByColumn);
         }
-
-        let createdAtDate;
-        if (Array.isArray(task.createdAt)) {
-            createdAtDate = new Date(task.createdAt[0]);
-        } else {
-            createdAtDate = new Date(task.createdAt);
-        }
-        tasksByColumn[mappedColID].push({ taskID, createdAt: createdAtDate });
     });
+    return tasksByColumn;
+}
 
-    validColumns.forEach(colID => {
+/**
+ * Sortiert die gruppierten Tasks innerhalb jeder Spalte nach ihrem Erstellungsdatum.
+ * @param {object} tasksByColumn - Das Objekt, das Tasks nach Spalten gruppiert enthält.
+ */
+function sortGroupedTasks(tasksByColumn) {
+    VALID_COLUMNS.forEach(colID => {
         tasksByColumn[colID].sort((a, b) => a.createdAt - b.createdAt);
     });
+}
 
-    validColumns.forEach(colID => {
-        let container = document.getElementById(colID);
-        if (!container) return;
+/**
+ * Löscht alle vorhandenen Task-Karten in einem Spalten-Container und gibt ihn zurück.
+ * @param {string} colID - Die ID des Spalten-Containers (z.B. 'to-do').
+ * @returns {HTMLElement|null} Das HTML-Element des Containers oder null, wenn nicht gefunden.
+ */
+function clearAndPrepareColumnContainer(colID) {
+    const container = document.getElementById(colID);
+    if (!container) return null;
+    container.querySelectorAll('.task-card').forEach(card => card.remove());
+    return container;
+}
 
-        const existingTaskCards = container.querySelectorAll('.task-card');
-        existingTaskCards.forEach(card => card.remove());
+/**
+ * Ruft einen Platzhalter für "keine Tasks" ab oder erstellt ihn, falls er nicht existiert.
+ * @param {HTMLElement} container - Der Spalten-Container, in dem der Platzhalter gesucht/erstellt wird.
+ * @returns {HTMLElement} Das HTML-Element des Platzhalters.
+ */
+function getOrCreatePlaceholder(container) {
+    let placeholder = container.querySelector('.no-tasks-placeholder');
+    if (!placeholder) {
+        placeholder = document.createElement('div');
+        placeholder.className = 'no-tasks-placeholder';
+        placeholder.textContent = 'No tasks to do';
+        container.appendChild(placeholder);
+    }
+    return placeholder;
+}
 
-        let placeholder = container.querySelector('.no-tasks-placeholder');
-        if (!placeholder) {
-            placeholder = document.createElement('div');
-            placeholder.className = 'no-tasks-placeholder';
-            placeholder.textContent = 'No tasks to do';
-            container.appendChild(placeholder);
-        }
+/**
+ * Rendert die Task-Karten für eine bestimmte Spalte.
+ * @param {HTMLElement} container - Der HTML-Container der Spalte.
+ * @param {Array<object>} tasksInColumn - Ein Array von Task-Objekten, die zu dieser Spalte gehören.
+ * @param {object} boardData - Das gesamte Board-Datenobjekt.
+ */
+function renderColumnTasks(container, tasksInColumn, boardData) {
+    const placeholder = getOrCreatePlaceholder(container);
+    if (tasksInColumn.length > 0) {
+        placeholder.style.display = 'none';
+        tasksInColumn.forEach(({ taskID }) => {
+            container.insertAdjacentHTML('beforeend', createSimpleTaskCard(boardData, taskID));
+        });
+    } else {
+        placeholder.style.display = 'block';
+    }
+}
 
-        if (tasksByColumn[colID].length > 0) {
-            placeholder.style.display = 'none';
-            tasksByColumn[colID].forEach(({ taskID }) => {
-                container.insertAdjacentHTML('beforeend', createSimpleTaskCard(boardData, taskID));
-            });
-        } else {
-            placeholder.style.display = 'block';
+/**
+ * Rendert alle Tasks, gruppiert nach ihren Spalten, auf dem Board.
+ * @param {object} boardData - Das gesamte Board-Datenobjekt.
+ */
+function renderTasksByColumn(boardData) {
+    if (!validateRenderBoardData(boardData)) return;
+    tasksData = boardData.tasks;
+    const groupedTasks = groupTasksByColumn(tasksData);
+    sortGroupedTasks(groupedTasks);
+
+    VALID_COLUMNS.forEach(colID => {
+        const container = clearAndPrepareColumnContainer(colID);
+        if (container) {
+            renderColumnTasks(container, groupedTasks[colID], boardData);
         }
     });
-
     initDragAndDrop();
     console.log('Board gerendert und Drag-and-Drop initialisiert.');
 }
 
-export async function updateTaskColumnData(taskId, newColumnId) {
-    console.log(`Versuche, Aufgabe ${taskId} in LOKALEN Daten auf Spalte ${newColumnId} zu aktualisieren.`);
-
-    if (tasksData[taskId]) {
-        let oldColumnId = tasksData[taskId].columnID;
-
-        let firebaseColumnId;
-        if (newColumnId === 'to-do') firebaseColumnId = 'toDo';
-        else if (newColumnId === 'in-progress') firebaseColumnId = 'inProgress';
-        else if (newColumnId === 'await-feedback') firebaseColumnId = 'review';
-        else if (newColumnId === 'done') firebaseColumnId = 'done';
-        else {
-            console.error(`Unbekannte neue Spalten-ID für lokale Aktualisierung: ${newColumnId}`);
-            return;
-        }
-
-        tasksData[taskId].columnID = firebaseColumnId;
-        console.log(`LOKALE Daten für Aufgabe ${taskId} von ${oldColumnId} auf ${firebaseColumnId} aktualisiert.`);
-
-        console.log(`INFO: Datenbank-Upload für Aufgabe ${taskId} mit neuer Spalte ${firebaseColumnId} ist momentan AUSKOMMENTIERT.`);
-        /*
-        try {
-            // HIER WÜRDE DEINE LOGIK ZUM SPEICHERN IN FIREBASE HINKOMMEN.
-            // Beispiel: await updateFirebaseData(`tasks/${taskId}/columnID`, firebaseColumnId);
-            console.log(`Aufgabe ${taskId} erfolgreich in Firebase aktualisiert.`);
-        } catch (error) {
-            console.error(`Fehler beim Speichern der Aufgabe ${taskId} in Firebase:`, error);
-        }
-        */
-
-        await initializeBoard();
-
-    } else {
-        console.warn(`Aufgabe mit ID ${taskId} nicht in der LOKALEN Datenstruktur gefunden.`);
+/**
+ * Mappt eine Client-seitige Spalten-ID auf eine Firebase-spezifische Spalten-ID.
+ * @param {string} clientColumnId - Die Client-seitige Spalten-ID (z.B. 'to-do').
+ * @returns {string|undefined} Die entsprechende Firebase-Spalten-ID oder undefined, wenn nicht gefunden.
+ */
+function mapClientToFirebaseColumnId(clientColumnId) {
+    const firebaseColumnMapping = {
+        'to-do': 'toDo',
+        'in-progress': 'inProgress',
+        'await-feedback': 'review',
+        'done': 'done'
+    };
+    const firebaseId = firebaseColumnMapping[clientColumnId];
+    if (!firebaseId) {
+        console.error(`Unknown client column ID for Firebase mapping: ${clientColumnId}`);
     }
+    return firebaseId;
 }
 
-async function initializeBoard() {
+/**
+ * Aktualisiert die Spalten-ID einer Task in den lokalen Daten.
+ * @param {string} taskId - Die ID der zu aktualisierenden Task.
+ * @param {string} firebaseColumnId - Die neue Spalten-ID im Firebase-Format.
+ */
+function updateLocalTaskColumn(taskId, firebaseColumnId) {
+    const oldColumnId = tasksData[taskId].columnID;
+    tasksData[taskId].columnID = firebaseColumnId;
+    console.log(`Local data for task ${taskId} updated from ${oldColumnId} to ${firebaseColumnId}.`);
+}
+
+/**
+ * Simuliert oder löst ein Firebase-Update für die Spalten-ID einer Task aus.
+ * @param {string} taskId - Die ID der Task, die aktualisiert werden soll.
+ * @param {string} firebaseColumnId - Die neue Spalten-ID im Firebase-Format.
+ */
+async function triggerFirebaseUpdate(taskId, firebaseColumnId) {
+    console.log(`INFO: Database upload for task ${taskId} with new column ${firebaseColumnId} is currently commented out.`);
+   
+}
+
+/**
+ * Aktualisiert die Spalten-Daten einer Task lokal und versucht ein Firebase-Update.
+ * @param {string} taskId - Die ID der Task, deren Spalte aktualisiert werden soll.
+ * @param {string} newColumnId - Die neue Spalten-ID im Client-Format.
+ */
+export async function updateTaskColumnData(taskId, newColumnId) {
+    console.log(`Attempting to update task ${taskId} to column ${newColumnId} in LOCAL data.`);
+    if (!tasksData[taskId]) {
+        console.warn(`Task with ID ${taskId} not found in local data structure.`);
+        return;
+    }
+    const firebaseColumnId = mapClientToFirebaseColumnId(newColumnId);
+    if (!firebaseColumnId) return;
+
+    updateLocalTaskColumn(taskId, firebaseColumnId);
+    await triggerFirebaseUpdate(taskId, firebaseColumnId);
+    await initializeBoard();
+}
+
+/**
+ * Lädt die Board-Daten von Firebase und rendert das Board.
+ */
+async function loadAndRenderBoard() {
     const firebaseBoardData = await loadFirebaseData();
     if (firebaseBoardData) {
         renderTasksByColumn(firebaseBoardData);
     } else {
-        console.error("Board konnte nicht geladen werden, da keine Firebase-Daten verfügbar sind.");
+        console.error("Board could not be loaded as no Firebase data is available.");
     }
+}
+
+/**
+ * Initialisiert das Board beim Laden der Seite.
+ */
+async function initializeBoard() {
+    await loadAndRenderBoard();
 }
 
 document.addEventListener('DOMContentLoaded', initializeBoard);
