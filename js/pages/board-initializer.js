@@ -1,6 +1,6 @@
 import { openSpecificOverlay, initOverlayListeners } from "../../js/events/overlay-handler.js";
-import { initAddTaskForm, clearForm } from "/js/pages/add-task.js";
-import { getAddTaskFormHTML } from "/js/templates/add-task-template.js";
+import { initAddTaskForm, clearForm } from "./add-task.js";
+import { getAddTaskFormHTML } from "../templates/add-task-template.js";
 
 /**
  * Lädt das HTML für das "Add Task" Overlay in den DOM und initialisiert es.
