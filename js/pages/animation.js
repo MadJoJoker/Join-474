@@ -14,7 +14,7 @@ function acceptPrivacyP() {
 function confirmSignup() {
   const text = "You signed up successfully";
   const color = "rgba(0, 0, 0, 0.5)";
-  const link = "../../index.html"
+  const link = "../index.html"
   animateMessageBox(text, color, link);
 
   goToPage(link);
@@ -23,7 +23,7 @@ function confirmSignup() {
 function stopSignIn() {
   const text = "You already signed up";
   const color = "transparent";
-  const link = "../../index.html"
+  const link = "../index.html"
   animateMessageBox(text, color, link);
 
   goToPage(link);
