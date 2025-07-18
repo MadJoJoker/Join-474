@@ -2,7 +2,8 @@
  * Enthält alle Funktionen für Create, Edit und Delete von Kontakten.
  * (wird in render-contacts.js gefüllt).
  */
-import { getFirebaseData } from 'js/data/API.js';
+
+import { getFirebaseData } from '../data/API.js';
 
 async function saveFirebaseData({ path, data }) {
     const url = `https://join-474-default-rtdb.europe-west1.firebasedatabase.app/${path}.json`;
@@ -95,5 +96,3 @@ export async function deleteContact(id) {
     await saveFirebaseData({ path: `contacts/${id}`, data: null });
     console.info('[deleteContact] gelöscht →', id);
 }
-
-// eine Umschaltlogik zwischen „lokal“ und „Firebase“ einzubauen – per Umgebungsvariable oder Flag wie: const USE_FIREBASE = true; ?

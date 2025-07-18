@@ -1,13 +1,8 @@
 // render (raw input test)
 
-import {
-  createContact,
-  updateContact,
-  deleteContact,
-  getInitials
-} from '../events/contact-actions.js';
+import { createContact, updateContact, deleteContact, getInitials } from '../events/contact-actions.js';
 
-import { getFirebaseData } from 'js/data/API.js';
+import { getFirebaseData } from '../data/API.js';
 
 let currentlyEditingContact = null;
 
