@@ -7,7 +7,7 @@ import {
   getInitials
 } from '../events/contact-actions.js';
 
-import { getFirebaseData } from '../js/data/API.js';
+import { getFirebaseData } from 'js/data/API.js';
 
 let currentlyEditingContact = null;
 

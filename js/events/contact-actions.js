@@ -2,7 +2,7 @@
  * Enthält alle Funktionen für Create, Edit und Delete von Kontakten.
  * (wird in render-contacts.js gefüllt).
  */
-import { getFirebaseData } from '../data/API.js';
+import { getFirebaseData } from 'js/data/API.js';
 
 async function saveFirebaseData({ path, data }) {
     const url = `https://join-474-default-rtdb.europe-west1.firebasedatabase.app/${path}.json`;
