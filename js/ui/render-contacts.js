@@ -220,7 +220,26 @@ document.querySelector('.add-new-contact-button').addEventListener('click', () =
   ['newContactName', 'newContactEmail', 'newContactPhone']
     .forEach(id => (document.getElementById(id).value = ''));
 
+  demoContactFilled = false; // Autofill-Status zurücksetzen bei jedem Öffnen
+
   openOverlay('contactOverlay');
+});
+
+// Autofill-Demo nur beim ersten Fokus
+let demoContactFilled = false;
+
+function fillDemoContact() {
+  if (demoContactFilled) return;
+
+  document.getElementById('newContactName').value = 'Demo Contact';
+  document.getElementById('newContactEmail').value = 'democontact@demo.con';
+  document.getElementById('newContactPhone').value = '+12345-123456789';
+
+  demoContactFilled = true;
+}
+
+['newContactName', 'newContactEmail', 'newContactPhone'].forEach(id => {
+  document.getElementById(id).addEventListener('focus', fillDemoContact);
 });
 
 // Schließt das Overlay über X oder Abbrechen
