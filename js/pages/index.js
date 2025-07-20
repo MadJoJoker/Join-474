@@ -1,6 +1,6 @@
 // TO DO:
-// Password vergleichen
 // focus functions für Password (sichtbar machen, icon-Wechsel)
+// chekcbox-function umschreiben auf Wechsel von svgs
 
 let fetchedData = null;
 
@@ -45,13 +45,10 @@ function handleLogin(){
   simulateUser(userEmail);
   if (!userEmail) {
     return;
+  } else {
+    processEmailString(userEmail);
   }
-    const foundMail = Object.keys(fetchedData).find(key => fetchedData[key].email == userEmail);
-    const displayName = checkMail(foundMail);
-    initialsForHeader(displayName);
-    sessionStorage.setItem('currentUser', displayName);
-    window.location.href = '../html/summary.html';
-  }
+}
 
 function simulateUser(mail) {
   if(!mail) {
@@ -69,9 +66,23 @@ function insertDemoMail() {
   console.log("temporarly added: Sofia Müller");
 }
 
+function processEmailString(userEmail) {
+  const foundMail = Object.keys(fetchedData).find(key => fetchedData[key].email.toLowerCase() == userEmail.toLowerCase());
+  if(!foundMail) {
+    window.location.href = '../html/sign-up.html';
+  } else {
+    const displayName = checkMail(foundMail);
+    initialsForHeader(displayName);
+    sessionStorage.setItem('currentUser', displayName);
+    let email = validateLoginPassword();
+    if(email) {
+      window.location.href = '../html/summary.html';
+    }
+  }
+}
+
 function checkMail(foundKey) {
-  displayName = fetchedData[foundKey].displayName;
-  return displayName = fetchedData[foundKey].displayName;
+  return fetchedData[foundKey].displayName;
 }
 
 function initialsForHeader(displayName) {
@@ -90,10 +101,9 @@ function getInitials(fullName) {
 function directLogin() {
   sessionStorage.setItem('headerInitials', "G");
   sessionStorage.setItem('currentUser', "");
-  window.location.href = './html/summary.html';
+  window.location.href = '../html/summary.html';
 }
 
-// sign in (mit ".some", nicht ".find", weil ich true oder false haben möchte)
 function checkUser() {
   const newEmail = document.getElementById("new-email").value.trim();
   const existingMail = Object.keys(fetchedData).some(
@@ -103,10 +113,10 @@ function checkUser() {
   } else {
     validateInputs();
   }
-}
+} 
 
 function validateInputs() {
-  let samePasswords = comparePasswords();
+  let samePasswords = validateRegistrationPasswords();
   if(samePasswords) {
     checkRequiredFields();
   }
@@ -120,32 +130,69 @@ function checkRequiredFields() {
   } else return;
 }
 
-function comparePasswords() {
-  const password1 = document.getElementById('password-first').value;
-  const password2 = document.getElementById('password-second').value;
-  console.log(password1, password2);
-  return password1 != "" && password1 == password2;
+function validateLoginPassword() {
+  const pw = document.getElementById('login-password').value;
+  const valid = pw != "";
+  validateAndMark('.password-frame', valid);
+  return valid;
 }
 
-// Passwordvergleich noch unfertig. Rückmeldung (rot) in UI schreiben.
+function validateRegistrationPasswords() {
+  const pw1 = document.getElementById('password-first').value;
+  const pw2 = document.getElementById('password-second').value;
+  const valid = pw1 != "" && pw1 === pw2;
+  validateAndMark('.password-frame', valid);
+  return valid;
+}
+
+function validateAndMark(selector, isValid) {
+  const frames = document.querySelectorAll(selector);
+  frames.forEach(frame => {
+    frame.classList.toggle('active', !isValid);
+  });
+  const alertBox = document.getElementById('alert');
+  if (!isValid) {
+    alertBox.classList.remove('d-none');
+  } else {
+    alertBox.classList.add('d-none');
+  }
+}
+
+document.addEventListener('click', e => {
+  if (e.target.closest('.input-frame')) {
+    document.querySelectorAll('.input-frame.active').forEach(frame => {
+      frame.classList.remove('active');
+    });
+    document.getElementById('alert').classList.add('d-none');
+  }
+});
 
 
+// diese F neu schreiben, da keine checkbox mehr existiert
 function checkboxChecked() {
   const check = document.getElementById("accept");
   check.checked == true ? objectBuilding() : acceptPrivacyP();
 }
 
 // 2 autofill demo functions
+let autofill = true;
+
 function fillLogin() {
-  document.getElementById('login-email').value = "sofiam@gmail.com";
-  document.getElementById('login-password').value = "mypassword123";
+  if(autofill) {
+    document.getElementById('login-email').value = "sofiam@gmail.com";
+    document.getElementById('login-password').value = "mypassword123";
+    autofill = false;
+  }
 }
 
 function fillSignup() {
-  document.getElementById('new-name').value = "Sofia Müller";
-  document.getElementById('new-email').value = "sofiam@gmail.com";
-  document.getElementById('password-first').value = "mypassword123";
-  document.getElementById('password-second').value = "mypassword123";
+  if(autofill) {
+    document.getElementById('new-name').value = "Sofia Müller";
+    document.getElementById('new-email').value = "sofiam@gmail.com";
+    document.getElementById('password-first').value = "mypassword123";
+    document.getElementById('password-second').value = "mypassword123";
+    autofill = false;
+  }
 }
 
 

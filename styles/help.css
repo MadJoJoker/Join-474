@@ -23,7 +23,7 @@ html {
   -ms-overflow-style: none;
 }
 
- /* Chrome, Safari, Edge */
+/* Chrome, Safari, Edge */
 .main-content::-webkit-scrollbar {
   display: none;
 }
@@ -110,13 +110,23 @@ html {
   background: none;
   cursor: pointer;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
-#backBtn img {
-  width: 100%;
-  height: 100%;
+#backBtn svg {
+  width: 60%;
+  height: 60%;
+  transition: transform 0.2s ease;
 }
 
-#backBtn:hover img {
-  content: url("../assets/icons/btn/hover/blue-back-arrow-hover.svg");
+#backBtn:hover {
+  background-color: var(--grey);
+}
+
+#backBtn:hover svg {
+  transform: scale(1.15);
 }

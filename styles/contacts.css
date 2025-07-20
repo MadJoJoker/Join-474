@@ -51,13 +51,6 @@ html {
     font-size: 27px;
 }
 
-.contacts-divider {
-    height: 59px;
-    width: 3px;
-    background-color: var(--lightBlue);
-    border-radius: 10px;
-}
-
 .contact-section {
     margin: 20px 0;
 }
@@ -188,46 +181,47 @@ html {
 .contact-details-actions {
     display: flex;
     gap: 12px;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
 }
 
 
 .contact-details-card-icon-button {
     border: none;
-    color: var(--dark);
+    color: var(--sidebarNoticeGrey);
     background-color: var(--lightGrey);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 2px;
+    gap: 8px;
     font-size: 16px;
     transition: color 0.3s ease, transform 0.3s ease;
     will-change: transform;
     width: 60px;
 }
 
-.contact-details-card-icon-button img {
+.contact-details-card-icon-button svg {
     width: 16px;
     height: 16px;
-    transition: filter 0.3s ease;
+    flex-shrink: 0;
 }
 
 .contact-details-card-icon-button:hover {
     color: var(--lightBlue);
 }
 
-.contact-details-card-icon-button:hover img {
+.contact-details-card-icon-button:hover svg {
     filter: brightness(0) saturate(100%) invert(64%) sepia(43%) saturate(640%) hue-rotate(168deg) brightness(97%) contrast(87%);
 }
 
 .edit-button:hover {
     transform: translateX(2px);
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .delete-button:hover {
     transform: translateX(-2px);
+    font-weight: 600;
 }
 
 .contact-details-info-block {
@@ -254,6 +248,7 @@ html {
 .add-new-contact-button {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 16px;
     color: var(--white);
     background-color: var(--dark);
@@ -332,14 +327,6 @@ html {
     font-size: 27px;
 }
 
-.overlay-left .underline {
-    width: 90px;
-    height: 3px;
-    background-color: var(--lightBlue);
-    margin-top: 12px;
-    border-radius: 2px;
-}
-
 .overlay-right {
     display: flex;
     flex-direction: column;
@@ -356,11 +343,14 @@ html {
     right: 34px;
     background: none;
     border: none;
-    font-size: 32px;
+    font-size: 24px;
     cursor: pointer;
     color: #333;
     height: 35px;
     width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .overlay-close:hover {
@@ -421,7 +411,7 @@ html {
     width: 100%;
     padding: 12px 40px 12px 16px;
     font-size: 16px;
-    border: 1px solid var(--lightGrey);
+    border: 1px solid var(--sidebarNoticeGrey);
     border-radius: 8px;
     box-sizing: border-box;
 }
@@ -435,13 +425,14 @@ html {
     border: 1px solid var(--lightBlue);
 }
 
-.input-wrapper img {
+.input-wrapper svg {
     position: absolute;
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
     width: 18px;
     height: 18px;
+    pointer-events: none;
 }
 
 .overlay-actions {
@@ -480,7 +471,7 @@ html {
     border: 1px solid var(--lightBlue);
 }
 
-#cancelOverlayBtn:hover img {
+#cancelOverlayBtn:hover svg {
     filter: invert(61%) sepia(56%) saturate(748%) hue-rotate(167deg) brightness(95%) contrast(91%);
 }
 
