@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+ <!DOCTYPE html>
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,11 +14,11 @@
     <link rel="stylesheet" href="../styles/board-site.css" />
     <link rel="stylesheet" href="../assets/fonts/font.css" />
     <link rel="stylesheet" href="../styles/header.css" />
-    <link rel="stylesheet" href="../styles/overlay.css" />
     <link rel="stylesheet" href="../styles/add-task.css" />
     <link rel="stylesheet" href="../styles/assets.css" />
     <link rel="stylesheet" href="../styles/taskCard.css">
 
+    <link rel="stylesheet" href="../styles/overlay.css" />
 
     <link
       rel="icon"
@@ -28,6 +30,8 @@
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
     />
   </head>
+</html>
+
 
   <body onload="includeHeaderAndSidebar()">
     <div class="app-container">
@@ -291,7 +295,7 @@
             </div>
           </div>
           <div id="overlay-container"></div>
-                    
+
 
         </main>
       </section>
@@ -307,6 +311,8 @@
     <script type="module" src="../js/events/overlay-handler.js"></script>
     <script type="module" src="../js/pages/board-initializer.js"></script>
     <script type="module" src="../js/pages/add-task.js"></script>
+    <script type="module" src="../js/data/task-to-firbase.js"></script>
+
     <script src="../js/pages/header-and-sidebar.js"></script>
   </body>
 </html>
