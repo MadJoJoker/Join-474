@@ -1,54 +1,136 @@
-/* contact-actions.js
- * Enthält alle Funktionen für Create, Edit und Delete von Kontakten.
- * (wird in render-contacts.js gefüllt).
+/**
+ * Provides all functions related to creating, updating, and deleting contacts.
+ * These are used in render-contacts.js and other contact-related modules.
  */
 
+// Fetches data from Firebase Realtime Database (wrapper for GET requests)
 import { getFirebaseData } from '../data/API.js';
 
+/**
+ * Saves contact data to Firebase (via PUT or DELETE).
+ * 
+ * @param {object} params 
+ * @param {string} params.path - The Firebase path where data will be saved (e.g., 'contacts/contact-001').
+ * @param {object|null} params.data - The data to save; null deletes the entry.
+ * @returns {Promise<void>}
+ * @throws Will throw an error if the request to Firebase fails.
+ */
 async function saveFirebaseData({ path, data }) {
-    const url = `https://join-474-default-rtdb.europe-west1.firebasedatabase.app/${path}.json`;
-
-    console.log('🌍 Speichere Daten an:', url);
-    console.log('📤 Dateninhalt:', data);
-
+    const url = buildFirebaseUrl(path);
+    logFirebaseRequest(url, data);
     try {
-        const response = await fetch(url, {
-            method: data === null ? 'DELETE' : 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: data === null ? undefined : JSON.stringify(data)
-        });
-
-        const resText = await response.text();
-        console.log('✅ Firebase-Antwort:', response.status, resText);
-
-        if (!response.ok) {
-            throw new Error('Firebase update failed: ' + response.statusText);
-        }
-
+        const response = await sendFirebaseRequest(url, data);
+        await handleFirebaseResponse(response);
     } catch (error) {
-        console.error('❌ Fehler beim Speichern in Firebase:', error);
+        handleFirebaseError(error);
     }
 }
 
-/** 15 mögliche Avatar-Farben – wird für Zufallsauswahl genutzt */
+/**
+ * Builds the Firebase URL for a given path.
+ * 
+ * @param {string} path - Firebase path segment.
+ * @returns {string} Fully qualified Firebase URL.
+ */
+function buildFirebaseUrl(path) {
+    return `https://join-474-default-rtdb.europe-west1.firebasedatabase.app/${path}.json`;
+}
+
+/**
+ * Logs Firebase request details to the console.
+ * 
+ * @param {string} url - The Firebase URL being called.
+ * @param {object|null} data - The payload being sent.
+ */
+function logFirebaseRequest(url, data) {
+    console.log('[saveFirebaseData] URL:', url);
+    console.log('[saveFirebaseData] Payload:', data);
+}
+
+/**
+ * Sends the request to Firebase (PUT or DELETE).
+ * 
+ * @param {string} url - The Firebase URL.
+ * @param {object|null} data - Data to send; null means DELETE.
+ * @returns {Promise<Response>} The fetch response object.
+ */
+async function sendFirebaseRequest(url, data) {
+    return fetch(url, {
+        method: data === null ? 'DELETE' : 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: data === null ? undefined : JSON.stringify(data),
+    });
+}
+
+/**
+ * Processes the Firebase response.
+ * 
+ * @param {Response} response - The fetch response.
+ * @throws Will throw if the response is not OK.
+ */
+async function handleFirebaseResponse(response) {
+    const responseText = await response.text();
+    console.log('[saveFirebaseData] Firebase response:', response.status, responseText);
+    if (!response.ok) {
+        throw new Error('Firebase update failed: ' + response.statusText);
+    }
+}
+
+/**
+ * Logs any error during the Firebase save process.
+ * 
+ * @param {Error} error - The error object caught in try/catch.
+ */
+function handleFirebaseError(error) {
+    console.error('[saveFirebaseData] Error while saving to Firebase:', error);
+}
+
+// ---------------------------
+// Avatar and Initials Utils
+// ---------------------------
+
+/** 
+ * 15 predefined avatar colors – used for random assignment.
+ */
 const avatarColors = [
     '#ff7a00', '#ff5eb3', '#6e52ff', '#9327ff', '#00bee8',
     '#1fd7c1', '#ff745e', '#ffa35e', '#fc71ff', '#ffc701',
     '#0038ff', '#c3ff2b', '#ffe62b', '#ff4646', '#ffbb2b'
 ];
 
-/** Gibt eine beliebige Farbe aus dem Pool zurück */
+/**
+ * Picks a random avatar color from the predefined list.
+ * 
+ * @returns {string} A hex color string.
+ */
 export function getRandomAvatarColor() {
     return avatarColors[Math.floor(Math.random() * avatarColors.length)];
 }
 
-/** Name → Initialen (Anna Müller → AM) */
+/**
+ * Converts a name string into initials.
+ * 
+ * @param {string} name - Full name of the contact.
+ * @returns {string} Initials in uppercase (e.g., "Anna Müller" → "AM").
+ */
 export function getInitials(name) {
     const parts = name.trim().split(' ');
     return (parts[0][0] + (parts.pop()[0] || '')).toUpperCase();
 }
 
-/** Neues Contact-Objekt anlegen */
+// ---------------------------
+// CRUD Operations
+// ---------------------------
+
+/**
+ * Creates a new contact and stores it in Firebase.
+ * 
+ * @param {object} contactData
+ * @param {string} contactData.name - Contact name.
+ * @param {string} contactData.email - Contact email.
+ * @param {string} contactData.phone - Contact phone number.
+ * @returns {Promise<object>} The newly created contact object.
+ */
 export async function createContact({ name, email, phone }) {
     const id = await getNextContactId();
     const contact = {
@@ -59,40 +141,96 @@ export async function createContact({ name, email, phone }) {
         initials: getInitials(name),
         avatarColor: getRandomAvatarColor()
     };
-
     await saveFirebaseData({ path: `contacts/${id}`, data: contact });
-    console.info('[createContact] gespeichert →', contact);
+    console.info('[createContact] Contact saved:', contact);
     return contact;
 }
+
+/**
+ * Updates an existing contact in Firebase.
+ * 
+ * @param {object} contact - The full contact object with updated data.
+ * @returns {Promise<void>}
+ */
+export async function updateContact(contact) {
+    console.log('[updateContact] Updating contact:', contact);
+    await saveFirebaseData({ path: `contacts/${contact.id}`, data: contact });
+}
+
+/**
+ * Deletes a contact from Firebase by ID.
+ * 
+ * @param {string} id - Contact ID to delete (e.g., "contact-003").
+ * @returns {Promise<void>}
+ */
+export async function deleteContact(id) {
+    await saveFirebaseData({ path: `contacts/${id}`, data: null });
+    console.info('[deleteContact] Contact deleted:', id);
+}
+
+// ---------------------------
+// ID Generation
+// ---------------------------
+
+/**
+ * Generates the next available contact ID (e.g., "contact-004").
+ * 
+ * @returns {Promise<string>} The next available contact ID.
+ */
 async function getNextContactId() {
+    const contacts = await fetchContactsFromFirebase();
+    const usedContactNumbers = extractUsedContactNumbers(contacts);
+    const nextAvailableNumber = findNextAvailableNumber(usedContactNumbers);
+    return formatContactId(nextAvailableNumber);
+}
+
+/**
+ * Retrieves all existing contacts from Firebase.
+ * 
+ * @returns {Promise<object>} An object containing all contacts keyed by ID.
+ */
+async function fetchContactsFromFirebase() {
     const data = await getFirebaseData();
-    const contacts = data?.contacts || {};
+    return data?.contacts || {};
+}
 
-    const usedIds = Object.keys(contacts)
-        .map(id => parseInt(id.replace('contact-', '')))
-        .filter(num => !isNaN(num))
-        .sort((a, b) => a - b);
+/**
+ * Extracts and returns sorted numeric IDs from contact keys.
+ * 
+ * @param {object} contacts - All contacts retrieved from Firebase.
+ * @returns {number[]} Sorted array of numeric contact IDs.
+ */
+function extractUsedContactNumbers(contacts) {
+    return Object.keys(contacts)
+        .map(contactId => parseInt(contactId.replace('contact-', '')))
+        .filter(contactNumber => !isNaN(contactNumber))
+        .sort((firstNumber, secondNumber) => firstNumber - secondNumber);
+}
 
-    let nextId = 1;
-    for (const idNum of usedIds) {
-        if (idNum === nextId) {
-            nextId++;
+/**
+ * Finds the next unused number in a sorted array of contact numbers.
+ * 
+ * @param {number[]} sortedNumbers - List of used numbers.
+ * @returns {number} The next available number.
+ */
+function findNextAvailableNumber(sortedNumbers) {
+    let nextAvailable = 1;
+    for (const number of sortedNumbers) {
+        if (number === nextAvailable) {
+            nextAvailable++;
         } else {
             break;
         }
     }
-
-    return `contact-${String(nextId).padStart(3, '0')}`;
+    return nextAvailable;
 }
 
-/** Bestehenden Kontakt aktualisieren */
-export async function updateContact(contact) {
-    console.log('🛠 [updateContact] →', contact);
-    await saveFirebaseData({ path: `contacts/${contact.id}`, data: contact });
-}
-
-/** Kontakt löschen */
-export async function deleteContact(id) {
-    await saveFirebaseData({ path: `contacts/${id}`, data: null });
-    console.info('[deleteContact] gelöscht →', id);
+/**
+ * Converts a number into a formatted contact ID (e.g., 4 → "contact-004").
+ * 
+ * @param {number} number - Contact number.
+ * @returns {string} Formatted contact ID.
+ */
+function formatContactId(number) {
+    return `contact-${String(number).padStart(3, '0')}`;
 }
