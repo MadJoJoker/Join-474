@@ -156,3 +156,66 @@ export function createSimpleTaskCard(boardData, taskID) {
     const priorityInfo = getPriorityIconAndText(task.priority);
     return buildTaskCardHtmlContent(taskID, taskDetails, subtaskProgress, avatarsHtml, priorityInfo);
 }
+
+/**
+ * Registriert einen Eventlistener für alle Task-Karten, um das Task-Detail-Overlay zu öffnen.
+ * @param {object} boardData - Das Board-Datenobjekt mit allen Tasks und Kontakten.
+ * @param {function} getTaskOverlay - Funktion, die das HTML für das Overlay generiert.
+ */
+export function registerTaskCardDetailOverlay(boardData, getTaskOverlay) {
+    const cards = document.querySelectorAll('.task-card');
+    console.log('[DEBUG] Task-Karten für Overlay gefunden:', cards.length);
+    cards.forEach(card => {
+        card.addEventListener('click', function (e) {
+            console.log('[DEBUG] Task-Karte wurde geklickt:', card.id);
+            // Drag-and-drop Events ignorieren
+            if (e.target.classList.contains('assigned-initials-circle') || e.target.closest('.priority-icon')) return;
+            const taskId = card.id;
+            const task = boardData.tasks[taskId];
+            if (!task) {
+                console.warn('[DEBUG] Keine Task-Daten für Karte:', taskId);
+                return;
+            }
+            // Overlay dynamisch einfügen, falls nicht vorhanden
+            let overlay = document.getElementById('overlay-task-detail');
+            if (!overlay) {
+                const overlayContainer = document.getElementById('overlay-container');
+                if (!overlayContainer) {
+                    console.error('[DEBUG] overlay-container Element nicht gefunden!');
+                    return;
+                }
+                overlayContainer.innerHTML = `
+<div id="overlay-task-detail" class="overlay-hidden">
+   <div id="modal-contentTask" class="modal-content">
+    <button class="close-modal-btn" type="button" data-event-handle="true">&times;</button>
+    <main class="content-overlay" id="task-container"> </main>
+  </div>
+</div>`;
+                overlay = document.getElementById('overlay-task-detail');
+                console.log('[DEBUG] overlay-task-detail Element wurde dynamisch eingefügt:', overlay);
+            }
+            overlay.classList.remove('overlay-hidden');
+            // Task-Details einfügen
+            const container = document.getElementById('task-container');
+            console.log('[DEBUG] task-container Element:', container);
+            if (container) {
+                const html = getTaskOverlay(task, taskId, boardData.contacts);
+                container.innerHTML = html;
+                console.log('[DEBUG] Overlay-HTML gesetzt:', html);
+            } else {
+                console.error('[DEBUG] task-container Element nicht gefunden!');
+            }
+            // Schließen-Button Event
+            const closeBtn = overlay.querySelector('.close-modal-btn, .close-modal-btn-svg');
+            console.log('[DEBUG] Schließen-Button Element:', closeBtn);
+            if (closeBtn) {
+                closeBtn.onclick = () => {
+                    overlay.classList.add('overlay-hidden');
+                    container.innerHTML = '';
+                };
+            } else {
+                console.error('[DEBUG] Schließen-Button im Overlay nicht gefunden!');
+            }
+        });
+    });
+}

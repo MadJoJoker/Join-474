@@ -2,9 +2,7 @@ import { loadFirebaseData } from '../../main.js';
 import { initDragAndDrop } from '../events/drag-and-drop.js';
 import { createSimpleTaskCard } from './render-card.js';
 
-
 let tasksData = {};
-
 
 /**
  * Validiert das gesamte Board-Datenobjekt.
@@ -13,7 +11,6 @@ let tasksData = {};
  */
 function validateRenderBoardData(boardData) {
     if (!boardData || !boardData.tasks || !boardData.contacts) {
-        console.error("Fehlende Daten im Board.");
         return false;
     }
     return true;
@@ -46,10 +43,8 @@ function initializeTasksByColumn() {
 function processTaskForColumn(taskID, task, tasksByColumn) {
     const colID = task.columnID;
     const mappedColID = COLUMN_MAPPING[colID];
-    if (!mappedColID || !VALID_COLUMNS.includes(mappedColID)) {
-        console.warn(`Task ${taskID} has unknown or invalid columnID: ${colID}`);
-        return;
-    }
+    if (!mappedColID || !VALID_COLUMNS.includes(mappedColID)) return;
+
     const createdAtDate = Array.isArray(task.createdAt) ? new Date(task.createdAt[0]) : new Date(task.createdAt);
     tasksByColumn[mappedColID].push({ taskID, createdAt: createdAtDate });
 }
@@ -131,6 +126,7 @@ function renderColumnTasks(container, tasksInColumn, boardData) {
  */
 function renderTasksByColumn(boardData) {
     if (!validateRenderBoardData(boardData)) return;
+
     tasksData = boardData.tasks;
     const groupedTasks = groupTasksByColumn(tasksData);
     sortGroupedTasks(groupedTasks);
@@ -141,8 +137,16 @@ function renderTasksByColumn(boardData) {
             renderColumnTasks(container, groupedTasks[colID], boardData);
         }
     });
+
+    import('../ui/render-card.js').then(module => {
+        import('../templates/task-detail-template.js').then(templateModule => {
+            if (typeof module.registerTaskCardDetailOverlay === 'function') {
+                module.registerTaskCardDetailOverlay(boardData, templateModule.getTaskOverlay);
+            }
+        });
+    });
+
     initDragAndDrop();
-    console.log('Board gerendert und Drag-and-Drop initialisiert.');
 }
 
 /**
@@ -157,11 +161,7 @@ function mapClientToFirebaseColumnId(clientColumnId) {
         'await-feedback': 'review',
         'done': 'done'
     };
-    const firebaseId = firebaseColumnMapping[clientColumnId];
-    if (!firebaseId) {
-        console.error(`Unknown client column ID for Firebase mapping: ${clientColumnId}`);
-    }
-    return firebaseId;
+    return firebaseColumnMapping[clientColumnId];
 }
 
 /**
@@ -170,9 +170,9 @@ function mapClientToFirebaseColumnId(clientColumnId) {
  * @param {string} firebaseColumnId - Die neue Spalten-ID im Firebase-Format.
  */
 function updateLocalTaskColumn(taskId, firebaseColumnId) {
-    const oldColumnId = tasksData[taskId].columnID;
-    tasksData[taskId].columnID = firebaseColumnId;
-    console.log(`Local data for task ${taskId} updated from ${oldColumnId} to ${firebaseColumnId}.`);
+    if (tasksData[taskId]) {
+        tasksData[taskId].columnID = firebaseColumnId;
+    }
 }
 
 /**
@@ -181,8 +181,7 @@ function updateLocalTaskColumn(taskId, firebaseColumnId) {
  * @param {string} firebaseColumnId - Die neue Spalten-ID im Firebase-Format.
  */
 async function triggerFirebaseUpdate(taskId, firebaseColumnId) {
-    console.log(`INFO: Database upload for task ${taskId} with new column ${firebaseColumnId} is currently commented out.`);
-   
+    // Firebase-Update aktuell auskommentiert oder nicht implementiert
 }
 
 /**
@@ -191,11 +190,8 @@ async function triggerFirebaseUpdate(taskId, firebaseColumnId) {
  * @param {string} newColumnId - Die neue Spalten-ID im Client-Format.
  */
 export async function updateTaskColumnData(taskId, newColumnId) {
-    console.log(`Attempting to update task ${taskId} to column ${newColumnId} in LOCAL data.`);
-    if (!tasksData[taskId]) {
-        console.warn(`Task with ID ${taskId} not found in local data structure.`);
-        return;
-    }
+    if (!tasksData[taskId]) return;
+
     const firebaseColumnId = mapClientToFirebaseColumnId(newColumnId);
     if (!firebaseColumnId) return;
 
@@ -211,8 +207,6 @@ async function loadAndRenderBoard() {
     const firebaseBoardData = await loadFirebaseData();
     if (firebaseBoardData) {
         renderTasksByColumn(firebaseBoardData);
-    } else {
-        console.error("Board could not be loaded as no Firebase data is available.");
     }
 }
 
