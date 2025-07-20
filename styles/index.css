@@ -20,10 +20,8 @@ body {
   align-items: center;
 }
 
-.d-none {
-  display: none;
-}
-
+/* animation */
+/* für Dauerposition Logo während der animation */
 .invisible {
   visibility: hidden;
 }
@@ -42,8 +40,6 @@ body {
 .floating-logo {
   position: absolute;
   height: 200px;
-  /* border: 1px solid red; */
-
   top: 50%;
   left: 50%; /* die beiden positionieren das linke obere Eck in der Mitte*/
   transform: translate(-50%, -50%) scale(1); /* das verschiebt das Logo in die wirkliche Mitte */
@@ -74,44 +70,42 @@ body {
 }
 
 
-.d-none {
-  display: none;
-}
-
-
+/* page layout */
 .index-title {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  img {
+    width: 100px;
+    height: 122px;
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
 }
 
-.index-title img {
-  width: 100px;
-  height: 122px;
-}
+.sign-up {
+  > p {
+    font-size: 20px;
+    letter-spacing: 0.7px;
+  }
 
-.index-title > div {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-
-.sign-up > p {
-  font-size: 20px;
-  letter-spacing: 0.7px;
-}
-
-.sign-up button {
-  border: none;
-  background-color: var(--dark);
-  color: var(--white);
-  font-weight: 700;
-  font-size: 16px;
-  padding: 15px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 80ms ease-in-out;
+  > button {
+    border: none;
+    background-color: var(--dark);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 16px;
+    padding: 15px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 80ms ease-in-out;
+  }
 }
 
 .dialogue-frame {
@@ -121,7 +115,6 @@ body {
   background-color: var(--white);
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
   align-items: center;
   border-radius: 30px;
   padding: 48px 115px;
@@ -132,25 +125,26 @@ body {
     height: 630px;
     padding: 48px 88px;
   }
+
+  .blue-arrow {
+    position: absolute;
+    top: 68px;
+    left: 52px;
+  }
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 61px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
 }
 
-.blue-arrow {
-  position: absolute;
-  top: 68px;
-  left: 52px;
-}
-
-.title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-h1 {
-  font-size: 61px;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
 
 .login-inputs {
   display: flex;
@@ -163,7 +157,8 @@ h1 {
   height: 48px;
   border-radius: 10px;
   border: 1px solid var(--borderGrey);
-  padding: 12px 21px;
+  /* padding: 12px 21px; */
+  padding: 0 21px;
   display: flex;
   align-items: center;
   margin-bottom: 32px;
@@ -176,27 +171,25 @@ h1 {
   &:has(input:focus) {
     border: 1px solid var(--lightBlue);
   }
-}
 
-.input-frame > input {
-  /* color: var(--borderGrey); */
-  color: var(--black);
-  font-size: 20px;
-  display: flex;
-  flex: 1;
-  border: none;
-  cursor: pointer;
-}
+  > input {
+    color: var(--black);
+    font-size: 20px;
+    display: flex;
+    flex: 1;
+    border: none;
+    cursor: pointer;
 
-/* Firefox et al.; W3Schools */
-input::placeholder {
-  color: var(--borderGrey);
-  opacity: 1;
-}
+    &::placeholder {
+      color: var(--borderGrey);
+      opacity: 1;
+    }
 
-input:focus { 
-  outline: none;
-  background-color: var(--white);
+    &:focus { 
+      outline: none;
+      background-color: var(--white);
+    }
+  }
 }
 
 .login-btns {
@@ -204,35 +197,35 @@ input:focus {
   justify-content: center;
   column-gap: 32px;
   margin-top: 24px;
-}
 
-.login-btns > .btn:first-of-type,
-.login-btns > .signup-now {
-  border: none;
-  background-color: var(--dark);
-  color: var(--white);
-  font-weight: 700;
-  font-size: 21px;
-  padding: 11px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 80ms ease-in-out;
-}
+  > .btn:first-of-type,
+  > .signup-now {
+    border: none;
+    background-color: var(--dark);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 21px;
+    padding: 11px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 80ms ease-in-out;
+  }
 
-.login-btns > .signup-now {
-  padding: 15px 24px;
-}
+  > .signup-now {
+    padding: 15px 24px;
+  }
 
-.login-btns > .btn:last-of-type {
-  border: 1px solid var(--dark);
-  background-color: var(--white);
-  color: var(--dark);
-  font-weight: 700;
-  font-size: 21px;
-  padding: 11px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 80ms ease-in-out;
+  > .btn:last-of-type {
+    border: 1px solid var(--dark);
+    background-color: var(--white);
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 21px;
+    padding: 11px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 80ms ease-in-out;
+  }
 }
 
 .sign-up button:hover,
@@ -279,21 +272,22 @@ input:focus {
   justify-content: space-between;
   align-items: center;
   width: 230px;
-}
 
-.legal-part > a {
-  padding: 8px 0;
-  text-decoration: none;
-  color: var(--sidebarNoticeGrey);
-  letter-spacing: 0.65px;
+  > a {
+    padding: 8px 0;
+    text-decoration: none;
+    color: var(--sidebarNoticeGrey);
+    letter-spacing: 0.65px;
 
-  &:hover {
-    color: var(--lightBlue);
-    font-weight: 700;
-    letter-spacing: 0.5px;
+    &:hover {
+      color: var(--lightBlue);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
   }
 }
 
+/* inputfield overlays (Password) */
 .overlay-anchor {
   position: relative;
 }
@@ -309,4 +303,15 @@ input:focus {
 
 .password-frame.active {
   border: 1px solid var(--redBorder);
+}
+
+.eye {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 3px;
+}
+
+.d-none {
+  display: none;
 }
