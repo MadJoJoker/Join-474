@@ -1,11 +1,10 @@
 /* BASCIC PAGE LAYOUT */
-.app-container {
-  /* display: flex; */
+.Xapp-container {
   height: 100vh;
   font-family: 'Inter', sans-serif;
 }
 
-.sidebar-container {
+.Xsidebar-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -20,7 +19,7 @@
   display: flex;
   flex-direction: column;
 
-  header {
+  Xheader {
     position: sticky;
     top: 0;
     height: 96px;
@@ -32,7 +31,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .container{
+  .Xcontainer{
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -323,7 +322,7 @@
   }
 }
 
-@media (width < 1000px) {
+/* @media (width < 1000px) {
   .app-container {
     display: flex;
     flex-direction: column-reverse;
@@ -346,4 +345,4 @@
   display: flex;
   flex-direction: column;
   }
-}
+} */
