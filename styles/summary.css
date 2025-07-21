@@ -49,7 +49,7 @@
   height: 700px;
   display: flex;
   flex-direction: column;
-  row-gap: 48px;
+  row-gap: 48px!important;
 }
 
 .smry-title {
