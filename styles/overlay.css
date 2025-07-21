@@ -1,3 +1,84 @@
+/* Task Detail Overlay Eindeutige Klassen */
+.task-detail-content {
+  padding: 0 8px;
+}
+.task-detail-titleBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+.task-detail-titleText {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.task-detail-description {
+  font-size: 17px;
+  color: var(--grey);
+  margin-bottom: 12px;
+}
+.task-detail-field {
+  margin-bottom: 18px;
+  font-size: 18px;
+}
+.task-detail-priority {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.task-detail-priority-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+}
+.task-detail-priority-display.low {
+  background: #e7f5e6;
+  color: #388e3c;
+}
+.task-detail-priority-display.medium {
+  background: #fffbe6;
+  color: #fbc02d;
+}
+.task-detail-priority-display.urgent {
+  background: #ffeaea;
+  color: #d32f2f;
+}
+.task-detail-assigned {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+.task-detail-assigned-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.task-detail-cardMenu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 18px;
+}
+.task-detail-cardMenu button {
+  background: var(--lightGrey);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.task-detail-cardMenu button:hover {
+  background: var(--grey);
+  color: var(--white);
+}
 #overlay-task-detail {
   position: fixed;
   top: 0;
