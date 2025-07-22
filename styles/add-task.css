@@ -302,8 +302,7 @@ html {
 .contact-input {
   height: 100%;
   width: 100%;
-  padding: 0 21px;
-  border: 1px solid var(--borderGrey);
+  border: none;
   border-radius: 10px;
   font-size: 20px;
 
@@ -368,12 +367,13 @@ html {
   }
 
   &.open-assigned-to {
-    margin-top: 15px;
+    /* margin-top: 15px; */
     height: 148px;
     margin-bottom: 19px;
 
     #assigned-to-options-container {
       opacity: 1;
+      padding-top: 13px;
     }
   }
 }
@@ -409,7 +409,7 @@ html {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
   border-radius: 0 0 10px 10px;
   width: 100%;
-  max-height: 168px;
+  max-height: 181px;
   overflow: auto;
 
   &::-webkit-scrollbar {

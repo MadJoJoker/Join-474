@@ -153,9 +153,10 @@ function renderAssignedToSection() {
                 id="dropdown-assigned-to"
                 data-event-handle="true"
             >
-                <div class="selected-option" id="selected-assigned-to">
-                    Select contacts to assign
-                </div>
+                
+                <input name="select-contacts" type="text" id="select-contacts" class="contact-input"
+                      placeholder="Select contacts to assign" />
+                      
                 <div
                     class="dropdown-icon-container"
                     id="dropdown-icon-container-one"
