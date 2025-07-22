@@ -15,7 +15,6 @@ function renderTitleInput() {
                 type="text"
                 id="title"
                 placeholder="Enter a title"
-                required
                 data-event-handle="true"
             />
         </div>
