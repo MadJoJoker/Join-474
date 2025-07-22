@@ -128,7 +128,6 @@
 
 .description {
   font-size: 17px;
-  color: var(--grey);
   margin-bottom: 12px;
 }
 
@@ -144,24 +143,10 @@
   gap: 8px;
   padding: 4px 12px;
   border-radius: 8px;
-  font-weight: bold;
   font-size: 16px;
-}
-.priority-display.low {
-  background: #e7f5e6;
-  color: #388e3c;
-}
-.priority-display.medium {
-  background: #fffbe6;
-  color: #fbc02d;
-}
-.priority-display.urgent {
-  background: #ffeaea;
-  color: #d32f2f;
 }
 
 .assigned {
-  font-weight: bold;
   margin-bottom: 6px;
 }
 .assigned-list {
@@ -177,7 +162,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
   font-size: 15px;
   color: #fff;
   background: var(--grey);
@@ -190,7 +174,7 @@
   margin-top: 18px;
 }
 .cardMenu button {
-  background: var(--lightGrey);
+  background: var(--white);
   border: none;
   border-radius: 6px;
   padding: 8px 16px;
@@ -275,8 +259,8 @@
   padding: 0;
   margin: 0;
   display: block;
-  min-height: 100%;
-  min-width: 80%;
+  min-height: 535px;
+  max-width: 100%;
   border-radius: 30px;
   background-color: var(--white);
 }
@@ -308,6 +292,38 @@
 
 .open-assigned-to {
   display: block;
+}
+.content-overlay-task {
+  padding: 0;
+  margin: 0;
+  display: block;
+  min-height: 100%;
+  min-width: 100%;
+  border-radius: 30px;
+  background-color: var(--white);
+}
+
+.modal-content-task{
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 900px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateX(100vw);
+  opacity: 0;
+  min-height: 80%;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.4s ease-in-out;
+}
+.task{
+  max-width: 525px;
+  max-height: 931px;
+  border-radius: 30px;
+  padding: 48px 40px 48px 40px;
 }
 
 @media (max-width: 992px) {
