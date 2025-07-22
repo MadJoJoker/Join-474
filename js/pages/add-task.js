@@ -20,9 +20,7 @@ import {
   clearCategory,
 } from "../events/dropdown-menu.js";
 
-import { autoFillLeftForm } from "../events/autofill-add-task.js";
-
-import { CWDATA } from "../data/task-to-firbase.js";
+import { CWDATA } from '../data/task-to-firbase.js';
 
 let picker = null;
 
@@ -246,8 +244,6 @@ export async function initAddTaskForm() {
     addTaskForm.addEventListener("reset", clearForm);
   }
 
-  console.log("eventlistenerStart");
-
   document
     .getElementById("title")
     ?.addEventListener("input", (event) => handleInput(event.target));
@@ -263,13 +259,6 @@ export async function initAddTaskForm() {
   document
     .querySelector(".resize-handle")
     ?.addEventListener("mousedown", startResize);
-  console.log("eventlistenerWICHTIG");
-
-  document.getElementById("title")?.addEventListener("focus", autoFillLeftForm, { once: true });
-  document.getElementById("task-description")?.addEventListener("focus", autoFillLeftForm, { once: true });
-  document.getElementById("datepicker")?.addEventListener("focus", autoFillLeftForm, { once: true });
-  document.getElementById("subtask-input")?.addEventListener("focus", autofillRightForm, { once: true });
-  console.log("eventlistenerEnde");
 
   const subtaskInput = document.getElementById("subtask-input");
   const addSubtaskBtn = document.getElementById("add-subtask-btn");
