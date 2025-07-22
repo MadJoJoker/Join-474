@@ -88,16 +88,27 @@ function renderContactAvatar(contact) {
 }
 
 /**
+/**
  * Gibt das Icon und den Text für eine bestimmte Priorität zurück.
  * @param {string} prio - Die Priorität der Task ('low', 'medium', 'urgent').
  * @returns {{icon: string, prioText: string}} Ein Objekt mit dem Pfad zum Icon und dem Prioritätstext.
  */
 function getPriorityIconAndText(prio) {
-    if (prio === 'low') return { icon: `../assets/icons/property/low.svg`, prioText: 'Niedrig' };
-    if (prio === 'medium') return { icon: `../assets/icons/property/medium.svg`, prioText: 'Mittel' };
-    if (prio === 'urgent') return { icon: `../assets/icons/property/urgent.svg`, prioText: 'Dringend' };
-    console.warn('Unbekannte Priorität gefunden:', prio);
-    return { icon: `../assets/icons/property/default.svg`, prioText: 'Unbekannt' };
+    // Sicherstellen, dass die Priorität in Kleinbuchstaben ist, um Vergleiche zu vereinfachen
+    const lowerCasePrio = prio ? prio.toLowerCase() : '';
+
+    switch (lowerCasePrio) {
+        case 'low':
+            return { icon: `../assets/icons/property/low.svg`, prioText: 'Low' };
+        case 'medium':
+            return { icon: `../assets/icons/property/medium.svg`, prioText: 'Medium' };
+        case 'urgent':
+            return { icon: `../assets/icons/property/urgent.svg`, prioText: 'Urgent' };
+        default:
+            console.warn('Unbekannte Priorität gefunden:', prio);
+            // Optional: Ein Standard-Icon und Text für unbekannte Prioritäten
+            return { icon: `../assets/icons/property/default.svg`, prioText: 'Unbekannt' };
+    }
 }
 
 /**

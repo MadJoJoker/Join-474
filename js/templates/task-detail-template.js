@@ -25,29 +25,34 @@ export function getTaskOverlay(task, taskId, contacts) {
             </div>
             <div class="taskCardField">
     <p>Due date:</p>
-    <p>${task.deadline ? (() => {
-        const parts = task.deadline.split('.'); // ['21', '07', '2025']
+    <p>${
+      task.deadline
+        ? (() => {
+            const parts = task.deadline.split("."); // ['21', '07', '2025']
 
-        if (parts.length === 3) {
-            const isoFormattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // "2025-07-21"
+            if (parts.length === 3) {
+              const isoFormattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // "2025-07-21"
 
-            const dateObj = new Date(isoFormattedDate);
+              const dateObj = new Date(isoFormattedDate);
 
-            if (!isNaN(dateObj.getTime())) {
-
-                return dateObj.toLocaleDateString('de-DE', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                }).replace(/\./g, '/');
+              if (!isNaN(dateObj.getTime())) {
+                return dateObj
+                  .toLocaleDateString("de-DE", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  })
+                  .replace(/\./g, "/");
+              }
             }
-        }
-        return "";
-    })() : ""}</p>
+            return "";
+          })()
+        : ""
+    }</p>
 </div>
             <div class="taskCardField priority">
                 <p>Priority:</p>
-                <div class="priority-display ${
+                <div class= ${
                   task.priority?.toLowerCase() ?? ""
                 }">
                     <p>${
