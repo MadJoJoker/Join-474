@@ -231,6 +231,7 @@ export async function initAddTaskForm() {
   picker = flatpickr("#datepicker", {
     dateFormat: "d.m.Y",
     allowInput: true,
+    positionElement: document.getElementById("datepicker")
   });
 
   flatpickr("#calendar-icon", {});
@@ -250,9 +251,10 @@ export async function initAddTaskForm() {
     .getElementById("datepicker")
     ?.addEventListener("input", (event) => formatDate(event.target));
   document.getElementById("datepicker")?.addEventListener("focus", openPicker);
-  document
-    .getElementById("calendar-icon")
-    ?.addEventListener("click", openPicker);
+
+  document.getElementById("calendar-icon")?.addEventListener("click", () => {
+    document.getElementById("datepicker").focus();
+  });
 
   document
     .querySelector(".resize-handle")
