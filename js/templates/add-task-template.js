@@ -156,7 +156,7 @@ function renderAssignedToSection() {
                 
                 <input name="select-contacts" type="text" id="select-contacts" class="contact-input"
                       placeholder="Select contacts to assign" />
-                      
+
                 <div
                     class="dropdown-icon-container"
                     id="dropdown-icon-container-one"
@@ -175,12 +175,12 @@ function renderAssignedToSection() {
                     id="assigned-to-options-container"
                 ></div>
                 <div class="spacer d-none"></div>
-                <div
-                    id="assigned-to-area"
-                    class="initials-container"
-                    style=" border:none"
-                ></div>
             </div>
+            <div
+                    id="assigned-to-area"
+                    class="initials-container max-width-150"
+                    style=" border:none"
+            ></div>
         </div>
     `;
 }

@@ -128,7 +128,7 @@ export function renderAssignedToContacts(i, name, initials, avatarColor) {
     const isSelected = isContactSelected(name, initials, avatarColor);
     return `
         <div class="contact-option ${isSelected ? 'assigned' : ''}" data-name="${name}" data-initials="${initials}" data-avatar-color="${avatarColor}">
-            <div class="d-flex align-items gap-8">
+            <div class="contact-checkbox">
                 <div class="initials-container">
                 <div class="assigned-initials-circle"style="background-color: var(${avatarColor});">${initials}</div>
                 <div>${name}</div>

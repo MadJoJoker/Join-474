@@ -440,7 +440,6 @@ html {
   /* Wichtig: Icons bleiben in einer Zeile */
 
   /* Dimensionen und Rand */
-  height: 42px;
 
   /* Scrollbarkeits-Einstellungen */
   overflow-x: auto;
@@ -472,8 +471,8 @@ html {
     /* Padding und Border werden in Width/Height einberechnet */
 
     /* Dimensionen und Styling der Kreise */
-    width: 35px;
-    height: 35px;
+    width: 42px;
+    height: 42px;
     color: var(--white);
     border: 2px solid var(--white);
     border-radius: 50%;
@@ -487,6 +486,12 @@ html {
       margin-right: 0;
     }
   }
+}
+
+.max-width-150 {
+  max-width: 150px;
+  overflow: auto;
+  cursor: pointer;
 }
 
 .add-on {
@@ -827,4 +832,11 @@ html {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.contact-checkbox{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
