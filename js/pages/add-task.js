@@ -19,6 +19,7 @@ import {
   initDropdowns,
   clearCategory,
 } from "../events/dropdown-menu.js";
+import { autoFillLeftForm } from "../events/autofill-add-task.js";
 
 import { CWDATA } from '../data/task-to-firbase.js';
 
@@ -259,6 +260,10 @@ export async function initAddTaskForm() {
   document
     .querySelector(".resize-handle")
     ?.addEventListener("mousedown", startResize);
+
+      document.getElementById("title")?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document.getElementById("task-description")?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document.getElementById("datepicker")?.addEventListener("focus", autoFillLeftForm, { once: true });
 
   const subtaskInput = document.getElementById("subtask-input");
   const addSubtaskBtn = document.getElementById("add-subtask-btn");
