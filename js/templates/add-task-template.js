@@ -62,7 +62,6 @@ function renderDueDateInput() {
                     type="text"
                     placeholder="dd/mm/yyyy"
                     class="input-field"
-                    required
                     data-event-handle="true"
                 />
                 <span id="calendar-icon" class="calendar-icon" data-event-handle="true">
@@ -193,7 +192,7 @@ function renderCategorySection() {
     return `
         <div class="label-container">
             <label for="category" class="required font-size-20">Category</label>
-            <input type="hidden" id="hidden-category-input" required />
+            <input type="hidden" id="hidden-category-input" />
             <div
                 class="select-wrapper input-field"
                 id="dropdown-category"

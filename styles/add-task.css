@@ -226,6 +226,8 @@ html {
   position: relative;
   width: 100%;
   z-index: 1000;
+  display: flex;
+  align-items: center;
 }
 
 .styled-select {
@@ -356,8 +358,9 @@ html {
   transition: height 0.3s ease;
 
   &.open {
-    height: 96px;
+    height: 136px;
     z-index: 2;
+    /* margin-bottom: 19px; */
 
     #category-options-container {
       opacity: 1;
@@ -376,6 +379,7 @@ html {
 }
 
 #category-options-container {
+  margin-top: -39px;
   font-size: 20px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -386,7 +390,7 @@ html {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
   border-radius: 0 0 10px 10px;
   width: 100%;
-  height: 116px;
+  height: 178px;
 }
 
 /* #category-options-container.open{
@@ -824,16 +828,3 @@ html {
   align-items: center;
   gap: 16px;
 }
-
-/* .flatpickr-calendar {
-  position: absolute !important;
-  top: 100% !important;
-  left: 0 !important;
-  margin-top: 5px !important;
-  width: 100% !important;
-}
-
-.input-inline {
-  position: relative;
-  width: 100%;
-} */
