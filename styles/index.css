@@ -299,6 +299,10 @@ body {
   color: var(--peachyPink);
   letter-spacing: 0.25px;
   font-size: 14px;
+
+  &.small-gap {
+    top: 50px;
+  }
 }
 
 .password-frame.active {

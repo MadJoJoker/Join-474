@@ -1,77 +1,74 @@
-let fetchedData = null;
+// let fetchedData = null;
+let currentDataContainer;
+let currentCategory = null; // null, if structure of currentDataContainer is flat
 
-async function initIndex() {
-  const data = await getFirebaseData("contacts");
-  if (!data) {
-    console.error('No data received');
-    return;
-  }
-  fetchedData = data;
-  console.log("recieved data: ", fetchedData);
-}
-
-async function getFirebaseData(path = '') {
-  const URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/' + path + '.json';
-  try {
-    const RESPONSE_FIREBASE = await fetch(URL_FIREBASE_JOIN);
-    if (!RESPONSE_FIREBASE.ok) {
-      console.error('Network response was not ok:', RESPONSE_FIREBASE.statusText);
-      return null;
-    }
-    const DATA_FIREBASE_JOIN = await RESPONSE_FIREBASE.json();
-    return DATA_FIREBASE_JOIN;
-  } catch (error) {
-    console.error('There was a problem with your fetch operation:', error);
-    return null;
-  }
-}
-
-// **********************************************************
-// db: zweistellige Nummern in "user-01", "task-03"
-// Was ist bei "contacts" in etwa "fetchedData"?
-// Umgang mit der id, die übergeben werden muß (an edit, delete, save). In Dominiks Obj. ist sie eingebaut
-// lokale Daten (in fetchedData sind aktualisiert. Man könnte rendern, wenn Abgleich fertig)
-// ++POST/PUT-Funktion sollte später die Methode (POST, PUT) als Param. erhalten (edit-function)
-// DELETE-function schreiben
+// sendNewObject ist zu lang > modularisieren
 
 const objectFields = [
-  {id: "newContactName", key: "name"},
-  {id: "newContactEmail", key: "email"}, // Id im html ergänzt
-  {id: "newContactPhone", key: "phone"} // Id im html ergänzt
-];
+  [
+    {id: "new-name", key: "displayName"},
+    {id: "new-email", key: "email"}
+  ],
+  [
+    {id: "newContactName", key: "name"},
+    {id: "newContactEmail", key: "email"},
+    {id: "newContactPhone", key: "phone"}
+  ]
+]
 
-async function startObjectBuilding() {
-  const pushObject = createNewObject(objectFields, "contacts");
-  console.log("ready for upload: ", pushObject);
+// eigentlich ist das nur die "user"-main function (ohne "demoUser", mit nur "user", könnte man users und contacts zusammenfassen)
+async function objectBuilding(requestedCategory = "users") {
+  setDataContainer(requestedCategory);
+  let objectFields = chooseFieldsMap(requestedCategory);
+  const [pushObjectId, entryData] = createNewObject(objectFields, requestedCategory, "demoUser");
+  // console.log("ready for upload: ", pushObjectId, entryData);
+  await sendNewObject(pushObjectId, entryData, requestedCategory);
+  confirmSignup(); // da bräuchte es auch eine Weiche: users = confirmSignup, contacts = NN (animation)
 
-  // confirmSignup(); HEISST BEI CONTACTS ANDERS.
+  // resetInputs(fieldMap);
+}
 
-  // resetInputs(fieldMap); // wohl unnötig
-  // await pushObjectToDatabase("contacts", pushObject); // scharf stellen, wenn Du hochladen willst.
-};
+// determine structure of data-source: nested (= complete fetch) or flat (= only "users"-fetch)
+function setDataContainer(requestedCategory) {
+  if (!fetchedData || typeof fetchedData !== 'object') {
+    console.error('no valid fetchedData; processing not possible.');
+    currentDataContainer = {};
+    currentCategory = null;
+    return;
+  }
+  if (fetchedData[requestedCategory]) {
+    currentDataContainer = fetchedData[requestedCategory];
+    currentCategory = requestedCategory;
+  } else {
+    currentDataContainer = fetchedData;
+    currentCategory = null;
+  }
+}
 
-function createNewObject(fieldMap, fallbackCategoryString) {
-  const userData = fillObjectFromInputfields(fieldMap);
-  specificEntries(userData);
-  const pushObjectId = getNextIdNumber(fallbackCategoryString);
+function chooseFieldsMap(requestedCategory) {
+  if(requestedCategory == "users") 
+    return objectFields[0];
+  else if (requestedCategory == "contacts")
+    return objectFields[1];
+}
+
+function createNewObject(fieldMap, requestedCategory, fallbackCategoryString) {
+  // console.log("alle da? ", fieldMap, requestedCategory, fallbackCategoryString);
+  const entryData = fillObjectFromInputfields(fieldMap);
+  specificEntries(requestedCategory, entryData);
+  // console.log("composed obj.: ", entryData);
+  const pushObjectId = setNextId(fallbackCategoryString);
   console.log("new ID", pushObjectId);
-  const completeObject = {
-    [pushObjectId]: userData
-  };
-  console.log("the push-object from input-fields:" , completeObject);
-  Object.assign(fetchedData, completeObject); // lokales update fürs Rendern
-  // console.log(fetchedData);
-  return completeObject; 
+  return [pushObjectId, entryData];
 }
 
 function fillObjectFromInputfields(fieldMap) {
   const obj = {};
   loopOverInputs(fieldMap, obj);
-  console.log("new object - only the key is missing:", obj);
   return obj;
 }
 
-// wird auch bei edit-function verwendet
+// die wird auch bei edit-function verwendet
 function loopOverInputs(fieldMap, obj) {
   fieldMap.forEach(({ id, key }) => {
     const element = document.getElementById(id);
@@ -81,42 +78,19 @@ function loopOverInputs(fieldMap, obj) {
   return obj;
 }
 
-// die ist etwas zu lang
-function getNextIdNumber(categoryItemName) {
-  const itemKeys = Object.keys(fetchedData);
-    // fallback, nicht getestet: falls z.B. "users" noch keinen "user" enthält.
-    if(itemKeys.length == 0) {
-      console.log("you initialized a new category: ", categoryItemName);
-      return categoryItemName + "-0"
-    }
-  let lastKey = itemKeys.at(-1); // ist dasselbe wie: itemKeys[taskKeys.length -1];
-  console.log("current last ID: ", lastKey);
-  const parts = lastKey.split("-");
-  let [prefix, numberStr] = parts
-  let next = Number(numberStr) + 1;
-  let nextNumber = next.toString().padStart(2, '0');
-  const newId = `${prefix}-${nextNumber}`;
-  // console.log("next ID: ", newId);
-  return newId;
+function specificEntries(requestedCategory, obj) {
+  if(requestedCategory == "users") {
+    obj.associatedContacts = "";
+    return obj;
+  } else if (requestedCategory == "contacts") {
+    obj.initials = getInitials(obj.name);
+    obj.avatarColor = colorToObject();
+    obj.assignedTo = "";
+    return obj;
+  }
 }
 
-// braucht es wohl nicht, das macht "submit" (bzw. der Seitenwechsel)
-function resetInputs(fieldMap) {
-  fieldMap.forEach(({id}) => {
-    const element = document.getElementById(id);
-    if (element) element.value = "";
-  });
-}
-
-// SPEZIFISCHER TEIL "CONTACTS"
-function specificEntries(obj) {
-  // console.log("draft of obj: ", obj);
-  obj.initials = getInitials(obj.displayName || obj.name); // 0: users, 1: contacts
-  obj.avatarColor = colorToObject();
-  obj.assignedTo = "";
-  return obj;
-}
-
+// speficic functions for "contacts"
 function getInitials(fullName) {
   const names = (fullName || "").trim().split(" ");
   const first = names[0]?.[0]?.toUpperCase() || "";
@@ -124,66 +98,97 @@ function getInitials(fullName) {
   return first + last;
 }
 
-// es fehlt noch eine Funktion, die eine Zufallsfarbe wählt und z.B. "var(--dark)" zurückgibt
- function colorToObject() {
-  // da müsse  stehen: "return color = deineRandomColor(FarbenArray)",
-  return color = "var(--dark)";;
- }
-// ENDE SPEZIFISCHER TEIL
+// es fehlt Funktion, die eine Zufallsfarbe wählt und z.B. "var(--dark)" zurückgibt
+function colorToObject() {
+  return color = "--dark";
+}
+// End of specific functions for "contacts"
 
+function setNextId(category) {
+  let lastKey = getLastKey(category);
+  // console.log("current last ID: ", lastKey);
+  const [prefix, numberStr] = lastKey.split("-");
+  const nextNumber = (Number(numberStr) + 1).toString().padStart(3, '0');
+  return `${prefix}-${nextNumber}`;
+}
+
+function getLastKey(category) {
+  if(!currentDataContainer || Object.keys(currentDataContainer).length == 0) {
+    console.log("you initialized a new category: ", category);
+    return `${category}-000`
+  } else {
+    const itemKeys = Object.keys(currentDataContainer);
+    return itemKeys.at(-1); // ist dasselbe wie: itemKeys[taskKeys.length -1];
+  }
+}
+
+// function resetInputs(fieldMap) {
+//   fieldMap.forEach(({id}) => {
+//     const element = document.getElementById(id);
+//     if (element) element.value = "";
+//   });
+// }
+
+// FUNKTION MODULARISIEREN!
+async function sendNewObject(pushObjectId, entryData, requestedCategory) {
+  const localObject = {[pushObjectId] : entryData};
+  console.log("the complete object:" , localObject);
+  let path, container;
+  if(currentCategory) {         // true, if nested structure of fetchedData in "container"
+    path = `${currentCategory}/${pushObjectId}`;
+    fetchedData[currentCategory] = fetchedData[currentCategory] || {};  // for localObject, if it's the first instance to assign (s. below)
+    container = fetchedData[currentCategory];
+  } else {                      // apply, if flat structure of fetchedData in "container"
+    path = pushObjectId;
+    fetchedData = fetchedData || {}; // for localObject, it it's the first instance to assign (s. below)
+    container = fetchedData
+  }
+  // lokales update fürs schnelle Rendern (= kein neuer fetch nötig)
+  currentDataContainer = currentDataContainer || {};
+  Object.assign(container, localObject);
+  console.log("updated data collection for rendering: ", fetchedData);
+  if(localObject[pushObjectId].displayName == "Sofia Müller") return;
+  else {
+    let firebasePath = `${requestedCategory}/${pushObjectId}`
+  console.log("Firebase-update path: ", firebasePath, entryData);
+  // await pushObjectToDatabase(firebasPath, entryData);
+  }
+}
+
+// "path" muß so aussehen: "users/user-014" (Kategory/Key des neuen Eintrags)
 async function pushObjectToDatabase(path, data={}) {
   let URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/';
-  await fetch(URL_FIREBASE_JOIN + path + '.json', {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
+  const res = await fetch(URL_FIREBASE_JOIN + path + '.json', {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(data)
   });
-  if (!res.ok) throw new Error(`POST failed: ${res.status}`);
+  if (!res.ok) throw new Error(`PUT failed: ${res.status}`);
   const result = await res.json();
-  console.log("POST result:", result);
+  console.log("PUT result:", result);
   return result; 
 }
 
-// EDIT FUNCTION (CONTACTS)
 
+// EDIT FUNCTION (CONTACTS); NICHT ECHT GETESTET
 const editFields = [
   {id: "editNameInput", key: "name"},
   {id: "editEmailInput", key: "email"},
   {id: "editPhoneInput", key: "phone"}
 ];
 
-// Die passt, auch mit loopOver
 async function editObjectFromInputfields(fieldMap, objectKey) {
   let entry = fetchedData[objectKey];
   console.log("original entry: ", entry);
-
-  // fieldMap.forEach(({id, key}) => {
-  //   const element = document.getElementById(id);
-  //   const value = element.value.trim();
-  //   entry[key] = value || "";
-  // });
   loopOverInputs(fieldMap, entry);
-
-  entry.initials = getInitials(entry.name); // speziell bei "contacts": Initialen könnten sich ändern
-  console.log("edited object", entry); // auf dieser Basis könnte man den veränderten Kontakt (oder alles) neu rendern.
+  entry.initials = getInitials(entry.name); // "contacts": Initialen könnten sich ändern
+  console.log("edited object", entry); // da müsste der Rücktransfer in das lokale Datenreservoir stattfinden (s. oben)
   console.log("after editing: ", fetchedData);
 
-  // da fehlt noch etwas, das den Put-Pfad baut ("Kategorie/objectKey")
-  // await putObjectToDatabase("contacts/contact-2", entry);
+  let editedContactPath = `contacts/${objectKey}`; // NICHT GETESTET
+  // await pushObjectToDatabase(editedContactPath, entry);
 }
 
-// Läßt sich POST und PUT-Funktion kombinieren?
-async function putObjectToDatabase(path, data={}) {
-  let URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/';
-  await fetch(URL_FIREBASE_JOIN + path + '.json', {
-    method: "PUT",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) throw new Error(`PUT failed: ${res.status}`);
-  const result = await res.json();
-  console.log("PUT result:", result);
-  return result;
-}
-
-// DELETE-Function fehlt auch noch.
+// delete?
