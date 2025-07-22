@@ -13,7 +13,6 @@ import { createContactDetailsHTML } from '../templates/contacts-templates.js';
  */
 export function initContactEventListeners() {
     setupNewContactOverlay();
-    setupNewContactForm();
     setupContactDeletion();
     setupEditContactForm();
     setupEditOverlayEvents();
@@ -36,6 +35,7 @@ function setupOpenNewContactOverlayButton() {
     document.querySelector('.add-new-contact-button').addEventListener('click', () => {
         clearNewContactFormInputs();
         openOverlay('contactOverlay');
+        setupCreateContactButton(); // << wichtig!
     });
 }
 
@@ -68,6 +68,8 @@ function setupOverlayClickToClose() {
 function clearNewContactFormInputs() {
     ['newContactName', 'newContactEmail', 'newContactPhone'].forEach(inputId => {
         document.getElementById(inputId).value = '';
+        const errorDiv = document.getElementById(inputId.replace('newContact', '').toLowerCase() + 'Error');
+        if (errorDiv) errorDiv.textContent = '';
     });
 }
 
@@ -89,41 +91,85 @@ function setupDemoContactAutofill() {
 }
 
 /**
- * Adds submit listener for the new contact form.
+ * Sets up the click handler for the "Create contact" button.
  */
-function setupNewContactForm() {
-    const form = document.getElementById('newContactForm');
-    form.addEventListener('submit', handleNewContactSubmit);
+function setupCreateContactButton() {
+    const createBtn = document.getElementById('createContactBtn');
+    if (!createBtn) return console.warn('createContactBtn not found');
+    createBtn.removeEventListener('click', handleNewContactSubmit); // prevent duplicates
+    createBtn.addEventListener('click', handleNewContactSubmit);
 }
 
 /**
- * Handles the submit event of the new contact form.
- * @param {SubmitEvent} event - The form submission event
+ * Handles creating a new contact from input fields.
+ * Validates input, displays errors, creates contact if valid.
  */
-async function handleNewContactSubmit(event) {
-    event.preventDefault();
-    const form = event.target;
-    if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-    }
-    const newContact = collectNewContactData();
-    await createContact(newContact);
+async function handleNewContactSubmit() {
+    // 1. Input-Werte aus den Feldern holen
+    const { name, email, phone } = getNewContactInputValues();
+
+    // 2. Eingaben validieren
+    const errors = validateCustomContactForm(name, email, phone);
+
+    // 3. Validierungsfehler im UI anzeigen
+    showNewContactErrors(errors);
+
+    // 4. Abbrechen, wenn Fehler vorhanden sind
+    if (hasErrors(errors)) return;
+
+    // 5. Neuen Kontakt speichern und UI aktualisieren
+    await createContact({ name, email, phone });
     closeOverlay('contactOverlay', true);
     renderContacts();
     showContactCreatedMessage();
 }
 
 /**
- * Gathers trimmed values from the new contact input fields.
+ * Reads and trims input values from the new contact form fields.
  * @returns {{ name: string, email: string, phone: string }}
  */
-function collectNewContactData() {
+function getNewContactInputValues() {
     return {
         name: document.getElementById('newContactName').value.trim(),
         email: document.getElementById('newContactEmail').value.trim(),
-        phone: document.getElementById('newContactPhone').value.trim(),
+        phone: document.getElementById('newContactPhone').value.trim()
     };
+}
+
+/**
+ * Displays validation error messages in the corresponding UI elements.
+ * @param {Object} errors - An object with possible error messages
+ */
+function showNewContactErrors(errors) {
+    document.getElementById('nameError').textContent = errors.name;
+    document.getElementById('emailError').textContent = errors.email;
+    document.getElementById('phoneError').textContent = errors.phone;
+}
+
+/**
+ * Checks if any error messages are present.
+ * @param {Object} errors - An object with error messages
+ * @returns {boolean} - True if there are any errors, otherwise false
+ */
+function hasErrors(errors) {
+    return errors.name || errors.email || errors.phone;
+}
+
+/**
+ * Custom form validation logic.
+ */
+function validateCustomContactForm(name, email, phone) {
+    const errors = { name: '', email: '', phone: '' };
+    if (!name || !/^[A-Za-zÄÖÜäöüß\-]{2,}\s+[A-Za-zÄÖÜäöüß\-]{2,}$/.test(name)) {
+        errors.name = 'Please enter first and last name separated by a space, no numbers.';
+    }
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        errors.email = 'Please enter a valid email address.';
+    }
+    if (!phone || !/^\+?[0-9\s\/\-]{6,}$/.test(phone)) {
+        errors.phone = 'Please enter a valid phone number (digits only, no letters).';
+    }
+    return errors;
 }
 
 /**
@@ -148,25 +194,27 @@ function setupContactDeletion() {
 function setupEditContactForm() {
     const saveButton = document.getElementById('saveEditBtn');
     const deleteButton = document.getElementById('deleteContactBtn');
-    if (saveButton) {
-        saveButton.addEventListener('click', handleEditContactSave);
-    }
-    if (deleteButton) {
-        deleteButton.addEventListener('click', handleEditContactDelete);
-    }
+    if (saveButton) saveButton.addEventListener('click', handleEditContactSave);
+    if (deleteButton) deleteButton.addEventListener('click', handleEditContactDelete);
 }
 
 /**
- * Handles saving changes to an existing contact.
+ * Custom validation for editing a contact.
+ */
+function validateEditContact(name, email, phone) {
+    return validateCustomContactForm(name, email, phone); // reuse same rules
+}
+
+/**
+ * Handles saving an edited contact.
+ * Validates input, updates contact, refreshes UI.
  */
 async function handleEditContactSave() {
-    const form = document.getElementById('editContactForm');
-    if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-    }
-    if (!currentlyEditingContact) return;
-    const updatedContact = collectUpdatedContactData();
+    const { name, email, phone } = getEditContactInputValues();
+    const errors = validateEditContact(name, email, phone);
+    showEditContactErrors(errors);
+    if (hasErrors(errors) || !currentlyEditingContact) return;
+    const updatedContact = buildUpdatedContact(name, email, phone);
     await updateContact(updatedContact);
     closeOverlay('editContactOverlay', true);
     await renderContacts();
@@ -176,25 +224,46 @@ async function handleEditContactSave() {
 }
 
 /**
- * Extracts updated values from edit input fields.
- * @returns {object} The updated contact object
+ * Reads and trims input values from the edit contact form fields.
+ * @returns {{ name: string, email: string, phone: string }}
  */
-function collectUpdatedContactData() {
-    const name = document.getElementById('editNameInput').value.trim();
-    const email = document.getElementById('editEmailInput').value.trim();
-    const phone = document.getElementById('editPhoneInput').value.trim();
+function getEditContactInputValues() {
+    return {
+        name: document.getElementById('editNameInput').value.trim(),
+        email: document.getElementById('editEmailInput').value.trim(),
+        phone: document.getElementById('editPhoneInput').value.trim()
+    };
+}
+
+/**
+ * Displays validation error messages in the edit contact form.
+ * @param {Object} errors - Error messages for each field
+ */
+function showEditContactErrors(errors) {
+    document.getElementById('editNameError').textContent = errors.name;
+    document.getElementById('editEmailError').textContent = errors.email;
+    document.getElementById('editPhoneError').textContent = errors.phone;
+}
+
+/**
+ * Combines edited input with the existing contact data.
+ * @param {string} name
+ * @param {string} email
+ * @param {string} phone
+ * @returns {Object} Updated contact object
+ */
+function buildUpdatedContact(name, email, phone) {
     return {
         ...currentlyEditingContact,
         name,
         email,
         phone,
-        initials: getInitials(name),
+        initials: getInitials(name)
     };
 }
 
 /**
  * Updates the contact detail card if it's currently open and visible.
- * @param {object} contact - The updated contact object
  */
 function updateDetailsCardIfVisible(contact) {
     const card = document.querySelector('.contact-details-card');
@@ -228,7 +297,6 @@ function setupEditOverlayEvents() {
 
 /**
  * Closes the overlay if the background is clicked.
- * @param {MouseEvent} event - The overlay click event
  */
 function handleOverlayClickOutside(event) {
     if (event.target === event.currentTarget) {
