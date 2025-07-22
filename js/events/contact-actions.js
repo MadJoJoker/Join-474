@@ -93,9 +93,9 @@ function handleFirebaseError(error) {
  * 15 predefined avatar colors – used for random assignment.
  */
 const avatarColors = [
-    '#ff7a00', '#ff5eb3', '#6e52ff', '#9327ff', '#00bee8',
-    '#1fd7c1', '#ff745e', '#ffa35e', '#fc71ff', '#ffc701',
-    '#0038ff', '#c3ff2b', '#ffe62b', '#ff4646', '#ffbb2b'
+    '--orange', '--hotPink', '--violet', '--lila', '--petrol',
+    '--turquoise', '--coralRed', '--peach', '--neonPink', '--goldYellow',
+    '--vividBlue', '--neonGreen', '--lightYellow', '--red', '--yellow'
 ];
 
 /**

@@ -8,6 +8,8 @@ import { createContactDetailsHTML, buildContactSectionHTML } from '../templates/
 import { openOverlay } from '../ui/contacts-overlays.js';
 import { initContactEventListeners } from '../events/contacts-event-listeners.js';
 
+import { enableMouseDragScroll } from '../events/drag-to-scroll.js';
+
 /**
  * Loads contacts from Firebase, processes them, renders list and stores them globally.
  */
@@ -130,6 +132,19 @@ window.onEditContact = function (contactId) {
   document.getElementById('editContactAvatar').style.backgroundColor = backgroundColor;
   openOverlay('editContactOverlay');
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+  const elementsToDragScroll = document.querySelectorAll('.contacts-sidebar, .scrollable-panel');
+  console.log('Activating drag scroll...');
+
+  elementsToDragScroll.forEach((element) => {
+    console.log('Applying drag-to-scroll to:', element); // <-- hier muss es hin
+    enableMouseDragScroll(element, {
+      enableHorizontalScroll: true,
+      enableVerticalScroll: true
+    });
+  });
+});
 
 // Startup
 renderContacts();
