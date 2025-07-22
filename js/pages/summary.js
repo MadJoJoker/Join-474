@@ -1,5 +1,4 @@
 // To do: 
-// getFirebase importieren und hier streichen; die sollte aber "path"-Parameter bekommen
 // Code dokumentieren
 
 let taskData;
@@ -25,32 +24,6 @@ async function initSummary() {
   fillSummary();
   setGreeting();
   displayUser();
-}
-
-// function partiallyHideSidebar() {
-//   const name = sessionStorage.getItem('headerInitials');
-//   console.log("name: ", name);
-//   if(!name) {
-//     document.getElementById('login-nav').classList.remove("d-none");
-//     document.getElementById('app-nav').classList.add("hide");
-//   }
-// }
-
-async function getFirebaseData(path = '') {
-  const URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/' + path + '.json';
-  try {
-    const RESPONSE_FIREBASE = await fetch(URL_FIREBASE_JOIN);
-    if (!RESPONSE_FIREBASE.ok) {
-      console.error('Network response was not ok:', RESPONSE_FIREBASE.statusText);
-      return null;
-    }
-    const DATA_FIREBASE_JOIN = await RESPONSE_FIREBASE.json();
-    console.log(DATA_FIREBASE_JOIN);
-    return DATA_FIREBASE_JOIN;
-  } catch (error) {
-    console.error('There was a problem with your fetch operation:', error);
-    return null;
-  }
 }
 
 function summarizeTasks() {
@@ -80,7 +53,6 @@ function deadline() {
   const parsedDates = parseDates(dateStrings);
   const deadlines = filterFutureDeadlines(parsedDates);
   summaryData["deadline"] = findUpcomingDeadline(deadlines);
-  console.log(summaryData["deadline"]);
 }
 
 function getDatesAndFilter() {
@@ -91,7 +63,6 @@ function getDatesAndFilter() {
 }
 
 function parseDates(dateStringArray) {
-  console.log("dates as strings: ", dateStringArray);
   return dateStringArray.map(dateStr => {
     const [day, month, year] = dateStr.split('.').map(Number);
     return new Date(year, month - 1, day); // weil "month" im Date-Object bei 0 beginnt (Januar = 0)
@@ -99,17 +70,15 @@ function parseDates(dateStringArray) {
 }
 
 function filterFutureDeadlines(parsedDates) {
-  console.log("strings parsed to Date-objects: ", parsedDates);
   const today = new Date();
   today.setHours(0, 0, 0, 0); // weil die anderen dates automatisch hour, minutes etc. bekommen haben: 00:00:00...
   const futureDeadlines = parsedDates.filter(date => date >= today);
-  console.log("all deadlines: ", futureDeadlines);
   return futureDeadlines;
 }
 
 function findUpcomingDeadline(futureDeadlines) {
- if(futureDeadlines.length == 0) {
-    return "No upcoming deadline"
+  if(futureDeadlines.length == 0) {
+    return "No upcoming deadline";
   } else {
     return getDeadline(futureDeadlines);
   }
@@ -133,7 +102,6 @@ function convertToDisplayString(nearest) {
     month: "long",
     day: "numeric"
   });
-  console.log("converted date: ", formatedDate);
   return formatedDate;
 }
 // END of deadline code
@@ -178,11 +146,3 @@ function removeComma() {
   commaText = commaText.replace(',', '');
   document.getElementById('day-time').innerText = commaText;
 }
-
-// Würde auch schon so reichen:
-// function displayUser() {
-//   const name = sessionStorage.getItem('currentUser');
-//   if (name) {
-//     document.getElementById('hello').innerText = name;
-//   }
-// }

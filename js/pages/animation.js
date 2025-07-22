@@ -1,9 +1,3 @@
-// Zum Testen (anstelle einer click-function):
-// setTimeout(() => {
-//   confirmAddedTask();
-// }, 500);
-
-
 // Anwendung der Animation:
 function acceptPrivacyP() {
   const text = "Please accept the Privacy Policy";
