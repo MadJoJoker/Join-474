@@ -25,8 +25,6 @@
   width: 445px;
   display: flex;
 
-
-
   &.titleBar {
     justify-content: space-between;
     align-items: center;
@@ -58,14 +56,13 @@
   > p:first-of-type,
   .subtasks {
     color: var(--dark);
-
+    /* border: 1px solid red; */
     min-width: 92px;
     letter-spacing: 0.8px;
   }
 }
 
 .taskType {
-  
   background-color: var(--userStory);
   color: var(--white);
   border-radius: 8px;
