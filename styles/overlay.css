@@ -128,7 +128,6 @@
 
 .description {
   font-size: 17px;
-  color: var(--grey);
   margin-bottom: 12px;
 }
 
@@ -241,20 +240,21 @@
     opacity 0.4s ease-in-out;
 }
 
+
 #overlay:not(.overlay-hidden) .modal-content {
   transform: translateX(0);
   opacity: 1;
 }
 
 .close-modal-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  position: fixed;
+  top: 25px;
+  right: 50px;
   background: none;
+  color: var(--dark);
   border: none;
   font-size: 30px;
   cursor: pointer;
-  color: var(--grey);
   z-index: 2001;
 }
 
@@ -268,6 +268,17 @@
   display: block;
   min-height: 100%;
   min-width: 80%;
+  border-radius: 30px;
+  background-color: var(--white);
+}
+.content-overlay-task {
+  padding: 0;
+  margin: 0;
+  display: block;
+  min-height: 100%;
+  min-width: 80%;
+  border-radius: 30px;
+  background-color: var(--white);
 }
 
 .content-overlay h1 {

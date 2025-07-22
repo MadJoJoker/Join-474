@@ -25,6 +25,7 @@
   width: 445px;
   display: flex;
 
+
   &.titleBar {
     justify-content: space-between;
     align-items: center;

@@ -186,7 +186,7 @@ export function registerTaskCardDetailOverlay(boardData, getTaskOverlay) {
                 }
                 overlayContainer.innerHTML = `
 <div id="overlay-task-detail" class="overlay-hidden">
-   <div id="modal-contentTask" class="modal-content">
+   <div id="modal-content-task" class="modal-content-task">
     <button class="close-modal-btn" type="button" data-event-handle="true">&times;</button>
     <main class="content-overlay" id="task-container"> </main>
   </div>
@@ -195,6 +195,7 @@ export function registerTaskCardDetailOverlay(boardData, getTaskOverlay) {
                 console.log('[DEBUG] overlay-task-detail Element wurde dynamisch eingefügt:', overlay);
             }
             overlay.classList.remove('overlay-hidden');
+            overlay.classList.add('overlay-task-detail');
             // Task-Details einfügen
             const container = document.getElementById('task-container');
             console.log('[DEBUG] task-container Element:', container);
