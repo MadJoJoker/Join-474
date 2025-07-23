@@ -159,7 +159,7 @@ export function toggleSelectContacts(contactElement, name, initials, avatarColor
     );
 
     if (index === -1) {
-        selectedContacts.push(contact);
+        selectedContacts.unshift(contact);
         contactElement.classList.add('assigned');
         contactElement.querySelector('.checkbox-icon').src = "../assets/icons/btn/checkbox-filled-white.svg";
         contactElement.querySelector('.checkbox-icon').classList.add('checked');
@@ -172,7 +172,7 @@ export function toggleSelectContacts(contactElement, name, initials, avatarColor
     displaySelectedContacts();
 }
 
-export function displaySelectedContacts() {
+function displaySelectedContacts() {
     const assignedToArea = document.getElementById('assigned-to-area');
     if (!assignedToArea) return;
 

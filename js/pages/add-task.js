@@ -18,6 +18,7 @@ import {
   selectedContacts,
   initDropdowns,
   clearCategory,
+  toggleAssignedToDropdown,
 } from "../events/dropdown-menu.js";
 import { autoFillLeftForm } from "../events/autofill-add-task.js";
 
@@ -258,6 +259,10 @@ export async function initAddTaskForm() {
   });
 
   document
+    .getElementById("assigned-to-area")
+    ?.addEventListener("click", toggleAssignedToArea);
+
+  document
     .querySelector(".resize-handle")
     ?.addEventListener("mousedown", startResize);
 
@@ -306,4 +311,11 @@ export async function initAddTaskForm() {
         }
       }
     });
+}
+
+export function toggleAssignedToArea() {
+  const assignedToArea = document.getElementById("assigned-to-area");
+  if (!assignedToArea) return;
+
+  assignedToArea.classList.toggle("width-100");
 }
