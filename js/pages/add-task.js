@@ -211,7 +211,7 @@ export async function handleCreateTask(event) {
     console.log("New Task Data:", newTask);
     const rawNewObject = createTaskObject();
     console.log("add-task.js: Erzeugtes rawNewObject:", rawNewObject); // wird später evt entfernt//
-    await CWDATA(rawNewObject);
+    await CWDATA(rawNewObject,fetchData);
 
     alert("Task created successfully! (Check console for data)");
 
