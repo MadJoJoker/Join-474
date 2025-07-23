@@ -1,42 +1,7 @@
 
-// NUR ZUR SIMULIERUNG; DAS MUSS WEG
-async function getFirebaseData(path = '') {
-  const URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/' + path + '.json';
-  try {
-    const RESPONSE_FIREBASE = await fetch(URL_FIREBASE_JOIN);
-    if (!RESPONSE_FIREBASE.ok) {
-      console.error('Network response was not ok:', RESPONSE_FIREBASE.statusText);
-      return null;
-    }
-    const DATA_FIREBASE_JOIN = await RESPONSE_FIREBASE.json();
-    // console.log("data: ", DATA_FIREBASE_JOIN);
-    return DATA_FIREBASE_JOIN;
-  } catch (error) {
-    console.error('There was a problem with your fetch operation:', error);
-    return null;
-  }
-}
+let allData = {};
 
-// NUR ZUR SIMULIERUNG; DAS MUSS WEG
-async function initCW() {
-  const data = await getFirebaseData(""); // ACHTUNG, da ist auch ein Fehler!
-  if (!data) {
-    console.error('No data received');
-    return;
-  }
-  fetchData = data;
-  console.log("recieved data: ", fetchData);
- 
-  // ObjectToDatabase(); // das ist sie, die Funktion!
-}
-// NUR ZUR SIMULIERUNG; DAS MUSS WEG
-let fetchData = null;
-initCW();
-
-
-// AB HIER IST ES ECHT:
-// note: Format von deadline ist noch inkonsistent zur Database
-// die subtasks scheinen nicht in den subtasks zu landen(?)
+// ZEILE 71 AUSKOMMENTIEREN, UM ÜBERTRAGUNG AN FIREBASE ZU STOPPEN
 
 /**
  * Empfängt ein dynamisch erzeugtes Objekt und bereitet es für die Firebase-Verarbeitung vor.
@@ -44,65 +9,43 @@ initCW();
  * Es ist das ehemalige 'rawNewObject'.
  */
 export async function CWDATA(receivedObject, fetchData) { // <= CWDATA empfängt das Objekt als Parameter
-    console.log("task-to-firebase.js: Objekt erfolgreich empfangen!", receivedObject);
-    console.log("hier sind die Daten: ", fetchData); // leider sind sie nicht da.
-    const convertedObject = await ObjectToDatabase(receivedObject);
-    // console.log("so, fertig! ", convertedObject);
-    return new Promise(resolve => setTimeout(resolve, 500));
+  console.log("task-to-firebase.js: Objekt erfolgreich empfangen!", receivedObject);
+  console.log("Firebase-data empfangen: ", fetchData);
+  allData = fetchData;
+
+  const convertedObjectWithId = await processRawObject(receivedObject);
+  
+  console.log("fertiges Objekt, das an Firebase geschickt wird: ", convertedObjectWithId);
+  console.log("fetchData, neuer Stand; von hier Board neu renderbar ohne fetch: ", allData);
+
+  //return new Promise(resolve => setTimeout(resolve, 500)); // brauchst Du das noch?
 }
 
-/**
- * Empfängt ein dynamisch erzeugtes Objekt und bereitet es für die Firebase-Verarbeitung vor.
- * @param {Object} receivedObject - Das Objekt, das von add-task.js übergeben wurde.
- * Es ist das ehemalige 'rawNewObject'.
- */
-//export async function CWDATA(receivedObject) { // <= CWDATA empfängt das Objekt als Parameter
-    // HIER IST DEIN CONSOLE.LOG ZUR PRÜFUNG DER ÜBERGABE!
-    // console.log("task-to-firebase.js: Objekt erfolgreich empfangen!", receivedObject);
-
-    // Jetzt kannst du mit 'receivedObject' hier in task-to-firebase.js weiterarbeiten.
-    // Beispiel: Speichern in Firebase Firestore
-
-    //CWDATA können wir ja später noch umbennen, da hast Du freie Hand,
-    //lass es mich nur wissen , da ich es in meiner handleCreateTask() ändern muss sonst geht es nicht.
-
-    // Diese Promise-Simulation ist nur nötig, wenn du noch keine echte asynchrone Logik hast
-    
-    // return new Promise(resolve => setTimeout(resolve, 500));
-// }
-
-async function ObjectToDatabase(rawNewObject) {
-  // console.log("los!", rawNewObject);
-  rawNewObject.assignedTo = convertContacts(rawNewObject); // keys aus "contacts" suchen
-  rawNewObject = convertArraysToObjects(rawNewObject); // alle arrays mit Objekten zu Objekten machen
-  console.log("Object: ", rawNewObject);
-  let pushObjectId = setNextId("task");
-  // sendObject(pushObjectId, rawNewObject);
+async function processRawObject(rawNewObject) {
+  rawNewObject.assignedTo = convertContacts(rawNewObject);
+  rawNewObject = arraysToObjects(rawNewObject);
+  const pushObjectId = setNextId("task");
+  const result = await sendObject(pushObjectId, rawNewObject);
+  return result;
 }
 
-// key: "contact-1"; er muß in "contacts" gesucht und ergänzt werden. Resultat bleibt ein array, aber nun mit Objekten
+// key "contact-1" etc.:; muß in "contacts" gesucht und ergänzt werden.
 function convertContacts(rawNewObject) {
   const contactKeys = rawNewObject.assignedTo.map(user => {
-    const keys = Object.keys(fetchData.contacts);
-    const foundKey = keys.find(key => fetchData.contacts[key].name === user.name);
+    const keys = Object.keys(allData.contacts);
+    const foundKey = keys.find(key => allData.contacts[key].name === user.name);
     return foundKey;
   });
   return contactKeys;
 }
 
-function convertArraysToObjects(obj) {
+function arraysToObjects(obj) {
   for (const key in obj) {
     if (Array.isArray(obj[key])) {
-      obj[key] = arrayToFirebaseObject(obj[key]);
+      obj[key] = obj[key].map((item, index) => [index, item]);
     }
   }
   return obj;
-}
-
-function arrayToFirebaseObject(array) {
-  return Object.fromEntries(
-    array.map((item, index) => [index, item])
-  );
 }
 
 function setNextId(category) {
@@ -113,42 +56,66 @@ function setNextId(category) {
 }
 
 function getLastKey(category) {
-  if(!fetchData || Object.keys(fetchData.tasks).length == 0) {
+  if(!allData || Object.keys(allData.tasks).length == 0) {
     console.log("you initialized a new category: ", category);
     return `${category}-000`
   } else {
-    const itemKeys = Object.keys(fetchData.tasks);
-    return itemKeys.at(-1); // ist dasselbe wie: itemKeys[taskKeys.length -1];
+    const itemKeys = Object.keys(allData.tasks);
+    return itemKeys.at(-1);
   }
 }
 
 async function sendObject(pushObjectId, rawNewObject) {
   let path = `tasks/${pushObjectId}`;
-  console.log("new path: ", path, rawNewObject);
-  // await putObjectToDatabase(path, entryData);
+  console.log("new path: ", path);
+  // await saveFirebaseData(path, rawNewObject);
+  // await putObjectToDatabase(path, rawNewObject);
 
-  // lokales update fürs schnelle Rendern (= kein neuer fetch nötig)
-  // const localObject = {
-  //   [pushObjectId] : rawNewObject
-  // };
-  // console.log("the complete object:" , localObject);
-  // fetchData = fetchData || {};
-  // Object.assign(fetchData.tasks, localObject);
-  // console.log("updatete data collection: ", fetchData);
+  // lokales Daten update fürs schnelle Rendern (=> kein neuer fetch nötig)
+  const localObject = {
+    [pushObjectId] : rawNewObject
+  };
+  allData = allData || {}; // kann man streichen, ist nur zur Sicherheit
+  Object.assign(allData.tasks, localObject);
+  return rawNewObject;
 }
 
-// "path": "tasks/task-014" (Kategory/Key des neuen Eintrags)
-async function putObjectToDatabase(path, data={}) {
-  let URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/';
-  const res = await fetch(URL_FIREBASE_JOIN + path + '.json', {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) throw new Error(`PUT failed: ${res.status}`);
-  const result = await res.json();
-  console.log("PUT result:", result);
-  return result; 
+// async function putObjectToDatabase(path, data={}) {
+//   let url = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/';
+//   const res = await fetch(url + path + '.json', {
+//     method: "PUT",
+//     headers: {
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify(data)
+//   });
+//   if (!res.ok) throw new Error(`PUT failed: ${res.status}`);
+//   const result = await res.json();
+//   console.log("PUT result:", result);
+//   return result; 
+// }
+
+async function saveFirebaseData(path, data) {
+  const url = `https://join-474-default-rtdb.europe-west1.firebasedatabase.app/${path}.json`;
+
+  console.log('🌍 Speichere Daten an:', url);
+  console.log('📤 Dateninhalt:', data);
+
+  try {
+      const response = await fetch(url, {
+          method: data === null ? 'DELETE' : 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: data === null ? undefined : JSON.stringify(data)
+      });
+
+      const resText = await response.text();
+      console.log('✅ Firebase-Antwort:', response.status, resText);
+
+      if (!response.ok) {
+          throw new Error('Firebase update failed: ' + response.statusText);
+      }
+
+  } catch (error) {
+      console.error('❌ Fehler beim Speichern in Firebase:', error);
+  }
 }
