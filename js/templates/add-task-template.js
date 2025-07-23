@@ -296,7 +296,12 @@ function renderFormButtons() {
             <div class="buttons-area">
                 <button type="reset" class="clear-btn" data-event-handle="true">
                     Clear
-                    <img src="../assets/icons/btn/close.svg" alt="Close Icon" />
+                        <svg class="x-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                            d="M12.14 13.4l-4.9 4.9a.95.95 0 0 1-1.4-1.4l4.9-4.9-4.9-4.9a.95.95 0 0 1 1.4-1.4l4.9 4.9 4.9-4.9a.95.95 0 1 1 1.4 1.4l-4.9 4.9 4.9 4.9a.95.95 0 0 1-1.4 1.4l-4.9-4.9z"
+                            fill="currentColor" />
+                        </svg>
                 </button>
                 <button type="submit" class="create-btn" data-event-handle="true">
                     Create Task
@@ -316,7 +321,7 @@ function renderFormButtons() {
  */
 export function getAddTaskFormHTML() {
     return `
-        <main class="content">
+        <main id="add-task-main" class="content">
             <h1>Add Task</h1>
             <form id="add-task-form" class="form">
                 <div class="form-fill-part">

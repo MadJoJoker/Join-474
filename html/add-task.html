@@ -28,7 +28,7 @@
       <section class="main-content">
         <header id="header"></header>
 
-        <div id="content"></div>
+        <div id="content" class="content-container"></div>
 
       <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -42,13 +42,14 @@
         // Import-Pfade sind RELATIV zu dieser HTML-Datei (die im 'html/' Ordner liegt)
         // Von 'html/' -> '..' (Projekt-Root) -> 'js/' -> 'templates/'
         import { getAddTaskFormHTML } from '../js/templates/add-task-template.js';
-        import { initAddTaskForm } from '../js/pages/add-task.js';
+        import { initAddTaskForm, addBgColorGrey } from '../js/pages/add-task.js';
 
         document.addEventListener('DOMContentLoaded', () => {
           const container = document.getElementById('content');
           if (container) {
             container.innerHTML = getAddTaskFormHTML();
             initAddTaskForm();
+            addBgColorGrey();
           }
         });
       </script>

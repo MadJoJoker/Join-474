@@ -333,16 +333,16 @@ export async function initAddTaskForm() {
     });
 }
 
-// export function toggleAssignedToArea() {
-//   const assignedToArea = document.getElementById("assigned-to-area");
-//   if (!assignedToArea) return;
-
-//   assignedToArea.classList.toggle("width-100");
-// }
-
 export function toggleAssignedToArea() {
   const assignedToArea = document.getElementById("assigned-to-area");
   if (!assignedToArea) return;
 
   assignedToArea.classList.toggle("width-100");
+}
+
+export function addBgColorGrey(){
+  const content = document.getElementById("add-task-main");
+  if (!content) return;
+
+  content.classList.add("bg-color-grey");
 }

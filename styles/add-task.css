@@ -1,26 +1,14 @@
-/* body,
-html {
-  margin: 0;
-  height: 100%;
-  font-family: "Inter var", sans-serif;
-}
-
-.app-container {
+.content-container {
   display: flex;
-  height: 100vh;
+  width: 100%;
+  height: calc(100vh - 96px);
 }
-
-.main-content {
-  width: calc(100% - 232px);
-  display: flex;
-  flex-direction: column;
-} */
 
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 58px;
+  padding: 54px;
   overflow-y: auto;
   background-color: var(--white);
   scrollbar-width: none;
@@ -837,7 +825,7 @@ html {
   transition: width 1.3s ease;
 }
 
-.no-results{
+.no-results {
   font-size: 20px;
   color: var(--peachyPink);
   padding: 16px 21px;
@@ -856,4 +844,8 @@ html {
 
 #assigned-to-area.width-100 {
   width: 100%;
+}
+
+.bg-color-grey {
+  background-color: var(--lightGrey);
 }
