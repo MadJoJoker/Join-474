@@ -292,6 +292,8 @@ export async function initAddTaskForm() {
 
   const subtaskInput = document.getElementById("subtask-input");
   const addSubtaskBtn = document.getElementById("add-subtask-btn");
+  const subtaskXBtn = document.getElementById("subtask-clear-btn");
+  const subtaskCheckBtn = document.getElementById("subtask-add-task-btn");
   const clearSubtaskIcon = document.querySelector(
     '.subtask-icons img[alt="Close"]'
   );
@@ -316,6 +318,8 @@ export async function initAddTaskForm() {
 
   clearSubtaskIcon?.addEventListener("click", clearSubtask);
   addSubtaskIcon?.addEventListener("click", addSubtask);
+  subtaskXBtn?.addEventListener("click", clearSubtask);
+  subtaskCheckBtn?.addEventListener("click", addSubtask);
 
   document
     .getElementById("subtasks-list")

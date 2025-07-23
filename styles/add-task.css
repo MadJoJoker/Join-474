@@ -595,9 +595,8 @@
   /* Grundlegende Container-Styles */
   position: relative;
   width: 100%;
-  height: 35px;
+  height: 36px;
   border-radius: 10px;
-  margin-top: 25px;
   font-size: 16px;
   display: flex;
   align-items: center;
@@ -619,9 +618,9 @@
     content: "";
     /* Wichtig für Pseudoelemente */
     display: inline-block;
-    width: 8px;
+    width: 6px;
     /* Größe des Kreises */
-    height: 8px;
+    height: 6px;
     /* Größe des Kreises */
     border-radius: 50%;
     /* Macht den Kreis rund */
@@ -696,12 +695,17 @@
   }
 }
 
+.subtask-list:hover svg {
+    color: var(--black);
+}
+
 .subtask-action-btn {
   width: 24px;
   height: 24px;
   border-radius: 50%;
   border: hidden;
-  margin: 0px 5px 0px 5px;
+  padding: 5px 5px;
+  margin: 0 8px;
   background-color: var(--white);
   cursor: pointer;
 
@@ -772,7 +776,7 @@
 
 .subtask-separator {
   position: absolute;
-  right: 13px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   width: 1px;
