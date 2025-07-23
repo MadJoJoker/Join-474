@@ -172,6 +172,25 @@ export function toggleSelectContacts(contactElement, name, initials, avatarColor
     displaySelectedContacts();
 }
 
+export function filterContacts(query) {
+  const container = document.getElementById('assigned-to-options-container');
+  container.innerHTML = '';
+
+  const filtered = currentContacts.filter(contact =>
+    contact.name.toLowerCase().includes(query)
+  );
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="no-results">No contacts found.</div>';
+    return;
+  }
+
+  filtered.forEach((contact, i) => {
+    const contactHTML = renderAssignedToContacts(i, contact.name, contact.initials, contact.avatarColor);
+    container.innerHTML += contactHTML;
+  });
+}
+
 function displaySelectedContacts() {
     const assignedToArea = document.getElementById('assigned-to-area');
     if (!assignedToArea) return;

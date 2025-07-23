@@ -484,16 +484,6 @@ html {
   }
 }
 
-.max-width-150 {
-  max-width: 150px;
-  overflow: auto;
-  cursor: pointer;
-  will-change: transform;
-  transform: scaleX(0.98);
-  transform-origin: left;   
-  transition: transform 0.5s ease;
-}
-
 .add-on {
   display: flex;
   align-items: center;
@@ -844,5 +834,26 @@ html {
 .width-100 {
   width: 100%;
   max-width: unset;
-  transform: scaleX(1);
+  transition: width 1.3s ease;
+}
+
+.no-results{
+  font-size: 20px;
+  color: var(--peachyPink);
+  padding: 16px 21px;
+  text-align: flex-start;
+  background-color: var(--white);
+  border-radius: 10px;
+}
+
+#assigned-to-area {
+  width: 150px;
+  transition: width 0.3s ease;
+  overflow: auto;
+  cursor: pointer;
+  will-change: transform;
+}
+
+#assigned-to-area.width-100 {
+  width: 100%;
 }

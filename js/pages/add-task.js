@@ -19,6 +19,7 @@ import {
   initDropdowns,
   clearCategory,
   toggleAssignedToDropdown,
+  filterContacts,
 } from "../events/dropdown-menu.js";
 import { autoFillLeftForm } from "../events/autofill-add-task.js";
 
@@ -262,11 +263,30 @@ export async function initAddTaskForm() {
     .getElementById("assigned-to-area")
     ?.addEventListener("click", toggleAssignedToArea);
 
+  // Kontakte im Input-Feld Filtern:
+  const contactInput = document.getElementById("select-contacts");
+  if (contactInput) {
+    contactInput.addEventListener("input", () => {
+      const query = contactInput.value.trim().toLowerCase();
+
+      // Dropdown öffnen, falls noch nicht offen
+      const wrapper = document.getElementById("assigned-to-options-wrapper");
+      if (wrapper && !wrapper.classList.contains("open-assigned-to")) {
+        toggleAssignedToDropdown();
+      }
+
+      filterContacts(query);
+    });
+
+    filterContacts('');
+  }
+
+
   document
     .querySelector(".resize-handle")
     ?.addEventListener("mousedown", startResize);
 
-      document.getElementById("title")?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document.getElementById("title")?.addEventListener("focus", autoFillLeftForm, { once: true });
   document.getElementById("task-description")?.addEventListener("focus", autoFillLeftForm, { once: true });
   document.getElementById("datepicker")?.addEventListener("focus", autoFillLeftForm, { once: true });
 
@@ -312,6 +332,13 @@ export async function initAddTaskForm() {
       }
     });
 }
+
+// export function toggleAssignedToArea() {
+//   const assignedToArea = document.getElementById("assigned-to-area");
+//   if (!assignedToArea) return;
+
+//   assignedToArea.classList.toggle("width-100");
+// }
 
 export function toggleAssignedToArea() {
   const assignedToArea = document.getElementById("assigned-to-area");

@@ -178,7 +178,7 @@ function renderAssignedToSection() {
             </div>
             <div
                     id="assigned-to-area"
-                    class="initials-container max-width-150"
+                    class="initials-container"
                     style=" border:none"
             ></div>
         </div>
