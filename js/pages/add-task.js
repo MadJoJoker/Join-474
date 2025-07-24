@@ -203,22 +203,23 @@ jedes mit 'text'- und 'completed'-Eigenschaften.*/
   const totalSubtask = addedSubtasks.map(subtask => subtask.text);
   const checkedSubtasks = addedSubtasks.map(subtask => subtask.completed);
   const subtasksCompleted = checkedSubtasks.filter(completed => completed).length;
-  const assignedUsers = selectedContacts.map(selectedContact => {
-    let foundId = undefined;
-    if (typeof object !== 'undefined' && object.contacts) {
-      for (const contactId in object.contacts) {
-        if (Object.prototype.hasOwnProperty.call(object.contacts, contactId)) {
-          if (object.contacts[contactId].name === selectedContact.name) {
-            foundId = contactId;
-            break;
-          }
+ const assignedUsers = selectedContacts.map(selectedContact => {
+  let foundId = undefined;
+  if (fetchData && fetchData.contacts) {
+    for (const contactId in fetchData.contacts) {
+      if (Object.prototype.hasOwnProperty.call(fetchData.contacts, contactId)) {
+        if (fetchData.contacts[contactId].name === selectedContact.name) {
+          foundId = contactId;
+          break;
         }
       }
-    } else {
-      console.warn("WARNUNG: 'object.contacts' ist nicht definiert oder leer. Zugewiesene Benutzer-IDs konnten nicht ermittelt werden.");
     }
-    return foundId;
-  }).filter(id => id !== undefined);
+  } else {
+    console.warn("WARNUNG: 'fetchData.contacts' ist nicht definiert oder leer. Zugewiesene Benutzer-IDs konnten nicht ermittelt werden.");
+  }
+  return foundId;
+}).filter(id => id !== undefined);
+
 
   return {
     assignedUsers: assignedUsers,
@@ -233,7 +234,7 @@ jedes mit 'text'- und 'completed'-Eigenschaften.*/
     title: title,
     totalSubtask: totalSubtask,
     type: selectedCategory,
-    updatedAt: [formattedCreatedAt[0], formattedCreatedAt[0]]
+    updatedAt: formattedCreatedAt
   };
 }
 
@@ -246,7 +247,7 @@ export async function handleCreateTask(event) {
     console.log("New Task Data:", newTask);
     const rawNewObject = createTaskObject();
     console.log("add-task.js: Erzeugtes rawNewObject:", rawNewObject); // wird später evt entfernt//
-    await CWDATA(rawNewObject, fetchData);
+    //  await CWDATA(rawNewObject, fetchData);
 
     alert("Task created successfully! (Check console for data)");
 
