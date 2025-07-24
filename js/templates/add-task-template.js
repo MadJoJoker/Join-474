@@ -147,7 +147,7 @@ function renderPrioritySection() {
 function renderAssignedToSection() {
     return `
         <div class="label-container">
-            <label for="assigned-to" class="required font-size-20">Assigned to</label>
+            <label for="select-contacts" class="required font-size-20">Assigned to</label>
             <div
                 class="select-wrapper input-field"
                 id="dropdown-assigned-to"
@@ -192,11 +192,13 @@ function renderAssignedToSection() {
 function renderCategorySection() {
     return `
         <div class="label-container">
-            <label for="category" class="required font-size-20">Category</label>
+            <div for="dropdown-category" class="required font-size-20">Category</div>
             <input type="hidden" id="hidden-category-input" />
+
             <div
                 class="select-wrapper input-field"
                 id="dropdown-category"
+                name="category"
                 data-event-handle="true"
             >
                 <div class="selected-option" id="selected-category">
@@ -231,7 +233,7 @@ function renderCategorySection() {
 function renderSubtasksSection() {
     return `
         <div class="label-container">
-            <label for="subtask" class="font-size-20">Subtasks</label>
+            <label for="subtask-input" class="font-size-20">Subtasks</label>
             <div class="select-wrapper">
                 <input
                     type="text"
@@ -325,6 +327,7 @@ function renderFormButtons() {
 export function getAddTaskFormHTML() {
     return `
         <main id="add-task-main" class="content">
+        <div class="size-wrapper">
             <h1>Add Task</h1>
             <form id="add-task-form" class="form">
                 <div class="form-fill-part">
@@ -334,6 +337,7 @@ export function getAddTaskFormHTML() {
                 </div>
                 ${renderFormButtons()}
             </form>
+            </div>
         </main>
     `;
 }
