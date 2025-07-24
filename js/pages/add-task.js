@@ -179,27 +179,61 @@ export function handleInput(inputElement) {
 }
 
 function createTaskObject() {
+  /**
+@param {Array<Object>} selectedContacts - Ein Array von Objekten, die die ausgewählten Kontakte repräsentieren.
+Jedes Objekt sollte eine 'name'-Eigenschaft enthalten.
+@param {Object} object - Das globale Objekt, das die von api.js geladenen Daten enthält,
+insbesondere 'object.contacts', das ein Objekt mit Kontakt-IDs als Schlüsseln
+und Kontaktobjekten (mit 'name'-Eigenschaft) als Werten ist.
+@param {string} selectedCategory - Die ausgewählte Kategorie für die Aufgabe.
+@param {string} currentPriority - Die aktuelle Priorität für die Aufgabe.
+@param {Array<Object>} addedSubtasks - Ein Array von Unteraufgaben-Objekten,
+jedes mit 'text'- und 'completed'-Eigenschaften.*/
+
   const title = document.getElementById("title").value;
   const description = document.getElementById("task-description").value;
   const dueDate = document.getElementById("datepicker").value;
 
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const formattedCreatedAt = `${day}.${month}.${year}`;
+
+  const totalSubtask = addedSubtasks.map(subtask => subtask.text);
+  const checkedSubtasks = addedSubtasks.map(subtask => subtask.completed);
+  const subtasksCompleted = checkedSubtasks.filter(completed => completed).length;
+  const assignedUsers = selectedContacts.map(selectedContact => {
+    let foundId = undefined;
+    if (typeof object !== 'undefined' && object.contacts) {
+      for (const contactId in object.contacts) {
+        if (Object.prototype.hasOwnProperty.call(object.contacts, contactId)) {
+          if (object.contacts[contactId].name === selectedContact.name) {
+            foundId = contactId;
+            break;
+          }
+        }
+      }
+    } else {
+      console.warn("WARNUNG: 'object.contacts' ist nicht definiert oder leer. Zugewiesene Benutzer-IDs konnten nicht ermittelt werden.");
+    }
+    return foundId;
+  }).filter(id => id !== undefined);
+
   return {
-    title,
-    description,
-    dueDate,
-    category: selectedCategory,
+    assignedUsers: assignedUsers,
+    boardID: "board-1",
+    checkedSubtasks: checkedSubtasks,
+    columnID: "inProgress",
+    createdAt: formattedCreatedAt,
+    deadline: dueDate,
+    description: description,
     priority: currentPriority,
-    assignedTo: selectedContacts.map((contact) => ({
-      name: contact.name,
-      initials: contact.initials,
-      avatarColor: contact.avatarColor,
-    })),
-    subtasks: addedSubtasks.map((subtask) => ({
-      text: subtask.text,
-      completed: subtask.completed,
-    })),
-    createdAt: new Date().toISOString(),
-    columnID: "todo",
+    subtasksCompleted: subtasksCompleted,
+    title: title,
+    totalSubtask: totalSubtask,
+    type: selectedCategory,
+    updatedAt: [formattedCreatedAt[0], formattedCreatedAt[0]]
   };
 }
 
@@ -212,7 +246,7 @@ export async function handleCreateTask(event) {
     console.log("New Task Data:", newTask);
     const rawNewObject = createTaskObject();
     console.log("add-task.js: Erzeugtes rawNewObject:", rawNewObject); // wird später evt entfernt//
-    await CWDATA(rawNewObject,fetchData);
+    await CWDATA(rawNewObject, fetchData);
 
     alert("Task created successfully! (Check console for data)");
 
@@ -321,20 +355,24 @@ export async function initAddTaskForm() {
   subtaskXBtn?.addEventListener("click", clearSubtask);
   subtaskCheckBtn?.addEventListener("click", addSubtask);
 
-  document
-    .getElementById("subtasks-list")
-    ?.addEventListener("click", (even) => {
-      const target = even.target;
-      if (target.closest(".subtask-actions .left")) {
-        toggleSubtaskEdit(target.closest(".subtask-actions .left"));
-      } else if (target.closest(".subtask-actions .right")) {
-        const listItem = target.closest(".subtask-list");
-        if (listItem) {
-          const index = parseInt(listItem.dataset.index);
-          deleteSubtask(index);
-        }
+document
+  .getElementById("subtasks-list")
+  ?.addEventListener("click", (event) => {
+    const target = event.target;
+
+    if (target.closest(".subtask-actions .left")) {
+      toggleSubtaskEdit(target.closest(".subtask-actions .left"));
+    } else if (
+      target.closest(".subtask-actions .right") ||
+      target.closest(".right-icon-subtask")
+    ) {
+      const listItem = target.closest(".subtask-list");
+      if (listItem) {
+        const index = parseInt(listItem.dataset.index);
+        deleteSubtask(index);
       }
-    });
+    }
+  });
 }
 
 export function toggleAssignedToArea() {
@@ -344,7 +382,7 @@ export function toggleAssignedToArea() {
   assignedToArea.classList.toggle("width-100");
 }
 
-export function addBgColorGrey(){
+export function addBgColorGrey() {
   const content = document.getElementById("add-task-main");
   if (!content) return;
 
