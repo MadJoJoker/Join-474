@@ -81,6 +81,7 @@ export function toggleSubtaskEdit(editIcon) {
 
     const editInput = document.createElement('input');
     editInput.type = 'text';
+    editInput.name = `Subtask ${index}`;
     editInput.className = 'edit-input';
     editInput.value = currentText;
     editInput.dataset.index = index;
