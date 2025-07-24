@@ -1,9 +1,3 @@
-/**
- * Validiert die Eingabedaten für eine Task-Karte.
- * @param {object} boardData - Das gesamte Board-Datenobjekt, das Tasks und Kontakte enthält.
- * @param {string} taskID - Die ID der zu validierenden Task.
- * @returns {boolean} True, wenn die Daten gültig sind, sonst false.
- */
 function validateTaskCardInput(boardData, taskID) {
     if (!boardData || !taskID || !boardData.tasks || !boardData.contacts) {
         return false;
@@ -16,9 +10,8 @@ function validateTaskCardInput(boardData, taskID) {
 }
 
 /**
- * Extrahiert und formatiert die grundlegenden Details einer Task.
- * @param {object} task - Das Task-Objekt, aus dem die Details extrahiert werden sollen.
- * @returns {{title: string, description: string, type: string, priority: string}} Ein Objekt mit Titel, Beschreibung, Typ und Priorität der Task.
+ * @param {object} task
+ * @returns {{title: string, description: string, type: string, priority: string}}
  */
 function getTaskDetails(task) {
     const title = task.title || 'Kein Titel';
@@ -29,9 +22,8 @@ function getTaskDetails(task) {
 }
 
 /**
- * Gibt die CSS-Klasse für eine bestimmte Task-Kategorie zurück.
- * @param {string} type - Der Typ der Task (z.B. 'User Story', 'Technical Task', 'Meeting').
- * @returns {string} Die entsprechende CSS-Klasse für die Kategorie.
+ * @param {string} type
+ * @returns {string}
  */
 function getCategoryClass(type) {
     if (type === 'User Story') return 'category-user-story';
@@ -41,9 +33,8 @@ function getCategoryClass(type) {
 }
 
 /**
- * Berechnet den Fortschritt der Unteraufgaben einer Task.
- * @param {object} task - Das Task-Objekt, das Unteraufgaben-Informationen enthält.
- * @returns {{done: number, total: number, percent: number, subText: string}} Ein Objekt mit abgeschlossenen, gesamten, prozentualen Unteraufgaben und einem Text-String.
+ * @param {object} task
+ * @returns {{done: number, total: number, percent: number, subText: string}}
  */
 function calculateSubtaskProgress(task) {
     const done = parseInt(task.subtasksCompleted || task.subtaskCompleted || 0, 10);
@@ -55,10 +46,9 @@ function calculateSubtaskProgress(task) {
 }
 
 /**
- * Generiert den HTML-String für die Avatare der zugewiesenen Benutzer.
- * @param {string[]} assignedUserIDs - Ein Array von IDs der zugewiesenen Benutzer.
- * @param {object} contacts - Ein Objekt mit Kontaktinformationen, indiziert nach Kontakt-ID.
- * @returns {string} Der HTML-String mit den Avataren.
+ * @param {string[]} assignedUserIDs
+ * @param {object} contacts
+ * @returns {string}
  */
 function generateAssignedAvatarsHtml(assignedUserIDs, contacts) {
     let avatarsHtml = '';
@@ -72,9 +62,8 @@ function generateAssignedAvatarsHtml(assignedUserIDs, contacts) {
 }
 
 /**
- * Rendert den HTML-String für den Avatar eines einzelnen Kontakts.
- * @param {object} contact - Das Kontakt-Objekt mit Initialen, Namen und Avatar-Farbe.
- * @returns {string} Der HTML-String des Kontakt-Avatars.
+ * @param {object} contact
+ * @returns {string}
  */
 function renderContactAvatar(contact) {
     if (!contact) {
@@ -88,26 +77,23 @@ function renderContactAvatar(contact) {
 }
 
 /**
- * Gibt das Icon und den Text für eine bestimmte Priorität zurück.
- * @param {string} prio - Die Priorität der Task ('low', 'medium', 'urgent').
- * @returns {{icon: string, prioText: string}} Ein Objekt mit dem Pfad zum Icon und dem Prioritätstext.
+ * @param {string} prio
+ * @returns {{icon: string, prioText: string}}
  */
 function getPriorityIconAndText(prio) {
     if (prio === 'low') return { icon: `../assets/icons/property/low.svg`, prioText: 'Niedrig' };
     if (prio === 'medium') return { icon: `../assets/icons/property/medium.svg`, prioText: 'Mittel' };
     if (prio === 'urgent') return { icon: `../assets/icons/property/urgent.svg`, prioText: 'Dringend' };
-    console.warn('Unbekannte Priorität gefunden:', prio);
     return { icon: `../assets/icons/property/default.svg`, prioText: 'Unbekannt' };
 }
 
 /**
- * Baut den vollständigen HTML-Inhalt einer Task-Karte.
- * @param {string} taskID - Die ID der Task.
- * @param {object} taskDetails - Ein Objekt mit den Details der Task (Titel, Beschreibung, Typ, Priorität).
- * @param {object} subtaskProgress - Ein Objekt mit dem Fortschritt der Unteraufgaben.
- * @param {string} avatarsHtml - Der HTML-String der zugewiesenen Avatare.
- * @param {object} priorityInfo - Ein Objekt mit Icon-Pfad und Text für die Priorität.
- * @returns {string} Der vollständige HTML-String der Task-Karte.
+ * @param {string} taskID
+ * @param {object} taskDetails
+ * @param {object} subtaskProgress
+ * @param {string} avatarsHtml
+ * @param {object} priorityInfo
+ * @returns {string}
  */
 function buildTaskCardHtmlContent(taskID, taskDetails, subtaskProgress, avatarsHtml, priorityInfo) {
     const { title, description, type } = taskDetails;
@@ -140,11 +126,9 @@ function buildTaskCardHtmlContent(taskID, taskDetails, subtaskProgress, avatarsH
 }
 
 /**
- * Erstellt den HTML-Inhalt für eine einfache Task-Karte.
- * Diese Funktion ist der Haupt-Export für das Modul.
- * @param {object} boardData - Das gesamte Board-Datenobjekt, das Tasks und Kontakte enthält.
- * @param {string} taskID - Die ID der Task, für die die Karte erstellt werden soll.
- * @returns {string} Der HTML-String der erstellten Task-Karte, oder ein leerer String, wenn die Validierung fehlschlägt.
+ * @param {object} boardData
+ * @param {string} taskID
+ * @returns {string}
  */
 export function createSimpleTaskCard(boardData, taskID) {
     if (!validateTaskCardInput(boardData, taskID)) return '';
@@ -158,32 +142,25 @@ export function createSimpleTaskCard(boardData, taskID) {
 }
 
 /**
- * Registriert einen Eventlistener für alle Task-Karten, um das Task-Detail-Overlay zu öffnen.
- * @param {object} boardData - Das Board-Datenobjekt mit allen Tasks und Kontakten.
- * @param {function} getTaskOverlay - Funktion, die das HTML für das Overlay generiert.
+ * @param {object} boardData
+ * @param {(task: object, taskId: string, contacts: object) => string} getTaskOverlay
  */
 export function registerTaskCardDetailOverlay(boardData, getTaskOverlay) {
     const cards = document.querySelectorAll('.task-card');
-    console.log('[DEBUG] Task-Karten für Overlay gefunden:', cards.length);
     cards.forEach(card => {
+        /**
+         * @param {MouseEvent} e
+         */
         card.addEventListener('click', function (e) {
-            console.log('[DEBUG] Task-Karte wurde geklickt:', card.id);
-            // Drag-and-drop Events ignorieren
             if (e.target.classList.contains('assigned-initials-circle') || e.target.closest('.priority-icon')) return;
             const taskId = card.id;
             const task = boardData.tasks[taskId];
-            if (!task) {
-                console.warn('[DEBUG] Keine Task-Daten für Karte:', taskId);
-                return;
-            }
-            // Overlay dynamisch einfügen, falls nicht vorhanden
+            if (!task) return;
+
             let overlay = document.getElementById('overlay-task-detail');
             if (!overlay) {
                 const overlayContainer = document.getElementById('overlay-container');
-                if (!overlayContainer) {
-                    console.error('[DEBUG] overlay-container Element nicht gefunden!');
-                    return;
-                }
+                if (!overlayContainer) return;
                 overlayContainer.innerHTML = `
 <div id="overlay-task-detail" class="overlay-hidden">
    <div id="modal-content-task" class="modal-content task">
@@ -192,29 +169,21 @@ export function registerTaskCardDetailOverlay(boardData, getTaskOverlay) {
   </div>
 </div>`;
                 overlay = document.getElementById('overlay-task-detail');
-                console.log('[DEBUG] overlay-task-detail Element wurde dynamisch eingefügt:', overlay);
             }
             overlay.classList.remove('overlay-hidden');
-            // Task-Details einfügen
+
             const container = document.getElementById('task-container');
-            console.log('[DEBUG] task-container Element:', container);
             if (container) {
                 const html = getTaskOverlay(task, taskId, boardData.contacts);
                 container.innerHTML = html;
-                console.log('[DEBUG] Overlay-HTML gesetzt:', html);
-            } else {
-                console.error('[DEBUG] task-container Element nicht gefunden!');
             }
-            // Schließen-Button Event
+
             const closeBtn = overlay.querySelector('.close-modal-btn, .close-modal-btn-svg');
-            console.log('[DEBUG] Schließen-Button Element:', closeBtn);
             if (closeBtn) {
                 closeBtn.onclick = () => {
                     overlay.classList.add('overlay-hidden');
                     container.innerHTML = '';
                 };
-            } else {
-                console.error('[DEBUG] Schließen-Button im Overlay nicht gefunden!');
             }
         });
     });
