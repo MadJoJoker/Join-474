@@ -268,10 +268,21 @@ export async function initAddTaskForm() {
   picker = flatpickr("#datepicker", {
     dateFormat: "d.m.Y",
     allowInput: true,
-    positionElement: document.getElementById("datepicker")
+    mobileNative: true,
+    clickOpens: true,
+    onReady: function() {
+        // Setze name-Attribute für interne Inputs
+        document.querySelectorAll('.numInput:not([name])').forEach(el => {
+            el.setAttribute('name', 'flatpickr_day');
+        });
+        document.querySelectorAll('.flatpickr-monthDropdown-months:not([name])').forEach(el => {
+            el.setAttribute('name', 'flatpickr_day');
+        });
+    }
+    // positionElement: document.getElementById("datepicker")
   });
 
-  flatpickr("#calendar-icon", {});
+  // flatpickr("#calendar-icon", {});
 
   initPriorityButtons(); // Aus priority-handler.js
 
@@ -355,24 +366,20 @@ export async function initAddTaskForm() {
   subtaskXBtn?.addEventListener("click", clearSubtask);
   subtaskCheckBtn?.addEventListener("click", addSubtask);
 
-document
-  .getElementById("subtasks-list")
-  ?.addEventListener("click", (event) => {
-    const target = event.target;
-
-    if (target.closest(".subtask-actions .left")) {
-      toggleSubtaskEdit(target.closest(".subtask-actions .left"));
-    } else if (
-      target.closest(".subtask-actions .right") ||
-      target.closest(".right-icon-subtask")
-    ) {
-      const listItem = target.closest(".subtask-list");
-      if (listItem) {
-        const index = parseInt(listItem.dataset.index);
-        deleteSubtask(index);
+  document
+    .getElementById("subtasks-list")
+    ?.addEventListener("click", (even) => {
+      const target = even.target;
+      if (target.closest(".subtask-actions .left")) {
+        toggleSubtaskEdit(target.closest(".subtask-actions .left"));
+      } else if (target.closest(".subtask-actions .right")) {
+        const listItem = target.closest(".subtask-list");
+        if (listItem) {
+          const index = parseInt(listItem.dataset.index);
+          deleteSubtask(index);
+        }
       }
-    }
-  });
+    });
 }
 
 export function toggleAssignedToArea() {
