@@ -116,6 +116,10 @@ a {
     display: none;
 }
 
+.join-logo-header {
+    display: none;
+}
+
 @media (max-width: 1024px) {
 
     header {
@@ -151,5 +155,9 @@ a {
     .dropdown-menu {
         top: 69px;
         height: 185px;
+    }
+
+    .join-logo-header {
+        display: block;
     }
 }
