@@ -119,15 +119,11 @@ a {
 @media (max-width: 1024px) {
 
     header {
-        padding: 2px 16px;
+        padding: 2px 40px;
         height: 80px;
     }
 
     header h2 {
-        display: none;
-    }
-
-    .header-nav svg {
         display: none;
     }
 
@@ -139,5 +135,21 @@ a {
         width: 40px;
         height: 40px;
         font-size: 14px;
+    }
+
+    header img {
+        height: 40px;
+        width: 32px;
+    }
+
+    .header-nav {
+        padding-top: 0px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+    }
+
+    .dropdown-menu {
+        top: 69px;
+        height: 185px;
     }
 }
