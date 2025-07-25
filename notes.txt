@@ -19,10 +19,11 @@ SignUp.html: abgeschlossen
 
 
 add-task.html:
-    fetcht alles aus Firebase,
-    --> provisorisch:
-    das JSON kommt in die globale Variable "fetchData".
-    Die upoload und edit function soll sich voerst daraus bedienen
+    fetcht *alles* aus Firebase,
+    diese Daten werden durchgereicht in "task-to-Firebase.js"
+    Objekt wird konvertiert, an Firebase geschickt und in die lokale Kopie
+    des Fetches gespeichert ("allData" in task-to-Firebase.js).
+    Von da aus kann ohne neuen fetch gerendert werden.
 
 add-task template:
     CW an Mathias: auf dem "save"-Knopf sollte das template die task-id einfügen,
@@ -30,8 +31,11 @@ add-task template:
 
 board-site.html:
 
+CW: im nächsten Schritt passe ich die Funktion so an, daß sie auch
+den Parameter "task-005" (o.Ä.) benutzen kann (für edit).
+
 Achtung: drag and drop muß auch verfolgt und die neue Position in die Firebase
-gemeldet werden (cw: Partial-Funktion, wie für die Häckchen)
+gemeldet werden 
 
 detail-task-Card:
     CW an Mathias: auf dem "edit"-Knopf sollte das template die task-id einfügen,
