@@ -62,8 +62,10 @@ export function setCategory(optionElement) {
     hiddenInput.value = optionElement.textContent;
 
     const dropdownCategory = document.getElementById("dropdown-category");
+    const categoryError = document.getElementById("category-error");
     if (dropdownCategory) {
         dropdownCategory.classList.remove("invalid");
+        categoryError?.classList.remove("d-flex");
     }
 
     wrapper.classList.remove("open");
@@ -84,8 +86,8 @@ export function clearCategory() {
 export function toggleAssignedToDropdown() {
     const wrapper = document.getElementById("assigned-to-options-wrapper");
     const container = document.getElementById("assigned-to-options-container");
-    const spacer = document.querySelector('.spacer');
-    if (!wrapper || !container || !spacer) return;
+
+    if (!wrapper || !container) return;
 
     const isOpen = wrapper.classList.contains("open-assigned-to");
 
@@ -95,11 +97,9 @@ export function toggleAssignedToDropdown() {
         getAssignedToOptions();
         requestAnimationFrame(() => {
             wrapper.classList.add("open-assigned-to");
-            spacer.classList.add('bg-color-white');
         });
     } else {
         wrapper.classList.remove("open-assigned-to");
-        spacer.classList.remove('bg-color-white');
         setTimeout(() => {
             container.innerHTML = '';
         }, 300);
@@ -173,22 +173,22 @@ export function toggleSelectContacts(contactElement, name, initials, avatarColor
 }
 
 export function filterContacts(query) {
-  const container = document.getElementById('assigned-to-options-container');
-  container.innerHTML = '';
+    const container = document.getElementById('assigned-to-options-container');
+    container.innerHTML = '';
 
-  const filtered = currentContacts.filter(contact =>
-    contact.name.toLowerCase().includes(query)
-  );
+    const filtered = currentContacts.filter(contact =>
+        contact.name.toLowerCase().includes(query)
+    );
 
-  if (filtered.length === 0) {
-    container.innerHTML = '<div class="no-results">No contacts found.</div>';
-    return;
-  }
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="no-results">No contacts found.</div>';
+        return;
+    }
 
-  filtered.forEach((contact, i) => {
-    const contactHTML = renderAssignedToContacts(i, contact.name, contact.initials, contact.avatarColor);
-    container.innerHTML += contactHTML;
-  });
+    filtered.forEach((contact, i) => {
+        const contactHTML = renderAssignedToContacts(i, contact.name, contact.initials, contact.avatarColor);
+        container.innerHTML += contactHTML;
+    });
 }
 
 function displaySelectedContacts() {
@@ -211,6 +211,16 @@ export function removeContact(index) {
     displaySelectedContacts();
 }
 
+export function clearAssignedTo() {
+    const assignedToArea = document.getElementById('assigned-to-area');
+
+    selectedContacts = [];
+
+    if (assignedToArea) {
+        assignedToArea.innerHTML = '';
+    }
+}
+
 export function initDropdowns(contactsData) {
     // @param {Array<Object>} contactsData - Die Kontaktdaten aus Firebase.
     currentContacts = contactsData.sort((a, b) => {
@@ -218,6 +228,12 @@ export function initDropdowns(contactsData) {
         const nameB = (b.name || "").toLowerCase();
         return nameA.localeCompare(nameB, 'de', { sensitivity: 'base' });
     });
+
+    // DOM-Elemente für die Dropdowns
+    const categoryDropdown = document.getElementById('dropdown-category');
+    const categoryOptions = document.getElementById('category-options-container');
+    const assignedToDropdown = document.getElementById('dropdown-assigned-to');
+    const assignedToOptions = document.getElementById('assigned-to-options-container');
 
     // Event-Listener für Kategorie-Dropdown
     document.getElementById('dropdown-category')?.addEventListener('click', toggleCategoryDropdown);
@@ -236,10 +252,105 @@ export function initDropdowns(contactsData) {
             const initials = contactOption.dataset.initials;
             const avatarColor = contactOption.dataset.avatarColor;
             toggleSelectContacts(contactOption, name, initials, avatarColor);
+            const invalidArea = document.getElementById('dropdown-assigned-to');
+            const assignedToError = document.getElementById("assigned-to-error");
+            if (invalidArea.classList.contains('invalid')) {
+                invalidArea.classList.remove('invalid');
+                assignedToError?.classList.remove("d-flex");
+            }
+        }
+    });
+
+    // Event-Listener für Klicks außerhalb der Dropdowns
+    document.addEventListener('click', (event) => {
+        // Überprüfen ob außerhalb des Kategorie-Dropdowns geklickt wurde
+        if (categoryDropdown && categoryOptions) {
+            const clickedOutsideCategory = !categoryDropdown.contains(event.target) &&
+                !categoryOptions.contains(event.target);
+
+            if (clickedOutsideCategory) {
+                closeCategoryDropdown();
+            }
+        }
+
+        // Überprüfen ob außerhalb des Assigned-To-Dropdowns geklickt wurde
+        if (assignedToDropdown && assignedToOptions) {
+            const clickedOutsideAssignedTo = !assignedToDropdown.contains(event.target) &&
+                !assignedToOptions.contains(event.target);
+
+            if (clickedOutsideAssignedTo) {
+                closeAssignedToDropdown();
+            }
         }
     });
 
     // Initialen Zustand zurücksetzen
     selectedCategory = null;
     selectedContacts = [];
+}
+
+export function closeCategoryDropdown() {
+    const wrapper = document.getElementById("category-options-wrapper");
+    const container = document.getElementById("category-options-container");
+    const dropdownIconTwo = document.getElementById("dropdown-icon-two");
+    const dropdownIconContainerTwo = document.getElementById("dropdown-icon-container-two");
+
+    if (!wrapper || !container) return;
+
+    if (wrapper.classList.contains("open")) {
+        wrapper.classList.remove("open");
+        dropdownIconTwo?.classList.remove("open");
+        dropdownIconContainerTwo?.classList.remove('active');
+
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 300);
+    }
+}
+
+export function closeAssignedToDropdown() {
+    const wrapper = document.getElementById("assigned-to-options-wrapper");
+    const container = document.getElementById("assigned-to-options-container");
+    // const spacer = document.querySelector('.spacer');
+    const dropdownIconOne = document.getElementById("dropdown-icon-one");
+    const dropdownIconContainerOne = document.getElementById("dropdown-icon-container-one");
+
+    if (!wrapper || !container) return;
+
+    if (wrapper.classList.contains("open-assigned-to")) {
+        wrapper.classList.remove("open-assigned-to");
+        dropdownIconOne?.classList.remove("open");
+        dropdownIconContainerOne?.classList.remove('active');
+
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 300);
+    }
+}
+
+export function clearInvalidFields() {
+    const invalidFields = [
+        document.getElementById("title"),
+        document.getElementById("datepicker"),
+        document.getElementById("dropdown-category"),
+        document.getElementById("dropdown-assigned-to"),
+    ];
+    const errorFields = [
+        document.getElementById("title-error"),
+        document.getElementById("due-date-error"),
+        document.getElementById("assigned-to-error"),
+        document.getElementById("category-error"),
+    ];
+
+    invalidFields.forEach(field => {
+        if (field) {
+            field.classList.remove("invalid");
+        }
+    });
+
+    errorFields.forEach(error => {
+        if (error) {
+            error.classList.remove("d-flex");
+        }
+    });
 }

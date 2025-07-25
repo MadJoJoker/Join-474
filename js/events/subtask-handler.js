@@ -21,6 +21,13 @@ export function clearSubtask() {
     toggleSubtaskInputIcons(false);
 }
 
+export function clearSubtasksList() {
+    addedSubtasks = [];
+
+    toggleSubtaskInputIcons(false);
+    renderSubtasks();
+}
+
 export function renderSubtasks() {
     const subtasksList = document.getElementById('subtasks-list');
     if (!subtasksList) return;
@@ -123,8 +130,8 @@ export function toggleSubtaskEdit(editIcon) {
     });
 
     const saveButton = editIconsContainer.querySelector('[data-action="save-edit"]');
-const cancelButton = editIconsContainer.querySelector('[data-action="cancel-edit"]');
-console.log(saveButton, cancelButton); // Überprüfe, ob die Elemente gefunden werden
+    const cancelButton = editIconsContainer.querySelector('[data-action="cancel-edit"]');
+    console.log(saveButton, cancelButton); // Überprüfe, ob die Elemente gefunden werden
 }
 
 export function handleSubtaskInput(event, index) {
