@@ -99,7 +99,7 @@ function renderPrioritySection() {
         <div class="label-container">
             <fieldset aria-labelledby="priority-legend" style="border: none">
                 <legend id="priority-legend" class="font-size-20">Priority</legend>
-                <div class="d-flex gap-16" role="group">
+                <div class="priority-button-container" role="group">
                     <button
                         type="button"
                         class="priority-btn urgent-btn"
@@ -176,7 +176,6 @@ function renderAssignedToSection() {
                     class="assigned-to-options-container"
                     id="assigned-to-options-container"
                 ></div>
-                <div class="spacer d-none"></div>
             </div>
             <div
                     id="assigned-to-area"

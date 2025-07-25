@@ -287,6 +287,7 @@
 }
 
 .contact-input {
+  display: flex;
   height: 100%;
   width: 100%;
   border: none;
@@ -749,13 +750,13 @@
 
 .form-buttons-part {
   position: absolute;
-  bottom: 58px;
-  left: 290px;
-  right: 58px;
+  bottom: 54px;
+  left: 286px;
+  right: 54px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  /* max-width: 1572px; */
+  z-index: 1000;
 }
 
 .selected-option {
@@ -849,6 +850,16 @@
 
 }
 
+.priority-button-container{
+  display: flex;
+  gap: 16px;
+}
+
+/* * {
+  background: rgba(0, 0, 255, 0.05) !important;
+  outline: 1px dashed blue !important;
+} */
+
 @media (min-width: 1921px) {
   .form-buttons-part {
     position: relative;
@@ -857,3 +868,27 @@
     right: 0;
   }
 }
+
+@media (max-width: 1140px) {
+  .priority-btn {
+    gap: 4px;
+    padding: 16px 6px;
+}
+
+.priority-button-container{
+  gap: unset;
+  justify-content: space-between;
+}
+
+#assigned-to-options-container {
+  font-size: 16px;
+}
+
+.contact-option {
+  padding: 7px 14px;
+}
+}
+
+@media (min-width: 768px) {
+  
+  }
