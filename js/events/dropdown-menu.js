@@ -74,6 +74,13 @@ export function setCategory(optionElement) {
     toggleDropdownIcon('category');
     selectedCategory = optionElement.dataset.category;
 }
+ export function demoSelectCategory(categoryName = "User Story") {
+  const fakeOptionElement = document.createElement("div");
+  fakeOptionElement.textContent = categoryName;
+  fakeOptionElement.dataset.category = categoryName;
+
+  setCategory(fakeOptionElement);
+}
 
 export function clearCategory() {
     selectedCategory = null;

@@ -1,6 +1,6 @@
 import { clearInvalidFields } from "./dropdown-menu.js";
 import { addSubtask } from "./subtask-handler.js";
-import { demoSelectAssignedContact } from "./dropdown-menu.js";
+import { demoSelectAssignedContact,demoSelectCategory } from "./dropdown-menu.js";
 
 export let autofillLeft = true;
 export let autofillRight = true;
@@ -21,7 +21,7 @@ export async function autofillRightForm() {
 
   if (autofillRight) {
     demoSelectAssignedContact("Gisela Gänsehaut");
-    document.getElementById("selected-category").textContent = "User Story";
+    demoSelectCategory("User Story");
     document.getElementById("subtask-input").value =
       "Smile if it worked until here.";
     try {
