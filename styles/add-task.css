@@ -44,6 +44,7 @@
 }
 
 .label-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -353,7 +354,7 @@
   }
 
   &.open-assigned-to {
-    /* margin-top: 15px; */
+    z-index: 999;
     height: 148px;
     margin-bottom: 19px;
 
@@ -406,13 +407,6 @@
     background: var(--dark);
     border-radius: 4px;
   }
-}
-
-.spacer {
-  margin-top: -34px;
-  height: 30px;
-  width: 100%;
-  background-color: var(--lightGrey);
 }
 
 .initials-container {
@@ -663,7 +657,7 @@
 }
 
 .subtask-list:hover svg:not(.left-icon-subtask):not(.right-icon-subtask) {
-    color: var(--black);
+  color: var(--black);
 }
 
 .subtask-action-btn {
@@ -822,7 +816,7 @@
   background-color: var(--lightGrey);
 }
 
-.left-icon-subtask{
+.left-icon-subtask {
   position: absolute;
   right: 46px;
   top: 50%;
@@ -831,7 +825,7 @@
   cursor: pointer;
 }
 
-.right-icon-subtask{
+.right-icon-subtask {
   position: absolute;
   right: 10px;
   top: 50%;
@@ -840,16 +834,26 @@
   cursor: pointer;
 }
 
-.size-wrapper{
+.size-wrapper {
   max-width: 1572px;
   max-height: 1199px;
 }
 
+.error-message {
+  color: var(--peachyPink);
+  font-size: 12px;
+  margin-top: 4px;
+  display: none;
+  position: absolute;
+  top: 74px;
+
+}
+
 @media (min-width: 1921px) {
   .form-buttons-part {
-  position: relative;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 }

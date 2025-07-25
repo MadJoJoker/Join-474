@@ -17,6 +17,7 @@ function renderTitleInput() {
                 placeholder="Enter a title"
                 data-event-handle="true"
             />
+            <div id="title-error" class="error-message">This field is required</div>
         </div>
     `;
 }
@@ -70,6 +71,7 @@ function renderDueDateInput() {
                     </svg>
                 </span>
             </div>
+            <div id="due-date-error" class="error-message">This field is required</div>
         </div>
     `;
 }
@@ -181,6 +183,7 @@ function renderAssignedToSection() {
                     class="initials-container"
                     style=" border:none"
             ></div>
+            <div id="assigned-to-error" class="error-message">This field is required</div>
         </div>
     `;
 }
@@ -222,6 +225,7 @@ function renderCategorySection() {
                     id="category-options-container"
                 ></div>
             </div>
+            <div id="category-error" class="error-message">This field is required</div>
         </div>
     `;
 }

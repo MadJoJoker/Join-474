@@ -2,6 +2,7 @@ import { getFirebaseData } from "../data/API.js";
 import {
   addSubtask,
   clearSubtask,
+  clearSubtasksList,
   renderSubtasks,
   toggleSubtaskEdit,
   deleteSubtask,
@@ -17,9 +18,11 @@ import {
   selectedCategory,
   selectedContacts,
   initDropdowns,
+  clearAssignedTo,
   clearCategory,
   toggleAssignedToDropdown,
   filterContacts,
+  clearInvalidFields,
 } from "../events/dropdown-menu.js";
 import { autoFillLeftForm } from "../events/autofill-add-task.js";
 
@@ -110,7 +113,9 @@ export function clearForm() {
   setMedium(); // Aus priority-handler.js
   clearCategory(); // Aus dropdown-menu.js
   clearSubtask(); // Aus subtask-handler.js
-  selectedContacts.length = 0; // Setzen Sie selectedContacts direkt zurück (Import aus dropdown-menu.js)
+  clearSubtasksList(); // Aus subtask-handler.js
+  clearAssignedTo() // Setzen Sie selectedContacts direkt zurück (Import aus dropdown-menu.js)
+  clearInvalidFields();
 
   renderSubtasks(); // Aus subtask-handler.js
 }
@@ -121,6 +126,10 @@ function checkRequiredFields() {
   const datepickerInput = document.getElementById("datepicker");
   const categoryDropdown = document.getElementById("dropdown-category");
   const assignedToDropdown = document.getElementById("dropdown-assigned-to");
+  const titleError = document.getElementById("title-error");
+  const dueDateError = document.getElementById("due-date-error");
+  const assignedToError = document.getElementById("assigned-to-error");
+  const categoryError = document.getElementById("category-error");
 
   if (
     !titleInput ||
@@ -132,32 +141,40 @@ function checkRequiredFields() {
 
   if (!titleInput.value.trim()) {
     titleInput.classList.add("invalid");
+    titleError?.classList.add("d-flex");
     isValid = false;
   } else {
     titleInput.classList.remove("invalid");
+    titleError?.classList.remove("d-flex");
   }
 
   if (!datepickerInput.value.trim()) {
     datepickerInput.classList.add("invalid");
+    dueDateError?.classList.add("d-flex");
     isValid = false;
   } else {
     datepickerInput.classList.remove("invalid");
+    dueDateError?.classList.remove("d-flex");
   }
 
   if (!selectedCategory) {
     // Verwendet selectedCategory aus dropdown-menu.js
     categoryDropdown.classList.add("invalid");
+    categoryError?.classList.add("d-flex");
     isValid = false;
   } else {
     categoryDropdown.classList.remove("invalid");
+    categoryError?.classList.remove("d-flex");
   }
 
   if (selectedContacts.length === 0) {
     // Verwendet selectedContacts aus dropdown-menu.js
     assignedToDropdown.classList.add("invalid");
+    assignedToError?.classList.add("d-flex");
     isValid = false;
   } else {
     assignedToDropdown.classList.remove("invalid");
+    assignedToError?.classList.remove("d-flex");
   }
 
   const selectedCategorySpan = document.getElementById("selected-category");
@@ -172,9 +189,11 @@ function checkRequiredFields() {
 }
 
 export function handleInput(inputElement) {
+  const titleError = document.getElementById("title-error");
   // @param {HTMLInputElement} inputElement - Das Eingabeelement.
   if (inputElement.value.trim()) {
     inputElement.classList.remove("invalid");
+    titleError?.classList.remove("d-flex");
   }
 }
 
@@ -203,22 +222,22 @@ jedes mit 'text'- und 'completed'-Eigenschaften.*/
   const totalSubtask = addedSubtasks.map(subtask => subtask.text);
   const checkedSubtasks = addedSubtasks.map(subtask => subtask.completed);
   const subtasksCompleted = checkedSubtasks.filter(completed => completed).length;
- const assignedUsers = selectedContacts.map(selectedContact => {
-  let foundId = undefined;
-  if (fetchData && fetchData.contacts) {
-    for (const contactId in fetchData.contacts) {
-      if (Object.prototype.hasOwnProperty.call(fetchData.contacts, contactId)) {
-        if (fetchData.contacts[contactId].name === selectedContact.name) {
-          foundId = contactId;
-          break;
+  const assignedUsers = selectedContacts.map(selectedContact => {
+    let foundId = undefined;
+    if (fetchData && fetchData.contacts) {
+      for (const contactId in fetchData.contacts) {
+        if (Object.prototype.hasOwnProperty.call(fetchData.contacts, contactId)) {
+          if (fetchData.contacts[contactId].name === selectedContact.name) {
+            foundId = contactId;
+            break;
+          }
         }
       }
+    } else {
+      console.warn("WARNUNG: 'fetchData.contacts' ist nicht definiert oder leer. Zugewiesene Benutzer-IDs konnten nicht ermittelt werden.");
     }
-  } else {
-    console.warn("WARNUNG: 'fetchData.contacts' ist nicht definiert oder leer. Zugewiesene Benutzer-IDs konnten nicht ermittelt werden.");
-  }
-  return foundId;
-}).filter(id => id !== undefined);
+    return foundId;
+  }).filter(id => id !== undefined);
 
 
   return {
@@ -271,14 +290,14 @@ export async function initAddTaskForm() {
     allowInput: true,
     mobileNative: true,
     clickOpens: true,
-    onReady: function() {
-        // Setze name-Attribute für interne Inputs
-        document.querySelectorAll('.numInput:not([name])').forEach(el => {
-            el.setAttribute('name', 'flatpickr_day');
-        });
-        document.querySelectorAll('.flatpickr-monthDropdown-months:not([name])').forEach(el => {
-            el.setAttribute('name', 'flatpickr_day');
-        });
+    onReady: function () {
+      // Setze name-Attribute für interne Inputs
+      document.querySelectorAll('.numInput:not([name])').forEach(el => {
+        el.setAttribute('name', 'flatpickr_day');
+      });
+      document.querySelectorAll('.flatpickr-monthDropdown-months:not([name])').forEach(el => {
+        el.setAttribute('name', 'flatpickr_day');
+      });
     }
     // positionElement: document.getElementById("datepicker")
   });
@@ -296,10 +315,25 @@ export async function initAddTaskForm() {
   document
     .getElementById("title")
     ?.addEventListener("input", (event) => handleInput(event.target));
-  document
-    .getElementById("datepicker")
-    ?.addEventListener("input", (event) => formatDate(event.target));
-  document.getElementById("datepicker")?.addEventListener("focus", openPicker);
+
+  const datepickerInput = document.getElementById("datepicker");
+
+  datepickerInput?.addEventListener("input", (event) => {
+    formatDate(event.target);
+    if (event.target.value > 0 && event.target.classList.contains("invalid")) {
+      event.target.classList.remove("invalid");
+    }
+  });
+
+  datepickerInput?.addEventListener("focus", (event) => {
+    openPicker();
+
+    if (event.target.classList.contains("invalid")) {
+      event.target.classList.remove("invalid");
+      const dueDateError = document.getElementById("due-date-error");
+      dueDateError?.classList.remove("d-flex");
+    }
+  });
 
   document.getElementById("calendar-icon")?.addEventListener("click", () => {
     document.getElementById("datepicker").focus();
