@@ -138,6 +138,21 @@ export function renderAssignedToContacts(i, name, initials, avatarColor) {
     `;
 }
 
+export function demoSelectAssignedContact(nameToSelect = "Anna Schmidt") {
+  const contactToSelect = currentContacts.find(contact => contact.name === nameToSelect);
+
+  if (!contactToSelect) {
+    console.warn(`Kontakt ${nameToSelect} nicht gefunden.`);
+    return;
+  }
+
+  selectedContacts.length = 0;
+  selectedContacts.push(contactToSelect);
+
+  getAssignedToOptions();
+}
+
+
 export function isContactSelected(name, initials, avatarColor) {
     // @param {string} name - Der Name des Kontakts.
     // @param {string} initials - Die Initialen des Kontakts.

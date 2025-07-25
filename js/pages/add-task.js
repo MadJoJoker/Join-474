@@ -25,8 +25,9 @@ import {
   clearInvalidFields,
 } from "../events/dropdown-menu.js";
 import { autoFillLeftForm } from "../events/autofill-add-task.js";
+import { autofillRightForm } from "../events/autofill-add-task.js";
 
-import { CWDATA } from '../data/task-to-firbase.js';
+import { CWDATA } from "../data/task-to-firbase.js";
 
 let picker = null;
 
@@ -114,7 +115,7 @@ export function clearForm() {
   clearCategory(); // Aus dropdown-menu.js
   clearSubtask(); // Aus subtask-handler.js
   clearSubtasksList(); // Aus subtask-handler.js
-  clearAssignedTo() // Setzen Sie selectedContacts direkt zurück (Import aus dropdown-menu.js)
+  clearAssignedTo(); // Setzen Sie selectedContacts direkt zurück (Import aus dropdown-menu.js)
   clearInvalidFields();
 
   renderSubtasks(); // Aus subtask-handler.js
@@ -214,31 +215,38 @@ jedes mit 'text'- und 'completed'-Eigenschaften.*/
   const dueDate = document.getElementById("datepicker").value;
 
   const now = new Date();
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
   const year = now.getFullYear();
   const formattedCreatedAt = `${day}.${month}.${year}`;
 
-  const totalSubtask = addedSubtasks.map(subtask => subtask.text);
-  const checkedSubtasks = addedSubtasks.map(subtask => subtask.completed);
-  const subtasksCompleted = checkedSubtasks.filter(completed => completed).length;
-  const assignedUsers = selectedContacts.map(selectedContact => {
-    let foundId = undefined;
-    if (fetchData && fetchData.contacts) {
-      for (const contactId in fetchData.contacts) {
-        if (Object.prototype.hasOwnProperty.call(fetchData.contacts, contactId)) {
-          if (fetchData.contacts[contactId].name === selectedContact.name) {
-            foundId = contactId;
-            break;
+  const totalSubtask = addedSubtasks.map((subtask) => subtask.text);
+  const checkedSubtasks = addedSubtasks.map((subtask) => subtask.completed);
+  const subtasksCompleted = checkedSubtasks.filter(
+    (completed) => completed
+  ).length;
+  const assignedUsers = selectedContacts
+    .map((selectedContact) => {
+      let foundId = undefined;
+      if (fetchData && fetchData.contacts) {
+        for (const contactId in fetchData.contacts) {
+          if (
+            Object.prototype.hasOwnProperty.call(fetchData.contacts, contactId)
+          ) {
+            if (fetchData.contacts[contactId].name === selectedContact.name) {
+              foundId = contactId;
+              break;
+            }
           }
         }
+      } else {
+        console.warn(
+          "WARNUNG: 'fetchData.contacts' ist nicht definiert oder leer. Zugewiesene Benutzer-IDs konnten nicht ermittelt werden."
+        );
       }
-    } else {
-      console.warn("WARNUNG: 'fetchData.contacts' ist nicht definiert oder leer. Zugewiesene Benutzer-IDs konnten nicht ermittelt werden.");
-    }
-    return foundId;
-  }).filter(id => id !== undefined);
-
+      return foundId;
+    })
+    .filter((id) => id !== undefined);
 
   return {
     assignedUsers: assignedUsers,
@@ -253,7 +261,7 @@ jedes mit 'text'- und 'completed'-Eigenschaften.*/
     title: title,
     totalSubtask: totalSubtask,
     type: selectedCategory,
-    updatedAt: formattedCreatedAt
+    updatedAt: formattedCreatedAt,
   };
 }
 
@@ -292,13 +300,15 @@ export async function initAddTaskForm() {
     clickOpens: true,
     onReady: function () {
       // Setze name-Attribute für interne Inputs
-      document.querySelectorAll('.numInput:not([name])').forEach(el => {
-        el.setAttribute('name', 'flatpickr_day');
+      document.querySelectorAll(".numInput:not([name])").forEach((el) => {
+        el.setAttribute("name", "flatpickr_day");
       });
-      document.querySelectorAll('.flatpickr-monthDropdown-months:not([name])').forEach(el => {
-        el.setAttribute('name', 'flatpickr_day');
-      });
-    }
+      document
+        .querySelectorAll(".flatpickr-monthDropdown-months:not([name])")
+        .forEach((el) => {
+          el.setAttribute("name", "flatpickr_day");
+        });
+    },
     // positionElement: document.getElementById("datepicker")
   });
 
@@ -358,17 +368,33 @@ export async function initAddTaskForm() {
       filterContacts(query);
     });
 
-    filterContacts('');
+    filterContacts("");
   }
-
 
   document
     .querySelector(".resize-handle")
     ?.addEventListener("mousedown", startResize);
 
-  document.getElementById("title")?.addEventListener("focus", autoFillLeftForm, { once: true });
-  document.getElementById("task-description")?.addEventListener("focus", autoFillLeftForm, { once: true });
-  document.getElementById("datepicker")?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document
+    .getElementById("title")
+    ?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document
+    .getElementById("title")
+    ?.addEventListener("focus", autofillRightForm, { once: true });
+
+  document
+    .getElementById("task-description")
+    ?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document
+    .getElementById("task-description")
+    ?.addEventListener("focus", autofillRightForm, { once: true });
+
+  document
+    .getElementById("datepicker")
+    ?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document
+    .getElementById("datepicker")
+    ?.addEventListener("focus", autofillRightForm, { once: true });
 
   const subtaskInput = document.getElementById("subtask-input");
   const addSubtaskBtn = document.getElementById("add-subtask-btn");
