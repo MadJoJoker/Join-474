@@ -10,3 +10,5 @@ export async function loadFirebaseData() {
   }
   return firebaseData;
 }
+export { firebaseData };
+console.log('golbale Data'); // Claudia für dich der fetch, einfach importiern mit dem main.js pfad
