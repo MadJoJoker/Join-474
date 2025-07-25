@@ -275,9 +275,9 @@ export async function handleCreateTask(event) {
     const rawNewObject = createTaskObject();
     console.log("add-task.js: Erzeugtes rawNewObject:", rawNewObject); // wird später evt entfernt//
     //  await CWDATA(rawNewObject, fetchData);
+    console.log("should be working");
 
-    alert("Task created successfully! (Check console for data)");
-
+    await showTaskSuccessMsg();
     clearForm();
     const overlay = document.getElementById("overlay");
     if (overlay) {
@@ -318,7 +318,10 @@ export async function initAddTaskForm() {
 
   const addTaskForm = document.getElementById("add-task-form");
   if (addTaskForm) {
+    addTaskForm.addEventListener("submit", showTaskSuccessMsg);
+
     addTaskForm.addEventListener("submit", handleCreateTask);
+
     addTaskForm.addEventListener("reset", clearForm);
   }
 
@@ -455,4 +458,20 @@ export function addBgColorGrey() {
   if (!content) return;
 
   content.classList.add("bg-color-grey");
+}
+export async function showTaskSuccessMsg() {
+  const msg = document.getElementById("taskSuccessMsg");
+  if (!msg) return;
+
+  msg.classList.remove("hidden", "slide-out");
+  msg.classList.add("slide-in");
+
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+
+  msg.classList.remove("slide-in");
+  msg.classList.add("slide-out");
+
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  msg.classList.add("hidden");
 }

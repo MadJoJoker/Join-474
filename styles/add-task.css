@@ -103,7 +103,6 @@
   /* line-height: 40px;
   margin-bottom: 15px; */
 
-
   &::placeholder {
     color: var(--borderGrey);
   }
@@ -174,8 +173,7 @@
   cursor: pointer;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12),
-      -2px 2px 6px rgba(0, 0, 0, 0.05),
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), -2px 2px 6px rgba(0, 0, 0, 0.05),
       2px 2px 6px rgba(0, 0, 0, 0.05);
   }
 
@@ -259,7 +257,6 @@
     background-color: var(--borderGrey);
   }
 }
-
 
 .contact-option {
   padding: 7px 21px;
@@ -437,7 +434,6 @@
     background: var(--dark);
     border-radius: 4px;
   }
-
 
   /* Styling der einzelnen Initialen-Kreise innerhalb des Containers */
   .assigned-initials-circle {
@@ -847,12 +843,46 @@
   display: none;
   position: absolute;
   top: 74px;
-
 }
 
-.priority-button-container{
+.priority-button-container {
   display: flex;
   gap: 16px;
+}
+#taskSuccessMsg {
+  position: absolute;
+  gap: 12px;
+  bottom: 40%;
+  left: 40%;
+  background-color: var(--dark);
+  color: var(--white);
+  font-size: 20px;
+  font-weight: 400;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  width: 326px;
+  height: 74px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(150%);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+#taskSuccessMsg.slide-in {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+#taskSuccessMsg.slide-out {
+  transform: translateX(150%);
+  opacity: 0;
+}
+
+#taskSuccessMsg.hidden {
+  display: none;
 }
 
 /* * {
@@ -873,22 +903,21 @@
   .priority-btn {
     gap: 4px;
     padding: 16px 6px;
-}
+  }
 
-.priority-button-container{
-  gap: unset;
-  justify-content: space-between;
-}
+  .priority-button-container {
+    gap: unset;
+    justify-content: space-between;
+  }
 
-#assigned-to-options-container {
-  font-size: 16px;
-}
+  #assigned-to-options-container {
+    font-size: 16px;
+  }
 
-.contact-option {
-  padding: 7px 14px;
-}
+  .contact-option {
+    padding: 7px 14px;
+  }
 }
 
 @media (min-width: 768px) {
-  
-  }
+}
