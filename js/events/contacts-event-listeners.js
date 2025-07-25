@@ -63,17 +63,6 @@ function setupOverlayClickToClose() {
 }
 
 /**
- * Clears all input fields in the new contact form.
- */
-function clearNewContactFormInputs() {
-    ['newContactName', 'newContactEmail', 'newContactPhone'].forEach(inputId => {
-        document.getElementById(inputId).value = '';
-        const errorDiv = document.getElementById(inputId.replace('newContact', '').toLowerCase() + 'Error');
-        if (errorDiv) errorDiv.textContent = '';
-    });
-}
-
-/**
  * Autofills demo contact data on first input focus.
  */
 function setupDemoContactAutofill() {
@@ -101,30 +90,6 @@ function setupCreateContactButton() {
 }
 
 /**
- * Handles creating a new contact from input fields.
- * Validates input, displays errors, creates contact if valid.
- */
-async function handleNewContactSubmit() {
-    // 1. Input-Werte aus den Feldern holen
-    const { name, email, phone } = getNewContactInputValues();
-
-    // 2. Eingaben validieren
-    const errors = validateCustomContactForm(name, email, phone);
-
-    // 3. Validierungsfehler im UI anzeigen
-    showNewContactErrors(errors);
-
-    // 4. Abbrechen, wenn Fehler vorhanden sind
-    if (hasErrors(errors)) return;
-
-    // 5. Neuen Kontakt speichern und UI aktualisieren
-    await createContact({ name, email, phone });
-    closeOverlay('contactOverlay', true);
-    renderContacts();
-    showContactCreatedMessage();
-}
-
-/**
  * Reads and trims input values from the new contact form fields.
  * @returns {{ name: string, email: string, phone: string }}
  */
@@ -134,42 +99,6 @@ function getNewContactInputValues() {
         email: document.getElementById('newContactEmail').value.trim(),
         phone: document.getElementById('newContactPhone').value.trim()
     };
-}
-
-/**
- * Displays validation error messages in the corresponding UI elements.
- * @param {Object} errors - An object with possible error messages
- */
-function showNewContactErrors(errors) {
-    document.getElementById('nameError').textContent = errors.name;
-    document.getElementById('emailError').textContent = errors.email;
-    document.getElementById('phoneError').textContent = errors.phone;
-}
-
-/**
- * Checks if any error messages are present.
- * @param {Object} errors - An object with error messages
- * @returns {boolean} - True if there are any errors, otherwise false
- */
-function hasErrors(errors) {
-    return errors.name || errors.email || errors.phone;
-}
-
-/**
- * Custom form validation logic.
- */
-function validateCustomContactForm(name, email, phone) {
-    const errors = { name: '', email: '', phone: '' };
-    if (!name || !/^[A-Za-zÄÖÜäöüß\-]{2,}\s+[A-Za-zÄÖÜäöüß\-]{2,}$/.test(name)) {
-        errors.name = 'Please enter first and last name separated by a space, no numbers.';
-    }
-    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-        errors.email = 'Please enter a valid email address.';
-    }
-    if (!phone || !/^\+?[0-9\s\/\-]{6,}$/.test(phone)) {
-        errors.phone = 'Please enter a valid phone number (digits only, no letters).';
-    }
-    return errors;
 }
 
 /**
@@ -199,31 +128,6 @@ function setupEditContactForm() {
 }
 
 /**
- * Custom validation for editing a contact.
- */
-function validateEditContact(name, email, phone) {
-    return validateCustomContactForm(name, email, phone); // reuse same rules
-}
-
-/**
- * Handles saving an edited contact.
- * Validates input, updates contact, refreshes UI.
- */
-async function handleEditContactSave() {
-    const { name, email, phone } = getEditContactInputValues();
-    const errors = validateEditContact(name, email, phone);
-    showEditContactErrors(errors);
-    if (hasErrors(errors) || !currentlyEditingContact) return;
-    const updatedContact = buildUpdatedContact(name, email, phone);
-    await updateContact(updatedContact);
-    closeOverlay('editContactOverlay', true);
-    await renderContacts();
-    const latestContact = getContactById(updatedContact.id) || updatedContact;
-    updateDetailsCardIfVisible(latestContact);
-    setCurrentlyEditingContact(null);
-}
-
-/**
  * Reads and trims input values from the edit contact form fields.
  * @returns {{ name: string, email: string, phone: string }}
  */
@@ -233,16 +137,6 @@ function getEditContactInputValues() {
         email: document.getElementById('editEmailInput').value.trim(),
         phone: document.getElementById('editPhoneInput').value.trim()
     };
-}
-
-/**
- * Displays validation error messages in the edit contact form.
- * @param {Object} errors - Error messages for each field
- */
-function showEditContactErrors(errors) {
-    document.getElementById('editNameError').textContent = errors.name;
-    document.getElementById('editEmailError').textContent = errors.email;
-    document.getElementById('editPhoneError').textContent = errors.phone;
 }
 
 /**
@@ -300,6 +194,7 @@ function setupEditOverlayEvents() {
  */
 function handleOverlayClickOutside(event) {
     if (event.target === event.currentTarget) {
+        clearEditContactErrors();
         closeOverlay('editContactOverlay');
     }
 }
@@ -308,5 +203,125 @@ function handleOverlayClickOutside(event) {
  * Closes the overlay when the close button is clicked.
  */
 function handleOverlayCloseClick() {
+    clearEditContactErrors();
     closeOverlay('editContactOverlay');
+}
+
+// VALIDATION
+
+/**
+ * Displays validation error messages in the corresponding UI elements.
+ * @param {Object} errors - An object with possible error messages
+ */
+function showNewContactErrors(errors) {
+    document.getElementById('nameError').textContent = errors.name;
+    document.getElementById('emailError').textContent = errors.email;
+    document.getElementById('phoneError').textContent = errors.phone;
+}
+
+/**
+ * Clears all validation error messages in the edit contact form.
+ * This ensures that old errors are not displayed when reopening the overlay.
+ */
+function clearEditContactErrors() {
+    ['editNameError', 'editEmailError', 'editPhoneError'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = '';
+    });
+}
+
+/**
+ * Displays validation error messages in the edit contact form.
+ * @param {Object} errors - Error messages for each field
+ */
+function showEditContactErrors(errors) {
+    document.getElementById('editNameError').textContent = errors.name;
+    document.getElementById('editEmailError').textContent = errors.email;
+    document.getElementById('editPhoneError').textContent = errors.phone;
+}
+
+/**
+ * Custom validation for editing a contact.
+ */
+function validateEditContact(name, email, phone) {
+    return validateCustomContactForm(name, email, phone); // reuse same rules
+}
+
+/**
+ * Custom form validation logic.
+ */
+function validateCustomContactForm(name, email, phone) {
+    const errors = { name: '', email: '', phone: '' };
+    if (!name || !/^[A-Za-zÄÖÜäöüß\-]{2,}\s+[A-Za-zÄÖÜäöüß\-]{2,}$/.test(name)) {
+        errors.name = 'Please enter first and last name separated by a space, no numbers.';
+    }
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        errors.email = 'Please enter a valid email address.';
+    }
+    if (!phone || !/^\+?[0-9\s\/\-]{6,}$/.test(phone)) {
+        errors.phone = 'Please enter a valid phone number (digits only, no letters).';
+    }
+    return errors;
+}
+
+/**
+ * Handles creating a new contact from input fields.
+ * Validates input, displays errors, creates contact if valid.
+ */
+async function handleNewContactSubmit() {
+    // 1. Input-Werte aus den Feldern holen
+    const { name, email, phone } = getNewContactInputValues();
+
+    // 2. Eingaben validieren
+    const errors = validateCustomContactForm(name, email, phone);
+
+    // 3. Validierungsfehler im UI anzeigen
+    showNewContactErrors(errors);
+
+    // 4. Abbrechen, wenn Fehler vorhanden sind
+    if (hasErrors(errors)) return;
+
+    // 5. Neuen Kontakt speichern und UI aktualisieren
+    await createContact({ name, email, phone });
+    closeOverlay('contactOverlay', true);
+    renderContacts();
+    showContactCreatedMessage();
+}
+
+/**
+ * Handles saving an edited contact.
+ * Validates input, updates contact, refreshes UI.
+ */
+async function handleEditContactSave() {
+    const { name, email, phone } = getEditContactInputValues();
+    const errors = validateEditContact(name, email, phone);
+    showEditContactErrors(errors);
+    if (hasErrors(errors) || !currentlyEditingContact) return;
+    const updatedContact = buildUpdatedContact(name, email, phone);
+    await updateContact(updatedContact);
+    closeOverlay('editContactOverlay', true);
+    await renderContacts();
+    const latestContact = getContactById(updatedContact.id) || updatedContact;
+    updateDetailsCardIfVisible(latestContact);
+    setCurrentlyEditingContact(null);
+}
+
+/**
+ * Checks if any error messages are present.
+ * @param {Object} errors - An object with error messages
+ * @returns {boolean} - True if there are any errors, otherwise false
+ */
+function hasErrors(errors) {
+    return errors.name || errors.email || errors.phone;
+}
+
+/**
+ * Clears all input fields in the new contact form.
+ */
+function clearNewContactFormInputs() {
+    ['newContactName', 'newContactEmail', 'newContactPhone'].forEach(inputId => {
+        document.getElementById(inputId).value = '';
+        const errorDiv = document.getElementById(inputId.replace('newContact', '').toLowerCase() + 'Error');
+        if (errorDiv) errorDiv.textContent = '';
+    });
 }

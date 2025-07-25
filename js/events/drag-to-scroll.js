@@ -22,36 +22,46 @@ export function enableMouseDragScroll(
     let initialMouseY;
     let initialScrollLeft;
     let initialScrollTop;
-    scrollContainer.style.cursor = 'grab';
+
+    scrollContainer.style.cursor = 'default';
+
     scrollContainer.addEventListener('mousedown', (mouseEvent) => {
         isMousePressed = true;
         scrollContainer.classList.add('drag-scroll-active');
-        initialMouseX = mouseEvent.pageX - scrollContainer.offsetLeft;
-        initialMouseY = mouseEvent.pageY - scrollContainer.offsetTop;
+        initialMouseX = mouseEvent.pageX;
+        initialMouseY = mouseEvent.pageY;
         initialScrollLeft = scrollContainer.scrollLeft;
         initialScrollTop = scrollContainer.scrollTop;
         mouseEvent.preventDefault();
     });
+
     scrollContainer.addEventListener('mouseleave', () => {
         isMousePressed = false;
         scrollContainer.classList.remove('drag-scroll-active');
     });
+
     scrollContainer.addEventListener('mouseup', () => {
         isMousePressed = false;
         scrollContainer.classList.remove('drag-scroll-active');
     });
+
     scrollContainer.addEventListener('mousemove', (mouseEvent) => {
         if (!isMousePressed) return;
         mouseEvent.preventDefault();
-        const currentMouseX = mouseEvent.pageX - scrollContainer.offsetLeft;
-        const currentMouseY = mouseEvent.pageY - scrollContainer.offsetTop;
+
+        const deltaX = mouseEvent.pageX - initialMouseX;
+        const deltaY = mouseEvent.pageY - initialMouseY;
+
         if (enableHorizontalScroll) {
-            const horizontalMovement = currentMouseX - initialMouseX;
-            scrollContainer.scrollLeft = initialScrollLeft - horizontalMovement;
+            const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+            const targetScrollLeft = initialScrollLeft - deltaX;
+            scrollContainer.scrollLeft = Math.max(0, Math.min(maxScrollLeft, targetScrollLeft));
         }
+
         if (enableVerticalScroll) {
-            const verticalMovement = currentMouseY - initialMouseY;
-            scrollContainer.scrollTop = initialScrollTop - verticalMovement;
+            const maxScrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+            const targetScrollTop = initialScrollTop - deltaY;
+            scrollContainer.scrollTop = Math.max(0, Math.min(maxScrollTop, targetScrollTop));
         }
     });
 }
