@@ -17,7 +17,7 @@
     font-size: 63px;
     margin-block-start: 0;
     margin-block-end: 0;
-    max-width: 1572px;
+    /* max-width: 1572px; */
   }
 }
 
@@ -26,7 +26,7 @@
   flex-direction: column;
   padding-top: 24px;
   gap: 32px;
-  max-width: 1572px;
+  /* max-width: 1572px; */
 }
 
 .form-fill-part {
@@ -44,6 +44,7 @@
 }
 
 .label-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -101,7 +102,6 @@
   background-color: var(--white);
   /* line-height: 40px;
   margin-bottom: 15px; */
-
 
   &::placeholder {
     color: var(--borderGrey);
@@ -173,8 +173,7 @@
   cursor: pointer;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12),
-      -2px 2px 6px rgba(0, 0, 0, 0.05),
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), -2px 2px 6px rgba(0, 0, 0, 0.05),
       2px 2px 6px rgba(0, 0, 0, 0.05);
   }
 
@@ -259,7 +258,6 @@
   }
 }
 
-
 .contact-option {
   padding: 7px 21px;
   border: 1px hidden var(--borderGrey);
@@ -286,6 +284,7 @@
 }
 
 .contact-input {
+  display: flex;
   height: 100%;
   width: 100%;
   border: none;
@@ -353,7 +352,7 @@
   }
 
   &.open-assigned-to {
-    /* margin-top: 15px; */
+    z-index: 999;
     height: 148px;
     margin-bottom: 19px;
 
@@ -408,13 +407,6 @@
   }
 }
 
-.spacer {
-  margin-top: -34px;
-  height: 30px;
-  width: 100%;
-  background-color: var(--lightGrey);
-}
-
 .initials-container {
   /* Container-Layout */
   display: flex;
@@ -442,7 +434,6 @@
     background: var(--dark);
     border-radius: 4px;
   }
-
 
   /* Styling der einzelnen Initialen-Kreise innerhalb des Containers */
   .assigned-initials-circle {
@@ -582,17 +573,15 @@
 
 .middle {
   position: absolute;
-  right: 48px;
+  right: 36px;
   top: 50%;
   transform: translateY(-50%);
   width: 0;
   height: 24px;
-  border: 1px solid var(--lightGrey);
+  border: 1px solid var(--borderGrey);
 }
 
-/* Anpassung an der ul.subtask-list */
 .subtask-list {
-  /* Grundlegende Container-Styles */
   position: relative;
   width: 100%;
   height: 36px;
@@ -601,102 +590,71 @@
   display: flex;
   align-items: center;
   padding-right: 20px;
-  /* Platz für die Icons am rechten Rand */
   padding-left: 0;
-  /* Standard-Padding von UL entfernen */
   list-style-type: none;
-  /* Listenpunkte der UL entfernen */
-
-  /* Hover-Zustand für den Container selbst */
-  &:hover {
-    background-color: var(--borderGrey);
-    color: var(--black);
-  }
-
-  /* Runder Punkt vor dem Listenelement (Kreise vor den Punkten) */
-  &::before {
-    content: "";
-    /* Wichtig für Pseudoelemente */
-    display: inline-block;
-    width: 6px;
-    /* Größe des Kreises */
-    height: 6px;
-    /* Größe des Kreises */
-    border-radius: 50%;
-    /* Macht den Kreis rund */
-    background-color: var(--black);
-    /* Farbe des Kreises */
-    margin-left: 16px;
-    /* Abstand zum linken Rand des Containers */
-    margin-right: 8px;
-    /* Abstand zum Text */
-    flex-shrink: 0;
-    /* Verhindert, dass der Kreis schrumpft */
-  }
-
-  /* Innerer Container für Text und Aktionen, um sie nebeneinander zu halten */
-  .subtask-item-content {
-    display: flex;
-    /* Macht diesen Container flexibel */
-    align-items: center;
-    width: 100%;
-    /* Füllt den verfügbaren Platz aus */
-    justify-content: space-between;
-    /* Text links, Aktionen rechts */
-  }
-
-  /* Styling für den Text der Subtask */
-  .subtask-text {
-    color: var(--black);
-    flex-grow: 1;
-    /* Der Text soll so viel Platz wie möglich einnehmen */
-    overflow: hidden;
-    /* Verhindert Textüberlauf */
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    /* Zeigt "..." bei Überlauf */
-  }
-
-  .subtask-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-    padding-left: 8px;
-  }
-
-  /* Styling für den Separator zwischen den SVGs */
-  .separator {
-    width: 1px;
-    height: 20px;
-    /* Höhe des Separators */
-    background-color: var(--separatorGrey);
-    /* Farbe des Separators */
-    flex-shrink: 0;
-    /* Verhindert, dass der Separator schrumpft */
-  }
-
-  /* Allgemeine SVG-Styles innerhalb von .subtask-list */
-  svg {
-    color: var(--lightGrey);
-    cursor: pointer;
-    transition: color 0.1s ease;
-    flex-shrink: 0;
-    /* Verhindert, dass die SVGs schrumpfen */
-
-    /* Hover-Zustand für SVGs, wenn der Container .subtask-list gehovert wird */
-    .subtask-list:hover & {
-      color: var(--black);
-    }
-
-    /* .left und .right Klassen auf SVGs sind jetzt überflüssig für die Positionierung,
-       da `gap` im `.subtask-actions` und die Reihenfolge im HTML das übernehmen.
-       Sie können aber für andere, icon-spezifische Stile beibehalten werden, falls gewünscht. */
-  }
 }
 
-.subtask-list:hover svg {
-    color: var(--black);
+.subtask-list:hover {
+  background-color: var(--borderGrey);
+  color: var(--black);
+}
+
+.subtask-list::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--black);
+  margin-left: 16px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.subtask-list .subtask-item-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.subtask-list .subtask-text {
+  color: var(--black);
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.subtask-list .subtask-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding-left: 8px;
+}
+
+.subtask-list .separator {
+  width: 1px;
+  height: 20px;
+  background-color: var(--separatorGrey);
+  flex-shrink: 0;
+}
+
+.subtask-list svg:not(.left-icon-subtask):not(.right-icon-subtask) {
+  color: var(--lightGrey);
+  cursor: pointer;
+  transition: color 0.1s ease;
+  flex-shrink: 0;
+}
+
+.subtask-list:hover svg:not(.left-icon-subtask):not(.right-icon-subtask) {
+  color: var(--black);
+}
+
+.subtask-list:hover svg:not(.left-icon-subtask):not(.right-icon-subtask) {
+  color: var(--black);
 }
 
 .subtask-action-btn {
@@ -718,8 +676,9 @@
 .edit-input {
   flex-grow: 1;
   position: relative;
-  height: 32px;
   width: 100%;
+  height: 100%;
+  margin: 0 -20px 0 -30px;
   /* Passt sich der Breite des übergeordneten Flex-Items an */
   border: none;
   border-bottom: 1px solid var(--lightBlue);
@@ -787,13 +746,13 @@
 
 .form-buttons-part {
   position: absolute;
-  bottom: 58px;
-  left: 290px;
-  right: 58px;
+  bottom: 54px;
+  left: 286px;
+  right: 54px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  max-width: 1572px;
+  z-index: 1000;
 }
 
 .selected-option {
@@ -852,4 +811,113 @@
 
 .bg-color-grey {
   background-color: var(--lightGrey);
+}
+
+.left-icon-subtask {
+  position: absolute;
+  right: 46px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.right-icon-subtask {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.size-wrapper {
+  max-width: 1572px;
+  max-height: 1199px;
+}
+
+.error-message {
+  color: var(--peachyPink);
+  font-size: 12px;
+  margin-top: 4px;
+  display: none;
+  position: absolute;
+  top: 74px;
+}
+
+.priority-button-container {
+  display: flex;
+  gap: 16px;
+}
+#taskSuccessMsg {
+  position: absolute;
+  gap: 12px;
+  bottom: 40%;
+  left: 40%;
+  background-color: var(--dark);
+  color: var(--white);
+  font-size: 20px;
+  font-weight: 400;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  width: 326px;
+  height: 74px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(150%);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+#taskSuccessMsg.slide-in {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+#taskSuccessMsg.slide-out {
+  transform: translateX(150%);
+  opacity: 0;
+}
+
+#taskSuccessMsg.hidden {
+  display: none;
+}
+
+/* * {
+  background: rgba(0, 0, 255, 0.05) !important;
+  outline: 1px dashed blue !important;
+} */
+
+@media (min-width: 1921px) {
+  .form-buttons-part {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+@media (max-width: 1140px) {
+  .priority-btn {
+    gap: 4px;
+    padding: 16px 6px;
+  }
+
+  .priority-button-container {
+    gap: unset;
+    justify-content: space-between;
+  }
+
+  #assigned-to-options-container {
+    font-size: 16px;
+  }
+
+  .contact-option {
+    padding: 7px 14px;
+  }
+}
+
+@media (min-width: 768px) {
 }

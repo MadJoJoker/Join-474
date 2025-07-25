@@ -134,13 +134,14 @@ window.onEditContact = function (contactId) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  const elementsToDragScroll = document.querySelectorAll('.contacts-sidebar, .scrollable-panel');
+  const elementsToDragScroll = document.querySelectorAll('.contacts-sidebar, .contacts-details, .scrollable-panel');
   console.log('Activating drag scroll...');
 
   elementsToDragScroll.forEach((element) => {
-    console.log('Applying drag-to-scroll to:', element); // <-- hier muss es hin
+    const isContactsDetails = element.classList.contains('contacts-details');
+
     enableMouseDragScroll(element, {
-      enableHorizontalScroll: true,
+      enableHorizontalScroll: !isContactsDetails,
       enableVerticalScroll: true
     });
   });

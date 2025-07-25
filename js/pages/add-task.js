@@ -2,6 +2,7 @@ import { getFirebaseData } from "../data/API.js";
 import {
   addSubtask,
   clearSubtask,
+  clearSubtasksList,
   renderSubtasks,
   toggleSubtaskEdit,
   deleteSubtask,
@@ -17,13 +18,16 @@ import {
   selectedCategory,
   selectedContacts,
   initDropdowns,
+  clearAssignedTo,
   clearCategory,
   toggleAssignedToDropdown,
   filterContacts,
+  clearInvalidFields,
 } from "../events/dropdown-menu.js";
 import { autoFillLeftForm } from "../events/autofill-add-task.js";
+import { autofillRightForm } from "../events/autofill-add-task.js";
 
-import { CWDATA } from '../data/task-to-firbase.js';
+import { CWDATA } from "../data/task-to-firbase.js";
 
 let picker = null;
 
@@ -110,7 +114,9 @@ export function clearForm() {
   setMedium(); // Aus priority-handler.js
   clearCategory(); // Aus dropdown-menu.js
   clearSubtask(); // Aus subtask-handler.js
-  selectedContacts.length = 0; // Setzen Sie selectedContacts direkt zurück (Import aus dropdown-menu.js)
+  clearSubtasksList(); // Aus subtask-handler.js
+  clearAssignedTo(); // Setzen Sie selectedContacts direkt zurück (Import aus dropdown-menu.js)
+  clearInvalidFields();
 
   renderSubtasks(); // Aus subtask-handler.js
 }
@@ -121,6 +127,10 @@ function checkRequiredFields() {
   const datepickerInput = document.getElementById("datepicker");
   const categoryDropdown = document.getElementById("dropdown-category");
   const assignedToDropdown = document.getElementById("dropdown-assigned-to");
+  const titleError = document.getElementById("title-error");
+  const dueDateError = document.getElementById("due-date-error");
+  const assignedToError = document.getElementById("assigned-to-error");
+  const categoryError = document.getElementById("category-error");
 
   if (
     !titleInput ||
@@ -132,32 +142,40 @@ function checkRequiredFields() {
 
   if (!titleInput.value.trim()) {
     titleInput.classList.add("invalid");
+    titleError?.classList.add("d-flex");
     isValid = false;
   } else {
     titleInput.classList.remove("invalid");
+    titleError?.classList.remove("d-flex");
   }
 
   if (!datepickerInput.value.trim()) {
     datepickerInput.classList.add("invalid");
+    dueDateError?.classList.add("d-flex");
     isValid = false;
   } else {
     datepickerInput.classList.remove("invalid");
+    dueDateError?.classList.remove("d-flex");
   }
 
   if (!selectedCategory) {
     // Verwendet selectedCategory aus dropdown-menu.js
     categoryDropdown.classList.add("invalid");
+    categoryError?.classList.add("d-flex");
     isValid = false;
   } else {
     categoryDropdown.classList.remove("invalid");
+    categoryError?.classList.remove("d-flex");
   }
 
   if (selectedContacts.length === 0) {
     // Verwendet selectedContacts aus dropdown-menu.js
     assignedToDropdown.classList.add("invalid");
+    assignedToError?.classList.add("d-flex");
     isValid = false;
   } else {
     assignedToDropdown.classList.remove("invalid");
+    assignedToError?.classList.remove("d-flex");
   }
 
   const selectedCategorySpan = document.getElementById("selected-category");
@@ -172,34 +190,78 @@ function checkRequiredFields() {
 }
 
 export function handleInput(inputElement) {
+  const titleError = document.getElementById("title-error");
   // @param {HTMLInputElement} inputElement - Das Eingabeelement.
   if (inputElement.value.trim()) {
     inputElement.classList.remove("invalid");
+    titleError?.classList.remove("d-flex");
   }
 }
 
 function createTaskObject() {
+  /**
+@param {Array<Object>} selectedContacts - Ein Array von Objekten, die die ausgewählten Kontakte repräsentieren.
+Jedes Objekt sollte eine 'name'-Eigenschaft enthalten.
+@param {Object} object - Das globale Objekt, das die von api.js geladenen Daten enthält,
+insbesondere 'object.contacts', das ein Objekt mit Kontakt-IDs als Schlüsseln
+und Kontaktobjekten (mit 'name'-Eigenschaft) als Werten ist.
+@param {string} selectedCategory - Die ausgewählte Kategorie für die Aufgabe.
+@param {string} currentPriority - Die aktuelle Priorität für die Aufgabe.
+@param {Array<Object>} addedSubtasks - Ein Array von Unteraufgaben-Objekten,
+jedes mit 'text'- und 'completed'-Eigenschaften.*/
+
   const title = document.getElementById("title").value;
   const description = document.getElementById("task-description").value;
   const dueDate = document.getElementById("datepicker").value;
 
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const year = now.getFullYear();
+  const formattedCreatedAt = `${day}.${month}.${year}`;
+
+  const totalSubtask = addedSubtasks.map((subtask) => subtask.text);
+  const checkedSubtasks = addedSubtasks.map((subtask) => subtask.completed);
+  const subtasksCompleted = checkedSubtasks.filter(
+    (completed) => completed
+  ).length;
+  const assignedUsers = selectedContacts
+    .map((selectedContact) => {
+      let foundId = undefined;
+      if (fetchData && fetchData.contacts) {
+        for (const contactId in fetchData.contacts) {
+          if (
+            Object.prototype.hasOwnProperty.call(fetchData.contacts, contactId)
+          ) {
+            if (fetchData.contacts[contactId].name === selectedContact.name) {
+              foundId = contactId;
+              break;
+            }
+          }
+        }
+      } else {
+        console.warn(
+          "WARNUNG: 'fetchData.contacts' ist nicht definiert oder leer. Zugewiesene Benutzer-IDs konnten nicht ermittelt werden."
+        );
+      }
+      return foundId;
+    })
+    .filter((id) => id !== undefined);
+
   return {
-    title,
-    description,
-    dueDate,
-    category: selectedCategory,
+    assignedUsers: assignedUsers,
+    boardID: "board-1",
+    checkedSubtasks: checkedSubtasks,
+    columnID: "inProgress",
+    createdAt: formattedCreatedAt,
+    deadline: dueDate,
+    description: description,
     priority: currentPriority,
-    assignedTo: selectedContacts.map((contact) => ({
-      name: contact.name,
-      initials: contact.initials,
-      avatarColor: contact.avatarColor,
-    })),
-    subtasks: addedSubtasks.map((subtask) => ({
-      text: subtask.text,
-      completed: subtask.completed,
-    })),
-    createdAt: new Date().toISOString(),
-    columnID: "todo",
+    subtasksCompleted: subtasksCompleted,
+    title: title,
+    totalSubtask: totalSubtask,
+    type: selectedCategory,
+    updatedAt: formattedCreatedAt,
   };
 }
 
@@ -212,10 +274,10 @@ export async function handleCreateTask(event) {
     console.log("New Task Data:", newTask);
     const rawNewObject = createTaskObject();
     console.log("add-task.js: Erzeugtes rawNewObject:", rawNewObject); // wird später evt entfernt//
-    await CWDATA(rawNewObject,fetchData);
+    //  await CWDATA(rawNewObject, fetchData);
+    console.log("should be working");
 
-    alert("Task created successfully! (Check console for data)");
-
+    await showTaskSuccessMsg();
     clearForm();
     const overlay = document.getElementById("overlay");
     if (overlay) {
@@ -234,26 +296,57 @@ export async function initAddTaskForm() {
   picker = flatpickr("#datepicker", {
     dateFormat: "d.m.Y",
     allowInput: true,
-    positionElement: document.getElementById("datepicker")
+    mobileNative: true,
+    clickOpens: true,
+    onReady: function () {
+      // Setze name-Attribute für interne Inputs
+      document.querySelectorAll(".numInput:not([name])").forEach((el) => {
+        el.setAttribute("name", "flatpickr_day");
+      });
+      document
+        .querySelectorAll(".flatpickr-monthDropdown-months:not([name])")
+        .forEach((el) => {
+          el.setAttribute("name", "flatpickr_day");
+        });
+    },
+    // positionElement: document.getElementById("datepicker")
   });
 
-  flatpickr("#calendar-icon", {});
+  // flatpickr("#calendar-icon", {});
 
   initPriorityButtons(); // Aus priority-handler.js
 
   const addTaskForm = document.getElementById("add-task-form");
   if (addTaskForm) {
+    addTaskForm.addEventListener("submit", showTaskSuccessMsg);
+
     addTaskForm.addEventListener("submit", handleCreateTask);
+
     addTaskForm.addEventListener("reset", clearForm);
   }
 
   document
     .getElementById("title")
     ?.addEventListener("input", (event) => handleInput(event.target));
-  document
-    .getElementById("datepicker")
-    ?.addEventListener("input", (event) => formatDate(event.target));
-  document.getElementById("datepicker")?.addEventListener("focus", openPicker);
+
+  const datepickerInput = document.getElementById("datepicker");
+
+  datepickerInput?.addEventListener("input", (event) => {
+    formatDate(event.target);
+    if (event.target.value > 0 && event.target.classList.contains("invalid")) {
+      event.target.classList.remove("invalid");
+    }
+  });
+
+  datepickerInput?.addEventListener("focus", (event) => {
+    openPicker();
+
+    if (event.target.classList.contains("invalid")) {
+      event.target.classList.remove("invalid");
+      const dueDateError = document.getElementById("due-date-error");
+      dueDateError?.classList.remove("d-flex");
+    }
+  });
 
   document.getElementById("calendar-icon")?.addEventListener("click", () => {
     document.getElementById("datepicker").focus();
@@ -278,17 +371,33 @@ export async function initAddTaskForm() {
       filterContacts(query);
     });
 
-    filterContacts('');
+    filterContacts("");
   }
-
 
   document
     .querySelector(".resize-handle")
     ?.addEventListener("mousedown", startResize);
 
-  document.getElementById("title")?.addEventListener("focus", autoFillLeftForm, { once: true });
-  document.getElementById("task-description")?.addEventListener("focus", autoFillLeftForm, { once: true });
-  document.getElementById("datepicker")?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document
+    .getElementById("title")
+    ?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document
+    .getElementById("title")
+    ?.addEventListener("focus", autofillRightForm, { once: true });
+
+  document
+    .getElementById("task-description")
+    ?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document
+    .getElementById("task-description")
+    ?.addEventListener("focus", autofillRightForm, { once: true });
+
+  document
+    .getElementById("datepicker")
+    ?.addEventListener("focus", autoFillLeftForm, { once: true });
+  document
+    .getElementById("datepicker")
+    ?.addEventListener("focus", autofillRightForm, { once: true });
 
   const subtaskInput = document.getElementById("subtask-input");
   const addSubtaskBtn = document.getElementById("add-subtask-btn");
@@ -344,9 +453,25 @@ export function toggleAssignedToArea() {
   assignedToArea.classList.toggle("width-100");
 }
 
-export function addBgColorGrey(){
+export function addBgColorGrey() {
   const content = document.getElementById("add-task-main");
   if (!content) return;
 
   content.classList.add("bg-color-grey");
+}
+export async function showTaskSuccessMsg() {
+  const msg = document.getElementById("taskSuccessMsg");
+  if (!msg) return;
+
+  msg.classList.remove("hidden", "slide-out");
+  msg.classList.add("slide-in");
+
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+
+  msg.classList.remove("slide-in");
+  msg.classList.add("slide-out");
+
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  msg.classList.add("hidden");
 }

@@ -17,6 +17,7 @@ function renderTitleInput() {
                 placeholder="Enter a title"
                 data-event-handle="true"
             />
+            <div id="title-error" class="error-message">This field is required</div>
         </div>
     `;
 }
@@ -70,6 +71,7 @@ function renderDueDateInput() {
                     </svg>
                 </span>
             </div>
+            <div id="due-date-error" class="error-message">This field is required</div>
         </div>
     `;
 }
@@ -97,7 +99,7 @@ function renderPrioritySection() {
         <div class="label-container">
             <fieldset aria-labelledby="priority-legend" style="border: none">
                 <legend id="priority-legend" class="font-size-20">Priority</legend>
-                <div class="d-flex gap-16" role="group">
+                <div class="priority-button-container" role="group">
                     <button
                         type="button"
                         class="priority-btn urgent-btn"
@@ -147,7 +149,7 @@ function renderPrioritySection() {
 function renderAssignedToSection() {
     return `
         <div class="label-container">
-            <label for="assigned-to" class="required font-size-20">Assigned to</label>
+            <label for="select-contacts" class="required font-size-20">Assigned to</label>
             <div
                 class="select-wrapper input-field"
                 id="dropdown-assigned-to"
@@ -174,13 +176,13 @@ function renderAssignedToSection() {
                     class="assigned-to-options-container"
                     id="assigned-to-options-container"
                 ></div>
-                <div class="spacer d-none"></div>
             </div>
             <div
                     id="assigned-to-area"
                     class="initials-container"
                     style=" border:none"
             ></div>
+            <div id="assigned-to-error" class="error-message">This field is required</div>
         </div>
     `;
 }
@@ -192,11 +194,13 @@ function renderAssignedToSection() {
 function renderCategorySection() {
     return `
         <div class="label-container">
-            <label for="category" class="required font-size-20">Category</label>
+            <div for="dropdown-category" class="required font-size-20">Category</div>
             <input type="hidden" id="hidden-category-input" />
+
             <div
                 class="select-wrapper input-field"
                 id="dropdown-category"
+                name="category"
                 data-event-handle="true"
             >
                 <div class="selected-option" id="selected-category">
@@ -220,6 +224,7 @@ function renderCategorySection() {
                     id="category-options-container"
                 ></div>
             </div>
+            <div id="category-error" class="error-message">This field is required</div>
         </div>
     `;
 }
@@ -231,7 +236,7 @@ function renderCategorySection() {
 function renderSubtasksSection() {
     return `
         <div class="label-container">
-            <label for="subtask" class="font-size-20">Subtasks</label>
+            <label for="subtask-input" class="font-size-20">Subtasks</label>
             <div class="select-wrapper">
                 <input
                     type="text"
@@ -325,6 +330,7 @@ function renderFormButtons() {
 export function getAddTaskFormHTML() {
     return `
         <main id="add-task-main" class="content">
+        <div class="size-wrapper">
             <h1>Add Task</h1>
             <form id="add-task-form" class="form">
                 <div class="form-fill-part">
@@ -334,6 +340,7 @@ export function getAddTaskFormHTML() {
                 </div>
                 ${renderFormButtons()}
             </form>
+            </div>
         </main>
     `;
 }

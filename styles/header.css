@@ -116,10 +116,14 @@ a {
     display: none;
 }
 
+.join-logo-header {
+    display: none;
+}
+
 @media (max-width: 1024px) {
 
     header {
-        padding: 2px 16px;
+        padding: 2px 40px;
         height: 80px;
     }
 
@@ -127,12 +131,40 @@ a {
         display: none;
     }
 
-    .header-nav svg {
+    .header-nav a {
         display: none;
     }
 
-    .header-nav a {
-        display: none;
+    header img {
+        height: 40px;
+        width: 32px;
+    }
+
+    .header-nav {
+        padding-top: 0px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+    }
+
+    .dropdown-menu {
+        top: 77px;
+        right: -16px;
+        height: 185px;
+    }
+
+    .join-logo-header {
+        display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        top: 40px;
+        right: -10px;
+    }
+
+    header {
+        padding: 2px 16px;
     }
 
     .header-profile {
