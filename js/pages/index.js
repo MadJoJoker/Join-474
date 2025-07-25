@@ -1,6 +1,4 @@
-// TO DO:
-// required fields function
-// Sofia darf nicht in die Datenbank!
+// TO DO: Code kommentieren
 
 let fetchedData = null;
 
@@ -27,29 +25,15 @@ function removeOverlay() {
 }
 
 function handleLogin(){
+  clearRedAlerts();
   const userEmail = document.getElementById('login-email').value.trim();
   simulateUser(userEmail);
   if (!userEmail) {
+    blameEmptyInput('login-email', 'alert-login');
     return;
   } else {
     processEmailString(userEmail);
   }
-}
-
-function simulateUser(mail) {
-  if(!mail) {
-  fillLogin()
-  return;
-} 
-  insertDemoMail();
-}
-
-function insertDemoMail() {
-  fetchedData['Sofia Müller'] = {
-    email: "sofiam@gmail.com",
-    displayName: "Sofia Müller"
-  };
-  console.log("temporarly added: Sofia Müller");
 }
 
 function processEmailString(userEmail) {
@@ -57,18 +41,14 @@ function processEmailString(userEmail) {
   if(!foundMail) {
     window.location.href = '../html/sign-up.html';
   } else {
-    const displayName = checkMail(foundMail);
+    const displayName = fetchedData[foundMail].displayName;
     initialsForHeader(displayName);
     sessionStorage.setItem('currentUser', displayName);
-    let email = validateLoginPassword();
+    let email = blameEmptyInput('login-password', 'alert');
     if(email) {
       window.location.href = '../html/summary.html';
     }
   }
-}
-
-function checkMail(foundKey) {
-  return fetchedData[foundKey].displayName;
 }
 
 function initialsForHeader(displayName) {
@@ -84,11 +64,29 @@ function getInitials(fullName) {
   return first + last;
 }
 
-function directLogin() {
-  sessionStorage.setItem('headerInitials', "G");
-  sessionStorage.setItem('currentUser', "");
-  window.location.href = '../html/summary.html';
+// COMMON FUNCTIONS LOG-IN AND SIGN-UP
+
+function blameEmptyInput(inputId, alertId) {
+  const input = document.getElementById(inputId);
+  const field = input.value;
+  const valid = field != "";
+  const container = input.closest('.input-frame');
+  validateAndMarkFlexible(container, valid, alertId);
+  return valid;
 }
+
+function validateAndMarkFlexible(container, isValid, alertId) {
+  const alertBox = document.getElementById(alertId);
+  if (!isValid) {
+    container.classList.add('active');
+    alertBox.classList.remove('d-none');
+  } else {
+    container.classList.remove('active');
+    alertBox.classList.add('d-none');
+  }
+}
+
+// SIGN UP
 
 function checkUser() {
   const newEmail = document.getElementById("new-email").value.trim();
@@ -99,44 +97,64 @@ function checkUser() {
   } else {
     validateInputs();
   }
-} 
+}
 
 function validateInputs() {
-  let samePasswords = validateRegistrationPasswords();
-  if(samePasswords) {
-    checkRequiredFields(); //
-  }
-}
-
-let indexRequired = [
-  {inputId : "login-input", overlayId : "no-login-input"}
-]
-
-let signupRequired = [
-  {inputId : "new-name", overlayId : "no-new-name"},
-  {inputId : "new-email", overlayId : "no-new-email"}
-]
-
-// Aufruf fehlt noch
-function blameEmptyInput(inputMap) {
-  let isValid = true;
-  inputMap.forEach(entry => {
-    const toCheck = document.getElementById(entry[inputId]);
-    if(!toCheck.value.trim()) {
-      document.getElementById(entry[overlayId]).classList.remove("d-none");
-      isValid = false;
-    }
-  })
-  return isValid;
-}
-
-// die könnte sich auch das Feld schnappen
-function checkRequiredFields() {
-  const newName = document.getElementById("new-name").value.trim();
+  blameEmptyInput('new-name', 'no-name');
+  blameEmptyInput('new-email', 'no-email');
   const newEmail = document.getElementById("new-email").value.trim();
-  if(newName && newEmail) {
+  if (!newEmail) return;
+  const validEmail = validateEmailPattern(newEmail);
+  if (!validEmail) return;
+  const passwordsMatch = validateRegistrationPasswords();
+  if (!passwordsMatch) return;
+  checkRequiredFields(validEmail);
+}
+
+function validateEmailPattern(email) {
+  const emailRegex = /^[^\säöüÄÖÜß@]+@[^\säöüÄÖÜß@]+\.[^\säöüÄÖÜß@]+$/;
+  const valid = emailRegex.test(email);
+  if(!valid) {
+    document.getElementById('no-email').classList.remove('d-none');
+    document.getElementById('no-email').innerText = "Invalid email pattern";
+    const input = document.getElementById('new-email');
+    const container = input.closest('.input-frame');
+    container.classList.add('active');
+  } else {return true};
+}
+
+function validateRegistrationPasswords() {
+  const pw1 = document.getElementById('password-first').value;
+  const pw2 = document.getElementById('password-second').value;
+  const valid = pw1 != "" && pw1 == pw2;
+  const containersHtml = document.querySelectorAll('.password-frame');
+  containersHtml.forEach(container => {
+    validateAndMarkFlexible(container, valid, 'alert');
+  });
+  return valid;
+}
+
+function checkRequiredFields(validEmail) {
+  const newName = document.getElementById("new-name").value.trim();
+  if(newName && validEmail) {
     checkboxChecked();
   } else return;
+}
+
+//   if (typeof domElementOrSelector == 'string') {
+//     containers = document.querySelectorAll(domElementOrSelector);
+//   } else if (domElementOrSelector instanceof HTMLElement) {
+//     containers = [domElementOrSelector];
+//   }
+
+
+function clearRedAlerts() {
+  document.querySelectorAll('.input-frame.active').forEach(frame => {
+    frame.classList.remove('active');
+  });
+  document.querySelectorAll('.red-alert').forEach(alertBox => {
+    alertBox.classList.add('d-none');
+  });
 }
 
 // Password input functions
@@ -160,7 +178,7 @@ function checkInput(inputEl) {
   const iconContainer = frame.querySelector('.icon-container');
 
   if (inputEl.value.trim() !== "") {
-    // show closed-eye and attach click handler
+    // show closed-eye, add click handler
     iconContainer.innerHTML = closedEyeSVG;
     iconContainer.onclick = () => toggleInputType(inputEl, iconContainer);
   } else {
@@ -178,81 +196,11 @@ function toggleInputType(inputEl, iconContainer) {
     inputEl.type = "password";
     iconContainer.innerHTML = closedEyeSVG;
   }
-  // re-attach the click handler after swap
+  // add again the click handler after swap
   iconContainer.onclick = () => toggleInputType(inputEl, iconContainer);
 }
 
-// Alte Version mit riesigem html (3x alle icons)
-
-// function checkInput(inputEl) {
-//   const frame = inputEl.closest('.input-frame');
-//   const locker = frame.querySelector('.locker-icon');
-//   const eye = frame.querySelector('.eye');
-
-//   if (inputEl.value.trim() !== "") {
-//     locker.classList.add('d-none');
-//     eye.classList.remove('d-none');
-//   } else {
-//     locker.classList.remove('d-none');
-//     eye.classList.add('d-none');
-//   }
-// }
-
-// function toggleInputType(eyeEl) {
-//   const frame = eyeEl.closest('.input-frame');
-//   const input = frame.querySelector('.password-input');
-//   const openEye = eyeEl.querySelector('.open-eye');
-//   const closedEye = eyeEl.querySelector('.closed-eye');
-
-//   if (input.type === "password") {
-//     input.type = "text";
-//     openEye.classList.remove('d-none');
-//     closedEye.classList.add('d-none');
-//   } else {
-//     input.type = "password";
-//     openEye.classList.add('d-none');
-//     closedEye.classList.remove('d-none');
-//   }
-// }
-
-function validateLoginPassword() {
-  const pw = document.getElementById('login-password').value;
-  const valid = pw != "";
-  validateAndMark('.password-frame', valid);
-  return valid;
-}
-
-function validateRegistrationPasswords() {
-  const pw1 = document.getElementById('password-first').value;
-  const pw2 = document.getElementById('password-second').value;
-  const valid = pw1 != "" && pw1 === pw2;
-  validateAndMark('.password-frame', valid);
-  return valid;
-}
-
-function validateAndMark(selector, isValid) {
-  const frames = document.querySelectorAll(selector);
-  frames.forEach(frame => {
-    frame.classList.toggle('active', !isValid);
-  });
-  const alertBox = document.getElementById('alert');
-  if (!isValid) {
-    alertBox.classList.remove('d-none');
-  } else {
-    alertBox.classList.add('d-none');
-  }
-}
-
-document.addEventListener('click', e => {
-  if (e.target.closest('.input-frame')) {
-    document.querySelectorAll('.input-frame.active').forEach(frame => {
-      frame.classList.remove('active');
-    });
-    document.getElementById('alert').classList.add('d-none');
-  }
-});
-
-// signup: checkbox
+// onclick function checkbox
 function toggleCheckbox() {
   const unchecked = document.getElementById('unchecked');
   const checked = document.getElementById('checked');
@@ -264,6 +212,23 @@ function checkboxChecked() {
   document.getElementById("unchecked").classList.contains("d-none")
     ? objectBuilding()
     : acceptPrivacyP();
+}
+
+// DEMO MODE FUNCTIONS
+function simulateUser(mail) {
+  if(!mail) {
+  fillLogin();
+  return;
+} 
+  insertDemoMail();
+}
+
+function insertDemoMail() {
+  fetchedData['Sofia Müller'] = {
+    email: "sofiam@gmail.com",
+    displayName: "Sofia Müller"
+  };
+  console.log("temporarly added: Sofia Müller");
 }
 
 // 2 autofill demo functions + detector (changes input icon if password is *automatically* filled)
@@ -293,6 +258,7 @@ function fillSignup() {
   autofill = false;
 }
 
+// detects autofilled input and changes icon
 function SofiaDetector(passwordInput) {
   checkInput(passwordInput, `
   <svg class="closed-eye" width="22" height="19" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -300,4 +266,8 @@ function SofiaDetector(passwordInput) {
   </svg>`); 
 }
 
-initIndex();
+function directLogin() {
+  sessionStorage.setItem('headerInitials', "G");
+  sessionStorage.setItem('currentUser', "");
+  window.location.href = '../html/summary.html';
+}
