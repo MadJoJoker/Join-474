@@ -1,5 +1,5 @@
 /* BASCIC PAGE LAYOUT */
-.Xapp-container {
+/* .Xapp-container {
   height: 100vh;
   font-family: 'Inter', sans-serif;
 }
@@ -10,7 +10,7 @@
   left: 0;
   width: 232px;
   height: 100%;
-  background-color: var(--dark); /* default, damit auf jeden Fall etwas sichtbar ist */
+  background-color: var(--dark);
 }
 
 .main-content {
@@ -27,7 +27,7 @@
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
-    background-color: var(--white); /* default, damit auf jeden Fall etwas sichtbar ist */
+    background-color: var(--white);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
@@ -39,8 +39,19 @@
     padding-top: 108px;
     padding-left: 96px;
     overflow-y: auto;
-    background-color: var(--lightGrey); /* default, damit auf jeden Fall etwas sichtbar ist */
+    background-color: var(--lightGrey);
   }
+} */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--lightGrey);
 }
 
 /* SUMMARY CONTENT */
@@ -319,6 +330,32 @@
     font-size: 64px;
     letter-spacing: 1.3px;
     color: var(--lightBlue);
+  }
+}
+
+@media (width < 1480px) {
+  .summary-wrapper {
+    /* max-width: 1150px; */
+    width: auto;
+    row-gap: 32px!important;
+  }
+
+  .smry-body {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    row-gap: 32px;
+    margin-right: 96px;
+  }
+
+  .hello-user {
+    > p:first-of-type {
+      font-size: 36px; /* 48 */
+    }
+
+    > p:last-of-type {
+      font-size: 48px;  /* 64 */
+    }
   }
 }
 
