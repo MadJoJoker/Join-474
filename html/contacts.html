@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="../styles/sidebar.css">
     <link rel="stylesheet" href="../styles/colors.css">
     <link rel="stylesheet" href="../assets/fonts/font.css">
+    <link rel="stylesheet" href="../styles/contacts-mobile.css">
 </head>
 
 <body onload="includeHeaderAndSidebar()">
@@ -42,23 +43,34 @@
                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 2V61" stroke="var(--lightBlue)" stroke-width="3" stroke-linecap="round" />
                         </svg>
-                        <svg class="separator-horizontal" width="94" height="3" viewBox="0 0 94 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="separator-horizontal" width="94" height="3" viewBox="0 0 94 3" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
                             <path d="M92 1.5L2 1.5" stroke="var(--lightBlue)" stroke-width="3" stroke-linecap="round" />
                         </svg>
                         <span>Better with a team</span>
                     </div>
                     <div class="contact-details-card"></div>
+                    <div class="contact-success-msg hidden" id="contactSuccessMsg">
+                        Contact successfully created
+                    </div>
                 </section>
-                <div class="contact-success-msg hidden" id="contactSuccessMsg">
-                    Contact successfully created
-                </div>
             </main>
         </section>
     </div>
     <div class="overlay-wrapper hidden" id="contactOverlay">
         <div class="overlay-content">
             <div class="overlay-left">
-                <svg width="57" height="67" viewBox="0 0 57 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div class="overlay-close-mobile-wrapper">
+                    <button class="overlay-close overlay-close-mobile" id="closeOverlayBtnMobile">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M7.00005 8.40005L2.10005 13.3C1.91672 13.4834 1.68338 13.575 1.40005 13.575C1.11672 13.575 0.883382 13.4834 0.700049 13.3C0.516715 13.1167 0.425049 12.8834 0.425049 12.6C0.425049 12.3167 0.516715 12.0834 0.700049 11.9L5.60005 7.00005L0.700049 2.10005C0.516715 1.91672 0.425049 1.68338 0.425049 1.40005C0.425049 1.11672 0.516715 0.883382 0.700049 0.700049C0.883382 0.516715 1.11672 0.425049 1.40005 0.425049C1.68338 0.425049 1.91672 0.516715 2.10005 0.700049L7.00005 5.60005L11.9 0.700049C12.0834 0.516715 12.3167 0.425049 12.6 0.425049C12.8834 0.425049 13.1167 0.516715 13.3 0.700049C13.4834 0.883382 13.575 1.11672 13.575 1.40005C13.575 1.68338 13.4834 1.91672 13.3 2.10005L8.40005 7.00005L13.3 11.9C13.4834 12.0834 13.575 12.3167 13.575 12.6C13.575 12.8834 13.4834 13.1167 13.3 13.3C13.1167 13.4834 12.8834 13.575 12.6 13.575C12.3167 13.575 12.0834 13.4834 11.9 13.3L7.00005 8.40005Z"
+                                fill="var(--white)" />
+                        </svg>
+                    </button>
+                </div>
+                <svg class="mobile-display-none" width="57" height="67" viewBox="0 0 57 67" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path d="M40.7397 0H28.4242V13.8957H40.7397V0Z" fill="var(--white)" />
                     <path
                         d="M28.4243 25.197H40.7397V44.7947C40.796 49.5105 39.4275 54.1362 36.8083 58.0839C34.222 61.9194 29.2295 66.4829 19.9929 66.4829C9.93211 66.4829 4.06806 61.8167 0.903931 59.2597L8.67215 49.8621C11.7605 52.3352 14.7351 54.3696 20.0403 54.3696C24.057 54.3696 25.658 52.7645 26.5959 51.3646C27.8709 49.4203 28.5304 47.1465 28.4906 44.8321L28.4243 25.197Z"
@@ -162,7 +174,17 @@
     <div class="overlay-wrapper hidden" id="editContactOverlay">
         <div class="overlay-content">
             <div class="overlay-left">
-                <svg width="55" height="67" viewBox="0 0 55 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div class="overlay-close-mobile-wrapper">
+                    <button class="overlay-close overlay-close-mobile" id="closeEditOverlayBtnMobile">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M7.00005 8.40005L2.10005 13.3C1.91672 13.4834 1.68338 13.575 1.40005 13.575C1.11672 13.575 0.883382 13.4834 0.700049 13.3C0.516715 13.1167 0.425049 12.8834 0.425049 12.6C0.425049 12.3167 0.516715 12.0834 0.700049 11.9L5.60005 7.00005L0.700049 2.10005C0.516715 1.91672 0.425049 1.68338 0.425049 1.40005C0.425049 1.11672 0.516715 0.883382 0.700049 0.700049C0.883382 0.516715 1.11672 0.425049 1.40005 0.425049C1.68338 0.425049 1.91672 0.516715 2.10005 0.700049L7.00005 5.60005L11.9 0.700049C12.0834 0.516715 12.3167 0.425049 12.6 0.425049C12.8834 0.425049 13.1167 0.516715 13.3 0.700049C13.4834 0.883382 13.575 1.11672 13.575 1.40005C13.575 1.68338 13.4834 1.91672 13.3 2.10005L8.40005 7.00005L13.3 11.9C13.4834 12.0834 13.575 12.3167 13.575 12.6C13.575 12.8834 13.4834 13.1167 13.3 13.3C13.1167 13.4834 12.8834 13.575 12.6 13.575C12.3167 13.575 12.0834 13.4834 11.9 13.3L7.00005 8.40005Z"
+                                fill="var(--white)" />
+                        </svg>
+                    </button>
+                </div>
+                <svg class="mobile-display-none" width="55" height="67" viewBox="0 0 55 67" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path d="M39.1394 0H27.1931V13.8957H39.1394V0Z" fill="var(--white)" />
                     <path
                         d="M27.1931 25.197H39.1394V44.7947C39.194 49.5105 37.8665 54.1362 35.3258 58.0839C32.8171 61.9194 27.9742 66.4829 19.0145 66.4829C9.25533 66.4829 3.56707 61.8167 0.497803 59.2597L8.03314 49.8621C11.0289 52.3352 13.9144 54.3696 19.0605 54.3696C22.9568 54.3696 24.5098 52.7645 25.4196 51.3646C26.6563 49.4203 27.2961 47.1465 27.2574 44.8321L27.1931 25.197Z"
@@ -251,6 +273,7 @@
         </div>
     </div>
     <script type="module" src="../js/ui/render-contacts.js"></script>
+    <script type="module" src="../js/ui/contacts-mobile.js"></script>
     <script src="../js/pages/header-and-sidebar.js"></script>
     <script src="../js/pages/sidebar.js"></script>
 </body>

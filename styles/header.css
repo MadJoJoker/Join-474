@@ -135,12 +135,6 @@ a {
         display: none;
     }
 
-    .header-profile {
-        width: 40px;
-        height: 40px;
-        font-size: 14px;
-    }
-
     header img {
         height: 40px;
         width: 32px;
@@ -153,11 +147,29 @@ a {
     }
 
     .dropdown-menu {
-        top: 69px;
+        top: 77px;
+        right: -16px;
         height: 185px;
     }
 
     .join-logo-header {
         display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        top: 40px;
+        right: -10px;
+    }
+
+    header {
+        padding: 2px 16px;
+    }
+
+    .header-profile {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
     }
 }

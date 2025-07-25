@@ -1,0 +1,119 @@
+@media (max-width: 1350px) {
+
+    .contact {
+        margin-left: 0px;
+    }
+
+    .contact-details-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .contacts-text-separator {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .separator-vertical {
+        display: none;
+    }
+
+    .separator-horizontal {
+        display: flex;
+    }
+}
+
+@media (max-width: 1150px) {
+    .overlay-content {
+        flex-direction: column;
+        width: 90vw;
+        height: auto;
+        max-height: 90vh;
+        height: 800px;
+    }
+
+    .overlay-left {
+        width: 100%;
+        border-radius: 20px 20px 0 0;
+        align-items: center;
+        text-align: center;
+        height: 300px;
+    }
+
+    .overlay-right {
+        width: 100%;
+        border-radius: 0 0 20px 20px;
+        padding: 24px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .form-inputs,
+    .input-wrapper {
+        width: 100%;
+    }
+
+    /* Bestehende Close-Buttons ausblenden */
+    .overlay-right .overlay-close {
+        display: none !important;
+    }
+
+    /* Neue mobile Buttons zeigen */
+    .overlay-close-mobile-wrapper {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 10;
+    }
+
+    .overlay-close-mobile {
+        display: flex;
+        background: none;
+        border: none;
+        font-size: 24px;
+        height: 35px;
+        width: 35px;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+    }
+
+    .overlay-close-mobile:hover {
+        background-color: var(--lightGrey);
+    }
+
+    .mobile-display-none {
+        display: none;
+    }
+
+    .overlay-close:hover {
+        background-color: var(--dark);
+    }
+
+}
+
+@media (max-width: 1024px) {
+
+    .contact-details-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #contactSuccessMsg {
+        font-size: 20px;
+        font-weight: 400;
+        width: 250px;
+        text-align: center;
+    }
+
+    .dropdown-help {
+        display: flex;
+    }
+}
+
+@media (max-width: 768px) {}

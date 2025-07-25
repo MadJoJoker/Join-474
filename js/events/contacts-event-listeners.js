@@ -43,11 +43,12 @@ function setupOpenNewContactOverlayButton() {
  * Adds listeners for both close and cancel buttons on the new contact overlay.
  */
 function setupCloseNewContactOverlayButtons() {
-    document.getElementById('closeOverlayBtn').addEventListener('click', () => {
-        closeOverlay('contactOverlay');
-    });
-    document.getElementById('cancelOverlayBtn').addEventListener('click', () => {
-        closeOverlay('contactOverlay');
+    const ids = ['closeOverlayBtn', 'cancelOverlayBtn', 'closeOverlayBtnMobile'];
+    ids.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+            btn.addEventListener('click', () => closeOverlay('contactOverlay'));
+        }
     });
 }
 
@@ -185,8 +186,10 @@ async function handleEditContactDelete() {
 function setupEditOverlayEvents() {
     const overlay = document.getElementById('editContactOverlay');
     const closeButton = document.getElementById('closeEditOverlayBtn');
+    const mobileCloseButton = document.getElementById('closeEditOverlayBtnMobile');
     overlay.addEventListener('click', handleOverlayClickOutside);
-    closeButton.addEventListener('click', handleOverlayCloseClick);
+    if (closeButton) closeButton.addEventListener('click', handleOverlayCloseClick);
+    if (mobileCloseButton) mobileCloseButton.addEventListener('click', handleOverlayCloseClick);
 }
 
 /**

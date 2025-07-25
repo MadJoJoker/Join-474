@@ -32,6 +32,7 @@ html {
     display: flex;
     align-items: center;
     flex-direction: column;
+    padding-bottom: 100px;
 }
 
 .contact-initial {
@@ -301,7 +302,7 @@ html {
     width: auto;
     height: 512px;
     background-color: var(--white);
-    border-radius: 20px;
+    border-radius: 25px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     animation-duration: 0.4s;
     animation-fill-mode: forwards;
@@ -362,7 +363,6 @@ html {
 .overlay-close:hover {
     background-color: var(--lightGrey);
     border-radius: 50%;
-
 }
 
 .overlay-form-content {
@@ -561,24 +561,24 @@ html {
 
 /* Contact successfully created */
 #contactSuccessMsg {
-    position: fixed;
-    bottom: 100px;
-    left: 720px;
-    background-color: var(--dark);
-    color: var(--white);
-    font-size: 20px;
-    font-weight: 400;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    transform: translateX(150%);
-    opacity: 0;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-    width: 326px;
-    height: 74px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  bottom: 132px;
+  left: 32px;
+  background-color: var(--dark);
+  color: var(--white);
+  font-size: 20px;
+  font-weight: 400;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  width: 326px;
+  height: 74px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(150%);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
 #contactSuccessMsg.slide-in {
@@ -611,40 +611,6 @@ html {
     display: none;
 }
 
-@media (max-width: 1350px) {
-
-    .contact {
-        margin-left: 0px;
-    }
-
-    .contact-details-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .contacts-text-separator {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .separator-vertical {
-        display: none;
-    }
-
-    .separator-horizontal {
-        display: flex;
-    }
-}
-
-@media (max-width: 1024px) {
-
-    .contact-details-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 768px) {
-
+.dropdown-help {
+    display: none;
 }
