@@ -26,6 +26,7 @@ import {
 } from "../events/dropdown-menu.js";
 import { autoFillLeftForm } from "../events/autofill-add-task.js";
 import { autofillRightForm } from "../events/autofill-add-task.js";
+import { firebaseData } from '../../main.js';
 
 import { CWDATA } from "../data/task-to-firbase.js";
 
@@ -274,7 +275,9 @@ export async function handleCreateTask(event) {
     console.log("New Task Data:", newTask);
     const rawNewObject = createTaskObject();
     console.log("add-task.js: Erzeugtes rawNewObject:", rawNewObject); // wird später evt entfernt//
-    //  await CWDATA(rawNewObject, fetchData);
+     await CWDATA(rawNewObject, firebaseData);
+          
+
     console.log("should be working");
 
     await showTaskSuccessMsg();

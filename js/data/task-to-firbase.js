@@ -8,15 +8,15 @@ let allData = {};
  * @param {Object} receivedObject - Das Objekt, das von add-task.js übergeben wurde.
  * Es ist das ehemalige 'rawNewObject'.
  */
-export async function CWDATA(receivedObject, fetchData) { // <= CWDATA empfängt das Objekt als Parameter
+export async function CWDATA(receivedObject, firebaseData) { // <= CWDATA empfängt das Objekt als Parameter
   console.log("task-to-firebase.js: Objekt erfolgreich empfangen!", receivedObject);
-  console.log("Firebase-data empfangen: ", fetchData);
-  allData = fetchData;
+  console.log("Firebase-data empfangen: ", firebaseData);
+  allData = firebaseData;
 
   const convertedObjectWithId = await processRawObject(receivedObject);
-  
+
   console.log("fertiges Objekt, das an Firebase geschickt wird: ", convertedObjectWithId);
-  console.log("fetchData, neuer Stand; von hier Board neu renderbar ohne fetch: ", allData);
+  console.log("firebaseData, neuer Stand; von hier Board neu renderbar ohne fetch: ", allData);
 
   //return new Promise(resolve => setTimeout(resolve, 500)); // brauchst Du das noch?
 }
@@ -31,7 +31,7 @@ async function processRawObject(rawNewObject) {
 
 // key "contact-1" etc.:; muß in "contacts" gesucht und ergänzt werden.
 function convertContacts(rawNewObject) {
-  const contactKeys = rawNewObject.assignedTo.map(user => {
+  const contactKeys = rawNewObject.assignedUsers.map(user => {
     const keys = Object.keys(allData.contacts);
     const foundKey = keys.find(key => allData.contacts[key].name === user.name);
     return foundKey;
@@ -92,7 +92,7 @@ async function sendObject(pushObjectId, rawNewObject) {
 //   if (!res.ok) throw new Error(`PUT failed: ${res.status}`);
 //   const result = await res.json();
 //   console.log("PUT result:", result);
-//   return result; 
+//   return result;
 // }
 
 async function saveFirebaseData(path, data) {
