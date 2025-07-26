@@ -37,9 +37,8 @@
 .left-form {
   display: flex;
   flex-direction: column;
-  padding-right: 48px;
+  padding: 0 48px 48px 0;
   gap: 8px;
-  padding-bottom: 48px;
   width: 100%;
 }
 
@@ -86,8 +85,7 @@
 .right-form {
   display: flex;
   flex-direction: column;
-  padding-left: 48px;
-  padding-bottom: 48px;
+  padding: 0 0 48px 48px;
   width: 100%;
 }
 
@@ -216,9 +214,9 @@
 }
 
 .styled-select {
-  appearance: none;
+  /* appearance: none;
   -webkit-appearance: none;
-  -moz-appearance: none;
+  -moz-appearance: none; */
   height: 48px;
   width: 100%;
   border-radius: 10px;
@@ -832,6 +830,8 @@
 }
 
 .size-wrapper {
+  display: flex;
+  flex-direction: column;
   max-width: 1572px;
   max-height: 1199px;
 }
@@ -849,6 +849,7 @@
   display: flex;
   gap: 16px;
 }
+
 #taskSuccessMsg {
   position: absolute;
   gap: 12px;
@@ -919,5 +920,84 @@
   }
 }
 
-@media (min-width: 768px) {
+@media (max-width: 1024px) {
+  .content-container {
+  flex-direction: column;
 }
+
+  .content {
+    scrollbar-width: unset;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--dark);
+      border-radius: 4px;
+    }
+  }
+
+  .content-container {
+    height: calc(100vh - 176px);
+  }
+
+  .priority-btn {
+    gap: 8px;
+    padding: 16px 10px;
+  }
+
+  #assigned-to-options-container {
+    font-size: 20px;
+  }
+
+  .contact-option {
+    padding: 7px 21px;
+  }
+
+  .content h1 {
+    position: fixed;
+    top: 135px;
+    left: 54px;
+  }
+
+  .form-fill-part {
+    flex-direction: column;
+  }
+
+  .left-form {
+    padding: 0 0 0 0;
+  }
+
+  .border {
+    display: none;
+  }
+
+  .form {
+   
+  }
+
+  .right-form {
+    padding: 0 0 0 0;
+  }
+
+  .priority-button-container {
+    gap: 16px;
+  }
+
+  .form-buttons-part {
+    position: fixed;
+    bottom: 100px;
+    left: 54px;
+    right: 54px;
+  }
+
+  .responsive-div{
+    height: 100px;
+    width: 100%;
+    background-color: var(--lightGrey);
+  }
+}
+
+
+@media (min-width: 768px) {}

@@ -444,6 +444,9 @@ export async function initAddTaskForm() {
         }
       }
     });
+
+  handleResponsiveDiv();
+  window.addEventListener('resize', handleResponsiveDiv);
 }
 
 export function toggleAssignedToArea() {
@@ -474,4 +477,32 @@ export async function showTaskSuccessMsg() {
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   msg.classList.add("hidden");
+}
+
+export function handleResponsiveDiv() {
+  const container = document.getElementById("content")
+  const existingOne = document.getElementById('responsive-div-One');
+  const existingTwo = document.getElementById('responsive-div-Two');
+
+  if (window.innerWidth < 1024) {
+    if (!existingOne) {
+      const newDiv = document.createElement('div');
+      newDiv.id = 'responsive-div-One';
+      newDiv.className = 'responsive-div';
+
+      container?.prepend(newDiv);
+    }
+    if (!existingTwo) {
+      const newDiv = document.createElement('div');
+      newDiv.id = 'responsive-div-Two';
+      newDiv.className = 'responsive-div';
+
+      container?.appendChild(newDiv);
+    }
+  } else {
+    if (existingOne && existingTwo) {
+      existingOne.remove();
+      existingTwo.remove();
+    }
+  }
 }
