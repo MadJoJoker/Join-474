@@ -1,0 +1,195 @@
+/* mobile-css for index.html and signup.css */
+
+@media (max-width: 768px) {
+  @keyframes moveToCorner {
+    0% {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+      top: -14px;
+      left: calc(13vw - 106px);
+      transform: translate(0, 0) scale(0.387);
+    }
+  }
+
+  #login-desktop {
+    display: none;
+  }
+
+  #login-mobile {
+    display: flex;
+  }
+
+  .content-wrapper {
+    row-gap: 0;
+    padding: 34px calc(18vw - 104px);
+  }
+
+  .index-title img {
+    width: 64px;
+    padding-bottom: 17px;
+    margin-left: 14px;
+  }
+
+  .dialogue-frame {
+    margin: 78px 0;
+    width: calc(440px + (100vw - 480px) * 0.73611);
+    height: calc(476px + (100vw - 480px) * 0.055);
+    padding: 32px 0;
+
+    &.signup-height {
+      margin-top: 14px;
+      margin-bottom: 67px;
+      width: calc(430px + (100vw - 460px) * 0.5833);
+      /* height: 600px; */
+      height: clamp(587px, calc(587px + (100vw - 480px) * 0.04514), 600px);
+      padding: 32px 0;
+    }
+
+    .blue-arrow {
+      top: 46px;
+      left: 52px;
+    }
+
+    .title {
+      > h1 {
+        font-size: clamp(48px, calc(48px + (100vw - 488px) * 0.04643), 61px);
+        margin-bottom: 14px;
+      }
+
+      > svg {
+        width: calc(52vw - 154px);
+      }
+    }
+  }
+
+  .s-up-margins {
+    margin: 22px 0 32px;
+    padding: 0 16px;
+  }
+
+  .acceptPP {
+    margin-bottom: 32px;
+  }
+  
+  .login-btns {
+    flex-direction: column;
+    row-gap: 21px;
+    align-items: center;
+ 
+    > .btn:first-of-type,
+    > .btn:nth-of-type(2),
+    > .signup-now {
+      width: 182px;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 16px 24px;
+    } 
+  
+    .btn {
+      width: 182px;
+      font-weight: 500;
+      font-size: 16px;
+      padding: 16px 24px;
+    }
+  }
+
+  .sign-up {
+    max-width: 768px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 35px;
+
+    > p {
+      letter-spacing: 0.6px;
+    }
+
+    > button {
+      padding: 15px 23px;
+    }
+  }
+
+  .legal-part {
+    margin-top: 42px;
+  }
+}
+
+@media (max-width: 600px) {
+  @keyframes moveToCorner {
+    0% {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+      top: -14px;
+      left: -35px;
+      transform: translate(0, 0) scale(0.387);
+    }
+  }
+
+  .title > h1 {
+    margin-bottom: 14px;
+  }
+}
+
+@media (max-width: 500px) {
+  .login-inputs {
+    width: calc(403.0px + (100vw - 480.0px) * 1.05);
+
+    > .input-frame {
+      width: 100%;
+    }
+  }
+
+  .s-up-margins {
+    width: calc(0.4vw + 446.08px);
+
+    > .input-frame {
+    width: 100%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .dialogue-frame,
+  .dialogue-frame.s-up-margins {
+    padding: 32px 16px;
+    height: 476px;
+    width: 95%;
+    
+    &.signup-height {
+      width: 95%;
+      padding: 32px 0;
+    }
+
+    .blue-arrow {
+      left: calc(20px + (100vw - 320px) * 0.2);
+    }
+  
+    .title > svg {
+      width: 92px;
+    }
+  
+    .s-up-margins {
+      width: calc(289px + (100vw - 320px) * 0.94375);
+      margin-top: 22px;
+    }
+  }
+
+  .login-inputs {
+    width: 100%;
+    margin-top: 32px;
+  }
+
+  .input-frame {
+    width: 100%;
+
+    > input {
+    width: 60%;
+    }
+  }
+}

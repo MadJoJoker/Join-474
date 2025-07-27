@@ -1,3 +1,5 @@
+/* css for index.html and signup.css */
+
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +13,7 @@ body {
 
 .content-wrapper {
   height: 100vh;
+  height: 100%;
   max-width: 1668px;
   padding: 80px 76px;
   display: flex;
@@ -33,7 +36,6 @@ body {
   height: 100%;
   background-color: rgba(255, 255, 255, 1);
   overflow: hidden;
-
   animation: showBackground 1s ease-in forwards;
 }
 
@@ -45,7 +47,6 @@ body {
   transform: translate(-50%, -50%) scale(1); /* das verschiebt das Logo in die wirkliche Mitte */
   animation: moveToCorner 1s ease forwards;
 }
-
 
 @keyframes moveToCorner {
   0% {
@@ -68,7 +69,6 @@ body {
     background-color: rgba(255, 255, 255, 0);
   }
 }
-
 
 /* page layout */
 .index-title {
@@ -140,15 +140,18 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+  
+    > h1 {
+      font-size: 61px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
 
-  h1 {
-    font-size: 61px;
-    font-weight: 700;
-    margin-bottom: 16px;
+    > svg {
+      width: 154px;
+    }
   }
 }
-
 
 .login-inputs {
   display: flex;
@@ -161,7 +164,6 @@ body {
   height: 48px;
   border-radius: 10px;
   border: 1px solid var(--borderGrey);
-  /* padding: 12px 21px; */
   padding: 0 21px;
   display: flex;
   align-items: center;
@@ -323,45 +325,4 @@ body {
 
 .d-none {
   display: none;
-}
-
-@media (max-width: 800px) {
-  .content-wrapper {
-  padding: 80px 70px;
-  }
-}
-
-@media (max-width: 768px) {
-  .content-wrapper {
-    row-gap: 0;
-    padding: 50px 52px;
-  }
-
-  #login-desktop {
-  display: none;
-  }
-
-  #login-mobile {
-    display: flex;
-    /* flex-direction: column; */
-  }
-
-  .dialogue-frame {
-    margin: 78px 0;
-    }
-  .sign-up {
-    max-width: 768px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    column-gap: 35px;
-
-    > p {
-      letter-spacing: 0.6px;
-    }
-
-    > button {
-      padding: 15px 23px;
-    }
-  }
 }
