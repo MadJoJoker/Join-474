@@ -139,7 +139,7 @@ function renderTasksByColumn(boardData) {
     });
 
     import('../ui/render-card.js').then(module => {
-        import('../templates/task-detail-template.js').then(templateModule => {
+        import('../templates/task-details-template.js').then(templateModule => {
             if (typeof module.registerTaskCardDetailOverlay === 'function') {
                 module.registerTaskCardDetailOverlay(boardData, templateModule.getTaskOverlay);
             }

@@ -1,3 +1,5 @@
+import {getTaskOverlay} from '../templates/task-details-template.js';
+
 function validateTaskCardInput(boardData, taskID) {
     if (!boardData || !taskID || !boardData.tasks || !boardData.contacts) {
         return false;
@@ -141,48 +143,72 @@ export function createSimpleTaskCard(boardData, taskID) {
     return buildTaskCardHtmlContent(taskID, taskDetails, subtaskProgress, avatarsHtml, priorityInfo);
 }
 
-/**
- * @param {object} boardData
- * @param {(task: object, taskId: string, contacts: object) => string} getTaskOverlay
- */
-export function registerTaskCardDetailOverlay(boardData, getTaskOverlay) {
+export async function registerTaskCardDetailOverlay(boardData, getTaskOverlay) {
     const cards = document.querySelectorAll('.task-card');
+
+    // Funktion zum Laden des Overlays, damit es nur einmal geladen wird
+    let overlayHtmlLoaded = false;
+    let overlayElement = null;
+
+    async function loadOverlayHtml() {
+        if (overlayHtmlLoaded) return;
+
+        try {
+            const response = await fetch('../js/templates/task-details-overlay.html');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const html = await response.text();
+            const overlayContainer = document.getElementById('overlay-container');
+            if (overlayContainer) {
+                overlayContainer.innerHTML = html;
+                overlayElement = document.getElementById('overlay-task-detail');
+                overlayHtmlLoaded = true;
+            } else {
+                console.error('Overlay container not found!');
+            }
+        } catch (error) {
+            console.error('Failed to load task-detail-overlay.html:', error);
+        }
+    }
+
+    await loadOverlayHtml();
+
     cards.forEach(card => {
         /**
          * @param {MouseEvent} e
          */
         card.addEventListener('click', function (e) {
-            if (e.target.classList.contains('assigned-initials-circle') || e.target.closest('.priority-icon')) return;
+            if (e.target.classList.contains('assigned-initials-circle') || e.target.closest('.priority-icon')) {
+                return;
+            }
+
             const taskId = card.id;
             const task = boardData.tasks[taskId];
-            if (!task) return;
-
-            let overlay = document.getElementById('overlay-task-detail');
-            if (!overlay) {
-                const overlayContainer = document.getElementById('overlay-container');
-                if (!overlayContainer) return;
-                overlayContainer.innerHTML = `
-<div id="overlay-task-detail" class="overlay-hidden">
-   <div id="modal-content-task" class="modal-content task">
-    <button class="close-modal-btn" type="button" data-event-handle="true">&times;</button>
-    <main class="content-overlay" id="task-container"> </main>
-  </div>
-</div>`;
-                overlay = document.getElementById('overlay-task-detail');
+            if (!task) {
+                return;
             }
-            overlay.classList.remove('overlay-hidden');
 
-            const container = document.getElementById('task-container');
+            if (!overlayElement) {
+                console.error('Overlay element not initialized!');
+                return;
+            }
+
+            overlayElement.classList.remove('overlay-hidden');
+
+            const container = overlayElement.querySelector('#task-container');
             if (container) {
                 const html = getTaskOverlay(task, taskId, boardData.contacts);
                 container.innerHTML = html;
             }
 
-            const closeBtn = overlay.querySelector('.close-modal-btn, .close-modal-btn-svg');
+            const closeBtn = overlayElement.querySelector('.close-modal-btn, .close-modal-btn-svg');
             if (closeBtn) {
                 closeBtn.onclick = () => {
-                    overlay.classList.add('overlay-hidden');
-                    container.innerHTML = '';
+                    overlayElement.classList.add('overlay-hidden');
+                    if (container) {
+                        container.innerHTML = ''; // Inhalt beim Schließen leeren
+                    }
                 };
             }
         });

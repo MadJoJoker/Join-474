@@ -26,6 +26,7 @@
   display: flex;
 
 
+
   &.titleBar {
     justify-content: space-between;
     align-items: center;
@@ -76,7 +77,10 @@
   margin-top: 16px;
   margin-bottom: 16px; /* noch anzupassen */
 }
-
+.contact-option.assigned{
+  background-color: var(--white);
+  color: var(--black);
+}
 .cardMenu {
   display: flex;
   justify-content: flex-end;
