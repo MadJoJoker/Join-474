@@ -1,7 +1,6 @@
-
 let allData = {};
 
-// ZEILE 71 AUSKOMMENTIEREN, UM ÜBERTRAGUNG AN FIREBASE ZU STOPPEN
+// ZEILE 91 ODER 92 AUSKOMMENTIEREN, UM ÜBERTRAGUNG AN FIREBASE ZU STOPPEN
 
 /**
  * Empfängt ein dynamisch erzeugtes Objekt und bereitet es für die Firebase-Verarbeitung vor.
@@ -21,10 +20,30 @@ export async function CWDATA(receivedObject, firebaseData) { // <= CWDATA empfä
   //return new Promise(resolve => setTimeout(resolve, 500)); // brauchst Du das noch?
 }
 
-async function processRawObject(rawNewObject) {
+function checkDataStructure(input) {
+  if(typeof input == 'object' && !Array.isArray(input)) {
+    const keys = Object.keys(input);
+    if (keys.length == 1 && typeof input[keys[0]] == 'object') {
+      return {
+        pushObjectId: keys[0],
+        rawNewObject: input[keys[0]]
+      };
+    }
+  }
+  return {
+    pushObjectId: null,
+    rawNewObject: input
+  };
+}
+
+// let {pushObjectId, rawNewObject} = checkDataStructure(input);
+// console.log("ecco: ", pushObjectId, rawNewObject);
+
+async function processRawObject(input) {
+  let {pushObjectId, rawNewObject} = checkDataStructure(input);
   rawNewObject.assignedTo = convertContacts(rawNewObject);
   rawNewObject = arraysToObjects(rawNewObject);
-  const pushObjectId = setNextId("task");
+  if(pushObjectId == null) pushObjectId = setNextId("task");
   const result = await sendObject(pushObjectId, rawNewObject);
   return result;
 }
@@ -52,6 +71,7 @@ function setNextId(category) {
   let lastKey = getLastKey(category);
   const [prefix, numberStr] = lastKey.split("-");
   const nextNumber = (Number(numberStr) + 1).toString().padStart(3, '0');
+  // console.log("Hier gibt es eine ID: ", `${prefix}-${nextNumber}`);
   return `${prefix}-${nextNumber}`;
 }
 
@@ -67,7 +87,7 @@ function getLastKey(category) {
 
 async function sendObject(pushObjectId, rawNewObject) {
   let path = `tasks/${pushObjectId}`;
-  console.log("new path: ", path);
+  // console.log("new path: ", path, rawNewObject);
   // await saveFirebaseData(path, rawNewObject);
   // await putObjectToDatabase(path, rawNewObject);
 
@@ -77,6 +97,7 @@ async function sendObject(pushObjectId, rawNewObject) {
   };
   allData = allData || {}; // kann man streichen, ist nur zur Sicherheit
   Object.assign(allData.tasks, localObject);
+  // console.log("lokales Obj.: ", localObject);
   return rawNewObject;
 }
 
