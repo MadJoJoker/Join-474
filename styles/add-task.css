@@ -1,3 +1,7 @@
+/* body {
+  overflow-x: hidden;
+} */
+
 .content-container {
   display: flex;
   width: 100%;
@@ -125,7 +129,7 @@
   resize: none;
   height: 120px;
   width: 100%;
-  padding: 18px 16px;
+  padding: 14px 21px;
   border: 1px solid var(--borderGrey);
   border-radius: 10px;
   font-size: 20px;
@@ -797,6 +801,7 @@
 
 #assigned-to-area {
   width: 150px;
+  /* overflow: hidden; */
   transition: width 0.3s ease;
   overflow: auto;
   cursor: pointer;
@@ -805,6 +810,12 @@
 
 #assigned-to-area.width-100 {
   width: 100%;
+  /* overflow-x: visible;
+  overflow-y: visible; */
+
+
+  overflow: auto;
+  /* flex-wrap: wrap; */
 }
 
 .bg-color-grey {
@@ -851,10 +862,11 @@
 }
 
 #taskSuccessMsg {
-  position: absolute;
+  position: fixed;
   gap: 12px;
-  bottom: 40%;
-  left: 40%;
+  bottom: -100px;
+  left: calc(50% + 116px);
+  transform: translateX(-50%);
   background-color: var(--dark);
   color: var(--white);
   font-size: 20px;
@@ -867,18 +879,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translateX(150%);
   opacity: 0;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-#taskSuccessMsg.slide-in {
-  transform: translateX(0);
-  opacity: 1;
+  transition: bottom 0.4s ease, opacity 0.4s ease;
 }
 
 #taskSuccessMsg.slide-out {
-  transform: translateX(150%);
+  bottom: 50%;
+  opacity: 1;
+
+}
+
+#taskSuccessMsg.slide-in {
+  bottom: -100px;
   opacity: 0;
 }
 
@@ -886,10 +898,9 @@
   display: none;
 }
 
-/* * {
-  background: rgba(0, 0, 255, 0.05) !important;
-  outline: 1px dashed blue !important;
-} */
+.font-size-20 {
+  font-size: 20px;
+}
 
 @media (min-width: 1921px) {
   .form-buttons-part {
@@ -922,24 +933,12 @@
 
 @media (max-width: 1024px) {
   .content-container {
-  flex-direction: column;
-}
-
-  .content {
-    scrollbar-width: unset;
-
-    &::-webkit-scrollbar {
-      width: 10px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: var(--dark);
-      border-radius: 4px;
-    }
+    height: calc(100vh - 176px);
+    flex-direction: column;
   }
 
-  .content-container {
-    height: calc(100vh - 176px);
+  .content {
+    padding: 0 40px 0 40px;
   }
 
   .priority-btn {
@@ -957,8 +956,8 @@
 
   .content h1 {
     position: fixed;
-    top: 135px;
-    left: 54px;
+    top: 122px;
+    left: 40px;
   }
 
   .form-fill-part {
@@ -974,30 +973,137 @@
   }
 
   .form {
-   
+    padding-top: 0;
   }
 
   .right-form {
     padding: 0 0 0 0;
   }
 
+  #priority-legend {
+    padding: 10px 0;
+  }
+
   .priority-button-container {
     gap: 16px;
+    justify-content: unset;
   }
 
   .form-buttons-part {
     position: fixed;
-    bottom: 100px;
-    left: 54px;
-    right: 54px;
+    bottom: 96px;
+    left: 40px;
+    right: 40px;
   }
 
-  .responsive-div{
-    height: 100px;
+  .responsive-div {
+    height: 96px;
     width: 100%;
     background-color: var(--lightGrey);
+  }
+
+  #responsive-div-one {
+    height: 114px;
+  }
+
+  .priority-btn {
+    height: 41px;
+    padding: 10px 16px;
+  }
+
+  #taskSuccessMsg {
+    bottom: 50%;
+    left: 50%;
   }
 }
 
 
-@media (min-width: 768px) {}
+@media (max-width: 768px) {
+  .content {
+    padding: 0 16px 0 16px;
+  }
+
+  .content h1 {
+    top: 102px;
+    left: 16px;
+    font-size: 47px;
+  }
+
+  .responsive-div {
+    height: 88px;
+  }
+
+  #responsive-div-one {
+    height: 88px;
+  }
+
+  .font-size-20 {
+    font-size: 16px;
+  }
+
+  .input-field {
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .task-description-area {
+    height: 88px;
+    font-size: 16px;
+  }
+
+  .priority-button-container {
+    justify-content: space-between;
+  }
+
+  .priority-btn {
+    font-size: 16px;
+  }
+
+  .contact-input {
+    font-size: 16px;
+  }
+
+  .input-field-subtask {
+    font-size: 16px;
+  }
+
+  #assigned-to-options-container {
+    font-size: 16px;
+  }
+
+  #category-options-container {
+    font-size: 16px;
+  }
+
+  .select-wrapper {
+    height: 48px !important;
+  }
+
+  .form-buttons-part {
+    left: 16px;
+    right: 16px;
+    justify-content: flex-end;
+  }
+
+  #title-error {
+    top: 66px;
+  }
+
+  #due-date-error {
+    top: 66px;
+  }
+
+  #taskSuccessMsg {
+    width: 80%;
+  }
+}
+
+@media (max-width: 380px) {
+  .priority-button-container {
+    gap: 0px;
+  }
+
+  .priority-btn {
+    padding: 10px 10px;
+  }
+}

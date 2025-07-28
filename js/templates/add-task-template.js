@@ -300,7 +300,7 @@ function renderRightFormFields() {
 function renderFormButtons() {
     return `
         <div class="form-buttons-part">
-            <div class="sign-info">This field is required</div>
+            <div id="sign-info-desktop" class="sign-info">This field is required</div>
             <div class="buttons-area">
                 <button type="reset" class="clear-btn" data-event-handle="true">
                     Clear

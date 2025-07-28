@@ -275,8 +275,8 @@ export async function handleCreateTask(event) {
     console.log("New Task Data:", newTask);
     const rawNewObject = createTaskObject();
     console.log("add-task.js: Erzeugtes rawNewObject:", rawNewObject); // wird später evt entfernt//
-     await CWDATA(rawNewObject, firebaseData);
-          
+    await CWDATA(rawNewObject, firebaseData);
+
 
     console.log("should be working");
 
@@ -321,7 +321,7 @@ export async function initAddTaskForm() {
 
   const addTaskForm = document.getElementById("add-task-form");
   if (addTaskForm) {
-    addTaskForm.addEventListener("submit", showTaskSuccessMsg);
+    // addTaskForm.addEventListener("submit", showTaskSuccessMsg);
 
     addTaskForm.addEventListener("submit", handleCreateTask);
 
@@ -450,6 +450,12 @@ export async function initAddTaskForm() {
 
   handleResponsiveDiv();
   window.addEventListener('resize', handleResponsiveDiv);
+
+  syncMaxWidth();
+  window.addEventListener('resize', syncMaxWidth);
+
+  handleSignInfoMobile();
+  window.addEventListener('resize', handleSignInfoMobile);
 }
 
 export function toggleAssignedToArea() {
@@ -465,39 +471,39 @@ export function addBgColorGrey() {
 
   content.classList.add("bg-color-grey");
 }
+
 export async function showTaskSuccessMsg() {
   const msg = document.getElementById("taskSuccessMsg");
   if (!msg) return;
 
   msg.classList.remove("hidden", "slide-out");
   msg.classList.add("slide-in");
-
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
   msg.classList.remove("slide-in");
   msg.classList.add("slide-out");
 
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, 1600));
 
   msg.classList.add("hidden");
 }
 
 export function handleResponsiveDiv() {
   const container = document.getElementById("content")
-  const existingOne = document.getElementById('responsive-div-One');
-  const existingTwo = document.getElementById('responsive-div-Two');
+  const existingOne = document.getElementById('responsive-div-one');
+  const existingTwo = document.getElementById('responsive-div-two');
 
-  if (window.innerWidth < 1024) {
+  if (window.innerWidth <= 1024) {
     if (!existingOne) {
       const newDiv = document.createElement('div');
-      newDiv.id = 'responsive-div-One';
+      newDiv.id = 'responsive-div-one';
       newDiv.className = 'responsive-div';
 
       container?.prepend(newDiv);
     }
     if (!existingTwo) {
       const newDiv = document.createElement('div');
-      newDiv.id = 'responsive-div-Two';
+      newDiv.id = 'responsive-div-two';
       newDiv.className = 'responsive-div';
 
       container?.appendChild(newDiv);
@@ -508,4 +514,35 @@ export function handleResponsiveDiv() {
       existingTwo.remove();
     }
   }
+}
+
+export function handleSignInfoMobile() {
+  const container = document.querySelector(".right-form");
+  const desktop = document.getElementById('sign-info-desktop');
+  const mobile = document.getElementById('sign-info-mobile');
+
+  if (window.innerWidth <= 768) {
+    if (!mobile && desktop) {
+      const newDiv = document.createElement('div');
+      newDiv.id = 'sign-info-mobile';
+      newDiv.className = 'sign-info';
+      newDiv.textContent = 'This field is required';
+
+      container?.appendChild(newDiv);
+      desktop.classList.add('d-none');
+    }
+  } else {
+    if (mobile && desktop) {
+      mobile.remove();
+      desktop.classList.remove('d-none');
+    }
+  }
+}
+
+function syncMaxWidth() {
+  const source = document.getElementById('dropdown-assigned-to');
+  const target = document.getElementById('assigned-to-area');
+  const width = source.getBoundingClientRect().width;
+
+  target.style.maxWidth = width + 'px';
 }
