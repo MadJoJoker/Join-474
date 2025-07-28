@@ -20,10 +20,10 @@
 
   @keyframes changeColor {
     0% {
-      fill: #ffffff;
+      fill: var(--white);
     }
     100% {
-      fill: #2A3647;
+      fill: var(--dark);
     }
   }
 
