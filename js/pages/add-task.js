@@ -289,6 +289,7 @@ export async function handleCreateTask(event) {
       overlay.classList.remove("overlay-visible");
       initAddTaskForm();
     }
+    window.location.href = "board-site.html";
   } else {
     console.log("Formularvalidierung fehlgeschlagen.");
   }

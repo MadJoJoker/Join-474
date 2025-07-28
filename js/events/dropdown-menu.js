@@ -125,6 +125,29 @@ export function getAssignedToOptions() {
 
     displaySelectedContacts();
 }
+// export function getAssignedToOptions() {
+//     const currentUser = sessionStorage.getItem('currentUser'); 
+//     console.log(currentUser);
+//     let contactContainer = document.getElementById('assigned-to-options-container');
+//     if (!contactContainer) return;
+//     contactContainer.innerHTML = '';
+
+
+//     const sortedContacts = [...currentContacts].sort((a, b) => {
+//         const isCurrentUserA = a.name === currentUser;
+//         const isCurrentUserB = b.name === currentUser;
+//         if (isCurrentUserA) return -1; // a (currentUser) kommt zuerst
+//         if (isCurrentUserB) return 1;  // b (currentUser) sollte nach vorne, aber a ist nicht currentUser
+//         return 0; // normale Sortierung für andere Kontakte
+//     });
+
+//     sortedContacts.forEach((contact, i) => {
+//         const { name, initials, avatarColor } = contact;
+//         contactContainer.innerHTML += renderAssignedToContacts(i, name, initials, avatarColor);
+//     });
+
+//     displaySelectedContacts();
+// }
 
 export function renderAssignedToContacts(i, name, initials, avatarColor) {
     // @param {number} i - Der Index des Kontakts in der Liste.
