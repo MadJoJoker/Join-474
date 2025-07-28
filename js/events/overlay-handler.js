@@ -5,11 +5,11 @@ let currentOverlay = null;
  * @returns {HTMLElement|null} Das gefundene Element oder null, wenn es nicht gefunden wurde.
  */
 function getValidatedElementById(id) {
-    const element = document.getElementById(id);
-    if (!element) {
-        console.error(`Element #${id} not found.`);
-    }
-    return element;
+  const element = document.getElementById(id);
+  if (!element) {
+    console.error(`Element #${id} not found.`);
+  }
+  return element;
 }
 
 /**
@@ -18,11 +18,13 @@ function getValidatedElementById(id) {
  * @returns {HTMLElement|null} Das gefundene Element oder null, wenn es nicht gefunden wurde.
  */
 function getValidatedQuerySelector(parent, selector) {
-    const element = parent.querySelector(selector);
-    if (!element) {
-        console.error(`Element with selector '${selector}' not found within parent.`);
-    }
-    return element;
+  const element = parent.querySelector(selector);
+  if (!element) {
+    console.warn(
+      `Element with selector '${selector}' not found within parent.`
+    );
+  }
+  return element;
 }
 
 /**
@@ -30,43 +32,43 @@ function getValidatedQuerySelector(parent, selector) {
  * @param {boolean} isVisible - Ob das Overlay sichtbar sein soll (true) oder nicht (false).
  */
 function setOverlayVisibility(overlay, isVisible) {
-    if (isVisible) {
-        overlay.classList.remove('overlay-hidden');
-    } else {
-        overlay.classList.add('overlay-hidden');
-    }
+  if (isVisible) {
+    overlay.classList.remove("overlay-hidden");
+  } else {
+    overlay.classList.add("overlay-hidden");
+  }
 }
 
 /**
  * @param {boolean} disableScroll - Ob der Body-Scroll deaktiviert (true) oder aktiviert (false) werden soll.
  */
 function manageBodyScroll(disableScroll) {
-    document.body.style.overflow = disableScroll ? 'hidden' : '';
+  document.body.style.overflow = disableScroll ? "hidden" : "";
 }
 
 /**
  * @param {HTMLElement} overlay - Das aktuell geöffnete Overlay-Element.
  */
 function updateCurrentOverlay(overlay) {
-    currentOverlay = overlay;
+  currentOverlay = overlay;
 }
 
 /**
  * @param {string} overlayId - Die ID des Overlays, das als aktuelles Overlay gelöscht werden soll.
  */
 function clearCurrentOverlay(overlayId) {
-    if (currentOverlay && currentOverlay.id === overlayId) {
-        currentOverlay = null;
-    }
+  if (currentOverlay && currentOverlay.id === overlayId) {
+    currentOverlay = null;
+  }
 }
 
 /**
  * @param {string} newOverlayId - Die ID des Overlays, das geöffnet werden soll (um bestehende zu schließen).
  */
 function closeExistingOverlay(newOverlayId) {
-    if (currentOverlay && currentOverlay.id !== newOverlayId) {
-        closeSpecificOverlay(currentOverlay.id);
-    }
+  if (currentOverlay && currentOverlay.id !== newOverlayId) {
+    closeSpecificOverlay(currentOverlay.id);
+  }
 }
 
 /**
@@ -74,9 +76,9 @@ function closeExistingOverlay(newOverlayId) {
  * @param {string} overlayId - Die ID des Overlays, das geschlossen werden soll.
  */
 function attachCloseButtonListener(button, overlayId) {
-    if (button) {
-        button.addEventListener('click', () => closeSpecificOverlay(overlayId));
-    }
+  if (button) {
+    button.addEventListener("click", () => closeSpecificOverlay(overlayId));
+  }
 }
 
 /**
@@ -84,20 +86,20 @@ function attachCloseButtonListener(button, overlayId) {
  * @param {string} overlayId - Die ID des Overlays, das geschlossen werden soll.
  */
 function attachBackgroundClickListener(overlay, overlayId) {
-    overlay.addEventListener('click', (event) => {
-        if (event.target === overlay) {
-            closeSpecificOverlay(overlayId);
-        }
-    });
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) {
+      closeSpecificOverlay(overlayId);
+    }
+  });
 }
 
 /**
  * @param {HTMLElement|null} modalContent - Der Inhalt des Modals.
  */
 function attachModalContentStopper(modalContent) {
-    if (modalContent) {
-        modalContent.addEventListener('click', (event) => event.stopPropagation());
-    }
+  if (modalContent) {
+    modalContent.addEventListener("click", (event) => event.stopPropagation());
+  }
 }
 
 /**
@@ -105,48 +107,86 @@ function attachModalContentStopper(modalContent) {
  * @param {string} overlayId - Die ID des Overlays, das geschlossen werden soll.
  */
 function attachEscapeKeyListener(overlay, overlayId) {
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && overlay && !overlay.classList.contains('overlay-hidden')) {
-            closeSpecificOverlay(overlayId);
-        }
-    });
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      overlay &&
+      !overlay.classList.contains("overlay-hidden")
+    ) {
+      closeSpecificOverlay(overlayId);
+    }
+  });
 }
 
 /**
  * @param {string} overlayId - Die ID des zu öffnenden Overlays.
  */
 export function openSpecificOverlay(overlayId) {
-    closeExistingOverlay(overlayId);
-    const overlay = getValidatedElementById(overlayId);
-    if (!overlay) return;
-    setOverlayVisibility(overlay, true);
-    manageBodyScroll(true);
-    updateCurrentOverlay(overlay);
-    console.log(`Overlay '${overlayId}' opened.`);
+  closeExistingOverlay(overlayId);
+  const overlay = getValidatedElementById(overlayId);
+  if (!overlay) return;
+  setOverlayVisibility(overlay, true);
+  manageBodyScroll(true);
+  updateCurrentOverlay(overlay);
+  console.log(`Overlay '${overlayId}' opened.`);
 }
 
 /**
  * @param {string} overlayId - Die ID des zu schließenden Overlays.
  */
 export function closeSpecificOverlay(overlayId) {
-    const overlay = getValidatedElementById(overlayId);
-    if (!overlay) return;
-    setOverlayVisibility(overlay, false);
-    manageBodyScroll(false);
-    clearCurrentOverlay(overlayId);
-    console.log(`Overlay '${overlayId}' closed.`);
+  const overlay = getValidatedElementById(overlayId);
+  if (!overlay) return;
+  setOverlayVisibility(overlay, false);
+  manageBodyScroll(false);
+  clearCurrentOverlay(overlayId);
+  console.log(`Overlay '${overlayId}' closed.`);
 }
 
 /**
  * @param {string} overlayId - Die ID des Overlays, für das die Listener initialisiert werden sollen.
  */
 export function initOverlayListeners(overlayId) {
-    const overlay = getValidatedElementById(overlayId);
-    if (!overlay) return;
-    const modalContent = getValidatedQuerySelector(overlay, '.modal-content');
-    const closeModalButton = getValidatedQuerySelector(overlay, '.close-modal-btn');
-    attachCloseButtonListener(closeModalButton, overlayId);
-    attachBackgroundClickListener(overlay, overlayId);
-    attachModalContentStopper(modalContent);
-    attachEscapeKeyListener(overlay, overlayId);
+  const overlay = getValidatedElementById(overlayId);
+  if (!overlay) return;
+  // Suche nach allen gängigen Modal-Content-Klassen/IDs
+  let modalContent = getValidatedQuerySelector(overlay, ".modal-content");
+  if (!modalContent)
+    modalContent = getValidatedQuerySelector(overlay, ".modal-content-task");
+  if (!modalContent)
+    modalContent = getValidatedQuerySelector(
+      overlay,
+      ".modal-content-task-edit"
+    );
+  if (!modalContent)
+    modalContent = getValidatedQuerySelector(overlay, "#modal-content");
+  if (!modalContent)
+    modalContent = getValidatedQuerySelector(overlay, "#modal-content-task");
+  if (!modalContent)
+    modalContent = getValidatedQuerySelector(
+      overlay,
+      "#modal-content-task-detail-edit"
+    );
+  if (!modalContent)
+    modalContent = getValidatedQuerySelector(
+      overlay,
+      "#modal-content-task-edit"
+    );
+  if (!modalContent) {
+    // Fallback: Nimm das erste direkte Kind-DIV des Overlays
+    modalContent = overlay.querySelector("div");
+    if (!modalContent) {
+      console.warn(
+        `Kein modalContent gefunden für Overlay '${overlayId}'. Event-Handler werden nicht gesetzt.`
+      );
+    }
+  }
+  const closeModalButton = getValidatedQuerySelector(
+    overlay,
+    ".close-modal-btn"
+  );
+  attachCloseButtonListener(closeModalButton, overlayId);
+  attachBackgroundClickListener(overlay, overlayId);
+  if (modalContent) attachModalContentStopper(modalContent);
+  attachEscapeKeyListener(overlay, overlayId);
 }
