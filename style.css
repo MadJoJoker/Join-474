@@ -43,7 +43,7 @@
   }
 }
 
-@media (width < 1024px) {
+@media (max-width: 1024px) {
   .app-container {
     display: flex;
     flex-direction: column-reverse;
