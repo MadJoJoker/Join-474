@@ -5,7 +5,7 @@
  * Generiert das HTML für das Titel-Eingabefeld.
  * @returns {string} Der HTML-String für das Titel-Eingabefeld.
  */
-function renderTitleInput() {
+function renderTitleInput(task) {
     return `
         <div class="label-container">
             <label for="title" class="required font-size-20">Title</label>
@@ -16,6 +16,7 @@ function renderTitleInput() {
                 id="title"
                 placeholder="Enter a title"
                 data-event-handle="true"
+                value="${task?.title ? task.title.replace(/"/g, '&quot;') : ''}"
             />
             <div id="title-error" class="error-message">This field is required</div>
         </div>
@@ -26,7 +27,7 @@ function renderTitleInput() {
  * Generiert das HTML für das Beschreibungs-Textfeld.
  * @returns {string} Der HTML-String für das Beschreibungs-Textfeld.
  */
-function renderDescriptionInput() {
+function renderDescriptionInput(task) {
     return `
         <div class="label-container">
             <label for="task-description" class="font-size-20">Description</label>
@@ -36,7 +37,7 @@ function renderDescriptionInput() {
                     id="task-description"
                     class="task-description-area"
                     placeholder="Enter a Description"
-                ></textarea>
+                >${task?.description ? task.description : ''}</textarea>
                 <img
                     src="../assets/icons/btn/resize-handle.svg"
                     class="resize-handle"
@@ -52,7 +53,7 @@ function renderDescriptionInput() {
  * Generiert das HTML für das Fälligkeitsdatum-Eingabefeld und das Kalender-Icon.
  * @returns {string} Der HTML-String für das Fälligkeitsdatum.
  */
-function renderDueDateInput() {
+function renderDueDateInput(task) {
     return `
         <div class="label-container">
             <label for="datepicker" class="required font-size-20">Due Date</label>
@@ -64,6 +65,7 @@ function renderDueDateInput() {
                     placeholder="dd/mm/yyyy"
                     class="input-field"
                     data-event-handle="true"
+                    value="${task?.dueDate ? task.dueDate : ''}"
                 />
                 <span id="calendar-icon" class="calendar-icon" data-event-handle="true">
                     <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -80,12 +82,12 @@ function renderDueDateInput() {
  * Generiert das HTML für den linken Teil des Formulars (Titel, Beschreibung, Fälligkeitsdatum).
  * @returns {string} Der HTML-String für den linken Formularteil.
  */
-function renderLeftFormFields() {
+function renderLeftFormFields(task) {
     return `
         <div class="left-form">
-            ${renderTitleInput()}
-            ${renderDescriptionInput()}
-            ${renderDueDateInput()}
+            ${renderTitleInput(task)}
+            ${renderDescriptionInput(task)}
+            ${renderDueDateInput(task)}
         </div>
     `;
 }
@@ -94,48 +96,15 @@ function renderLeftFormFields() {
  * Generiert das HTML für die Prioritätsauswahl-Buttons.
  * @returns {string} Der HTML-String für die Prioritätsauswahl.
  */
-function renderPrioritySection() {
+function renderPrioritySection(task) {
     return `
         <div class="label-container">
             <fieldset aria-labelledby="priority-legend" style="border: none">
                 <legend id="priority-legend" class="font-size-20">Priority</legend>
                 <div class="priority-button-container" role="group">
-                    <button
-                        type="button"
-                        class="priority-btn urgent-btn"
-                        data-priority="urgent"
-                        data-event-handle="true"
-                    >
-                        Urgent
-                        <img
-                            src="../assets/icons/property/urgent.svg"
-                            alt="Urgent Icon"
-                        />
-                    </button>
-                    <button
-                        type="button"
-                        class="priority-btn medium-btn active"
-                        data-priority="medium"
-                        data-event-handle="true"
-                    >
-                        Medium
-                        <img
-                            src="../assets/icons/property/medium.svg"
-                            alt="Medium Icon"
-                        />
-                    </button>
-                    <button
-                        type="button"
-                        class="priority-btn low-btn"
-                        data-priority="low"
-                        data-event-handle="true"
-                    >
-                        Low
-                        <img
-                            src="../assets/icons/property/low.svg"
-                            alt="Low Icon"
-                        />
-                    </button>
+                    <button type="button" class="priority-btn urgent-btn${task?.priority==='urgent'?' active':''}" data-priority="urgent" data-event-handle="true">Urgent <img src="../assets/icons/property/urgent.svg" alt="Urgent Icon" /></button>
+                    <button type="button" class="priority-btn medium-btn${task?.priority==='medium'?' active':''}" data-priority="medium" data-event-handle="true">Medium <img src="../assets/icons/property/medium.svg" alt="Medium Icon" /></button>
+                    <button type="button" class="priority-btn low-btn${task?.priority==='low'?' active':''}" data-priority="low" data-event-handle="true">Low <img src="../assets/icons/property/low.svg" alt="Low Icon" /></button>
                 </div>
             </fieldset>
         </div>
@@ -146,7 +115,7 @@ function renderPrioritySection() {
  * Generiert das HTML für den "Assigned to"-Dropdown-Bereich.
  * @returns {string} Der HTML-String für den "Assigned to"-Bereich.
  */
-function renderAssignedToSection() {
+function renderAssignedToSection(task) {
     return `
         <div class="label-container">
             <label for="select-contacts" class="required font-size-20">Assigned to</label>
@@ -155,9 +124,8 @@ function renderAssignedToSection() {
                 id="dropdown-assigned-to"
                 data-event-handle="true"
             >
-                
-                <input name="select-contacts" type="text" id="select-contacts" class="contact-input"
-                      placeholder="Select contacts to assign" />
+
+                <input name="select-contacts" type="text" id="select-contacts" class="contact-input" placeholder="Select contacts to assign" value="${Array.isArray(task?.assignedTo) ? task.assignedTo.join(', ') : ''}" />
 
                 <div
                     class="dropdown-icon-container"
@@ -191,11 +159,11 @@ function renderAssignedToSection() {
  * Generiert das HTML für den Kategorie-Dropdown-Bereich.
  * @returns {string} Der HTML-String für den Kategorie-Bereich.
  */
-function renderCategorySection() {
+function renderCategorySection(task) {
     return `
         <div class="label-container">
             <div for="dropdown-category" class="required font-size-20">Category</div>
-            <input type="hidden" id="hidden-category-input" />
+            <input type="hidden" id="hidden-category-input" value="${task?.category || ''}" />
 
             <div
                 class="select-wrapper input-field"
@@ -203,9 +171,7 @@ function renderCategorySection() {
                 name="category"
                 data-event-handle="true"
             >
-                <div class="selected-option" id="selected-category">
-                    Select task category
-                </div>
+                <div class="selected-option" id="selected-category">${task?.category ? task.category : 'Select task category'}</div>
                 <div
                     class="dropdown-icon-container"
                     id="dropdown-icon-container-two"
@@ -233,7 +199,7 @@ function renderCategorySection() {
  * Generiert das HTML für den Subtasks-Eingabebereich und die Liste.
  * @returns {string} Der HTML-String für den Subtasks-Bereich.
  */
-function renderSubtasksSection() {
+function renderSubtasksSection(task) {
     return `
         <div class="label-container">
             <label for="subtask-input" class="font-size-20">Subtasks</label>
@@ -248,14 +214,14 @@ function renderSubtasksSection() {
                 <div id="subtask-icons" class="input-button" style="opacity: 0;">
                     <button type="button" class="subtask-action-btn" id="subtask-clear-btn" data-event-handle="true">
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.14434 8.40005L2.24434 13.3C2.061 13.4834 1.82767 13.575 1.54434 13.575C1.261 13.575 1.02767 13.4834 0.844336 13.3C0.661003 13.1167 0.569336 12.8834 0.569336 12.6C0.569336 12.3167 0.661003 12.0834 0.844336 11.9L5.74434 7.00005L0.844336 2.10005C0.661003 1.91672 0.569336 1.68338 0.569336 1.40005C0.569336 1.11672 0.661003 0.883382 0.844336 0.700049C1.02767 0.516715 1.261 0.425049 1.54434 0.425049C1.82767 0.425049 2.061 0.516715 2.24434 0.700049L7.14434 5.60005L12.0443 0.700049C12.2277 0.516715 12.461 0.425049 12.7443 0.425049C13.0277 0.425049 13.261 0.516715 13.4443 0.700049C13.6277 0.883382 13.7193 1.11672 13.7193 1.40005C13.7193 1.68338 13.6277 1.91672 13.4443 2.10005L8.54434 7.00005L13.4443 11.9C13.6277 12.0834 13.7193 12.3167 13.7193 12.6C13.7193 12.8834 13.6277 13.1167 13.4443 13.3C13.261 13.4834 13.0277 13.575 12.7443 13.575C12.461 13.575 12.2277 13.4834 12.0443 13.3L7.14434 8.40005Z" 
+                            <path d="M7.14434 8.40005L2.24434 13.3C2.061 13.4834 1.82767 13.575 1.54434 13.575C1.261 13.575 1.02767 13.4834 0.844336 13.3C0.661003 13.1167 0.569336 12.8834 0.569336 12.6C0.569336 12.3167 0.661003 12.0834 0.844336 11.9L5.74434 7.00005L0.844336 2.10005C0.661003 1.91672 0.569336 1.68338 0.569336 1.40005C0.569336 1.11672 0.661003 0.883382 0.844336 0.700049C1.02767 0.516715 1.261 0.425049 1.54434 0.425049C1.82767 0.425049 2.061 0.516715 2.24434 0.700049L7.14434 5.60005L12.0443 0.700049C12.2277 0.516715 12.461 0.425049 12.7443 0.425049C13.0277 0.425049 13.261 0.516715 13.4443 0.700049C13.6277 0.883382 13.7193 1.11672 13.7193 1.40005C13.7193 1.68338 13.6277 1.91672 13.4443 2.10005L8.54434 7.00005L13.4443 11.9C13.6277 12.0834 13.7193 12.3167 13.7193 12.6C13.7193 12.8834 13.6277 13.1167 13.4443 13.3C13.261 13.4834 13.0277 13.575 12.7443 13.575C12.461 13.575 12.2277 13.4834 12.0443 13.3L7.14434 8.40005Z"
                             fill="#2A3647"/>
                         </svg>
                     </button>
                     <div class="subtask-separator"></div>
                     <button type="button" class="subtask-action-btn" id="subtask-add-task-btn" data-event-handle="true">
                         <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.69474 9.15L14.1697 0.675C14.3697 0.475 14.6072 0.375 14.8822 0.375C15.1572 0.375 15.3947 0.475 15.5947 0.675C15.7947 0.875 15.8947 1.1125 15.8947 1.3875C15.8947 1.6625 15.7947 1.9 15.5947 2.1L6.39474 11.3C6.19474 11.5 5.96141 11.6 5.69474 11.6C5.42807 11.6 5.19474 11.5 4.99474 11.3L0.694738 7C0.494738 6.8 0.398905 6.5625 0.407238 6.2875C0.415572 6.0125 0.519738 5.775 0.719738 5.575C0.919738 5.375 1.15724 5.275 1.43224 5.275C1.70724 5.275 1.94474 5.375 2.14474 5.575L5.69474 9.15Z" 
+                            <path d="M5.69474 9.15L14.1697 0.675C14.3697 0.475 14.6072 0.375 14.8822 0.375C15.1572 0.375 15.3947 0.475 15.5947 0.675C15.7947 0.875 15.8947 1.1125 15.8947 1.3875C15.8947 1.6625 15.7947 1.9 15.5947 2.1L6.39474 11.3C6.19474 11.5 5.96141 11.6 5.69474 11.6C5.42807 11.6 5.19474 11.5 4.99474 11.3L0.694738 7C0.494738 6.8 0.398905 6.5625 0.407238 6.2875C0.415572 6.0125 0.519738 5.775 0.719738 5.575C0.919738 5.375 1.15724 5.275 1.43224 5.275C1.70724 5.275 1.94474 5.375 2.14474 5.575L5.69474 9.15Z"
                             fill="#2A3647"/>
                         </svg>
                     </button>
@@ -268,12 +234,12 @@ function renderSubtasksSection() {
                     data-event-handle="true"
                 >
                     <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6.14453 8H1.14453C0.861198 8 0.623698 7.90417 0.432031 7.7125C0.240365 7.52083 0.144531 7.28333 0.144531 7C0.144531 6.71667 0.240365 6.47917 0.432031 6.2875C0.623698 6.09583 0.861198 6 1.14453 6H6.14453V1C6.14453 0.716667 6.24036 0.479167 6.43203 0.2875C6.6237 0.0958333 6.8612 0 7.14453 0C7.42786 0 7.66536 0.0958333 7.85703 0.2875C8.0487 0.479167 8.14453 0.716667 8.14453 1V6H13.1445C13.4279 6 13.6654 6.09583 13.857 6.2875C14.0487 6.47917 14.1445 6.71667 14.1445 7C14.1445 7.28333 14.0487 7.52083 13.857 7.7125C13.6654 7.90417 13.4279 8 13.1445 8H8.14453V13C8.14453 13.2833 8.0487 13.5208 7.85703 13.7125C7.66536 13.9042 7.42786 14 7.14453 14C6.8612 14 6.6237 13.9042 6.43203 13.7125C6.24036 13.5208 6.14453 13.2833 6.14453 13V8Z" 
+                        <path d="M6.14453 8H1.14453C0.861198 8 0.623698 7.90417 0.432031 7.7125C0.240365 7.52083 0.144531 7.28333 0.144531 7C0.144531 6.71667 0.240365 6.47917 0.432031 6.2875C0.623698 6.09583 0.861198 6 1.14453 6H6.14453V1C6.14453 0.716667 6.24036 0.479167 6.43203 0.2875C6.6237 0.0958333 6.8612 0 7.14453 0C7.42786 0 7.66536 0.0958333 7.85703 0.2875C8.0487 0.479167 8.14453 0.716667 8.14453 1V6H13.1445C13.4279 6 13.6654 6.09583 13.857 6.2875C14.0487 6.47917 14.1445 6.71667 14.1445 7C14.1445 7.28333 14.0487 7.52083 13.857 7.7125C13.6654 7.90417 13.4279 8 13.1445 8H8.14453V13C8.14453 13.2833 8.0487 13.5208 7.85703 13.7125C7.66536 13.9042 7.42786 14 7.14453 14C6.8612 14 6.6237 13.9042 6.43203 13.7125C6.24036 13.5208 6.14453 13.2833 6.14453 13V8Z"
                         fill="#2A3647"/>
                     </svg>
                 </button>
             </div>
-            <ul id="subtasks-list" class="subtasks-list"></ul>
+            <ul id="subtasks-list" class="subtasks-list">${Array.isArray(task?.subtasks) ? task.subtasks.map(st => `<li>${st}</li>`).join('') : ''}</ul>
         </div>
     `;
 }
@@ -282,13 +248,13 @@ function renderSubtasksSection() {
  * Generiert das HTML für den rechten Teil des Formulars (Priorität, Zugewiesen, Kategorie, Unteraufgaben).
  * @returns {string} Der HTML-String für den rechten Formularteil.
  */
-function renderRightFormFields() {
+function renderRightFormFields(task) {
     return `
         <div class="right-form">
-            ${renderPrioritySection()}
-            ${renderAssignedToSection()}
-            ${renderCategorySection()}
-            ${renderSubtasksSection()}
+            ${renderPrioritySection(task)}
+            ${renderAssignedToSection(task)}
+            ${renderCategorySection(task)}
+            ${renderSubtasksSection(task)}
         </div>
     `;
 }
@@ -327,16 +293,16 @@ function renderFormButtons() {
  * Generiert das vollständige HTML für das "Add Task"-Formular.
  * @returns {string} Der komplette HTML-String für das Add Task Formular.
  */
-export function getAddTaskFormHTML() {
+export function getAddTaskFormHTML(task = null) {
     return `
         <main id="add-task-main" class="content">
         <div class="size-wrapper">
-            <h1>Add Task</h1>
+            <h1>${task ? 'Edit Task' : 'Add Task'}</h1>
             <form id="add-task-form" class="form">
                 <div class="form-fill-part">
-                    ${renderLeftFormFields()}
+                    ${renderLeftFormFields(task)}
                     <div class="border"></div>
-                    ${renderRightFormFields()}
+                    ${renderRightFormFields(task)}
                 </div>
                 ${renderFormButtons()}
             </form>
