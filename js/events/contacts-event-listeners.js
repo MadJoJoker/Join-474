@@ -13,9 +13,11 @@ import { createContactDetailsHTML } from '../templates/contacts-templates.js';
  */
 export function initContactEventListeners() {
     setupNewContactOverlay();
-    setupContactDeletion();
+    setupGlobalContactButtons();
     setupEditContactForm();
     setupEditOverlayEvents();
+    setupContactListClickNavigation();
+    setupMobileDropdownToggle();
 }
 
 /**
@@ -105,16 +107,36 @@ function getNewContactInputValues() {
 /**
  * Sets up global click listener to handle deletion via .delete-button.
  */
-function setupContactDeletion() {
+function setupGlobalContactButtons() {
     document.addEventListener('click', async (event) => {
         const deleteBtn = event.target.closest('.delete-button');
-        if (!deleteBtn) return;
-        const id = deleteBtn.dataset.id;
-        if (!id) return;
-        await deleteContact(id);
-        document.querySelector('.contact-details-card').innerHTML = '';
-        setActiveContactId(null);
-        renderContacts();
+        const editBtn = event.target.closest('.edit-button');
+        const backBtn = event.target.closest('[data-action="close-mobile-contact"]');
+
+        // Mobile Back Button
+        if (backBtn) {
+            document.body.classList.remove('mobile-contact-visible');
+            setActiveContactId(null);
+            return;
+        }
+
+        // Löschen
+        if (deleteBtn) {
+            const id = deleteBtn.dataset.id;
+            if (!id) return;
+            await deleteContact(id);
+            document.querySelector('.contact-details-card').innerHTML = '';
+            setActiveContactId(null);
+            await renderContacts();
+            document.body.classList.remove('mobile-contact-visible');
+        }
+
+        // Bearbeiten
+        if (editBtn) {
+            const id = editBtn.dataset.id;
+            if (!id) return;
+            onEditContact(id); // ← globale Funktion
+        }
     });
 }
 
@@ -177,7 +199,10 @@ async function handleEditContactDelete() {
     setActiveContactId(null);
     setCurrentlyEditingContact(null);
     closeOverlay('editContactOverlay', true);
-    renderContacts();
+    await renderContacts();
+
+    // 👇 Mobile View verlassen (nur falls aktiv)
+    document.body.classList.remove('mobile-contact-visible');
 }
 
 /**
@@ -272,23 +297,26 @@ function validateCustomContactForm(name, email, phone) {
  * Validates input, displays errors, creates contact if valid.
  */
 async function handleNewContactSubmit() {
-    // 1. Input-Werte aus den Feldern holen
     const { name, email, phone } = getNewContactInputValues();
-
-    // 2. Eingaben validieren
     const errors = validateCustomContactForm(name, email, phone);
-
-    // 3. Validierungsfehler im UI anzeigen
     showNewContactErrors(errors);
-
-    // 4. Abbrechen, wenn Fehler vorhanden sind
     if (hasErrors(errors)) return;
-
-    // 5. Neuen Kontakt speichern und UI aktualisieren
-    await createContact({ name, email, phone });
+    const newContact = await createContact({ name, email, phone });
     closeOverlay('contactOverlay', true);
-    renderContacts();
+    await renderContacts();
     showContactCreatedMessage();
+    const contact = getContactById(newContact.id);
+    if (contact) {
+        const contactDetailsCard = document.querySelector('.contact-details-card');
+        if (contactDetailsCard) {
+            contactDetailsCard.innerHTML = createContactDetailsHTML(contact);
+            contactDetailsCard.classList.add('no-animation', 'visible');
+        }
+        setActiveContactId(contact.id);
+        if (window.innerWidth <= 768) {
+            document.body.classList.add('mobile-contact-visible');
+        }
+    }
 }
 
 /**
@@ -326,5 +354,37 @@ function clearNewContactFormInputs() {
         document.getElementById(inputId).value = '';
         const errorDiv = document.getElementById(inputId.replace('newContact', '').toLowerCase() + 'Error');
         if (errorDiv) errorDiv.textContent = '';
+    });
+}
+
+function setupContactListClickNavigation() {
+    document.addEventListener('click', (event) => {
+        const contactEl = event.target.closest('.contact');
+        if (!contactEl) return;
+
+        // Ignoriere Edit/Delete, wenn innerhalb der contact-Box geklickt
+        const isEditOrDelete = event.target.closest('.edit-button, .delete-button');
+        if (isEditOrDelete) return;
+
+        const contactId = contactEl.dataset.id;
+        if (!contactId) return;
+
+        onContactClickById(contactId); // ruft globale Funktion auf – alles gut
+    });
+}
+
+function setupMobileDropdownToggle() {
+    document.addEventListener('click', (e) => {
+        const toggleBtn = e.target.closest('.dropdown-mobile-btn');
+        const dropdown = document.querySelector('.mobile-dropdown-menu');
+
+        if (toggleBtn && dropdown) {
+            dropdown.classList.toggle('mobile-dropdown-menu-hidden');
+        } else {
+            // Klicke außerhalb → Dropdown schließen
+            if (!e.target.closest('.mobile-dropdown-menu')) {
+                dropdown?.classList.add('mobile-dropdown-menu-hidden');
+            }
+        }
     });
 }

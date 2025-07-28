@@ -542,6 +542,46 @@ html {
     }
 }
 
+@keyframes slideInBottom {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes slideOutBottom {
+    from {
+        transform: translateY(0%);
+    }
+
+    to {
+        transform: translateY(100%);
+    }
+}
+
+@keyframes slideInBottomMessage {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes slideOutBottomMessage {
+    from {
+        transform: translateY(0%);
+    }
+
+    to {
+        transform: translateY(100%);
+    }
+}
+
 .overlay-wrapper.active {
     opacity: 1;
 }
@@ -561,24 +601,24 @@ html {
 
 /* Contact successfully created */
 #contactSuccessMsg {
-  position: absolute;
-  bottom: 132px;
-  left: 32px;
-  background-color: var(--dark);
-  color: var(--white);
-  font-size: 20px;
-  font-weight: 400;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  z-index: 10;
-  width: 326px;
-  height: 74px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translateX(150%);
-  opacity: 0;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+    position: absolute;
+    bottom: 132px;
+    left: 32px;
+    background-color: var(--dark);
+    color: var(--white);
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    width: 326px;
+    height: 74px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(150%);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
 #contactSuccessMsg.slide-in {
@@ -602,7 +642,7 @@ html {
 
 .error-message {
     color: red;
-    font-size: 12px;
+    font-size: 11px;
     margin-top: 4px;
     min-height: 16px;
 }
@@ -613,4 +653,18 @@ html {
 
 .dropdown-help {
     display: none;
+}
+
+.mobile-back-button {
+    display: none;
+}
+
+.hide-on-desktop {
+    display: none;
+}
+
+.contact-details-card.no-animation {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
 }

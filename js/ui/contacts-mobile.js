@@ -1,40 +1,8 @@
-// contact-mobile.js
-
-/**
- * Initialisiert mobile-spezifische Interaktionen.
- */
 document.addEventListener('DOMContentLoaded', () => {
   if (window.innerWidth <= 1150) {
     console.log('[mobile] Initializing contact-mobile UI features...');
-    setupDropdowns();
-    setupMobileSuccessMessage();
   }
-});
 
-function setupDropdowns() {
-  // Beispiel: Dropdown-Menü statt Button
-  const dropdownTrigger = document.querySelector('#dropdownToggle');
-  const dropdownMenu = document.querySelector('#dropdownMenu');
-
-  if (dropdownTrigger && dropdownMenu) {
-    dropdownTrigger.addEventListener('click', () => {
-      dropdownMenu.classList.toggle('visible');
-    });
-  }
-}
-
-function setupMobileSuccessMessage() {
-  const successMsg = document.getElementById('contactSuccessMsg');
-  if (!successMsg) return;
-
-  successMsg.classList.add('slide-in-bottom');
-
-  setTimeout(() => {
-    successMsg.classList.remove('slide-in-bottom');
-  }, 2400);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
   // Add Contact Overlay (mobile)
   const closeBtnAddMobile = document.getElementById('closeOverlayBtnMobile');
   if (closeBtnAddMobile) {
@@ -50,4 +18,27 @@ document.addEventListener('DOMContentLoaded', () => {
       closeOverlay('editContactOverlay');
     });
   }
+
+  // Mobile Dropdown Buttons
+  document.addEventListener('click', (event) => {
+    // Öffnet Dropdown wenn Button geklickt wird
+    if (event.target.closest('.dropdown-mobile-btn')) {
+      const clickedButton = event.target.closest('.dropdown-mobile-btn');
+      const menu = clickedButton.nextElementSibling;
+      // Alle anderen Dropdowns schließen
+      document.querySelectorAll('.mobile-dropdown-menu.show').forEach((otherMenu) => {
+        if (otherMenu !== menu) otherMenu.classList.remove('show');
+      });
+      if (menu && menu.classList.contains('mobile-dropdown-menu')) {
+        menu.classList.toggle('show');
+      }
+      event.stopPropagation();
+      return;
+    }
+
+    // Klick außerhalb → Alle schließen
+    document.querySelectorAll('.mobile-dropdown-menu.show').forEach((menu) => {
+      menu.classList.remove('show');
+    });
+  });
 });
