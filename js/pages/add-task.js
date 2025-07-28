@@ -35,6 +35,7 @@ let picker = null;
 let isResizing = false;
 let startY, startHeight, currentTextarea;
 let overlayPickerInstance;
+
 export let fetchData = null;
 
 export async function initTask() {
@@ -275,7 +276,7 @@ export async function handleCreateTask(event) {
     console.log("New Task Data:", newTask);
     const rawNewObject = createTaskObject();
     console.log("add-task.js: Erzeugtes rawNewObject:", rawNewObject); // wird später evt entfernt//
-    await CWDATA(rawNewObject, firebaseData);
+    await CWDATA(rawNewObject, fetchData);
 
 
     console.log("should be working");

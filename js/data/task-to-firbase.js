@@ -9,10 +9,10 @@ let allData = {};
  * @param {Object} receivedObject - Das Objekt, das von add-task.js übergeben wurde.
  * Es ist das ehemalige 'rawNewObject'.
  */
-export async function CWDATA(receivedObject, firebaseData) { // <= CWDATA empfängt das Objekt als Parameter
+export async function CWDATA(receivedObject, fetchData) { // <= CWDATA empfängt das Objekt als Parameter
   console.log("task-to-firebase.js: Objekt erfolgreich empfangen!", receivedObject);
-  console.log("Firebase-data empfangen: ", firebaseData);
-  allData = firebaseData;
+  console.log("Firebase-data empfangen: ", fetchData);
+  allData = fetchData;
 
   const convertedObjectWithId = await processRawObject(receivedObject);
 
