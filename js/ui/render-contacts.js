@@ -87,16 +87,29 @@ function hideContactDetails(detailsCard, contactElement) {
 }
 
 /**
- * Fills and shows the contact details card with animation.
+ * Fills and shows the contact details card.
  * @param {HTMLElement} detailsCard - The contact details card element.
  * @param {object} contact - The contact to show.
  * @param {HTMLElement} contactElement - The clicked contact element in the list.
+ * @param {boolean} skipAnimation - Optional. If true, no animation is used.
  */
-function showContactDetails(detailsCard, contact, contactElement) {
+function showContactDetails(detailsCard, contact, contactElement, skipAnimation = false) {
   detailsCard.innerHTML = createContactDetailsHTML(contact);
   contactElement?.classList.add('active');
-  setTimeout(() => detailsCard.classList.add('visible'), 10);
+
+  if (skipAnimation) {
+    detailsCard.classList.add('no-animation');
+    detailsCard.classList.add('visible');
+  } else {
+    detailsCard.classList.remove('no-animation');
+    setTimeout(() => detailsCard.classList.add('visible'), 10);
+  }
+
   setActiveContactId(contact.id);
+
+  if (window.innerWidth <= 768) {
+    document.body.classList.add('mobile-contact-visible');
+  }
 }
 
 /**
@@ -150,3 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Startup
 renderContacts();
 initContactEventListeners();
+
+window.closeMobileContactView = function () {
+  document.body.classList.remove('mobile-contact-visible');
+  setActiveContactId(null);
+};

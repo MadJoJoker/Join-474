@@ -25,7 +25,7 @@
             <section class="help-content">
                 <h1>Legal Notice</h1>
                 <h2>Imprint</h2>
-                <ul>
+                <ul class="indented-list">
                     <li>[Student Names List]</li>
                     <li>[Address of the JOIN operator – e.g. one of the students]</li>
                     <li>[Postcode and city]</li>
@@ -99,6 +99,16 @@
     <script src="../js/pages/sidebar.js"></script>
     <script src="../js/events/toggle-header-icons.js"></script>
     <script src="../js/pages/header-and-sidebar.js"></script>
+    <script type="module">
+        import { enableMouseDragScroll } from '../js/events/drag-to-scroll.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const helpContent = document.querySelector('.help-content');
+            if (helpContent) {
+                enableMouseDragScroll(helpContent);
+            }
+        });
+    </script>
 </body>
 
 </html>

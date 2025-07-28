@@ -48,3 +48,5 @@ export function showContactCreatedMessage() {
     }, 400);
   }, 2000);
 }
+
+window.closeOverlay = closeOverlay;
