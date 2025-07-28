@@ -135,8 +135,17 @@ html {
   transform: scale(1.15);
 }
 
+.indented-list {
+  padding-left: 40px;
+}
+
 @media (max-width: 768px) {
   .help-content {
     padding: 20px 16px 120px 16px;
+  }
+
+  #backBtn {
+    top: 100px;
+    right: 16px;
   }
 }

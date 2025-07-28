@@ -57,12 +57,10 @@
         width: 100%;
     }
 
-    /* Bestehende Close-Buttons ausblenden */
     .overlay-right .overlay-close {
         display: none !important;
     }
 
-    /* Neue mobile Buttons zeigen */
     .overlay-close-mobile-wrapper {
         position: absolute;
         top: 16px;
@@ -119,10 +117,72 @@
 @media (max-width: 768px) {
     .contacts-sidebar {
         display: block;
+        width: 100vw;
+        min-width: unset;
+        padding: 16px;
+        box-sizing: border-box;
+        padding-bottom: 90px;
+    }
+
+    .contacts-list {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .contact-section {
+        margin: 20px 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .add-new-contact-button-div {
+        position: fixed !important;
+        bottom: 0;
+        right: 24px;
+        padding: 0;
+        height: auto;
+        width: auto;
+        background: none;
+        z-index: 1000;
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 100px;
+    }
+
+    .add-new-contact-button {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        padding: 0;
+        background-color: var(--dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .add-new-contact-button svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .add-new-contact-button-text {
+        display: none;
+    }
+
+    .add-new-contact-button {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+    }
+
+    .contact {
+        width: 100%;
     }
 
     .contacts-details {
         display: none;
+        padding: 16px 16px 16px 16px;
     }
 
     .mobile-contact-visible .contacts-sidebar {
@@ -137,12 +197,12 @@
         display: flex;
         position: sticky;
         top: 24px;
-        right: 24px;
+        right: 0px;
         background: none;
         border: none;
         z-index: 10;
         float: right;
-        padding: 8px;
+        padding: 0px;
         cursor: pointer;
     }
 
@@ -152,22 +212,25 @@
     }
 
     .dropdown-mobile-btn {
-        position: sticky;
-        top: 550px;
-        right: 24px;
-        background: none;
-        border: none;
-        z-index: 10;
-        float: right;
-        padding: 8px;
-        cursor: pointer;
+        position: fixed;
+        bottom: 90px;
+        right: 16px;
+        z-index: 1000;
         background-color: var(--dark);
         border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
     }
 
     .dropdown-mobile-btn svg {
-        width: 22px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
     }
 
     .contact-details-header {
@@ -181,22 +244,21 @@
 
     .contact-details-actions {
         display: none;
-        /* alte Desktop-Buttons ausblenden */
     }
 
     .mobile-dropdown-menu {
-        position: absolute;
-        top: 60px;
+        position: fixed;
+        bottom: 80px;
         right: 0;
-        width: 160px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         transform: translateX(100%);
         opacity: 0;
         pointer-events: none;
         transition: transform 0.3s ease, opacity 0.3s ease;
-        z-index: 1000;
+        width: 160px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1001;
     }
 
     .mobile-dropdown-menu.show {
@@ -238,7 +300,6 @@
 
     #contactSuccessMsg {
         bottom: 32px;
-        /* statt left für mobile Position */
         left: 50%;
         transform: translateX(-50%) translateY(100%);
         width: 90%;
@@ -251,4 +312,15 @@
     #contactSuccessMsg.slide-out {
         animation: slideOutBottomMessage 0.4s ease forwards !important;
     }
+
+    .contact-initial {
+        font-weight: 400;
+        border-bottom: 1px solid var(--white);
+        font-size: 20px;
+        border-bottom: 1px solid var(--grey);
+        max-width: 100%;
+        padding-left: 30px;
+        width: 100%;
+    }
+
 }
