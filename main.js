@@ -1,6 +1,6 @@
 import { getFirebaseData } from './js/data/API.js';
 
- let firebaseData = null;
+ export let firebaseData = null;
 
 export async function loadFirebaseData() {
   if (!firebaseData) {
@@ -10,5 +10,4 @@ export async function loadFirebaseData() {
   }
   return firebaseData;
 }
-export { firebaseData };
 console.log('golbale Data'); // Claudia für dich der fetch, einfach importiern mit dem main.js pfad
