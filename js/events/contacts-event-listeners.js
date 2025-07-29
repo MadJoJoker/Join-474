@@ -37,7 +37,7 @@ function setupOpenNewContactOverlayButton() {
     document.querySelector('.add-new-contact-button').addEventListener('click', () => {
         clearNewContactFormInputs();
         openOverlay('contactOverlay');
-        setupCreateContactButton(); // << wichtig!
+        setupCreateContactButton();
     });
 }
 
@@ -112,15 +112,11 @@ function setupGlobalContactButtons() {
         const deleteBtn = event.target.closest('.delete-button');
         const editBtn = event.target.closest('.edit-button');
         const backBtn = event.target.closest('[data-action="close-mobile-contact"]');
-
-        // Mobile Back Button
         if (backBtn) {
             document.body.classList.remove('mobile-contact-visible');
             setActiveContactId(null);
             return;
         }
-
-        // Löschen
         if (deleteBtn) {
             const id = deleteBtn.dataset.id;
             if (!id) return;
@@ -130,12 +126,10 @@ function setupGlobalContactButtons() {
             await renderContacts();
             document.body.classList.remove('mobile-contact-visible');
         }
-
-        // Bearbeiten
         if (editBtn) {
             const id = editBtn.dataset.id;
             if (!id) return;
-            onEditContact(id); // ← globale Funktion
+            onEditContact(id);
         }
     });
 }

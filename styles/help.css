@@ -1,7 +1,4 @@
-/*
- * Base Styles
- * General styling for the body and root HTML elements, establishing the base layout and font.
- */
+/* === Base Styles === */
 body,
 html {
     margin: 0;
@@ -10,57 +7,54 @@ html {
     font-family: 'Inter', sans-serif;
 }
 
-/*
- * App Container & Main Content Layout
- * Styles for the main application container and the content area, defining their display properties and scroll behavior.
- */
+/* === Layout Structure === */
 .app-container {
     display: flex;
     height: 100vh;
 }
 
-/* For Firefox */
-/* scrollbar-width: none; */
-/* For IE 10+ */
-/* -ms-overflow-style: none; */
 .main-content {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
     margin: 0;
 }
 
-/* For Chrome, Safari, Edge */
 .main-content::-webkit-scrollbar {
     display: none;
 }
 
-/*
- * Text Styling & Highlighting
- * Specific styles for text elements, including a highlight class.
- */
-.highlight-join {
-    color: var(--lightBlue);
+/* === Content Wrapper (max width 1920px like other pages) === */
+.content-wrapper {
+    max-width: 1920px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 40px;
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-/*
- * Help Content Area
- * Styles for the help section's main content area, including padding, overflow, and scrollbar hiding.
- */
+/* === Help Content === */
 .help-content {
     flex-grow: 1;
     box-sizing: border-box;
     width: 100%;
-    margin: 0 auto;
-    padding: 100px 80px 20px 80px;
+    padding: 100px 0 20px 0;
     overflow: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-    -webkit-overflow-scrolling: touch; /* iOS Safari */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .help-content::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Edge */
+    display: none;
 }
 
 .help-content h1 {
@@ -79,10 +73,11 @@ html {
     font-weight: 400;
 }
 
-/*
- * Numbered Section Styling
- * Styles for numbered lists or sections, including the layout of individual items.
- */
+.highlight-join {
+    color: var(--lightBlue);
+}
+
+/* === Numbered Sections === */
 .numbered-section {
     display: flex;
     flex-direction: column;
@@ -121,14 +116,11 @@ html {
     width: 1em;
 }
 
-/*
- * Back Button Styling
- * Styles for the fixed "back" button, including its positioning, appearance, and hover effects.
- */
+/* === Back Button === */
 #backBtn {
     position: fixed;
-    top: 200px;
-    right: 90px;
+    top: 120px;
+    right: 40px;
     width: 32px;
     height: 32px;
     padding: 0;
@@ -157,25 +149,23 @@ html {
     transform: scale(1.15);
 }
 
-/*
- * Indented List Styling
- * Simple styling for creating an indented list.
- */
+/* === Indented List === */
 .indented-list {
     padding-left: 40px;
 }
 
-/*
- * Responsive Adjustments for Screens up to 768px Wide
- * Changes for smaller tablet and mobile devices, mainly affecting padding and back button positioning.
- */
+/* === Responsive === */
 @media (max-width: 768px) {
+    .content-wrapper {
+        padding: 0 16px;
+    }
+
     .help-content {
-        padding: 20px 16px 120px 16px;
+        padding: 20px 0 120px 0;
     }
 
     #backBtn {
-        top: 100px;
+        top: 80px;
         right: 16px;
     }
 }
