@@ -92,7 +92,6 @@ function getDeadline(futureDeadlines) {
       nearest = current;
     }
   }
-  console.log("upcoming: ", nearest);
   return convertedDate = convertToDisplayString(nearest);
 }
 
