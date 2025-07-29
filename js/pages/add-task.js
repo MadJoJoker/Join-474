@@ -238,9 +238,9 @@ function hideError(input, error) {
   error?.classList.remove("d-flex");
 }
 
-/** 
+/**
  * Handles input validation for the title field.
- * 
+ *
  * @param {HTMLInputElement} inputElement - The input element to validate.
  */
 export function handleInput(inputElement) {
@@ -363,7 +363,7 @@ function initDatePicker() {
   picker = flatpickr("#datepicker", {
     dateFormat: "d.m.Y",
     allowInput: true,
-    mobileNative: true,
+    disableMobile: true,
     clickOpens: true,
     onReady: function () {
       document.querySelectorAll(".numInput:not([name])").forEach((el) => {
@@ -401,7 +401,7 @@ function initInputFieldListeners() {
  * It listens for input events and calls the handleInput function to validate the title.
  */
 function initTitleInputListener() {
-  document.getElementById("title")?.addEventListener("input", (event) => 
+  document.getElementById("title")?.addEventListener("input", (event) =>
     handleInput(event.target)
   );
 }
@@ -442,7 +442,7 @@ function handleDatePickerFocus(event) {
  * It listens for click events on the calendar icon to focus the date picker input.
  */
 function initCalendarIconListener() {
-  document.getElementById("calendar-icon")?.addEventListener("click", () => 
+  document.getElementById("calendar-icon")?.addEventListener("click", () =>
     document.getElementById("datepicker")?.focus()
   );
 }
@@ -455,7 +455,7 @@ function initAutoFillListeners() {
   autoFillFields.forEach(fieldId => {
     const field = document.getElementById(fieldId);
     if (!field) return;
-    
+
     field.addEventListener("focus", autoFillLeftForm, { once: true });
     field.addEventListener("focus", autofillRightForm, { once: true });
   });
@@ -522,7 +522,7 @@ function handleSubtaskKeydown(event) {
  * It sets up click event listeners for the add, clear, and subtask action buttons.
  */
 function initSubtaskButtonListeners() {
-  document.getElementById("add-subtask-btn")?.addEventListener("click", 
+  document.getElementById("add-subtask-btn")?.addEventListener("click",
     () => toggleSubtaskInputIcons(true)
   );
 
@@ -530,7 +530,7 @@ function initSubtaskButtonListeners() {
     document.querySelector('.subtask-icons img[alt="Close"]'),
     document.getElementById("subtask-clear-btn")
   ];
-  
+
   const addButtons = [
     document.querySelector('.subtask-icons img[alt="Add"]'),
     document.getElementById("subtask-add-task-btn")
@@ -552,10 +552,10 @@ function initSubtaskListListener() {
  */
 function handleSubtaskListClick(event) {
   const target = event.target;
-  
+
   if (target.closest(".subtask-actions .left")) {
     toggleSubtaskEdit(target.closest(".subtask-actions .left"));
-  } 
+  }
   else if (target.closest(".subtask-actions .right")) {
     const listItem = target.closest(".subtask-list");
     if (listItem) {
@@ -685,7 +685,7 @@ export function handleSignInfoMobile() {
 
 /** * Handles the mobile view of the sign info message.
  * If the desktop version exists, it hides it and shows the mobile version.
- * 
+ *
  * @param {HTMLElement} container - The container to append the mobile sign info.
  * @param {HTMLElement} desktop - The desktop sign info element.
  * @param {HTMLElement} mobile - The mobile sign info element.
