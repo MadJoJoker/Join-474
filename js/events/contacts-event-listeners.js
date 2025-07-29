@@ -1,13 +1,3 @@
-// Contact logic (CRUD operations & helper)
-import { createContact, deleteContact, updateContact, getInitials } from './contact-actions.js';
-// UI overlays & messages
-import { openOverlay, closeOverlay, showContactCreatedMessage } from '../ui/contacts-overlays.js';
-// Shared application state (current/active contact)
-import { currentlyEditingContact, setCurrentlyEditingContact, setActiveContactId, getContactById } from '../data/contacts-state.js';
-// Contact list and detail rendering
-import { renderContacts } from '../ui/render-contacts.js';
-import { createContactDetailsHTML } from '../templates/contacts-templates.js';
-
 /**
  * Initializes all event listeners for the contact management page.
  */
@@ -19,6 +9,10 @@ export function initContactEventListeners() {
     setupContactListClickNavigation();
     setupMobileDropdownToggle();
 }
+
+// -----------------------------
+// New Contact Overlay Setup
+// -----------------------------
 
 /**
  * Sets up all logic for opening and closing the new contact overlay.
@@ -37,12 +31,12 @@ function setupOpenNewContactOverlayButton() {
     document.querySelector('.add-new-contact-button').addEventListener('click', () => {
         clearNewContactFormInputs();
         openOverlay('contactOverlay');
-        setupCreateContactButton(); // << wichtig!
+        setupCreateContactButton();
     });
 }
 
 /**
- * Adds listeners for both close and cancel buttons on the new contact overlay.
+ * Adds click listeners for all close/cancel buttons in the overlay.
  */
 function setupCloseNewContactOverlayButtons() {
     const ids = ['closeOverlayBtn', 'cancelOverlayBtn', 'closeOverlayBtnMobile'];
@@ -55,7 +49,8 @@ function setupCloseNewContactOverlayButtons() {
 }
 
 /**
- * Closes the overlay if the background area (outside modal) is clicked.
+ * Closes the overlay when the background is clicked.
+ * @param {MouseEvent} event
  */
 function setupOverlayClickToClose() {
     document.getElementById('contactOverlay').addEventListener('click', (event) => {
@@ -66,10 +61,11 @@ function setupOverlayClickToClose() {
 }
 
 /**
- * Autofills demo contact data on first input focus.
+ * Fills the form with demo contact data on first input focus.
  */
 function setupDemoContactAutofill() {
     let demoContactFilled = false;
+
     function fillDemoContact() {
         if (demoContactFilled) return;
         document.getElementById('newContactName').value = 'Demo Contact';
@@ -77,23 +73,24 @@ function setupDemoContactAutofill() {
         document.getElementById('newContactPhone').value = '+12345-123456789';
         demoContactFilled = true;
     }
+
     ['newContactName', 'newContactEmail', 'newContactPhone'].forEach(id => {
         document.getElementById(id).addEventListener('focus', fillDemoContact);
     });
 }
 
 /**
- * Sets up the click handler for the "Create contact" button.
+ * Sets up the click handler for creating a new contact.
  */
 function setupCreateContactButton() {
     const createBtn = document.getElementById('createContactBtn');
     if (!createBtn) return console.warn('createContactBtn not found');
-    createBtn.removeEventListener('click', handleNewContactSubmit); // prevent duplicates
+    createBtn.removeEventListener('click', handleNewContactSubmit);
     createBtn.addEventListener('click', handleNewContactSubmit);
 }
 
 /**
- * Reads and trims input values from the new contact form fields.
+ * Reads values from new contact form inputs.
  * @returns {{ name: string, email: string, phone: string }}
  */
 function getNewContactInputValues() {
@@ -104,44 +101,85 @@ function getNewContactInputValues() {
     };
 }
 
+// -----------------------------
+// Global Button Events (Delete, Edit, Back)
+// -----------------------------
+
 /**
- * Sets up global click listener to handle deletion via .delete-button.
+ * Sets up event delegation for delete/edit/back buttons globally.
  */
 function setupGlobalContactButtons() {
-    document.addEventListener('click', async (event) => {
-        const deleteBtn = event.target.closest('.delete-button');
-        const editBtn = event.target.closest('.edit-button');
-        const backBtn = event.target.closest('[data-action="close-mobile-contact"]');
-
-        // Mobile Back Button
-        if (backBtn) {
-            document.body.classList.remove('mobile-contact-visible');
-            setActiveContactId(null);
-            return;
-        }
-
-        // Löschen
-        if (deleteBtn) {
-            const id = deleteBtn.dataset.id;
-            if (!id) return;
-            await deleteContact(id);
-            document.querySelector('.contact-details-card').innerHTML = '';
-            setActiveContactId(null);
-            await renderContacts();
-            document.body.classList.remove('mobile-contact-visible');
-        }
-
-        // Bearbeiten
-        if (editBtn) {
-            const id = editBtn.dataset.id;
-            if (!id) return;
-            onEditContact(id); // ← globale Funktion
-        }
-    });
+    document.addEventListener('click', handleGlobalContactClick);
 }
 
 /**
- * Adds event listeners to the save and delete buttons in the edit overlay.
+ * Handles global click events related to contact controls.
+ * @param {MouseEvent} event
+ */
+async function handleGlobalContactClick(event) {
+    const deleteBtn = event.target.closest('.delete-button');
+    const editBtn = event.target.closest('.edit-button');
+    const backBtn = event.target.closest('[data-action="close-mobile-contact"]');
+
+    if (backBtn) {
+        handleBackButtonClick();
+        return;
+    }
+    if (deleteBtn) {
+        await handleDeleteContactClick(deleteBtn);
+        return;
+    }
+    if (editBtn) {
+        handleEditContactClick(editBtn);
+    }
+}
+
+/**
+ * Handles mobile back button logic.
+ */
+function handleBackButtonClick() {
+    document.body.classList.remove('mobile-contact-visible');
+    setActiveContactId(null);
+}
+
+/**
+ * Deletes a contact and updates the UI.
+ * @param {HTMLElement} deleteBtn
+ */
+async function handleDeleteContactClick(deleteBtn) {
+    const id = deleteBtn.dataset.id;
+    if (!id) return;
+    await deleteContact(id);
+    clearContactDetails();
+    setActiveContactId(null);
+    await renderContacts();
+    document.body.classList.remove('mobile-contact-visible');
+}
+
+/**
+ * Triggers contact editing.
+ * @param {HTMLElement} editBtn
+ */
+function handleEditContactClick(editBtn) {
+    const id = editBtn.dataset.id;
+    if (!id) return;
+    onEditContact(id);
+}
+
+/**
+ * Clears the contact details area.
+ */
+function clearContactDetails() {
+    const card = document.querySelector('.contact-details-card');
+    if (card) card.innerHTML = '';
+}
+
+// -----------------------------
+// Edit Contact Logic
+// -----------------------------
+
+/**
+ * Sets up save and delete buttons in the edit form.
  */
 function setupEditContactForm() {
     const saveButton = document.getElementById('saveEditBtn');
@@ -151,7 +189,7 @@ function setupEditContactForm() {
 }
 
 /**
- * Reads and trims input values from the edit contact form fields.
+ * Gets the input values from the edit contact form.
  * @returns {{ name: string, email: string, phone: string }}
  */
 function getEditContactInputValues() {
@@ -163,11 +201,11 @@ function getEditContactInputValues() {
 }
 
 /**
- * Combines edited input with the existing contact data.
+ * Combines form input with the existing contact to form an updated contact.
  * @param {string} name
  * @param {string} email
  * @param {string} phone
- * @returns {Object} Updated contact object
+ * @returns {Object}
  */
 function buildUpdatedContact(name, email, phone) {
     return {
@@ -180,7 +218,8 @@ function buildUpdatedContact(name, email, phone) {
 }
 
 /**
- * Updates the contact detail card if it's currently open and visible.
+ * Updates the contact detail card if visible.
+ * @param {Object} contact
  */
 function updateDetailsCardIfVisible(contact) {
     const card = document.querySelector('.contact-details-card');
@@ -190,35 +229,39 @@ function updateDetailsCardIfVisible(contact) {
 }
 
 /**
- * Deletes the currently edited contact.
+ * Deletes the contact currently being edited.
  */
 async function handleEditContactDelete() {
     if (!currentlyEditingContact) return;
     await deleteContact(currentlyEditingContact.id);
-    document.querySelector('.contact-details-card').innerHTML = '';
+    clearContactDetails();
     setActiveContactId(null);
     setCurrentlyEditingContact(null);
     closeOverlay('editContactOverlay', true);
     await renderContacts();
-
-    // 👇 Mobile View verlassen (nur falls aktiv)
     document.body.classList.remove('mobile-contact-visible');
 }
 
+// -----------------------------
+// Edit Overlay (Close Events)
+// -----------------------------
+
 /**
- * Initializes the close logic for the edit overlay (click outside or close button).
+ * Initializes close overlay events for the edit form.
  */
 function setupEditOverlayEvents() {
     const overlay = document.getElementById('editContactOverlay');
     const closeButton = document.getElementById('closeEditOverlayBtn');
     const mobileCloseButton = document.getElementById('closeEditOverlayBtnMobile');
+
     overlay.addEventListener('click', handleOverlayClickOutside);
     if (closeButton) closeButton.addEventListener('click', handleOverlayCloseClick);
     if (mobileCloseButton) mobileCloseButton.addEventListener('click', handleOverlayCloseClick);
 }
 
 /**
- * Closes the overlay if the background is clicked.
+ * Closes overlay if background (not content) is clicked.
+ * @param {MouseEvent} event
  */
 function handleOverlayClickOutside(event) {
     if (event.target === event.currentTarget) {
@@ -228,18 +271,20 @@ function handleOverlayClickOutside(event) {
 }
 
 /**
- * Closes the overlay when the close button is clicked.
+ * Closes the edit overlay when close button is clicked.
  */
 function handleOverlayCloseClick() {
     clearEditContactErrors();
     closeOverlay('editContactOverlay');
 }
 
-// VALIDATION
+// -----------------------------
+// Validation
+// -----------------------------
 
 /**
- * Displays validation error messages in the corresponding UI elements.
- * @param {Object} errors - An object with possible error messages
+ * Displays validation error messages in new contact form.
+ * @param {Object} errors
  */
 function showNewContactErrors(errors) {
     document.getElementById('nameError').textContent = errors.name;
@@ -248,19 +293,18 @@ function showNewContactErrors(errors) {
 }
 
 /**
- * Clears all validation error messages in the edit contact form.
- * This ensures that old errors are not displayed when reopening the overlay.
+ * Clears all validation errors in the edit form.
  */
 function clearEditContactErrors() {
     ['editNameError', 'editEmailError', 'editPhoneError'].forEach(id => {
-        const element = document.getElementById(id);
-        if (element) element.textContent = '';
+        const el = document.getElementById(id);
+        if (el) el.textContent = '';
     });
 }
 
 /**
- * Displays validation error messages in the edit contact form.
- * @param {Object} errors - Error messages for each field
+ * Displays validation error messages in the edit form.
+ * @param {Object} errors
  */
 function showEditContactErrors(errors) {
     document.getElementById('editNameError').textContent = errors.name;
@@ -269,120 +313,141 @@ function showEditContactErrors(errors) {
 }
 
 /**
- * Custom validation for editing a contact.
+ * Validates the edit form.
+ * @param {string} name
+ * @param {string} email
+ * @param {string} phone
+ * @returns {Object}
  */
 function validateEditContact(name, email, phone) {
-    return validateCustomContactForm(name, email, phone); // reuse same rules
+    return validateCustomContactForm(name, email, phone);
 }
 
 /**
- * Custom form validation logic.
+ * Custom form validation shared across new/edit forms.
+ * @param {string} name
+ * @param {string} email
+ * @param {string} phone
+ * @returns {Object} error object
  */
 function validateCustomContactForm(name, email, phone) {
     const errors = { name: '', email: '', phone: '' };
+
     if (!name || !/^[A-Za-zÄÖÜäöüß\-]{2,}\s+[A-Za-zÄÖÜäöüß\-]{2,}$/.test(name)) {
         errors.name = 'Please enter first and last name separated by a space, no numbers.';
     }
+
     if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
         errors.email = 'Please enter a valid email address.';
     }
+
     if (!phone || !/^\+?[0-9\s\/\-]{6,}$/.test(phone)) {
         errors.phone = 'Please enter a valid phone number (digits only, no letters).';
     }
+
     return errors;
 }
 
 /**
- * Handles creating a new contact from input fields.
- * Validates input, displays errors, creates contact if valid.
- */
-async function handleNewContactSubmit() {
-    const { name, email, phone } = getNewContactInputValues();
-    const errors = validateCustomContactForm(name, email, phone);
-    showNewContactErrors(errors);
-    if (hasErrors(errors)) return;
-    const newContact = await createContact({ name, email, phone });
-    closeOverlay('contactOverlay', true);
-    await renderContacts();
-    showContactCreatedMessage();
-    const contact = getContactById(newContact.id);
-    if (contact) {
-        const contactDetailsCard = document.querySelector('.contact-details-card');
-        if (contactDetailsCard) {
-            contactDetailsCard.innerHTML = createContactDetailsHTML(contact);
-            contactDetailsCard.classList.add('no-animation', 'visible');
-        }
-        setActiveContactId(contact.id);
-        if (window.innerWidth <= 768) {
-            document.body.classList.add('mobile-contact-visible');
-        }
-    }
-}
-
-/**
- * Handles saving an edited contact.
- * Validates input, updates contact, refreshes UI.
- */
-async function handleEditContactSave() {
-    const { name, email, phone } = getEditContactInputValues();
-    const errors = validateEditContact(name, email, phone);
-    showEditContactErrors(errors);
-    if (hasErrors(errors) || !currentlyEditingContact) return;
-    const updatedContact = buildUpdatedContact(name, email, phone);
-    await updateContact(updatedContact);
-    closeOverlay('editContactOverlay', true);
-    await renderContacts();
-    const latestContact = getContactById(updatedContact.id) || updatedContact;
-    updateDetailsCardIfVisible(latestContact);
-    setCurrentlyEditingContact(null);
-}
-
-/**
- * Checks if any error messages are present.
- * @param {Object} errors - An object with error messages
- * @returns {boolean} - True if there are any errors, otherwise false
+ * Checks if any validation errors exist.
+ * @param {Object} errors
+ * @returns {boolean}
  */
 function hasErrors(errors) {
     return errors.name || errors.email || errors.phone;
 }
 
+// -----------------------------
+// New Contact Submission
+// -----------------------------
+
 /**
- * Clears all input fields in the new contact form.
+ * Handles the creation of a new contact from form input.
  */
-function clearNewContactFormInputs() {
-    ['newContactName', 'newContactEmail', 'newContactPhone'].forEach(inputId => {
-        document.getElementById(inputId).value = '';
-        const errorDiv = document.getElementById(inputId.replace('newContact', '').toLowerCase() + 'Error');
-        if (errorDiv) errorDiv.textContent = '';
-    });
+async function handleNewContactSubmit() {
+    const input = getAndValidateNewContact();
+    if (!input) return;
+    const newContact = await createAndStoreContact(input);
+    updateUIAfterContactCreated(newContact);
 }
 
+/**
+ * Validates and returns new contact input.
+ * @returns {Object|null}
+ */
+function getAndValidateNewContact() {
+    const { name, email, phone } = getNewContactInputValues();
+    const errors = validateCustomContactForm(name, email, phone);
+    showNewContactErrors(errors);
+    if (hasErrors(errors)) return null;
+    return { name, email, phone };
+}
+
+/**
+ * Saves the new contact and updates UI.
+ * @param {Object} contactData
+ * @returns {Object}
+ */
+async function createAndStoreContact(contactData) {
+    const contact = await createContact(contactData);
+    closeOverlay('contactOverlay', true);
+    await renderContacts();
+    showContactCreatedMessage();
+    return contact;
+}
+
+/**
+ * Updates the UI to show the newly created contact.
+ * @param {Object} contact
+ */
+function updateUIAfterContactCreated(contact) {
+    const existing = getContactById(contact.id);
+    if (!existing) return;
+    const card = document.querySelector('.contact-details-card');
+    if (card) {
+        card.innerHTML = createContactDetailsHTML(existing);
+        card.classList.add('no-animation', 'visible');
+    }
+    setActiveContactId(contact.id);
+    if (window.innerWidth <= 768) {
+        document.body.classList.add('mobile-contact-visible');
+    }
+}
+
+// -----------------------------
+// Contact List Click (Navigation)
+// -----------------------------
+
+/**
+ * Handles click on contact list item to load detail view.
+ */
 function setupContactListClickNavigation() {
     document.addEventListener('click', (event) => {
         const contactEl = event.target.closest('.contact');
         if (!contactEl) return;
-
-        // Ignoriere Edit/Delete, wenn innerhalb der contact-Box geklickt
         const isEditOrDelete = event.target.closest('.edit-button, .delete-button');
         if (isEditOrDelete) return;
-
         const contactId = contactEl.dataset.id;
         if (!contactId) return;
-
-        onContactClickById(contactId); // ruft globale Funktion auf – alles gut
+        onContactClickById(contactId);
     });
 }
 
-function setupMobileDropdownToggle() {
-    document.addEventListener('click', (e) => {
-        const toggleBtn = e.target.closest('.dropdown-mobile-btn');
-        const dropdown = document.querySelector('.mobile-dropdown-menu');
+// -----------------------------
+// Mobile Dropdown Menu Toggle
+// -----------------------------
 
+/**
+ * Toggles mobile dropdown menu.
+ */
+function setupMobileDropdownToggle() {
+    document.addEventListener('click', (event) => {
+        const toggleBtn = event.target.closest('.dropdown-mobile-btn');
+        const dropdown = document.querySelector('.mobile-dropdown-menu');
         if (toggleBtn && dropdown) {
             dropdown.classList.toggle('mobile-dropdown-menu-hidden');
         } else {
-            // Klicke außerhalb → Dropdown schließen
-            if (!e.target.closest('.mobile-dropdown-menu')) {
+            if (!event.target.closest('.mobile-dropdown-menu')) {
                 dropdown?.classList.add('mobile-dropdown-menu-hidden');
             }
         }

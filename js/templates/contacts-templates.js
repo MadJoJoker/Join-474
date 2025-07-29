@@ -34,7 +34,6 @@ export function createContactDetailsHTML(contact) {
       ? `style="background-color: var(${contact.avatarColor})"`
       : `style="background-color: ${contact.avatarColor}"`
     : `style="background-color: #ccc"`;
-
   return `
     <div class="contact-details-header">
       <div class="contact-details-avatar-big" ${bgColor}>${contact.initials}</div>
@@ -56,7 +55,6 @@ export function createContactDetailsHTML(contact) {
         </div>
       </div>
     </div>
-
     <div class="contact-details-info-block">
       <h3>Contact Information</h3><br>
       <p><strong>Email</strong></p><br>
@@ -64,7 +62,6 @@ export function createContactDetailsHTML(contact) {
       <p><strong>Phone</strong></p><br>
       <p>${contact.phone}</p>
     </div>
-
     <!-- Mobile Dropdown -->
 <div class="hide-on-desktop">
   <button class="dropdown-mobile-btn">
