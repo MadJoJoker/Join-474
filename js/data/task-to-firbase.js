@@ -1,6 +1,6 @@
 import { firebaseData } from '../../main.js';
 
-let allData = {};
+export let allData = {};
 
 // ZEILE 91 ODER 92 AUSKOMMENTIEREN, UM ÜBERTRAGUNG AN FIREBASE ZU STOPPEN
 

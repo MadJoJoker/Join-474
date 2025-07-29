@@ -1,3 +1,7 @@
+/*
+ * General Styles & Layout
+ * Styles that apply globally or define the main structural layout of the application.
+ */
 body,
 html {
     margin: 0;
@@ -20,6 +24,10 @@ html {
     min-height: calc(100vh - 96px);
 }
 
+/*
+ * Sidebar Styles
+ * Styles related to the contacts sidebar, including its general appearance and the "Add New Contact" button.
+ */
 .contacts-sidebar {
     min-width: 456px;
     background-color: var(--white);
@@ -33,6 +41,45 @@ html {
     padding-bottom: 100px;
 }
 
+.add-new-contact-button-div {
+    position: sticky;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 101px;
+    top: 0px;
+    background-color: var(--white);
+    z-index: 1;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.add-new-contact-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: var(--white);
+    background-color: var(--dark);
+    border-radius: 8px;
+    font-weight: 700;
+    border: unset;
+    cursor: pointer;
+    font-size: 21px;
+    padding: 8px 50px;
+    width: 352px;
+    height: 52px;
+}
+
+.add-new-contact-button:hover {
+    background-color: var(--lightBlue);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+/*
+ * Contact List Items
+ * Styles for individual contact entries displayed in the sidebar, including their layout, hover states, and active states.
+ */
 .contact-initial {
     font-weight: 400;
     border-bottom: 1px solid var(--white);
@@ -40,6 +87,10 @@ html {
     border-bottom: 1px solid var(--grey);
     max-width: 352px;
     padding-left: 30px;
+}
+
+.contact-section {
+    margin: 20px 0;
 }
 
 .contact {
@@ -54,34 +105,6 @@ html {
     padding-top: 8px;
     gap: 16px;
     padding-left: 16px;
-}
-
-.contacts-details {
-    flex-grow: 1;
-    padding-top: 108px;
-    padding-left: 32px;
-    background-color: var(--lightGrey);
-    position: relative;
-    overflow: auto;
-    overflow-x: hidden;
-}
-
-.contacts-text-separator {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-}
-
-.contacts-text-separator h1 {
-    font-size: 61px;
-}
-
-.contacts-text-separator span {
-    font-size: 27px;
-}
-
-.contact-section {
-    margin: 20px 0;
 }
 
 .contact:hover:not(.active) {
@@ -130,10 +153,39 @@ html {
     font-size: 16px;
     font-weight: 400;
     color: var(--lightBlue);
+    word-break: break-word;
 }
 
 .contact-email a {
     color: var(--lightBlue);
+}
+
+/*
+ * Contact Details Section
+ * Styles for the displayed details of a selected contact, including the header, avatar, name, actions, and information blocks.
+ */
+.contacts-details {
+    flex-grow: 1;
+    padding-top: 108px;
+    padding-left: 32px;
+    background-color: var(--lightGrey);
+    position: relative;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.contacts-text-separator {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.contacts-text-separator h1 {
+    font-size: 61px;
+}
+
+.contacts-text-separator span {
+    font-size: 27px;
 }
 
 .contact-details-card {
@@ -149,6 +201,12 @@ html {
 .contact-details-card.visible {
     opacity: 1;
     transform: translateX(0);
+}
+
+.contact-details-card.no-animation {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
 }
 
 .contact-details-header {
@@ -183,6 +241,7 @@ html {
 
 .contact-details-name-actions h2 {
     font-size: 47px;
+    margin: 0;
     font-weight: 100;
 }
 
@@ -192,7 +251,6 @@ html {
     align-items: center;
     justify-content: flex-start;
 }
-
 
 .contact-details-card-icon-button {
     border: none;
@@ -251,41 +309,10 @@ html {
     color: var(--lightBlue);
 }
 
-.add-new-contact-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    color: var(--white);
-    background-color: var(--dark);
-    border-radius: 8px;
-    font-weight: 700;
-    border: unset;
-    cursor: pointer;
-    font-size: 21px;
-    padding: 8px 50px;
-    width: 352px;
-    height: 52px;
-}
-
-.add-new-contact-button:hover {
-    background-color: var(--lightBlue);
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-}
-
-.add-new-contact-button-div {
-    position: sticky;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 101px;
-    top: 0px;
-    background-color: var(--white);
-    z-index: 1;
-    padding-top: 60px;
-    padding-bottom: 60px;
-}
-
+/*
+ * Overlay (Modal) Styles
+ * Styles for the contact add/edit overlay, including its general layout, sections, form elements, and action buttons.
+ */
 .overlay-wrapper {
     position: fixed;
     inset: 0;
@@ -295,6 +322,22 @@ html {
     align-items: center;
     z-index: 1200;
     opacity: 0;
+}
+
+.overlay-wrapper.active {
+    opacity: 1;
+}
+
+.overlay-wrapper.slide-in .overlay-content {
+    animation: slideInRight 0.4s ease forwards;
+}
+
+.overlay-wrapper.slide-out .overlay-content {
+    animation: slideOutRight 0.4s ease forwards;
+}
+
+.overlay-wrapper.hidden {
+    display: none !important;
 }
 
 .overlay-content {
@@ -466,6 +509,10 @@ html {
     height: 55px;
 }
 
+/*
+ * Button Specific Styles (Overlay)
+ * Dedicated styles for various buttons within the overlay, defining their appearance and hover effects.
+ */
 #cancelOverlayBtn {
     background-color: var(--white);
     color: var(--dark);
@@ -518,15 +565,14 @@ html {
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
-.hidden {
-    display: none !important;
-}
-
+/*
+ * Animations
+ * Keyframe definitions for various animations used throughout the application, primarily for sliding elements in and out.
+ */
 @keyframes slideInRight {
     from {
         transform: translateX(100%);
     }
-
     to {
         transform: translateX(0%);
     }
@@ -536,7 +582,6 @@ html {
     from {
         transform: translateX(0%);
     }
-
     to {
         transform: translateX(100%);
     }
@@ -546,7 +591,6 @@ html {
     from {
         transform: translateY(100%);
     }
-
     to {
         transform: translateY(0%);
     }
@@ -556,7 +600,6 @@ html {
     from {
         transform: translateY(0%);
     }
-
     to {
         transform: translateY(100%);
     }
@@ -564,40 +607,30 @@ html {
 
 @keyframes slideInBottomMessage {
     from {
-        transform: translateY(100%);
+        transform: translateX(-50%) translateY(200px);
+        opacity: 0;
     }
-
     to {
-        transform: translateY(0%);
+        transform: translateX(-50%) translateY(0%);
+        opacity: 1;
     }
 }
 
 @keyframes slideOutBottomMessage {
     from {
-        transform: translateY(0%);
+        transform: translateX(-50%) translateY(0%);
+        opacity: 1;
     }
-
     to {
-        transform: translateY(100%);
+        transform: translateX(-50%) translateY(200px);
+        opacity: 0;
     }
 }
 
-.overlay-wrapper.active {
-    opacity: 1;
-}
-
-.overlay-wrapper.slide-in .overlay-content {
-    animation: slideInRight 0.4s ease forwards;
-}
-
-.overlay-wrapper.slide-out .overlay-content {
-    animation: slideOutRight 0.4s ease forwards;
-}
-
-.overlay-wrapper.hidden {
-    display: none !important;
-}
-
+/*
+ * Message Display Styles
+ * Styles for success or error messages, including their positioning, appearance, and animation states.
+ */
 #contactSuccessMsg {
     position: absolute;
     bottom: 132px;
@@ -633,16 +666,24 @@ html {
     display: none;
 }
 
-.drag-scroll-active {
-    cursor: grabbing !important;
-    user-select: none;
-}
-
 .error-message {
     color: red;
     font-size: 11px;
     margin-top: 4px;
     min-height: 16px;
+}
+
+/*
+ * Utility Classes & Responsiveness
+ * General utility classes for hiding elements and styles related to touch/drag interactions and responsive design.
+ */
+.hidden {
+    display: none !important;
+}
+
+.drag-scroll-active {
+    cursor: grabbing !important;
+    user-select: none;
 }
 
 .separator-horizontal {
@@ -659,10 +700,4 @@ html {
 
 .hide-on-desktop {
     display: none;
-}
-
-.contact-details-card.no-animation {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
 }

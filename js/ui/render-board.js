@@ -1,6 +1,7 @@
-import { loadFirebaseData } from '../../main.js';
-import { initDragAndDrop } from '../events/drag-and-drop.js';
-import { createSimpleTaskCard } from './render-card.js';
+import { loadFirebaseData } from "../../main.js";
+import { initDragAndDrop } from "../events/drag-and-drop.js";
+import { createSimpleTaskCard } from "./render-card.js";
+import { allData } from "../data/task-to-firbase.js";
 
 let tasksData = {};
 
@@ -10,18 +11,18 @@ let tasksData = {};
  * @returns {boolean} True, wenn die Daten gültig sind, sonst false.
  */
 function validateRenderBoardData(boardData) {
-    if (!boardData || !boardData.tasks || !boardData.contacts) {
-        return false;
-    }
-    return true;
+  if (!boardData || !boardData.tasks || !boardData.contacts) {
+    return false;
+  }
+  return true;
 }
 
-const VALID_COLUMNS = ['to-do', 'in-progress', 'await-feedback', 'done'];
+const VALID_COLUMNS = ["to-do", "in-progress", "await-feedback", "done"];
 const COLUMN_MAPPING = {
-    toDo: 'to-do',
-    inProgress: 'in-progress',
-    review: 'await-feedback',
-    done: 'done'
+  toDo: "to-do",
+  inProgress: "in-progress",
+  review: "await-feedback",
+  done: "done",
 };
 
 /**
@@ -29,9 +30,11 @@ const COLUMN_MAPPING = {
  * @returns {object} Ein Objekt, dessen Schlüssel die Spalten-IDs sind und die Werte leere Arrays.
  */
 function initializeTasksByColumn() {
-    const tasksByColumn = {};
-    VALID_COLUMNS.forEach(col => { tasksByColumn[col] = []; });
-    return tasksByColumn;
+  const tasksByColumn = {};
+  VALID_COLUMNS.forEach((col) => {
+    tasksByColumn[col] = [];
+  });
+  return tasksByColumn;
 }
 
 /**
@@ -41,12 +44,14 @@ function initializeTasksByColumn() {
  * @param {object} tasksByColumn - Das Objekt, in dem Tasks nach Spalte gruppiert werden.
  */
 function processTaskForColumn(taskID, task, tasksByColumn) {
-    const colID = task.columnID;
-    const mappedColID = COLUMN_MAPPING[colID];
-    if (!mappedColID || !VALID_COLUMNS.includes(mappedColID)) return;
+  const colID = task.columnID;
+  const mappedColID = COLUMN_MAPPING[colID];
+  if (!mappedColID || !VALID_COLUMNS.includes(mappedColID)) return;
 
-    const createdAtDate = Array.isArray(task.createdAt) ? new Date(task.createdAt[0]) : new Date(task.createdAt);
-    tasksByColumn[mappedColID].push({ taskID, createdAt: createdAtDate });
+  const createdAtDate = Array.isArray(task.createdAt)
+    ? new Date(task.createdAt[0])
+    : new Date(task.createdAt);
+  tasksByColumn[mappedColID].push({ taskID, createdAt: createdAtDate });
 }
 
 /**
@@ -55,13 +60,13 @@ function processTaskForColumn(taskID, task, tasksByColumn) {
  * @returns {object} Ein Objekt, das Tasks nach ihren Spalten-IDs gruppiert.
  */
 function groupTasksByColumn(tasks) {
-    const tasksByColumn = initializeTasksByColumn();
-    Object.entries(tasks).forEach(([taskID, task]) => {
-        if (task && typeof task.columnID !== 'undefined') {
-            processTaskForColumn(taskID, task, tasksByColumn);
-        }
-    });
-    return tasksByColumn;
+  const tasksByColumn = initializeTasksByColumn();
+  Object.entries(tasks).forEach(([taskID, task]) => {
+    if (task && typeof task.columnID !== "undefined") {
+      processTaskForColumn(taskID, task, tasksByColumn);
+    }
+  });
+  return tasksByColumn;
 }
 
 /**
@@ -69,9 +74,9 @@ function groupTasksByColumn(tasks) {
  * @param {object} tasksByColumn - Das Objekt, das Tasks nach Spalten gruppiert enthält.
  */
 function sortGroupedTasks(tasksByColumn) {
-    VALID_COLUMNS.forEach(colID => {
-        tasksByColumn[colID].sort((a, b) => a.createdAt - b.createdAt);
-    });
+  VALID_COLUMNS.forEach((colID) => {
+    tasksByColumn[colID].sort((a, b) => a.createdAt - b.createdAt);
+  });
 }
 
 /**
@@ -80,10 +85,10 @@ function sortGroupedTasks(tasksByColumn) {
  * @returns {HTMLElement|null} Das HTML-Element des Containers oder null, wenn nicht gefunden.
  */
 function clearAndPrepareColumnContainer(colID) {
-    const container = document.getElementById(colID);
-    if (!container) return null;
-    container.querySelectorAll('.task-card').forEach(card => card.remove());
-    return container;
+  const container = document.getElementById(colID);
+  if (!container) return null;
+  container.querySelectorAll(".task-card").forEach((card) => card.remove());
+  return container;
 }
 
 /**
@@ -92,14 +97,14 @@ function clearAndPrepareColumnContainer(colID) {
  * @returns {HTMLElement} Das HTML-Element des Platzhalters.
  */
 function getOrCreatePlaceholder(container) {
-    let placeholder = container.querySelector('.no-tasks-placeholder');
-    if (!placeholder) {
-        placeholder = document.createElement('div');
-        placeholder.className = 'no-tasks-placeholder';
-        placeholder.textContent = 'No tasks to do';
-        container.appendChild(placeholder);
-    }
-    return placeholder;
+  let placeholder = container.querySelector(".no-tasks-placeholder");
+  if (!placeholder) {
+    placeholder = document.createElement("div");
+    placeholder.className = "no-tasks-placeholder";
+    placeholder.textContent = "No tasks to do";
+    container.appendChild(placeholder);
+  }
+  return placeholder;
 }
 
 /**
@@ -109,15 +114,18 @@ function getOrCreatePlaceholder(container) {
  * @param {object} boardData - Das gesamte Board-Datenobjekt.
  */
 function renderColumnTasks(container, tasksInColumn, boardData) {
-    const placeholder = getOrCreatePlaceholder(container);
-    if (tasksInColumn.length > 0) {
-        placeholder.style.display = 'none';
-        tasksInColumn.forEach(({ taskID }) => {
-            container.insertAdjacentHTML('beforeend', createSimpleTaskCard(boardData, taskID));
-        });
-    } else {
-        placeholder.style.display = 'block';
-    }
+  const placeholder = getOrCreatePlaceholder(container);
+  if (tasksInColumn.length > 0) {
+    placeholder.style.display = "none";
+    tasksInColumn.forEach(({ taskID }) => {
+      container.insertAdjacentHTML(
+        "beforeend",
+        createSimpleTaskCard(boardData, taskID)
+      );
+    });
+  } else {
+    placeholder.style.display = "block";
+  }
 }
 
 /**
@@ -125,28 +133,31 @@ function renderColumnTasks(container, tasksInColumn, boardData) {
  * @param {object} boardData - Das gesamte Board-Datenobjekt.
  */
 function renderTasksByColumn(boardData) {
-    if (!validateRenderBoardData(boardData)) return;
+  if (!validateRenderBoardData(boardData)) return;
 
-    tasksData = boardData.tasks;
-    const groupedTasks = groupTasksByColumn(tasksData);
-    sortGroupedTasks(groupedTasks);
+  tasksData = boardData.tasks;
+  const groupedTasks = groupTasksByColumn(tasksData);
+  sortGroupedTasks(groupedTasks);
 
-    VALID_COLUMNS.forEach(colID => {
-        const container = clearAndPrepareColumnContainer(colID);
-        if (container) {
-            renderColumnTasks(container, groupedTasks[colID], boardData);
-        }
+  VALID_COLUMNS.forEach((colID) => {
+    const container = clearAndPrepareColumnContainer(colID);
+    if (container) {
+      renderColumnTasks(container, groupedTasks[colID], boardData);
+    }
+  });
+
+  import("../ui/render-card.js").then((module) => {
+    import("../templates/task-details-template.js").then((templateModule) => {
+      if (typeof module.registerTaskCardDetailOverlay === "function") {
+        module.registerTaskCardDetailOverlay(
+          boardData,
+          templateModule.getTaskOverlay
+        );
+      }
     });
+  });
 
-    import('../ui/render-card.js').then(module => {
-        import('../templates/task-details-template.js').then(templateModule => {
-            if (typeof module.registerTaskCardDetailOverlay === 'function') {
-                module.registerTaskCardDetailOverlay(boardData, templateModule.getTaskOverlay);
-            }
-        });
-    });
-
-    initDragAndDrop();
+  initDragAndDrop();
 }
 
 /**
@@ -155,13 +166,13 @@ function renderTasksByColumn(boardData) {
  * @returns {string|undefined} Die entsprechende Firebase-Spalten-ID oder undefined, wenn nicht gefunden.
  */
 function mapClientToFirebaseColumnId(clientColumnId) {
-    const firebaseColumnMapping = {
-        'to-do': 'toDo',
-        'in-progress': 'inProgress',
-        'await-feedback': 'review',
-        'done': 'done'
-    };
-    return firebaseColumnMapping[clientColumnId];
+  const firebaseColumnMapping = {
+    "to-do": "toDo",
+    "in-progress": "inProgress",
+    "await-feedback": "review",
+    done: "done",
+  };
+  return firebaseColumnMapping[clientColumnId];
 }
 
 /**
@@ -170,9 +181,9 @@ function mapClientToFirebaseColumnId(clientColumnId) {
  * @param {string} firebaseColumnId - Die neue Spalten-ID im Firebase-Format.
  */
 function updateLocalTaskColumn(taskId, firebaseColumnId) {
-    if (tasksData[taskId]) {
-        tasksData[taskId].columnID = firebaseColumnId;
-    }
+  if (tasksData[taskId]) {
+    tasksData[taskId].columnID = firebaseColumnId;
+  }
 }
 
 /**
@@ -181,7 +192,7 @@ function updateLocalTaskColumn(taskId, firebaseColumnId) {
  * @param {string} firebaseColumnId - Die neue Spalten-ID im Firebase-Format.
  */
 async function triggerFirebaseUpdate(taskId, firebaseColumnId) {
-    // Firebase-Update aktuell auskommentiert oder nicht implementiert
+  // Firebase-Update aktuell auskommentiert oder nicht implementiert
 }
 
 /**
@@ -190,31 +201,31 @@ async function triggerFirebaseUpdate(taskId, firebaseColumnId) {
  * @param {string} newColumnId - Die neue Spalten-ID im Client-Format.
  */
 export async function updateTaskColumnData(taskId, newColumnId) {
-    if (!tasksData[taskId]) return;
+  if (!tasksData[taskId]) return;
 
-    const firebaseColumnId = mapClientToFirebaseColumnId(newColumnId);
-    if (!firebaseColumnId) return;
+  const firebaseColumnId = mapClientToFirebaseColumnId(newColumnId);
+  if (!firebaseColumnId) return;
 
-    updateLocalTaskColumn(taskId, firebaseColumnId);
-    await triggerFirebaseUpdate(taskId, firebaseColumnId);
-    await initializeBoard();
+  updateLocalTaskColumn(taskId, firebaseColumnId);
+  await triggerFirebaseUpdate(taskId, firebaseColumnId);
+  await initializeBoard();
 }
 
 /**
  * Lädt die Board-Daten von Firebase und rendert das Board.
  */
 async function loadAndRenderBoard() {
-    const firebaseBoardData = await loadFirebaseData();
-    if (firebaseBoardData) {
-        renderTasksByColumn(firebaseBoardData);
-    }
+  const firebaseBoardData = await loadFirebaseData();
+  if (firebaseBoardData) {
+    renderTasksByColumn(firebaseBoardData);
+  }
 }
 
 /**
  * Initialisiert das Board beim Laden der Seite.
  */
 async function initializeBoard() {
-    await loadAndRenderBoard();
+  await loadAndRenderBoard();
 }
 
-document.addEventListener('DOMContentLoaded', initializeBoard);
+document.addEventListener("DOMContentLoaded", initializeBoard);

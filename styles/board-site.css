@@ -386,6 +386,13 @@ body {
     padding: 10px;
     font-weight: 500;
 }
+.dropdown-menu-board-site-btn{
+    background-color: var(--white);
+    border-radius: 6px;
+    padding: 2px 3px 2px 3px;
+    /* display: none; */
+
+}
 
 /* Menu links */
 .dorpdown-headline{

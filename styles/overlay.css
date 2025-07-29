@@ -1,3 +1,24 @@
+.modal-content-task {
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 900px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateX(100vw);
+  opacity: 0;
+  min-height: 80%;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.4s ease-in-out;
+}
+
+#overlay-task-detail:not(.overlay-hidden) .modal-content-task {
+  transform: translateX(0);
+  opacity: 1;
+}
 /* Task Detail Overlay Eindeutige Klassen */
 .task-detail-content {
   padding: 0 8px;
@@ -302,7 +323,31 @@
   border-radius: 30px;
   background-color: var(--white);
 }
+#overlay-task-detail-edit {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9000;
+  opacity: 1;
+  visibility: visible;
+}
 
+#overlay-task-detail-edit.overlay-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#overlay-task-detail-edit:not(.overlay-hidden) .modal-content {
+  transform: translateX(0);
+  opacity: 1;
+}
 /* .modal-content-task{
     background-color: var(--white);
   padding: 20px;
@@ -319,13 +364,27 @@
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     opacity 0.4s ease-in-out;
 } */
-.task{
+.task {
   max-width: 525px;
   max-height: 931px;
   border-radius: 30px;
   padding: 48px 40px 48px 40px;
 }
+.assigned-main-container {
+  display: flex;
+  gap: 4px;
+  max-width: 100%;
+  min-height: auto;
+  overflow-x: auto; /* Behält die horizontale Scroll-Funktionalität bei */
 
+  /* Webkit-spezifische Regeln für unsichtbare Scrollbar */
+  &::-webkit-scrollbar {
+    display: none; /* Versteckt die Scrollbar */
+    /* Oder:
+    width: 0;
+    height: 0; */
+  }
+}
 @media (max-width: 992px) {
   .form-fill-part {
     flex-direction: column;
