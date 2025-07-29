@@ -1,5 +1,8 @@
+/*
+ * Styles for screens up to 1350px wide
+ * Adjustments for medium-sized screens, primarily affecting contact list layout and text separators.
+ */
 @media (max-width: 1350px) {
-
     .contact {
         margin-left: 0px;
     }
@@ -24,6 +27,11 @@
     }
 }
 
+/*
+ * Styles for screens up to 1150px wide
+ * Significant layout changes for the overlay (modal) to a column-based design,
+ * along with adjustments for contact details and mobile-specific elements.
+ */
 @media (max-width: 1150px) {
     .overlay-content {
         flex-direction: column;
@@ -41,6 +49,7 @@
         width: 100%;
         border-radius: 20px 20px 0 0;
         align-items: center;
+        /* This line is redundant if align-items: flex-start is used right after */
         align-items: flex-start;
         height: 250px;
     }
@@ -89,6 +98,7 @@
     }
 
     .overlay-close:hover {
+        /* This selector might apply to the desktop close button if it's not hidden */
         background-color: var(--dark);
     }
 
@@ -99,6 +109,7 @@
     .contact-initial {
         font-weight: 400;
         border-bottom: 1px solid var(--white);
+        /* This line is redundant if another border-bottom is used right after */
         font-size: 20px;
         border-bottom: 1px solid var(--grey);
         max-width: 100%;
@@ -140,8 +151,12 @@
     }
 }
 
+/*
+ * Styles for screens up to 1024px wide
+ * Adjustments for slightly smaller tablets and large mobile devices,
+ * including changes to contact details, message display, and hiding desktop elements.
+ */
 @media (max-width: 1024px) {
-
     .contact-details-header {
         align-items: flex-start;
         flex-direction: column;
@@ -175,6 +190,11 @@
     }
 }
 
+/*
+ * Styles for screens up to 768px wide
+ * Extensive mobile-first adjustments, including responsive sidebar behavior,
+ * floating action buttons, and a mobile-specific dropdown menu.
+ */
 @media (max-width: 768px) {
     .contacts-sidebar {
         display: block;
@@ -188,6 +208,12 @@
     .contacts-list {
         width: 100%;
         max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding-left: 100px;
+        padding-right: 100px;
     }
 
     .contact-section {
@@ -234,7 +260,9 @@
     .add-new-contact-button {
         border-radius: 50%;
         width: 50px;
+        /* Redundant with the 56px definition above unless this is meant to override */
         height: 50px;
+        /* Redundant with the 56px definition above unless this is meant to override */
     }
 
     .contact {
@@ -329,20 +357,15 @@
         border-radius: 20px 20px 0px 20px;
         box-shadow:
             -2px 2px 6px rgba(0, 0, 0, 0.1),
-            /* links */
             2px 2px 6px rgba(0, 0, 0, 0.1),
-            /* rechts */
             0px 6px 12px rgba(0, 0, 0, 0.15);
-        /* unten */
         z-index: 1001;
         display: flex;
         flex-direction: column;
         align-items: stretch;
         justify-content: center;
         gap: 8px;
-        /* gleichmäßiger Abstand zwischen Buttons */
         padding: 8px;
-        /* innen etwas Luft */
     }
 
     .mobile-dropdown-menu-button {
@@ -417,8 +440,8 @@
     }
 
     #contactSuccessMsg {
-        position: fixed ;
-        inset: auto auto 200px 50% ;
+        position: fixed;
+        inset: auto auto 200px 50%;
         transform: translateX(-50%) translateY(100%);
         width: 90%;
         max-width: 300px;
@@ -434,14 +457,34 @@
     }
 }
 
+@media (max-width: 580px) {
+    .contacts-list {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+
+/*
+ * Styles for screens up to 480px wide
+ * Further adjustments for smaller mobile devices, particularly for form input widths.
+ */
 @media (max-width: 480px) {
 
     .form-inputs,
     .input-wrapper {
         width: 100%;
     }
+
+    .contacts-list {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
 }
 
+/*
+ * Styles for screens up to 320px wide
+ * Specific adjustments for very small mobile devices, affecting overlay height and avatar positioning.
+ */
 @media (max-width: 320px) {
 
     .form-inputs,
@@ -458,7 +501,6 @@
     }
 }
 
-/* ≤1024px */
 @media (max-width: 1024px) {
     h1 {
         font-size: 42px !important;
@@ -484,16 +526,11 @@
         font-size: 17px !important;
     }
 
-    p {
-        font-size: 17px !important;
-    }
-
     span {
         font-size: 16px !important;
     }
 }
 
-/* ≤768px */
 @media (max-width: 768px) {
     h1 {
         font-size: 36px !important;
@@ -528,7 +565,6 @@
     }
 }
 
-/* ≤480px */
 @media (max-width: 480px) {
     h1 {
         font-size: 32px !important;
@@ -563,7 +599,6 @@
     }
 }
 
-/* ≤320px */
 @media (max-width: 320px) {
     h1 {
         font-size: 28px !important;
@@ -597,7 +632,6 @@
         font-size: 13px !important;
     }
 }
-
 
 @media (max-width: 357px) {
     #createContactBtn {

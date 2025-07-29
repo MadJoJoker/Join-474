@@ -11,7 +11,8 @@ async function initIndex() {
   fetchedData = data;
   // fetchedData = data['users'];
   // setDataContainer("users");
-  console.log("recieved data: ", fetchedData);
+
+  // console.log("recieved data: ", fetchedData);
 }
 
 function removeOverlay() {

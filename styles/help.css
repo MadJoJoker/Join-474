@@ -1,151 +1,181 @@
+/*
+ * Base Styles
+ * General styling for the body and root HTML elements, establishing the base layout and font.
+ */
 body,
 html {
-  margin: 0;
-  height: 100%;
-  background-color: #f6f7f8;
-  font-family: 'Inter', sans-serif;
+    margin: 0;
+    height: 100%;
+    background-color: #f6f7f8;
+    font-family: 'Inter', sans-serif;
 }
 
+/*
+ * App Container & Main Content Layout
+ * Styles for the main application container and the content area, defining their display properties and scroll behavior.
+ */
 .app-container {
-  display: flex;
-  height: 100vh;
+    display: flex;
+    height: 100vh;
 }
 
-
-/* scrollbar-width: none; Firefox */
-/* -ms-overflow-style: none; IE 10+ */
+/* For Firefox */
+/* scrollbar-width: none; */
+/* For IE 10+ */
+/* -ms-overflow-style: none; */
 .main-content {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
 }
 
-/* Chrome, Safari, Edge */
+/* For Chrome, Safari, Edge */
 .main-content::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
-/* text */
-
+/*
+ * Text Styling & Highlighting
+ * Specific styles for text elements, including a highlight class.
+ */
 .highlight-join {
-  color: var(--lightBlue);
+    color: var(--lightBlue);
 }
 
+/*
+ * Help Content Area
+ * Styles for the help section's main content area, including padding, overflow, and scrollbar hiding.
+ */
 .help-content {
-  flex-grow: 1;
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0 auto;
-  padding: 100px 80px 20px 80px;
-  overflow: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
+    flex-grow: 1;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 auto;
+    padding: 100px 80px 20px 80px;
+    overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    -webkit-overflow-scrolling: touch; /* iOS Safari */
 }
 
 .help-content::-webkit-scrollbar {
-  display: none;
+    display: none; /* Chrome, Safari, Edge */
 }
 
 .help-content h1 {
-  font-size: 61px;
-  margin-bottom: 24px;
+    font-size: 61px;
+    margin-bottom: 24px;
 }
 
 .help-content h2 {
-  font-size: 27px;
-  margin-top: 32px;
-  margin-bottom: 16px;
+    font-size: 27px;
+    margin-top: 32px;
+    margin-bottom: 16px;
 }
 
 .help-content p {
-  margin-bottom: 16px;
-  font-weight: 400;
+    margin-bottom: 16px;
+    font-weight: 400;
 }
 
+/*
+ * Numbered Section Styling
+ * Styles for numbered lists or sections, including the layout of individual items.
+ */
 .numbered-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .numbered-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
 }
 
 .numbered-item .number {
-  font-size: 27px;
-  font-weight: bold;
-  text-align: right;
-  line-height: 1;
+    font-size: 27px;
+    font-weight: bold;
+    text-align: right;
+    line-height: 1;
 }
 
 .numbered-item .content {
-  flex: 1;
+    flex: 1;
 }
 
 .numbered-item .content h3 {
-  font-size: 20px;
-  font-weight: bold;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .numbered-item .content p {
-  margin: 0;
+    margin: 0;
 }
 
 .numbered-item .number:empty::before {
-  content: '';
-  display: inline-block;
-  width: 1em;
+    content: '';
+    display: inline-block;
+    width: 1em;
 }
 
-/* Back Button */
+/*
+ * Back Button Styling
+ * Styles for the fixed "back" button, including its positioning, appearance, and hover effects.
+ */
 #backBtn {
-  position: fixed;
-  top: 200px;
-  right: 90px;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
+    position: fixed;
+    top: 200px;
+    right: 90px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
 }
 
 #backBtn svg {
-  width: 60%;
-  height: 60%;
-  transition: transform 0.2s ease;
+    width: 60%;
+    height: 60%;
+    transition: transform 0.2s ease;
 }
 
 #backBtn:hover {
-  background-color: var(--grey);
+    background-color: var(--grey);
 }
 
 #backBtn:hover svg {
-  transform: scale(1.15);
+    transform: scale(1.15);
 }
 
+/*
+ * Indented List Styling
+ * Simple styling for creating an indented list.
+ */
 .indented-list {
-  padding-left: 40px;
+    padding-left: 40px;
 }
 
+/*
+ * Responsive Adjustments for Screens up to 768px Wide
+ * Changes for smaller tablet and mobile devices, mainly affecting padding and back button positioning.
+ */
 @media (max-width: 768px) {
-  .help-content {
-    padding: 20px 16px 120px 16px;
-  }
+    .help-content {
+        padding: 20px 16px 120px 16px;
+    }
 
-  #backBtn {
-    top: 100px;
-    right: 16px;
-  }
+    #backBtn {
+        top: 100px;
+        right: 16px;
+    }
 }

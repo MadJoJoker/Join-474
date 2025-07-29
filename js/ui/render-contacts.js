@@ -2,12 +2,15 @@
 import { getFirebaseData } from '../data/API.js';
 import { cleanContacts, groupContactsByInitials } from '../data/contacts-utils.js';
 import { setCurrentlyEditingContact, setActiveContactId, getContactById, activeContactId, setAllContacts } from '../data/contacts-state.js';
+
 // Template rendering
 import { createContactDetailsHTML, buildContactSectionHTML } from '../templates/contacts-templates.js';
+
 // UI behavior
 import { openOverlay } from '../ui/contacts-overlays.js';
 import { initContactEventListeners } from '../events/contacts-event-listeners.js';
 
+// Scroll behavior
 import { enableMouseDragScroll } from '../events/drag-to-scroll.js';
 
 /**
@@ -96,7 +99,6 @@ function hideContactDetails(detailsCard, contactElement) {
 function showContactDetails(detailsCard, contact, contactElement, skipAnimation = false) {
   detailsCard.innerHTML = createContactDetailsHTML(contact);
   contactElement?.classList.add('active');
-
   if (skipAnimation) {
     detailsCard.classList.add('no-animation');
     detailsCard.classList.add('visible');
@@ -104,9 +106,7 @@ function showContactDetails(detailsCard, contact, contactElement, skipAnimation 
     detailsCard.classList.remove('no-animation');
     setTimeout(() => detailsCard.classList.add('visible'), 10);
   }
-
   setActiveContactId(contact.id);
-
   if (window.innerWidth <= 768) {
     document.body.classList.add('mobile-contact-visible');
   }
@@ -125,34 +125,55 @@ window.onContactClickById = function (contactId) {
 };
 
 /**
- * Called when the "Edit" button is clicked inside the contact details card.
- * This opens the edit overlay and fills in the form fields with current contact data.
- * Used via onclick="onEditContact('contact-id')" in the contact details template.
- *
- * @param {string} contactId - The ID of the contact to edit.
+ * Opens the edit overlay for a given contact ID.
+ * @param {string} contactId - The ID of the contact to edit
  */
 window.onEditContact = function (contactId) {
   const contact = getContactById(contactId);
   if (!contact) return;
   setCurrentlyEditingContact({ ...contact });
-  document.getElementById('editNameInput').value = contact.name;
-  document.getElementById('editEmailInput').value = contact.email;
-  document.getElementById('editPhoneInput').value = contact.phone;
-  document.getElementById('editContactAvatar').textContent = contact.initials;
-  const backgroundColor = contact.avatarColor?.startsWith('--')
-    ? `var(${contact.avatarColor})`
-    : contact.avatarColor || 'var(--grey)';
-  document.getElementById('editContactAvatar').style.backgroundColor = backgroundColor;
+  fillEditFormWithContact(contact);
+  updateEditAvatar(contact);
   openOverlay('editContactOverlay');
 };
 
+/**
+ * Fills the edit contact form fields with the given contact's data.
+ * @param {Object} contact - The contact object
+ * @param {string} contact.name
+ * @param {string} contact.email
+ * @param {string} contact.phone
+ */
+function fillEditFormWithContact(contact) {
+  document.getElementById('editNameInput').value = contact.name;
+  document.getElementById('editEmailInput').value = contact.email;
+  document.getElementById('editPhoneInput').value = contact.phone;
+}
+
+/**
+ * Updates the avatar element in the edit overlay.
+ * @param {Object} contact - The contact object
+ * @param {string} contact.initials
+ * @param {string} [contact.avatarColor]
+ */
+function updateEditAvatar(contact) {
+  const avatarEl = document.getElementById('editContactAvatar');
+  avatarEl.textContent = contact.initials;
+  const backgroundColor = contact.avatarColor?.startsWith('--')
+    ? `var(${contact.avatarColor})`
+    : contact.avatarColor || 'var(--grey)';
+  avatarEl.style.backgroundColor = backgroundColor;
+}
+
+/**
+ * Initializes drag-to-scroll functionality on specific scrollable UI panels
+ * after the DOM is fully loaded.
+ */
 document.addEventListener('DOMContentLoaded', () => {
   const elementsToDragScroll = document.querySelectorAll('.contacts-sidebar, .contacts-details, .scrollable-panel');
   console.log('Activating drag scroll...');
-
   elementsToDragScroll.forEach((element) => {
     const isContactsDetails = element.classList.contains('contacts-details');
-
     enableMouseDragScroll(element, {
       enableHorizontalScroll: !isContactsDetails,
       enableVerticalScroll: true
@@ -160,10 +181,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Startup
+/**
+ * Application startup logic:
+ * - Renders the initial contact list
+ * - Sets up all necessary event listeners for the contacts UI
+ */
 renderContacts();
 initContactEventListeners();
 
+/**
+ * Closes the contact details view on mobile devices.
+ * This function can be called globally via window.closeMobileContactView().
+ */
 window.closeMobileContactView = function () {
   document.body.classList.remove('mobile-contact-visible');
   setActiveContactId(null);
