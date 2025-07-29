@@ -245,9 +245,9 @@ function createSubtaskHtml(subtaskName, isChecked, taskId, subtaskIndex) {
   const checkedAttr = isChecked ? "checked" : "";
   return `
         <div class="subtask-item">
-            <input type="checkbox" id="subtask-${taskId}-${subtaskIndex}"
+            <input type="checkbox" class="subtask-checkbox" id="subtask-${taskId}-${subtaskIndex}"
                    data-task-id="${taskId}" data-subtask-index="${subtaskIndex}"
-                   ${checkedAttr} disabled>
+                   ${checkedAttr}>
             <label for="subtask-${taskId}-${subtaskIndex}">${subtaskName}</label>
         </div>
     `;
