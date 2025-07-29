@@ -1,3 +1,4 @@
+import { CWDATA } from '../data/task-to-firbase.js';
 import { updateTaskColumnData } from '../ui/render-board.js';
 
 let currentDraggedElement = null;
@@ -43,6 +44,7 @@ function dragEnd(event) {
     document.querySelectorAll('.task-column').forEach(column => {
         column.classList.remove('drag-over');
     });
+    CWDATA();
 }
 
 /**

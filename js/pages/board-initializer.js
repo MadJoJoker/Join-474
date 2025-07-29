@@ -68,7 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const fastAddTaskButtons = document.querySelectorAll('[id^="fast-add-task-"]');
+  const fastAddTaskButtons = document.querySelectorAll(
+    '[id^="fast-add-task-"]'
+  );
   fastAddTaskButtons.forEach((button) => {
     /**
      * @param {Event} event
@@ -86,3 +88,23 @@ document.addEventListener("DOMContentLoaded", () => {
     searchInput.addEventListener("input", filterTaskCardsByTitle);
   }
 });
+/** * Shows a find-task-info-no-found message after no task is found.
+ * The message slides in, stays visible for a short time, and then slides out.
+ */
+export async function showFindTaskInfoNoFoundMsg() {
+  const noFoundMsg = document.getElementById("find-task-info-no-found-Msg");
+  if (!noFoundMsg) return;
+
+  // Animation- und Sichtbarkeitsklassen zurücksetzen
+  noFoundMsg.classList.remove("slide-in", "slide-out", "hidden");
+  void noFoundMsg.offsetWidth; // Force reflow für erneute Animation
+  noFoundMsg.classList.add("slide-in");
+  await new Promise((resolve) => setTimeout(resolve, 900));
+
+  noFoundMsg.classList.remove("slide-in");
+  noFoundMsg.classList.add("slide-out");
+
+  await new Promise((resolve) => setTimeout(resolve, 1600));
+
+  noFoundMsg.classList.add("hidden");
+}

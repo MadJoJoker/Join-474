@@ -20,13 +20,9 @@ function getValidatedElementById(id) {
 function getValidatedQuerySelector(parent, selector) {
   const element = parent.querySelector(selector);
   if (!element) {
-    console.warn(
-      `Element with selector '${selector}' not found within parent.`
-    );
+    return element;
   }
-  return element;
 }
-
 /**
  * @param {HTMLElement} overlay - Das Overlay-Element.
  * @param {boolean} isVisible - Ob das Overlay sichtbar sein soll (true) oder nicht (false).
