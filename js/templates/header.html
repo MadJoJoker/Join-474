@@ -18,26 +18,3 @@
     <a href="/index.html">Log out</a>
   </div>
 </div>
-<div id="landscape-blocker">
-  Please rotate your device to portrait mode.
-</div>
-<script>
-  /**
-   * Checks if the device is a real mobile in landscape mode,
-   * and toggles the #landscape-blocker accordingly.
-   */
-  function checkOrientation() {
-    const blocker = document.getElementById('landscape-blocker');
-    if (!blocker) return;
-    const isLandscape = window.innerWidth > window.innerHeight;
-    const isMaxWidth = window.matchMedia('(max-width: 1024px)').matches;
-    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
-    const isNoHover = window.matchMedia('(hover: none)').matches;
-    const showBlocker = isLandscape && isMaxWidth && isCoarsePointer && isNoHover;
-    blocker.style.display = showBlocker ? 'flex' : 'none';
-  }
-
-  window.addEventListener('resize', checkOrientation);
-  window.addEventListener('orientationchange', checkOrientation);
-  document.addEventListener('DOMContentLoaded', checkOrientation);
-</script>
