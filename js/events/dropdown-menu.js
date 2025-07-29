@@ -237,10 +237,10 @@ function displaySelectedContacts() {
     mainContainer.className = 'assigned-main-container';
     // Wenn mehr als 3 Kontakte, mache den Bereich scrollbar
     if (selectedContacts.length > 3) {
-        mainContainer.style.maxHeight = '48px';
-        mainContainer.style.overflowX = 'auto';
+        // mainContainer.style.maxHeight = '50px';
+        // mainContainer.style.overflowX = 'auto';
         mainContainer.style.display = 'flex';
-        mainContainer.style.gap = '4px';
+        // mainContainer.style.gap = '4px';
     }
     selectedContacts.forEach(contact => {
         const initialsDiv = document.createElement('div');

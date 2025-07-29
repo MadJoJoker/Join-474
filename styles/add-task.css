@@ -902,6 +902,22 @@
   font-size: 20px;
 }
 
+.assigned-main-container {
+  display: flex;
+  gap: 4px;
+  max-width: 100%;
+  overflow-x: auto; /* Behält die horizontale Scroll-Funktionalität bei */
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--dark);
+    border-radius: 4px;
+  }
+}
+
 @media (min-width: 1921px) {
   .form-buttons-part {
     position: relative;
