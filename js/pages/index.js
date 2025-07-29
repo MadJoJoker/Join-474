@@ -40,14 +40,14 @@ function handleLogin(){
 function processEmailString(userEmail) {
   const foundMail = Object.keys(fetchedData).find(key => fetchedData[key].email.toLowerCase() == userEmail.toLowerCase());
   if(!foundMail) {
-    window.location.href = '../html/sign-up.html';
+    window.location.href = 'html/sign-up.html';
   } else {
     const displayName = fetchedData[foundMail].displayName;
     initialsForHeader(displayName);
     sessionStorage.setItem('currentUser', displayName);
     let email = blameEmptyInput('login-password', 'alert');
     if(email) {
-      window.location.href = '../html/summary.html';
+      window.location.href = 'html/summary.html';
     }
   }
 }
@@ -270,5 +270,5 @@ function SofiaDetector(passwordInput) {
 function directLogin() {
   sessionStorage.setItem('headerInitials', "G");
   sessionStorage.setItem('currentUser', "");
-  window.location.href = '../html/summary.html';
+  window.location.href = 'html/summary.html';
 }
