@@ -187,7 +187,9 @@ a {
     }
 
     .join-logo-header {
-        display: block;
+        display: block !important;
+        height: 40px;
+        width: auto;
     }
 }
 
