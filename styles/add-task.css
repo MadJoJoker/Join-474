@@ -1,7 +1,3 @@
-/* body {
-  overflow-x: hidden;
-} */
-
 .content-container {
   display: flex;
   width: 100%;
@@ -21,7 +17,6 @@
     font-size: 63px;
     margin-block-start: 0;
     margin-block-end: 0;
-    /* max-width: 1572px; */
   }
 }
 
@@ -30,7 +25,6 @@
   flex-direction: column;
   padding-top: 24px;
   gap: 32px;
-  /* max-width: 1572px; */
 }
 
 .form-fill-part {
@@ -102,8 +96,6 @@
   font-size: 20px;
   cursor: pointer;
   background-color: var(--white);
-  /* line-height: 40px;
-  margin-bottom: 15px; */
 
   &::placeholder {
     color: var(--borderGrey);
@@ -218,9 +210,6 @@
 }
 
 .styled-select {
-  /* appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none; */
   height: 48px;
   width: 100%;
   border-radius: 10px;
@@ -346,7 +335,6 @@
   &.open {
     height: 136px;
     z-index: 2;
-    /* margin-bottom: 19px; */
 
     #category-options-container {
       opacity: 1;
@@ -380,10 +368,6 @@
   height: 178px;
 }
 
-/* #category-options-container.open{
-    margin-top: 15px;
-} */
-
 #assigned-to-options-container {
   margin-top: -17px;
   font-size: 20px;
@@ -410,22 +394,13 @@
 }
 
 .initials-container {
-  /* Container-Layout */
   display: flex;
   flex-shrink: 0;
-  /* Verhindert, dass der Container schrumpft */
   align-items: center;
   justify-content: flex-start;
   white-space: nowrap;
-  /* Wichtig: Icons bleiben in einer Zeile */
-
-  /* Dimensionen und Rand */
-
-  /* Scrollbarkeits-Einstellungen */
   overflow-x: auto;
-  /* Horizontal scrollbar, wenn Inhalt überläuft */
   overflow-y: auto;
-  /* Vertikales Scrollen verhindern */
   transition: width 0.5s ease;
 
   &::-webkit-scrollbar {
@@ -437,28 +412,19 @@
     border-radius: 4px;
   }
 
-  /* Styling der einzelnen Initialen-Kreise innerhalb des Containers */
   .assigned-initials-circle {
     flex-shrink: 0;
-    /* Verhindert, dass die Kreise schrumpfen */
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    /* Padding und Border werden in Width/Height einberechnet */
-
-    /* Dimensionen und Styling der Kreise */
     width: 42px;
     height: 42px;
     color: var(--white);
     border: 2px solid var(--white);
     border-radius: 50%;
-    /* Macht die Kreise rund */
-
-    /* Abstand zwischen den Kreisen */
     margin-right: 8px;
 
-    /* Besonderheit für das letzte Element, um unnötigen Abstand zu entfernen */
     &:last-child {
       margin-right: 0;
     }
@@ -533,43 +499,33 @@
 }
 
 :root {
-  /* Annahme: Du hast diese Variablen definiert. Passe die Werte ggf. an. */
   --white: #ffffff;
   --borderGrey: #e0e0e0;
 }
 
 .input-button {
-  /* Positionierung */
   position: absolute;
   right: 26px;
   top: 50%;
   transform: translateY(-50%);
-
-  /* Dimensionen und Form */
   width: 24px;
   height: 24px;
   border-radius: 50%;
   border: hidden;
-
   background-color: var(--white);
   cursor: pointer;
-
-  /* Flexbox für Inhalt (z.B. ein Icon/SVG/Img) */
   display: flex;
   align-items: center;
   justify-content: center;
 
-  /* Hover-Zustand */
   &:hover {
     background-color: var(--borderGrey);
   }
 
-  /* Styling für Bilder (img-Tags) innerhalb des Buttons */
   img {
     width: 14px;
     height: 14px;
     border-radius: 10px;
-    /* Macht die Ecken des Bildes leicht abgerundet */
   }
 }
 
@@ -674,21 +630,17 @@
   }
 }
 
-/* Styles für den Edit-Input-Bereich, der mit .subtask-list interagieren könnte */
 .edit-input {
   flex-grow: 1;
   position: relative;
   width: 100%;
   height: 100%;
   margin: 0 -20px 0 -30px;
-  /* Passt sich der Breite des übergeordneten Flex-Items an */
   border: none;
   border-bottom: 1px solid var(--lightBlue);
   font-size: 16px;
   padding-left: 21px;
-  /* Für Text-Einrückung */
   box-sizing: border-box;
-  /* Sicherstellen, dass Padding/Border die Breite nicht sprengen */
 
   &:focus-visible {
     border: none;
@@ -701,33 +653,24 @@
   display: flex;
   align-items: center;
   width: 100%;
-  /* Stellt sicher, dass der Container die volle Breite nutzt */
 }
 
-/* Container für Icons im Bearbeitungsmodus */
 .subtask-icons-container {
-  /* Diese Positionierung ist OK, wenn dieser Container über dem Input schwebt */
   position: absolute;
   right: 26px;
   top: 50%;
   transform: translateY(-50%);
-  /* Vertikale Zentrierung */
   display: flex;
   align-items: center;
   pointer-events: none;
-  /* Icons sind nicht klickbar, wenn Container ausgeblendet ist */
   opacity: 0;
   transition: opacity 0.3s ease;
-  /* Sanftes Ein-/Ausblenden */
 
   svg {
     cursor: pointer;
     pointer-events: auto;
-    /* Icons im Container sind klickbar */
     user-select: none;
     margin-left: 10px;
-    /* Abstand zwischen den Icons im Edit-Modus */
-    /* Weitere Styles für Icons im Edit-Modus */
   }
 }
 
@@ -801,7 +744,6 @@
 
 #assigned-to-area {
   width: 150px;
-  /* overflow: hidden; */
   transition: width 0.3s ease;
   overflow: auto;
   cursor: pointer;
@@ -810,12 +752,7 @@
 
 #assigned-to-area.width-100 {
   width: 100%;
-  /* overflow-x: visible;
-  overflow-y: visible; */
-
-
   overflow: auto;
-  /* flex-wrap: wrap; */
 }
 
 .bg-color-grey {
@@ -886,7 +823,6 @@
 #taskSuccessMsg.slide-out {
   bottom: 50%;
   opacity: 1;
-
 }
 
 #taskSuccessMsg.slide-in {
@@ -906,7 +842,7 @@
   display: flex;
   gap: 4px;
   max-width: 100%;
-  overflow-x: auto; /* Behält die horizontale Scroll-Funktionalität bei */
+  overflow-x: auto;
 
   &::-webkit-scrollbar {
     height: 4px;
@@ -915,211 +851,5 @@
   &::-webkit-scrollbar-thumb {
     background: var(--dark);
     border-radius: 4px;
-  }
-}
-
-@media (min-width: 1921px) {
-  .form-buttons-part {
-    position: relative;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-}
-
-@media (max-width: 1140px) {
-  .priority-btn {
-    gap: 4px;
-    padding: 16px 6px;
-  }
-
-  .priority-button-container {
-    gap: unset;
-    justify-content: space-between;
-  }
-
-  #assigned-to-options-container {
-    font-size: 16px;
-  }
-
-  .contact-option {
-    padding: 7px 14px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .content-container {
-    height: calc(100vh - 176px);
-    flex-direction: column;
-  }
-
-  .content {
-    padding: 0 40px 0 40px;
-  }
-
-  .priority-btn {
-    gap: 8px;
-    padding: 16px 10px;
-  }
-
-  #assigned-to-options-container {
-    font-size: 20px;
-  }
-
-  .contact-option {
-    padding: 7px 21px;
-  }
-
-  .content h1 {
-    position: fixed;
-    top: 122px;
-    left: 40px;
-  }
-
-  .form-fill-part {
-    flex-direction: column;
-  }
-
-  .left-form {
-    padding: 0 0 0 0;
-  }
-
-  .border {
-    display: none;
-  }
-
-  .form {
-    padding-top: 0;
-  }
-
-  .right-form {
-    padding: 0 0 0 0;
-  }
-
-  #priority-legend {
-    padding: 10px 0;
-  }
-
-  .priority-button-container {
-    gap: 16px;
-    justify-content: unset;
-  }
-
-  .form-buttons-part {
-    position: fixed;
-    bottom: 96px;
-    left: 40px;
-    right: 40px;
-  }
-
-  .responsive-div {
-    height: 96px;
-    width: 100%;
-    background-color: var(--lightGrey);
-  }
-
-  #responsive-div-one {
-    height: 114px;
-  }
-
-  .priority-btn {
-    height: 41px;
-    padding: 10px 16px;
-  }
-
-  #taskSuccessMsg {
-    bottom: 50%;
-    left: 50%;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .content {
-    padding: 0 16px 0 16px;
-  }
-
-  .content h1 {
-    top: 102px;
-    left: 16px;
-    font-size: 47px;
-  }
-
-  .responsive-div {
-    height: 88px;
-  }
-
-  #responsive-div-one {
-    height: 88px;
-  }
-
-  .font-size-20 {
-    font-size: 16px;
-  }
-
-  .input-field {
-    height: 40px;
-    font-size: 16px;
-  }
-
-  .task-description-area {
-    height: 88px;
-    font-size: 16px;
-  }
-
-  .priority-button-container {
-    justify-content: space-between;
-  }
-
-  .priority-btn {
-    font-size: 16px;
-  }
-
-  .contact-input {
-    font-size: 16px;
-  }
-
-  .input-field-subtask {
-    font-size: 16px;
-  }
-
-  #assigned-to-options-container {
-    font-size: 16px;
-  }
-
-  #category-options-container {
-    font-size: 16px;
-  }
-
-  .select-wrapper {
-    height: 48px !important;
-  }
-
-  .form-buttons-part {
-    left: 16px;
-    right: 16px;
-    justify-content: flex-end;
-  }
-
-  #title-error {
-    top: 66px;
-  }
-
-  #due-date-error {
-    top: 66px;
-  }
-
-  #taskSuccessMsg {
-    width: 80%;
-  }
-}
-
-@media (max-width: 380px) {
-  .priority-button-container {
-    gap: 0px;
-  }
-
-  .priority-btn {
-    padding: 10px 10px;
   }
 }
