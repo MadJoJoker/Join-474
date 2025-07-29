@@ -37,17 +37,6 @@ function buildFirebaseUrl(path) {
 }
 
 /**
- * Logs Firebase request details to the console.
- * 
- * @param {string} url - The Firebase URL being called.
- * @param {object|null} data - The payload being sent.
- */
-function logFirebaseRequest(url, data) {
-    console.log('[saveFirebaseData] URL:', url);
-    console.log('[saveFirebaseData] Payload:', data);
-}
-
-/**
  * Sends the request to Firebase (PUT or DELETE).
  * 
  * @param {string} url - The Firebase URL.
@@ -70,7 +59,6 @@ async function sendFirebaseRequest(url, data) {
  */
 async function handleFirebaseResponse(response) {
     const responseText = await response.text();
-    console.log('[saveFirebaseData] Firebase response:', response.status, responseText);
     if (!response.ok) {
         throw new Error('Firebase update failed: ' + response.statusText);
     }
@@ -153,7 +141,6 @@ export async function createContact({ name, email, phone }) {
  * @returns {Promise<void>}
  */
 export async function updateContact(contact) {
-    console.log('[updateContact] Updating contact:', contact);
     await saveFirebaseData({ path: `contacts/${contact.id}`, data: contact });
 }
 

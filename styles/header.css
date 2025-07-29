@@ -1,3 +1,27 @@
+/* Hide the blocker by default */
+#landscape-blocker {
+    position: fixed;
+    inset: 0;
+    background: white;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-size: 24px;
+    text-align: center;
+}
+
+/* Show the blocker only in landscape orientation on small devices */
+@media screen and (orientation: landscape) and (max-width: 1024px) and (hover: none) and (pointer: coarse) {
+    #landscape-blocker {
+        display: flex;
+    }
+
+    body>*:not(#landscape-blocker) {
+        display: none !important;
+    }
+}
+
 /*
  * Header Styles
  * Styles for the main application header, including its layout, typography, and visual appearance.

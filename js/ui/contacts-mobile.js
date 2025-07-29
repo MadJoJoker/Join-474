@@ -10,9 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
  * Initializes mobile-specific UI features on DOM load.
  */
 function initializeMobileUI() {
-  if (window.innerWidth <= 1150) {
-    console.log('[mobile] Initializing contact-mobile UI features...');
-  }
   setupMobileCloseButtons();
   setupMobileDropdownHandler();
 }

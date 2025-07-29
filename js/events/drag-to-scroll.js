@@ -8,8 +8,6 @@
  * @param {boolean} [options.enableVerticalScroll=true] - Whether to allow vertical scrolling via drag
  */
 
-console.log('drag-to-scroll loaded');
-
 export function enableMouseDragScroll(scrollContainer, options = {}) {
     const dragState = createScrollState(scrollContainer, options);
     bindMouseDragEvents(scrollContainer, dragState);

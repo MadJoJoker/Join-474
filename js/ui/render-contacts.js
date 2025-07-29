@@ -171,7 +171,6 @@ function updateEditAvatar(contact) {
  */
 document.addEventListener('DOMContentLoaded', () => {
   const elementsToDragScroll = document.querySelectorAll('.contacts-sidebar, .contacts-details, .scrollable-panel');
-  console.log('Activating drag scroll...');
   elementsToDragScroll.forEach((element) => {
     const isContactsDetails = element.classList.contains('contacts-details');
     enableMouseDragScroll(element, {
