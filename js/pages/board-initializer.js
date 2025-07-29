@@ -68,7 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const fastAddTaskButtons = document.querySelectorAll('[id^="fast-add-task-"]');
+  const fastAddTaskButtons = document.querySelectorAll(
+    '[id^="fast-add-task-"]'
+  );
   fastAddTaskButtons.forEach((button) => {
     /**
      * @param {Event} event

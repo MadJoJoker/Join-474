@@ -20,9 +20,8 @@ function getValidatedElementById(id) {
 function getValidatedQuerySelector(parent, selector) {
   const element = parent.querySelector(selector);
   if (!element) {
-
-  return element;
-}
+    return element;
+  }
 }
 /**
  * @param {HTMLElement} overlay - Das Overlay-Element.

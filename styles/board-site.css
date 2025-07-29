@@ -9,9 +9,9 @@ body {
   min-height: 100vh;
   background-color: var(--lightwhite);
   overflow-x: hidden;
-html {
-  overflow-x: hidden;
-}
+  html {
+    overflow-x: hidden;
+  }
   overflow-y: hidden;
 }
 
