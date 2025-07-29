@@ -1,3 +1,42 @@
+/**
+ * Initialisiert die Subtask-Logik für das übergebene Container-Element.
+ * @param {HTMLElement} container - Das Container-Element, das die Subtask-Felder enthält.
+ */
+export function initSubtaskManagementLogic(container = document) {
+  const addSubtaskBtn = container.querySelector('#add-subtask-btn');
+  const subtaskInput = container.querySelector('#subtask-input');
+  const subtaskClearBtn = container.querySelector('#subtask-clear-btn');
+  const subtaskAddTaskBtn = container.querySelector('#subtask-add-task-btn');
+  const subtasksList = container.querySelector('#subtasks-list');
+
+  if (addSubtaskBtn && subtaskInput) {
+    addSubtaskBtn.onclick = addSubtask;
+    subtaskInput.oninput = () => toggleSubtaskInputIcons(true);
+  }
+  if (subtaskClearBtn) {
+    subtaskClearBtn.onclick = clearSubtask;
+  }
+  if (subtaskAddTaskBtn) {
+    subtaskAddTaskBtn.onclick = addSubtask;
+  }
+  if (subtasksList) {
+    subtasksList.onclick = (event) => {
+      const target = event.target;
+      if (target.classList.contains('left')) {
+        // Edit-Icon
+        toggleSubtaskEdit(target);
+      } else if (target.classList.contains('right')) {
+        // Delete-Icon
+        const listItem = target.closest('.subtask-list');
+        if (listItem) {
+          const index = parseInt(listItem.dataset.index);
+          deleteSubtask(index);
+        }
+      }
+    };
+  }
+  renderSubtasks();
+}
 export let addedSubtasks = [];
 
 export function addSubtask() {

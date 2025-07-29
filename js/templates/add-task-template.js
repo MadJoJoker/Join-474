@@ -1,11 +1,26 @@
 /**
+ * Initialisiert den Datepicker für das Fälligkeitsdatum-Feld.
+ * @param {HTMLElement} container - Das Container-Element, das das Feld enthält.
+ */
+export function initDatePicker(container = document) {
+  const dateInput = container.querySelector('#datepicker');
+  if (!dateInput) return;
+  // Beispiel: Einfaches Datepicker-Polyfill, kann durch ein echtes Datepicker-Plugin ersetzt werden
+  dateInput.addEventListener('focus', () => {
+    dateInput.type = 'date';
+  });
+  dateInput.addEventListener('blur', () => {
+    dateInput.type = 'text';
+  });
+}
+/**
  * @returns {string} Der HTML-String für das Add Task Formular.
  */
 /**
  * Generiert das HTML für das Titel-Eingabefeld.
  * @returns {string} Der HTML-String für das Titel-Eingabefeld.
  */
-function renderTitleInput(task) {
+export function renderTitleInput(task) {
   return `
         <div class="label-container">
             <label for="title" class="required font-size-20">Title</label>
@@ -27,7 +42,7 @@ function renderTitleInput(task) {
  * Generiert das HTML für das Beschreibungs-Textfeld.
  * @returns {string} Der HTML-String für das Beschreibungs-Textfeld.
  */
-function renderDescriptionInput(task) {
+export function renderDescriptionInput(task) {
   return `
         <div class="label-container">
             <label for="task-description" class="font-size-20">Description</label>
@@ -53,7 +68,23 @@ function renderDescriptionInput(task) {
  * Generiert das HTML für das Fälligkeitsdatum-Eingabefeld und das Kalender-Icon.
  * @returns {string} Der HTML-String für das Fälligkeitsdatum.
  */
-function renderDueDateInput(task) {
+export function renderDueDateInput(task) {
+  // Konvertiere deadline zu dueDate, falls dueDate fehlt
+  let dateValue = "";
+  if (task?.dueDate) {
+    dateValue = task.dueDate;
+  } else if (task?.deadline) {
+    // Beispiel-Konvertierung: ISO zu d.m.Y
+    let d = new Date(task.deadline);
+    if (!isNaN(d)) {
+      let day = String(d.getDate()).padStart(2, '0');
+      let month = String(d.getMonth() + 1).padStart(2, '0');
+      let year = d.getFullYear();
+      dateValue = `${day}.${month}.${year}`;
+    } else {
+      dateValue = task.deadline;
+    }
+  }
   return `
         <div class="label-container">
             <label for="datepicker" class="required font-size-20">Due Date</label>
@@ -65,7 +96,7 @@ function renderDueDateInput(task) {
                     placeholder="dd/mm/yyyy"
                     class="input-field"
                     data-event-handle="true"
-                    value="${task?.dueDate ? task.dueDate : ""}"
+                    value="${dateValue}"
                 />
                 <span id="calendar-icon" class="calendar-icon" data-event-handle="true">
                     <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -82,7 +113,7 @@ function renderDueDateInput(task) {
  * Generiert das HTML für den linken Teil des Formulars (Titel, Beschreibung, Fälligkeitsdatum).
  * @returns {string} Der HTML-String für den linken Formularteil.
  */
-function renderLeftFormFields(task) {
+export function renderLeftFormFields(task) {
   return `
         <div class="left-form">
             ${renderTitleInput(task)}
@@ -96,7 +127,7 @@ function renderLeftFormFields(task) {
  * Generiert das HTML für die Prioritätsauswahl-Buttons.
  * @returns {string} Der HTML-String für die Prioritätsauswahl.
  */
-function renderPrioritySection(task) {
+export function renderPrioritySection(task) {
   return `
         <div class="label-container">
             <fieldset aria-labelledby="priority-legend" style="border: none">
@@ -121,7 +152,7 @@ function renderPrioritySection(task) {
  * Generiert das HTML für den "Assigned to"-Dropdown-Bereich.
  * @returns {string} Der HTML-String für den "Assigned to"-Bereich.
  */
-function renderAssignedToSection(task) {
+export function renderAssignedToSection(task) {
   return `
         <div class="label-container">
             <label for="select-contacts" class="required font-size-20">Assigned to</label>
@@ -169,7 +200,7 @@ function renderAssignedToSection(task) {
  * Generiert das HTML für den Kategorie-Dropdown-Bereich.
  * @returns {string} Der HTML-String für den Kategorie-Bereich.
  */
-function renderCategorySection(task) {
+export function renderCategorySection(task) {
   return `
         <div class="label-container">
             <div for="dropdown-category" class="required font-size-20">Category</div>
@@ -213,7 +244,7 @@ function renderCategorySection(task) {
  * Generiert das HTML für den Subtasks-Eingabebereich und die Liste.
  * @returns {string} Der HTML-String für den Subtasks-Bereich.
  */
-function renderSubtasksSection(task) {
+export function renderSubtasksSection(task) {
   return `
         <div class="label-container">
             <label for="subtask-input" class="font-size-20">Subtasks</label>
@@ -266,7 +297,7 @@ function renderSubtasksSection(task) {
  * Generiert das HTML für den rechten Teil des Formulars (Priorität, Zugewiesen, Kategorie, Unteraufgaben).
  * @returns {string} Der HTML-String für den rechten Formularteil.
  */
-function renderRightFormFields(task) {
+export function renderRightFormFields(task) {
   return `
         <div class="right-form">
             ${renderPrioritySection(task)}
@@ -281,7 +312,7 @@ function renderRightFormFields(task) {
  * Generiert das HTML für die Formular-Buttons (Clear, Create Task).
  * @returns {string} Der HTML-String für die Formular-Buttons.
  */
-function renderFormButtons() {
+export function renderFormButtons() {
   return `
         <div class="form-buttons-part">
             <div id="sign-info-desktop" class="sign-info">This field is required</div>

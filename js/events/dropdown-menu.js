@@ -1,3 +1,5 @@
+
+import { firebaseData } from '../../main.js';
 let currentContacts = [];
 export let selectedCategory = null;
 export let selectedContacts = [];
@@ -126,7 +128,7 @@ export function getAssignedToOptions() {
     displaySelectedContacts();
 }
 // export function getAssignedToOptions() {
-//     const currentUser = sessionStorage.getItem('currentUser'); 
+//     const currentUser = sessionStorage.getItem('currentUser');
 //     console.log(currentUser);
 //     let contactContainer = document.getElementById('assigned-to-options-container');
 //     if (!contactContainer) return;
@@ -241,13 +243,25 @@ function displaySelectedContacts() {
     if (!assignedToArea) return;
 
     assignedToArea.innerHTML = '';
+    // Hauptcontainer für die Kontakte
+    const mainContainer = document.createElement('div');
+    mainContainer.className = 'assigned-main-container';
+    // Wenn mehr als 3 Kontakte, mache den Bereich scrollbar
+    if (selectedContacts.length > 3) {
+        mainContainer.style.maxHeight = '48px';
+        mainContainer.style.overflowX = 'auto';
+        mainContainer.style.display = 'flex';
+        mainContainer.style.gap = '4px';
+    }
     selectedContacts.forEach(contact => {
         const initialsDiv = document.createElement('div');
         initialsDiv.className = 'assigned-initials-circle';
         initialsDiv.style.backgroundColor = `var(${contact.avatarColor})`;
         initialsDiv.textContent = contact.initials;
-        assignedToArea.appendChild(initialsDiv);
+        initialsDiv.style.flex = '0 0 auto';
+        mainContainer.appendChild(initialsDiv);
     });
+    assignedToArea.appendChild(mainContainer);
 }
 
 export function removeContact(index) {
@@ -398,4 +412,110 @@ export function clearInvalidFields() {
             error.classList.remove("d-flex");
         }
     });
+}
+
+/**
+ * Setzt die Kategorie im Dropdown aus dem Task-Objekt (für Card/Edit-Overlay)
+ * @param {string} categoryName - Die Kategorie aus dem Task-Objekt
+ */
+export function setCategoryFromTaskForCard(categoryName) {
+  console.debug('[Dropdown-Card] setCategoryFromTaskForCard:', categoryName);
+  if (!categoryName) {
+    console.warn('[Dropdown-Card] Keine Kategorie übergeben!');
+    return;
+  }
+  const fakeOptionElement = document.createElement("div");
+  fakeOptionElement.textContent = categoryName;
+  fakeOptionElement.dataset.category = categoryName;
+  setCategory(fakeOptionElement);
+  console.debug('[Dropdown-Card] Kategorie gesetzt:', categoryName);
+}
+
+/**
+ * Setzt die ausgewählten Kontakte aus dem Task-Objekt (für Card/Edit-Overlay)
+ * @param {Array} assignedTo - Array von Namen oder Kontaktobjekten aus dem Task
+ */
+export function setAssignedContactsFromTaskForCard(assignedTo) {
+  console.debug('[Dropdown-Card] setAssignedContactsFromTaskForCard:', assignedTo);
+  // Debug: Zeige alle Kontakte und deren IDs/Feldnamen
+  console.debug('[Dropdown-Card] currentContacts:', currentContacts.map(c => ({
+    name: c.name,
+    id: c.id,
+    contactId: c.contactId,
+    contactID: c.contactID,
+    uid: c.uid,
+    firebaseId: c.firebaseId
+  })));
+  if (!Array.isArray(assignedTo)) {
+    console.warn('[Dropdown-Card] assignedTo ist kein Array!', assignedTo);
+    return;
+  }
+  selectedContacts.length = 0;
+  assignedTo.forEach(sel => {
+    // Wenn sel eine Kontakt-ID ist, suche das Kontaktobjekt
+    let found = null;
+    let idVal = null;
+    if (typeof sel === 'string') {
+      idVal = sel;
+      found = currentContacts.find(c =>
+        c.id === idVal ||
+        c.contactId === idVal ||
+        c.contactID === idVal ||
+        c.uid === idVal ||
+        c.firebaseId === idVal
+      );
+      if (!found && typeof firebaseData === 'object' && firebaseData.contacts && firebaseData.contacts[idVal]) {
+        found = { ...firebaseData.contacts[idVal], id: idVal };
+        console.debug('[Dropdown-Card] Kontakt direkt aus firebaseData geladen:', found);
+      }
+      if (found) {
+        selectedContacts.push(found);
+        console.debug('[Dropdown-Card] Kontakt gefunden (ID):', found);
+      } else {
+        console.warn('[Dropdown-Card] Kontakt nicht gefunden (ID):', sel);
+      }
+    } else if (sel && (sel.id || sel.contactId || sel.contactID || sel.uid || sel.firebaseId)) {
+      idVal = sel.id || sel.contactId || sel.contactID || sel.uid || sel.firebaseId;
+      found = currentContacts.find(c =>
+        c.id === idVal ||
+        c.contactId === idVal ||
+        c.contactID === idVal ||
+        c.uid === idVal ||
+        c.firebaseId === idVal
+      );
+      if (!found && typeof firebaseData === 'object' && firebaseData.contacts && firebaseData.contacts[idVal]) {
+        found = { ...firebaseData.contacts[idVal], id: idVal };
+        console.debug('[Dropdown-Card] Kontakt direkt aus firebaseData geladen:', found);
+      }
+      if (found) {
+        selectedContacts.push(found);
+        console.debug('[Dropdown-Card] Kontakt gefunden (Objekt mit ID):', found);
+      } else {
+        selectedContacts.push(sel);
+        console.warn('[Dropdown-Card] Kontakt nicht gefunden (Objekt mit ID, nehme sel):', sel);
+      }
+    } else if (sel && sel.name) {
+      found = currentContacts.find(c => c.name === sel.name);
+      if (!found && typeof firebaseData === 'object' && firebaseData.contacts) {
+        // Suche nach Name in firebaseData.contacts
+        const allContactsArr = Object.entries(firebaseData.contacts);
+        const foundEntry = allContactsArr.find(([key, c]) => c.name === sel.name);
+        if (foundEntry) {
+          found = { ...foundEntry[1], id: foundEntry[0] };
+          console.debug('[Dropdown-Card] Kontakt direkt aus firebaseData (Name) geladen:', found);
+        }
+      }
+      if (found) {
+        selectedContacts.push(found);
+        console.debug('[Dropdown-Card] Kontakt gefunden (Objekt mit Name):', found);
+      } else {
+        selectedContacts.push(sel);
+        console.warn('[Dropdown-Card] Kontakt nicht gefunden (Objekt mit Name, nehme sel):', sel);
+      }
+    } else {
+      console.warn('[Dropdown-Card] Unbekanntes Kontaktformat:', sel);
+    }
+  });
+  getAssignedToOptions();
+  console.debug('[Dropdown-Card] selectedContacts nach Setzen:', selectedContacts);
 }

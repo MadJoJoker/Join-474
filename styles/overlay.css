@@ -336,7 +336,6 @@
   z-index: 9000;
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 
 #overlay-task-detail-edit.overlay-hidden {
@@ -371,7 +370,21 @@
   border-radius: 30px;
   padding: 48px 40px 48px 40px;
 }
+.assigned-main-container {
+  display: flex;
+  gap: 4px;
+  max-width: 100%;
+  min-height: auto;
+  overflow-x: auto; /* Behält die horizontale Scroll-Funktionalität bei */
 
+  /* Webkit-spezifische Regeln für unsichtbare Scrollbar */
+  &::-webkit-scrollbar {
+    display: none; /* Versteckt die Scrollbar */
+    /* Oder:
+    width: 0;
+    height: 0; */
+  }
+}
 @media (max-width: 992px) {
   .form-fill-part {
     flex-direction: column;
