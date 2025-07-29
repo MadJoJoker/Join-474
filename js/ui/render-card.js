@@ -149,7 +149,7 @@ function buildTaskCardHtmlContent(
   const categoryClass = getCategoryClass(type);
 
   return `
-        <div class="task-card" id="${taskID}" draggable="true" ondragstart="drag(event)">
+        <div class="task-card" id="${taskID}" draggable="true">
            <div class="d-flex space-between"> <div class="task-category ${categoryClass}">${type}</div><div>
             <button class="dropdown-menu-board-site-btn"><div><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <mask id="mask0_294678_9764" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
