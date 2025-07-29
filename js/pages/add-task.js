@@ -26,7 +26,7 @@ import {
 } from "../events/dropdown-menu.js";
 import { autoFillLeftForm } from "../events/autofill-add-task.js";
 import { autofillRightForm } from "../events/autofill-add-task.js";
-import { firebaseData } from '../../main.js';
+import { firebaseData } from "../../main.js";
 import { CWDATA } from "../data/task-to-firbase.js";
 
 let picker = null;
@@ -47,7 +47,6 @@ export async function initTask() {
     initDropdowns(Object.values(data.contacts));
 
     fetchData = data;
-
   } catch (error) {
     console.error("Fehler beim Laden der Firebase-Daten:", error);
   }
@@ -369,7 +368,8 @@ function initDatePicker() {
       document.querySelectorAll(".numInput:not([name])").forEach((el) => {
         el.setAttribute("name", "flatpickr_day");
       });
-      document.querySelectorAll(".flatpickr-monthDropdown-months:not([name])")
+      document
+        .querySelectorAll(".flatpickr-monthDropdown-months:not([name])")
         .forEach((el) => {
           el.setAttribute("name", "flatpickr_day");
         });
@@ -401,9 +401,9 @@ function initInputFieldListeners() {
  * It listens for input events and calls the handleInput function to validate the title.
  */
 function initTitleInputListener() {
-  document.getElementById("title")?.addEventListener("input", (event) =>
-    handleInput(event.target)
-  );
+  document
+    .getElementById("title")
+    ?.addEventListener("input", (event) => handleInput(event.target));
 }
 
 /** * Initializes the date picker input field listeners.
@@ -442,9 +442,11 @@ function handleDatePickerFocus(event) {
  * It listens for click events on the calendar icon to focus the date picker input.
  */
 function initCalendarIconListener() {
-  document.getElementById("calendar-icon")?.addEventListener("click", () =>
-    document.getElementById("datepicker")?.focus()
-  );
+  document
+    .getElementById("calendar-icon")
+    ?.addEventListener("click", () =>
+      document.getElementById("datepicker")?.focus()
+    );
 }
 
 /** * Initializes listeners for auto-fill functionality on specific fields.
@@ -452,7 +454,7 @@ function initCalendarIconListener() {
  */
 function initAutoFillListeners() {
   const autoFillFields = ["title", "task-description", "datepicker"];
-  autoFillFields.forEach(fieldId => {
+  autoFillFields.forEach((fieldId) => {
     const field = document.getElementById(fieldId);
     if (!field) return;
 
@@ -465,7 +467,9 @@ function initAutoFillListeners() {
  * It adds a click listener to the assigned to area and an input listener to the contact input.
  */
 function initAssignedToListeners() {
-  document.getElementById("assigned-to-area")?.addEventListener("click", toggleAssignedToArea);
+  document
+    .getElementById("assigned-to-area")
+    ?.addEventListener("click", toggleAssignedToArea);
 
   const contactInput = document.getElementById("select-contacts");
   if (contactInput) {
@@ -522,29 +526,31 @@ function handleSubtaskKeydown(event) {
  * It sets up click event listeners for the add, clear, and subtask action buttons.
  */
 function initSubtaskButtonListeners() {
-  document.getElementById("add-subtask-btn")?.addEventListener("click",
-    () => toggleSubtaskInputIcons(true)
-  );
+  document
+    .getElementById("add-subtask-btn")
+    ?.addEventListener("click", () => toggleSubtaskInputIcons(true));
 
   const clearButtons = [
     document.querySelector('.subtask-icons img[alt="Close"]'),
-    document.getElementById("subtask-clear-btn")
+    document.getElementById("subtask-clear-btn"),
   ];
 
   const addButtons = [
     document.querySelector('.subtask-icons img[alt="Add"]'),
-    document.getElementById("subtask-add-task-btn")
+    document.getElementById("subtask-add-task-btn"),
   ];
 
-  clearButtons.forEach(btn => btn?.addEventListener("click", clearSubtask));
-  addButtons.forEach(btn => btn?.addEventListener("click", addSubtask));
+  clearButtons.forEach((btn) => btn?.addEventListener("click", clearSubtask));
+  addButtons.forEach((btn) => btn?.addEventListener("click", addSubtask));
 }
 
 /** * Initializes the subtask list listener.
  * It adds a click event listener to the subtask list to handle subtask actions.
  */
 function initSubtaskListListener() {
-  document.getElementById("subtasks-list")?.addEventListener("click", handleSubtaskListClick);
+  document
+    .getElementById("subtasks-list")
+    ?.addEventListener("click", handleSubtaskListClick);
 }
 
 /** * Handles clicks on the subtask list.
@@ -555,8 +561,7 @@ function handleSubtaskListClick(event) {
 
   if (target.closest(".subtask-actions .left")) {
     toggleSubtaskEdit(target.closest(".subtask-actions .left"));
-  }
-  else if (target.closest(".subtask-actions .right")) {
+  } else if (target.closest(".subtask-actions .right")) {
     const listItem = target.closest(".subtask-list");
     if (listItem) {
       deleteSubtask(parseInt(listItem.dataset.index));
@@ -569,16 +574,18 @@ function handleSubtaskListClick(event) {
  * and sign info visibility.
  */
 function initWindowResizeListeners() {
-  document.querySelector(".resize-handle")?.addEventListener("mousedown", startResize);
+  document
+    .querySelector(".resize-handle")
+    ?.addEventListener("mousedown", startResize);
 
   handleResponsiveDiv();
-  window.addEventListener('resize', handleResponsiveDiv);
+  window.addEventListener("resize", handleResponsiveDiv);
 
   syncMaxWidth();
-  window.addEventListener('resize', syncMaxWidth);
+  window.addEventListener("resize", syncMaxWidth);
 
   handleSignInfoMobile();
-  window.addEventListener('resize', handleSignInfoMobile);
+  window.addEventListener("resize", handleSignInfoMobile);
 }
 
 /** * Toggles the visibility of the "assigned to" area.
@@ -624,8 +631,8 @@ export async function showTaskSuccessMsg() {
  */
 export function handleResponsiveDiv() {
   const container = document.getElementById("content");
-  const divOne = document.getElementById('responsive-div-one');
-  const divTwo = document.getElementById('responsive-div-two');
+  const divOne = document.getElementById("responsive-div-one");
+  const divTwo = document.getElementById("responsive-div-two");
 
   if (window.innerWidth <= 1024) {
     createResponsiveDivs(container, divOne, divTwo);
@@ -638,11 +645,11 @@ export function handleResponsiveDiv() {
  */
 function createResponsiveDivs(container, existingOne, existingTwo) {
   if (!existingOne) {
-    const newDiv = createResponsiveDiv('responsive-div-one');
+    const newDiv = createResponsiveDiv("responsive-div-one");
     container?.prepend(newDiv);
   }
   if (!existingTwo) {
-    const newDiv = createResponsiveDiv('responsive-div-two');
+    const newDiv = createResponsiveDiv("responsive-div-two");
     container?.appendChild(newDiv);
   }
 }
@@ -661,9 +668,9 @@ function removeResponsiveDivs(divOne, divTwo) {
  * @returns {HTMLElement} - The created div element.
  */
 function createResponsiveDiv(id) {
-  const div = document.createElement('div');
+  const div = document.createElement("div");
   div.id = id;
-  div.className = 'responsive-div';
+  div.className = "responsive-div";
   return div;
 }
 
@@ -673,8 +680,8 @@ function createResponsiveDiv(id) {
  */
 export function handleSignInfoMobile() {
   const container = document.querySelector(".right-form");
-  const desktop = document.getElementById('sign-info-desktop');
-  const mobile = document.getElementById('sign-info-mobile');
+  const desktop = document.getElementById("sign-info-desktop");
+  const mobile = document.getElementById("sign-info-mobile");
 
   if (window.innerWidth <= 768) {
     handleMobileView(container, desktop, mobile);
@@ -692,12 +699,12 @@ export function handleSignInfoMobile() {
  */
 function handleMobileView(container, desktop, mobile) {
   if (!mobile && desktop) {
-    const newDiv = document.createElement('div');
-    newDiv.id = 'sign-info-mobile';
-    newDiv.className = 'sign-info';
-    newDiv.textContent = 'This field is required';
+    const newDiv = document.createElement("div");
+    newDiv.id = "sign-info-mobile";
+    newDiv.className = "sign-info";
+    newDiv.textContent = "This field is required";
     container?.appendChild(newDiv);
-    desktop.classList.add('d-none');
+    desktop.classList.add("d-none");
   }
 }
 
@@ -707,7 +714,7 @@ function handleMobileView(container, desktop, mobile) {
 function handleDesktopView(mobile, desktop) {
   if (mobile && desktop) {
     mobile.remove();
-    desktop.classList.remove('d-none');
+    desktop.classList.remove("d-none");
   }
 }
 
@@ -715,9 +722,9 @@ function handleDesktopView(mobile, desktop) {
  * Synchronizes the max-width of the assigned-to area with the dropdown width.
  */
 function syncMaxWidth() {
-  const source = document.getElementById('dropdown-assigned-to');
-  const target = document.getElementById('assigned-to-area');
+  const source = document.getElementById("dropdown-assigned-to");
+  const target = document.getElementById("assigned-to-area");
   const width = source.getBoundingClientRect().width;
 
-  target.style.maxWidth = width + 'px';
+  target.style.maxWidth = width + "px";
 }
