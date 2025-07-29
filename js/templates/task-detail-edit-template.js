@@ -1,10 +1,18 @@
-import { getAddTaskFormHTML, renderLeftFormFields, renderRightFormFields, renderFormButtons } from "./add-task-template.js";
+import {
+  getAddTaskFormHTML,
+  renderLeftFormFields,
+  renderRightFormFields,
+  renderFormButtons,
+} from "./add-task-template.js";
 import { initPriorityButtonLogic } from "../events/priorety-handler.js";
 import {
   openSpecificOverlay,
   initOverlayListeners,
 } from "../events/overlay-handler.js";
-import { initAssignedToDropdownLogic, addAssignedContactsToEditForm } from "../events/dropdown-menu.js";
+import {
+  initAssignedToDropdownLogic,
+  addAssignedContactsToEditForm,
+} from "../events/dropdown-menu.js";
 import { initDatePicker } from "../events/animation.js";
 import { initSubtaskManagementLogic } from "../events/subtask-handler.js";
 import { getContacts } from "../data/storage.js";
@@ -38,58 +46,60 @@ export async function openTaskDetailEditOverlay(task) {
   // Nutze direkt die synchron befüllte Form-HTML
   container.innerHTML = getAddTaskFormHTML(task);
 
-
   // --- Initialisiere alle Event-Listener wie im Add-Task ---
-  console.debug('[DEBUG] Initialisiere Priority-Button-Logik...');
+  console.debug("[DEBUG] Initialisiere Priority-Button-Logik...");
   if (typeof initPriorityButtonLogic === "function") {
     try {
       initPriorityButtonLogic(container);
-      console.debug('[DEBUG] Priority-Button-Logik initialisiert.');
+      console.debug("[DEBUG] Priority-Button-Logik initialisiert.");
     } catch (e) {
-      console.error('[DEBUG] Fehler bei Priority-Button-Logik:', e);
+      console.error("[DEBUG] Fehler bei Priority-Button-Logik:", e);
     }
   } else {
-    console.warn('[DEBUG] initPriorityButtonLogic ist nicht definiert!');
+    console.warn("[DEBUG] initPriorityButtonLogic ist nicht definiert!");
   }
 
-  console.debug('[DEBUG] Initialisiere AssignedTo Dropdown...');
+  console.debug("[DEBUG] Initialisiere AssignedTo Dropdown...");
   if (typeof initAssignedToDropdownLogic === "function") {
     try {
       initAssignedToDropdownLogic(container);
-      console.debug('[DEBUG] AssignedTo Dropdown initialisiert.');
+      console.debug("[DEBUG] AssignedTo Dropdown initialisiert.");
     } catch (e) {
-      console.error('[DEBUG] Fehler bei AssignedTo Dropdown:', e);
+      console.error("[DEBUG] Fehler bei AssignedTo Dropdown:", e);
     }
   } else {
-    console.warn('[DEBUG] initAssignedToDropdownLogic ist nicht definiert!');
+    console.warn("[DEBUG] initAssignedToDropdownLogic ist nicht definiert!");
   }
 
-  console.debug('[DEBUG] Initialisiere Datepicker...');
+  console.debug("[DEBUG] Initialisiere Datepicker...");
   if (typeof initDatePicker === "function") {
     try {
       initDatePicker(container);
-      console.debug('[DEBUG] Datepicker initialisiert.');
+      console.debug("[DEBUG] Datepicker initialisiert.");
     } catch (e) {
-      console.error('[DEBUG] Fehler bei Datepicker:', e);
+      console.error("[DEBUG] Fehler bei Datepicker:", e);
     }
   } else {
-    console.warn('[DEBUG] initDatePicker ist nicht definiert!');
+    console.warn("[DEBUG] initDatePicker ist nicht definiert!");
   }
 
-  console.debug('[DEBUG] Initialisiere Subtask-Management...');
+  console.debug("[DEBUG] Initialisiere Subtask-Management...");
   if (typeof initSubtaskManagementLogic === "function") {
     try {
       initSubtaskManagementLogic(container);
-      console.debug('[DEBUG] Subtask-Management initialisiert.');
+      console.debug("[DEBUG] Subtask-Management initialisiert.");
     } catch (e) {
-      console.error('[DEBUG] Fehler bei Subtask-Management:', e);
+      console.error("[DEBUG] Fehler bei Subtask-Management:", e);
     }
   } else {
-    console.warn('[DEBUG] initSubtaskManagementLogic ist nicht definiert!');
+    console.warn("[DEBUG] initSubtaskManagementLogic ist nicht definiert!");
   }
 
   // --- Assigned Contacts wie im Add-Task anzeigen ---
-  if (typeof addAssignedContactsToEditForm === "function" && Array.isArray(task.assignedTo)) {
+  if (
+    typeof addAssignedContactsToEditForm === "function" &&
+    Array.isArray(task.assignedTo)
+  ) {
     // Kontakte sauber per Import holen
     let contacts = [];
     try {

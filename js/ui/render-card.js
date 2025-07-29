@@ -5,7 +5,10 @@ import {
   initOverlayListeners,
 } from "../events/overlay-handler.js";
 import { getAddTaskFormHTML } from "../templates/add-task-template.js";
-import { setCategoryFromTaskForCard, setAssignedContactsFromTaskForCard } from "../events/dropdown-menu.js";
+import {
+  setCategoryFromTaskForCard,
+  setAssignedContactsFromTaskForCard,
+} from "../events/dropdown-menu.js";
 
 /**
  * Validiert die Eingabedaten für die Task-Karte.
@@ -376,26 +379,34 @@ export async function registerTaskCardDetailOverlay(
 
             // --- Initialisierungsfunktionen für das Edit-Formular ---
             // Priority-Buttons
-            import('../events/priorety-handler.js').then(mod => {
-                mod.initPriorityButtons();
-                const prio = taskToEdit.priority || 'medium';
-                const prioBtn = taskEditContainer.querySelector(`.priority-btn[data-priority="${prio}"]`);
-                if (prioBtn) mod.setPriority(prioBtn, prio);
+            import("../events/priorety-handler.js").then((mod) => {
+              mod.initPriorityButtons();
+              const prio = taskToEdit.priority || "medium";
+              const prioBtn = taskEditContainer.querySelector(
+                `.priority-btn[data-priority="${prio}"]`
+              );
+              if (prioBtn) mod.setPriority(prioBtn, prio);
             });
             // Dropdown-Menüs (Kontakte etc.)
-            import('../events/dropdown-menu.js').then(async mod => {
-                await mod.initDropdowns(Object.values(boardData.contacts), taskEditContainer);
-                // Setze Kategorie und Kontakte aus Task-Objekt (korrekte Feldnamen)
-                await setCategoryFromTaskForCard(taskToEdit.type);
-                await setAssignedContactsFromTaskForCard(taskToEdit.assignedUsers);
+            import("../events/dropdown-menu.js").then(async (mod) => {
+              await mod.initDropdowns(
+                Object.values(boardData.contacts),
+                taskEditContainer
+              );
+              // Setze Kategorie und Kontakte aus Task-Objekt (korrekte Feldnamen)
+              await setCategoryFromTaskForCard(taskToEdit.type);
+              await setAssignedContactsFromTaskForCard(
+                taskToEdit.assignedUsers
+              );
             });
             // Datepicker
-            import('../templates/add-task-template.js').then(mod => {
-                if (mod.initDatePicker) mod.initDatePicker(taskEditContainer);
+            import("../templates/add-task-template.js").then((mod) => {
+              if (mod.initDatePicker) mod.initDatePicker(taskEditContainer);
             });
             // Subtask-Management
-            import('../events/subtask-handler.js').then(mod => {
-                if (mod.initSubtaskManagementLogic) mod.initSubtaskManagementLogic(taskEditContainer);
+            import("../events/subtask-handler.js").then((mod) => {
+              if (mod.initSubtaskManagementLogic)
+                mod.initSubtaskManagementLogic(taskEditContainer);
             });
 
             // Event-Listener für den Abbrechen-Button im Edit-Formular
@@ -415,7 +426,7 @@ export async function registerTaskCardDetailOverlay(
               taskEditForm.addEventListener("submit", async (formEvent) => {
                 // Prüfe, ob das Submit durch einen Button ausgelöst wurde
                 const submitter = formEvent.submitter;
-                if (!submitter || submitter.type !== 'submit') {
+                if (!submitter || submitter.type !== "submit") {
                   formEvent.preventDefault();
                   return;
                 }
@@ -428,10 +439,16 @@ export async function registerTaskCardDetailOverlay(
                   description: formData.get("task-description"),
                   dueDate: formData.get("datepicker"),
                   assignedTo: formData.get("select-contacts")
-                    ? formData.get("select-contacts").split(",").map(s => s.trim()).filter(Boolean)
+                    ? formData
+                        .get("select-contacts")
+                        .split(",")
+                        .map((s) => s.trim())
+                        .filter(Boolean)
                     : [],
                   category: formData.get("hidden-category-input"),
-                  subtasks: Array.from(taskEditForm.querySelectorAll("#subtasks-list li")).map(li => li.textContent)
+                  subtasks: Array.from(
+                    taskEditForm.querySelectorAll("#subtasks-list li")
+                  ).map((li) => li.textContent),
                 };
                 closeSpecificOverlay("overlay-task-detail-edit");
                 if (updateBoardFunction) {

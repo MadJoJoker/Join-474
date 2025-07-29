@@ -130,6 +130,7 @@ html {
     font-size: 16px;
     font-weight: 400;
     color: var(--lightBlue);
+    word-break: break-word;
 }
 
 .contact-email a {
@@ -564,21 +565,25 @@ html {
 
 @keyframes slideInBottomMessage {
     from {
-        transform: translateY(100%);
+        transform: translateX(-50%) translateY(200px);
+        opacity: 0;
     }
 
     to {
-        transform: translateY(0%);
+        transform: translateX(-50%) translateY(0%);
+        opacity: 1;
     }
 }
 
 @keyframes slideOutBottomMessage {
     from {
-        transform: translateY(0%);
+        transform: translateX(-50%) translateY(0%);
+        opacity: 1;
     }
 
     to {
-        transform: translateY(100%);
+        transform: translateX(-50%) translateY(200px);
+        opacity: 0;
     }
 }
 

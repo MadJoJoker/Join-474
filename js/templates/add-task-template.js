@@ -3,14 +3,14 @@
  * @param {HTMLElement} container - Das Container-Element, das das Feld enthält.
  */
 export function initDatePicker(container = document) {
-  const dateInput = container.querySelector('#datepicker');
+  const dateInput = container.querySelector("#datepicker");
   if (!dateInput) return;
   // Beispiel: Einfaches Datepicker-Polyfill, kann durch ein echtes Datepicker-Plugin ersetzt werden
-  dateInput.addEventListener('focus', () => {
-    dateInput.type = 'date';
+  dateInput.addEventListener("focus", () => {
+    dateInput.type = "date";
   });
-  dateInput.addEventListener('blur', () => {
-    dateInput.type = 'text';
+  dateInput.addEventListener("blur", () => {
+    dateInput.type = "text";
   });
 }
 /**
@@ -77,8 +77,8 @@ export function renderDueDateInput(task) {
     // Beispiel-Konvertierung: ISO zu d.m.Y
     let d = new Date(task.deadline);
     if (!isNaN(d)) {
-      let day = String(d.getDate()).padStart(2, '0');
-      let month = String(d.getMonth() + 1).padStart(2, '0');
+      let day = String(d.getDate()).padStart(2, "0");
+      let month = String(d.getMonth() + 1).padStart(2, "0");
       let year = d.getFullYear();
       dateValue = `${day}.${month}.${year}`;
     } else {
