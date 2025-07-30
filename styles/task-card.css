@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 
-
 .taskCardWrapper {
   width: clamp(320px, 30vw, 445px);
   display: flex;

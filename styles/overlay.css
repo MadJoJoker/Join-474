@@ -261,8 +261,7 @@
 }
 
 .close-modal-btn:hover {
-    color: var(--grey);
-
+  color: var(--grey);
 }
 
 .content-overlay {

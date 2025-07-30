@@ -558,14 +558,18 @@ export async function registerTaskCardDetailOverlay(
           import("../events/subtask-handler.js").then((mod) => {
             // Prepare subtasks for handler: always array of {text, completed}
             let subtasks = [];
-            if (Array.isArray(taskToEdit.subtasks) && taskToEdit.subtasks.length > 0) {
-              subtasks = taskToEdit.subtasks.map(st =>
+            if (
+              Array.isArray(taskToEdit.subtasks) &&
+              taskToEdit.subtasks.length > 0
+            ) {
+              subtasks = taskToEdit.subtasks.map((st) =>
                 typeof st === "string" ? { text: st, completed: false } : st
               );
             } else if (
               Array.isArray(taskToEdit.totalSubtask) &&
               Array.isArray(taskToEdit.checkedSubtasks) &&
-              taskToEdit.totalSubtask.length === taskToEdit.checkedSubtasks.length
+              taskToEdit.totalSubtask.length ===
+                taskToEdit.checkedSubtasks.length
             ) {
               subtasks = taskToEdit.totalSubtask.map((text, i) => ({
                 text,
@@ -573,8 +577,9 @@ export async function registerTaskCardDetailOverlay(
               }));
             }
             mod.addedSubtasks.length = 0;
-            subtasks.forEach(st => mod.addedSubtasks.push({ ...st }));
-            if (mod.initSubtaskManagementLogic) mod.initSubtaskManagementLogic(taskEditContainer);
+            subtasks.forEach((st) => mod.addedSubtasks.push({ ...st }));
+            if (mod.initSubtaskManagementLogic)
+              mod.initSubtaskManagementLogic(taskEditContainer);
             if (mod.renderSubtasks) mod.renderSubtasks();
           });
           // Cancel button returns to details overlay
