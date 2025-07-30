@@ -133,8 +133,8 @@ async function sendObject(pushObjectId, rawNewObject) {
 async function saveFirebaseData(path, data) {
   const url = `https://join-474-default-rtdb.europe-west1.firebasedatabase.app/${path}.json`;
 
-  console.log("🌍 Speichere Daten an:", url);
-  console.log("📤 Dateninhalt:", data);
+  console.log("Speichere Daten an:", url);
+  console.log("Dateninhalt:", data);
 
   try {
     const response = await fetch(url, {
@@ -144,12 +144,12 @@ async function saveFirebaseData(path, data) {
     });
 
     const resText = await response.text();
-    console.log("✅ Firebase-Antwort:", response.status, resText);
+    console.log("Firebase response:", response.status, resText);
 
     if (!response.ok) {
       throw new Error("Firebase update failed: " + response.statusText);
     }
   } catch (error) {
-    console.error("❌ Fehler beim Speichern in Firebase:", error);
+    console.error("Error occurred while saving data into Firebase:", error);
   }
 }

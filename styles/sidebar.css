@@ -16,30 +16,30 @@
   padding: 64px 0;
 
   > a > img {
-  width: 100px;
-  height: 122px;
-  margin-left: 66px;
-  margin-right: 66px;
-  cursor: pointer;
+    width: 100px;
+    height: 122px;
+    margin-left: 66px;
+    margin-right: 66px;
+    cursor: pointer;
   }
 
   > nav,
   > nav > div {
-  display: flex;
-  flex-direction: column;
-  row-gap: 15px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
   }
 }
 
 .sidebar-nav {
   a {
-  text-decoration: none;
-  color: var(--sidebarGrey);
-  font-size: 16px;
+    text-decoration: none;
+    color: var(--sidebarGrey);
+    font-size: 16px;
   }
 
   #login-nav .nav-element {
-  column-gap: 13px;
+    column-gap: 13px;
   }
 }
 
@@ -54,17 +54,17 @@
   cursor: pointer;
 
   &:hover {
-  color: var(--white);
-  background-color: var(--darkHover);
-  transition: all 225ms ease-in-out;
+    color: var(--white);
+    background-color: var(--darkHover);
+    transition: all 225ms ease-in-out;
   }
 
   &:hover .sidebar-icon {
-  color: var(--white);
+    color: var(--white);
   }
 
   > svg {
-  height: 26px;
+    height: 26px;
   }
 
   &.nav-1 > svg { width: 26px; }
@@ -109,16 +109,16 @@
     left: 0;
     width: 100%;
     height: 80px;
-    padding: 2px calc(54vw - 300px); /* 150px pro Seite */
+    padding: 2px calc(54vw - 300px);
 
     > a > img {
-    display: none;
+      display: none;
     }
 
     > nav > div {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
     } 
   }
 
@@ -142,7 +142,7 @@
     &:last-of-type { row-gap: 3px;}
 
     > svg {
-    height: 21px;
+      height: 21px;
     }
 
     > svg:last-of-type {
@@ -159,14 +159,8 @@
   }
 }
 
-/* @media (max-width: 600px) {
-  .sidebar-wrapper {
-    padding: 2px 16px;
-  }
-} */
-
 @media (max-width: 600px) {
   .sidebar-wrapper {
-    padding: 2px calc(9vw - 32px); /* 16px pro Seite */
+    padding: 2px calc(9vw - 32px);
   }
 }

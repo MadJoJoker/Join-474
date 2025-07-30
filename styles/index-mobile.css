@@ -36,7 +36,6 @@
     }
   }
 
-
   #login-desktop {
     display: none;
   }
@@ -66,7 +65,6 @@
       margin-top: 14px;
       margin-bottom: 67px;
       width: calc(430px + (100vw - 460px) * 0.5833);
-      /* height: 600px; */
       height: clamp(587px, calc(587px + (100vw - 480px) * 0.04514), 600px);
       padding: 32px 0;
     }
@@ -161,7 +159,7 @@
 
 @media (max-width: 500px) {
   .login-inputs {
-    width: calc(403.0px + (100vw - 480.0px) * 1.05);
+    width: calc(403px + (100vw - 480px) * 1.05);
 
     > .input-frame {
       width: 100%;
