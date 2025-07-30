@@ -317,6 +317,9 @@ export function renderFormButtons() {
         <div class="form-buttons-part">
             <div id="sign-info-desktop" class="sign-info">This field is required</div>
             <div class="buttons-area">
+                ${
+                  !arguments[0]
+                    ? `
                 <button type="reset" class="clear-btn" data-event-handle="true">
                     Clear
                         <svg class="x-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 24 24"
@@ -326,8 +329,11 @@ export function renderFormButtons() {
                             fill="currentColor" />
                         </svg>
                 </button>
+                `
+                    : ""
+                }
                 <button type="submit" class="create-btn" data-event-handle="true">
-                    Create Task
+                    ${arguments[0] ? "OK" : "Create Task"}
                     <img
                         src="../assets/icons/btn/check-mark.svg"
                         alt="Check-mark Icon"
@@ -346,14 +352,14 @@ export function getAddTaskFormHTML(task = null) {
   return `
         <main id="add-task-main" class="content">
         <div class="size-wrapper">
-            <h1>${task ? "Edit Task" : "Add Task"}</h1>
+            ${!task ? `<h1>Add Task</h1>` : ""}
             <form id="add-task-form" class="form">
                 <div class="form-fill-part">
                     ${renderLeftFormFields(task)}
                     <div class="border"></div>
                     ${renderRightFormFields(task)}
                 </div>
-                ${renderFormButtons()}
+                ${renderFormButtons(task)}
             </form>
             </div>
         </main>

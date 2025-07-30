@@ -21,8 +21,11 @@
             <header id="header"></header>
             <div class="content-wrapper">
                 <script type="module">
-                    import { initBackButton } from '/js/events/back-button.js';
-                    initBackButton();
+                    document.addEventListener('DOMContentLoaded', () => {
+                        import('../js/events/back-button.js').then(module => {
+                            module.initBackButton();
+                        });
+                    });
                 </script>
                 <button id="backBtn" aria-label="Back to previous page">
                     <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">

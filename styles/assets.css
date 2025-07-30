@@ -71,3 +71,34 @@
         <img src="../assets/icons/btn/check-mark.svg" alt="Check-mark Icon" />
     </button>
 */
+#add-task {
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--white);
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  height: 40px;
+}
+
+
+#add-task.dark-blue {
+  background-color: var(--darkBlue);
+}
+
+#add-task.dark-blue:hover {
+  background-color: var(--darkHover);
+}
+
+#add-task span {
+  white-space: nowrap;
+}
+
+#add-task img {
+  height: 16px;
+  width: auto;
+}

@@ -313,8 +313,25 @@ function getTaskSubtasksSection(task) {
  * @param {string} taskId - Die ID der Aufgabe.
  * @returns {string} Der HTML-String des Bearbeiten-Buttons.
  */
+
 function getEditButtonHtml(taskId) {
-  return `<button class="edit-task-btn" data-task-id="${taskId}">Edit</button>`;
+  return `<button class="edit-task-btn" data-task-id="${taskId}">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 13.5V16H4.5L14.13 6.37L11.63 3.87L2 13.5ZM16.73 5.04C17.1 4.67 17.1 4.09 16.73 3.72L15.28 2.27C14.91 1.9 14.33 1.9 13.96 2.27L12.54 3.69L15.04 6.19L16.73 5.04Z" fill="#2A3647"/>
+    </svg>
+    Edit
+  </button>`;
+}
+
+// Separator als SVG
+function getVerticalSeparator() {
+  return `
+    <span class="task-detail-separator" style="display:flex;align-items:center;">
+      <svg width="1" height="24" viewBox="0 0 1 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1" height="24" fill="#D1D1D1"/>
+      </svg>
+    </span>
+  `;
 }
 
 /**
@@ -334,11 +351,12 @@ function getDeleteButtonSvgPaths() {
  * @returns {string} Der HTML-String des Löschen-Buttons.
  */
 function getDeleteButtonHtml(taskId) {
-  const svgPaths = getDeleteButtonSvgPaths();
   return `
     <button class="delete-task-btn" data-task-id="${taskId}">
-      <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">${svgPaths}</svg>
-      <svg width="48" height="13" viewBox="0 0 48 13" fill="none" xmlns="http://www.w3.org/2000/svg">${svgPaths}</svg>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 7V13H8V7H6ZM10 7V13H12V7H10ZM4 15V5H14V15C14 15.55 13.55 16 13 16H5C4.45 16 4 15.55 4 15ZM16 3H13.5L12.71 2.21C12.53 2.03 12.28 1.92 12 1.92H6C5.72 1.92 5.47 2.03 5.29 2.21L4.5 3H2V5H16V3Z" fill="#2A3647"/>
+      </svg>
+      Delete
     </button>
   `;
 }
@@ -350,8 +368,10 @@ function getDeleteButtonHtml(taskId) {
  */
 function getCardMenu(taskId) {
   return `
-    <div class="cardMenu">
-      ${getDeleteButtonHtml(taskId)}${getEditButtonHtml(taskId)}
+    <div class="cardMenu" style="display:flex;align-items:center;gap:16px;">
+      ${getDeleteButtonHtml(taskId)}
+      ${getVerticalSeparator()}
+      ${getEditButtonHtml(taskId)}
     </div>
   `;
 }
@@ -364,8 +384,9 @@ function getCardMenu(taskId) {
  */
 export function getTaskOverlay(task, taskId) {
   if (!firebaseData?.contacts) return `<div class="task-overlay-error"></div>`;
+  if (!task) return `<div class="task-overlay-error">Task data missing</div>`;
   const contactsObject = firebaseData.contacts;
-  const formattedDeadline = formatDeadline(task.deadline);
+  const formattedDeadline = formatDeadline(task.deadline ?? "");
   return `
     <main class="content-task">
       ${getTaskHeader(task)}
