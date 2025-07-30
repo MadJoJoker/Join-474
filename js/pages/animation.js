@@ -38,15 +38,15 @@ function animateMessageBox(text, color, link="") {
 
 /**
  * initialize animation: add background-color to overlay
- * @param {*} color - background-color of overlay
+ * @param {string} color - background-color of overlay
  */
 function addOverlayColor(color) {
   document.querySelector('.index-overlay').style.backgroundColor = color;
 }
 
 /**
- * 
- * @param {*} text - message text to display
+ * fill message-box, remove overlay, ready for animation
+ * @param {string} text - message text to display
  */
 function prepareAnimation(text) {
   document.getElementById('message-box').innerHTML = text;
@@ -54,6 +54,9 @@ function prepareAnimation(text) {
   overlay.classList.remove('d-none');
 }
 
+/**
+ * execute animation after short delai
+ */
 function startAnimation() {
   setTimeout(() => {
     const box = document.getElementById('message-box');
@@ -61,12 +64,19 @@ function startAnimation() {
   }, 200);
 }
 
+/**
+ * redirect user to target page; delay because of message reading time
+ * @param {string} link - target of redirection
+ */
 function goToPage(link) {
   setTimeout(() => {
     window.location.href = link;
   }, 2000);
 }
 
+/**
+ * remove overlay and message-box.
+ */
 function closeOverlay() {
   const overlay = document.getElementById('idx-overlay');
   overlay.classList.add('d-none');

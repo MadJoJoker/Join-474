@@ -1,13 +1,13 @@
-// let fetchedData = null;
-let currentDataContainer;
-let currentCategory = null; // null, if structure of currentDataContainer is flat
-
 // sendNewObject ist zu lang > modularisieren
+
+let currentDataContainer;
+let currentCategory = null; // remains null, if structure of currentDataContainer is flat
 
 const objectFields = [
   [
     {id: "new-name", key: "displayName"},
-    {id: "new-email", key: "email"}
+    {id: "new-email", key: "email"},
+    {id: "password-first" , key: "password"}
   ],
   [
     {id: "newContactName", key: "name"},
@@ -16,17 +16,24 @@ const objectFields = [
   ]
 ]
 
-// eigentlich ist das nur die "user"-main function (ohne "demoUser", mit nur "user", könnte man users und contacts zusammenfassen)
+/**
+ * main function for creating new object ("user" or "contact")
+ * @param {string} requestedCategory - "users", "tasks" or "contacts"
+ */
 async function objectBuilding(requestedCategory = "users") {
   setDataContainer(requestedCategory);
   let objectFields = chooseFieldsMap(requestedCategory);
   const [pushObjectId, entryData] = createNewObject(objectFields, requestedCategory, "demoUser");
   // console.log("ready for upload: ", pushObjectId, entryData);
   await sendNewObject(pushObjectId, entryData, requestedCategory);
-  confirmSignup(); // da bräuchte es auch eine Weiche: users = confirmSignup, contacts = NN (animation)
+  confirmSignup(); // for "users" only
 }
 
-// determine structure of data-source: nested (= complete fetch) or flat (= only "users"-fetch)
+/**
+ * check structure of fetched data: nested (if all data are fetched) or flat (if only category is fetched)
+ * put all "user" / "content"-objects in "currentContainer".
+ * @param {string} requestedCategory - "users", "tasks" or "contacts"
+ */
 function setDataContainer(requestedCategory) {
   if (!fetchedData || typeof fetchedData != 'object') {
     console.error('no valid fetchedData; processing not possible.');
@@ -43,6 +50,11 @@ function setDataContainer(requestedCategory) {
   }
 }
 
+/**
+ * helper function for "objectBuilding": choose FieldsMap which matches requestedCategory
+ * @param {string} requestedCategory - "users", "tasks" or "contacts"
+ * @returns selected objectFields.
+ */
 function chooseFieldsMap(requestedCategory) {
   if(requestedCategory == "users") 
     return objectFields[0];
@@ -50,6 +62,13 @@ function chooseFieldsMap(requestedCategory) {
     return objectFields[1];
 }
 
+/**
+ * helper function for "objectBuilding", main processing function; call all helper functions
+ * @param {array} fieldMap - use for "fillObjectFromInputFields"
+ * @param {string} requestedCategory - "users", "tasks" or "contacts"
+ * @param {string} fallbackCategoryString - "user", "task" or "contact"
+ * @returns 
+ */
 function createNewObject(fieldMap, requestedCategory, fallbackCategoryString) {
   const entryData = fillObjectFromInputfields(fieldMap);
   specificEntries(requestedCategory, entryData);
@@ -58,13 +77,23 @@ function createNewObject(fieldMap, requestedCategory, fallbackCategoryString) {
   return [pushObjectId, entryData];
 }
 
+/**
+ * helper function for "createNewObject"; initialize new object, call fill-function.
+ * @param {array} fieldMap - IDs from inputs, keys used in Firebase
+ * @returns object containing key-value pairs
+ */
 function fillObjectFromInputfields(fieldMap) {
   const obj = {};
   loopOverInputs(fieldMap, obj);
   return obj;
 }
 
-// die wird auch bei edit-function verwendet
+/**
+ * helper function for "fillObjectFromInputFields"; iterate over input fields, fill object.
+ * @param {array} fieldMap - IDs from inputs, keys used in Firebase
+ * @param {object} obj - initialized new object
+ * @returns object containing values from input fields
+ */
 function loopOverInputs(fieldMap, obj) {
   fieldMap.forEach(({ id, key }) => {
     const element = document.getElementById(id);
@@ -74,19 +103,29 @@ function loopOverInputs(fieldMap, obj) {
   return obj;
 }
 
+/**
+ * fork function; call helper function for category-specific object entries
+ * @param {string} requestedCategory - "users", "tasks" or "contacts"
+ * @param {object} obj - raw, incomplete new object
+ * @returns complete new object
+ */
 function specificEntries(requestedCategory, obj) {
   if(requestedCategory == "users") {
     obj.associatedContacts = "";
     return obj;
   } else if (requestedCategory == "contacts") {
     obj.initials = getInitials(obj.name);
-    obj.avatarColor = colorToObject();
+    obj.avatarColor = getRandomColor();
     obj.assignedTo = "";
     return obj;
   }
 }
 
-// speficic functions for "contacts"
+/**
+ * specific helper function 1 for "contacts"; extract initials from first and last name part
+ * @param {string} fullName - user name
+ * @returns initials-string
+ */
 function getInitials(fullName) {
   const names = (fullName || "").trim().split(" ");
   const first = names[0]?.[0]?.toUpperCase() || "";
@@ -95,30 +134,40 @@ function getInitials(fullName) {
 }
 
 // es fehlt Funktion, die eine Zufallsfarbe wählt und z.B. "var(--dark)" zurückgibt
-function colorToObject() {
+function getRandomColor() {
   return color = "--dark";
 }
-// End of specific functions for "contacts"
 
+
+/**
+ * helper function for "createNewObject"; extract number from last key ("user-006", "contacts-006"),
+ * compose next key
+ * @param {string} category - "users", "tasks" or "contacts"
+ * @returns new key (string)
+ */
 function setNextId(category) {
   let lastKey = getLastKey(category);
-  // console.log("current last ID: ", lastKey);
   const [prefix, numberStr] = lastKey.split("-");
   const nextNumber = (Number(numberStr) + 1).toString().padStart(3, '0');
   return `${prefix}-${nextNumber}`;
 }
 
+/**
+ * get last existing category-key or initialize category-key
+ * @param {string} category - "users", "tasks" or "contacts"
+ * @returns last existing (or initialized) key (string)
+ */
 function getLastKey(category) {
   if(!currentDataContainer || Object.keys(currentDataContainer).length == 0) {
     console.log("you initialized a new category: ", category);
     return `${category}-000`
   } else {
     const itemKeys = Object.keys(currentDataContainer);
-    return itemKeys.at(-1); // ist dasselbe wie: itemKeys[taskKeys.length -1];
+    return itemKeys.at(-1)
   }
 }
 
-// FUNKTION MODULARISIEREN!
+// FUNKTION MODULARISIEREN und kommentieren
 async function sendNewObject(pushObjectId, entryData, requestedCategory) {
   const localObject = {[pushObjectId] : entryData};
   console.log("the complete object:" , localObject);
@@ -140,28 +189,50 @@ async function sendNewObject(pushObjectId, entryData, requestedCategory) {
   else {
     let firebasePath = `${requestedCategory}/${pushObjectId}`
   console.log("Firebase-update path: ", firebasePath, entryData);
-  // await pushObjectToDatabase(firebasPath, entryData);
+  // await saveToFirebase(firebasPath, entryData);
+  }
+}
+
+/**
+ * upload function for data traffic to Firebase
+ * @param {string} path - fragment of path (pattern: "tasks/task009")
+ * @param {object} data - object containing all taks details
+ */
+async function saveToFirebase(path, data) {
+  const url = `https://join-474-default-rtdb.europe-west1.firebasedatabase.app/${path}.json`;
+  try {
+    const response = await fetch(url, {
+      method: data === null ? "DELETE" : "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: data === null ? undefined : JSON.stringify(data),
+    });
+    const resText = await response.text();
+    console.log("Firebase response:", response.status, resText);
+    if (!response.ok) {
+      throw new Error("Firebase update failed: " + response.statusText);
+    }
+  } catch (error) {
+    console.error("Fetching data failed:", error);
   }
 }
 
 // "path" muß so aussehen: "users/user-014" (Kategory/Key des neuen Eintrags)
-async function pushObjectToDatabase(path, data={}) {
-  let URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/';
-  const res = await fetch(URL_FIREBASE_JOIN + path + '.json', {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) throw new Error(`PUT failed: ${res.status}`);
-  const result = await res.json();
-  console.log("PUT result:", result);
-  return result; 
-}
+// async function pushObjectToDatabase(path, data={}) {
+//   let URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/';
+//   const res = await fetch(URL_FIREBASE_JOIN + path + '.json', {
+//     method: "PUT",
+//     headers: {
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify(data)
+//   });
+//   if (!res.ok) throw new Error(`PUT failed: ${res.status}`);
+//   const result = await res.json();
+//   console.log("PUT result:", result);
+//   return result; 
+// }
 
-
-// EDIT FUNCTION (CONTACTS); NICHT ECHT GETESTET
+// RAW EDIT FUNCTION (CONTACTS);
 const editFields = [
   {id: "editNameInput", key: "name"},
   {id: "editEmailInput", key: "email"},
@@ -169,7 +240,7 @@ const editFields = [
 ];
 
 async function editObjectFromInputfields(fieldMap, objectKey) {
-  let entry = fetchedData[objectKey];
+  let entry = fetchedData[objectKey]; // Fallunterscheidung, wie oben
   console.log("original entry: ", entry);
   loopOverInputs(fieldMap, entry);
   entry.initials = getInitials(entry.name); // "contacts": Initialen könnten sich ändern
@@ -177,7 +248,5 @@ async function editObjectFromInputfields(fieldMap, objectKey) {
   console.log("after editing: ", fetchedData);
 
   let editedContactPath = `contacts/${objectKey}`; // NICHT GETESTET
-  // await pushObjectToDatabase(editedContactPath, entry);
+  // await saveToFirebase(editedContactPath, entry);
 }
-
-// delete?
