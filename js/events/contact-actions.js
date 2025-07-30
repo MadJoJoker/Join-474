@@ -17,12 +17,13 @@ import { getFirebaseData } from '../data/API.js';
  */
 async function saveFirebaseData({ path, data }) {
     const url = buildFirebaseUrl(path);
-    logFirebaseRequest(url, data);
     try {
         const response = await sendFirebaseRequest(url, data);
         await handleFirebaseResponse(response);
     } catch (error) {
-        handleFirebaseError(error);
+        if (location.hostname === 'localhost') {
+            console.error('[Firebase]', error);
+        }
     }
 }
 
@@ -62,15 +63,6 @@ async function handleFirebaseResponse(response) {
     if (!response.ok) {
         throw new Error('Firebase update failed: ' + response.statusText);
     }
-}
-
-/**
- * Logs any error during the Firebase save process.
- * 
- * @param {Error} error - The error object caught in try/catch.
- */
-function handleFirebaseError(error) {
-    console.error('[saveFirebaseData] Error while saving to Firebase:', error);
 }
 
 // ---------------------------
@@ -130,7 +122,6 @@ export async function createContact({ name, email, phone }) {
         avatarColor: getRandomAvatarColor()
     };
     await saveFirebaseData({ path: `contacts/${id}`, data: contact });
-    console.info('[createContact] Contact saved:', contact);
     return contact;
 }
 
@@ -152,7 +143,6 @@ export async function updateContact(contact) {
  */
 export async function deleteContact(id) {
     await saveFirebaseData({ path: `contacts/${id}`, data: null });
-    console.info('[deleteContact] Contact deleted:', id);
 }
 
 // ---------------------------

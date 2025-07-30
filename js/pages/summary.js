@@ -145,3 +145,15 @@ function removeComma() {
   commaText = commaText.replace(',', '');
   document.getElementById('day-time').innerText = commaText;
 }
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const overlay = document.getElementById("greetUser");
+//   if (window.matchMedia("(max-width: 768px)").matches) {
+//     overlay.addEventListener("animationend", (e) => {
+//       if (e.animationName == "showBackground") {
+//         overlay.style.display = "none";
+//       }
+//     });
+//   }
+// });
+
