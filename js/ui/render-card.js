@@ -365,32 +365,32 @@ export async function registerTaskCardDetailOverlay(
           ev.stopPropagation();
           const taskId = this.dataset.taskId;
           const task = boardData.tasks[taskId];
-          console.log("[MoveUp] Clicked for taskId:", taskId, "task:", task);
+          // console.log("[MoveUp] Clicked for taskId:", taskId, "task:", task);
           if (!task) return;
           const currentIdx = columnOrder.findIndex(
             (col) => col.key === task.columnID
           );
-          console.log(
-            "[MoveUp] Current column index:",
-            currentIdx,
-            "columnID:",
-            task.columnID
-          );
+          // console.log(
+          //   "[MoveUp] Current column index:",
+          //   currentIdx,
+          //   "columnID:",
+          //   task.columnID
+          // );
           if (currentIdx > 0) {
             const newColumnID = columnOrder[currentIdx - 1].key;
-            console.log("[MoveUp] Moving task to new columnID:", newColumnID);
+            // console.log("[MoveUp] Moving task to new columnID:", newColumnID);
             task.columnID = newColumnID;
             await CWDATA(task, boardData); // Persistiere Änderung
-            console.log(
-              "[MoveUp] Persisted new columnID, redirecting to board-site.html"
-            );
+            // console.log(
+            //   "[MoveUp] Persisted new columnID, redirecting to board-site.html"
+            // );
             window.location.href = "board-site.html";
           }
         });
-        console.log(
-          "[registerTaskCardDetailOverlay] MoveUp-Listener attached for card:",
-          card.id
-        );
+        // console.log(
+        //   "[registerTaskCardDetailOverlay] MoveUp-Listener attached for card:",
+        //   card.id
+        // );
       }
       if (moveDown) {
         moveDown.addEventListener("click", async function (ev) {
@@ -398,7 +398,7 @@ export async function registerTaskCardDetailOverlay(
           ev.stopPropagation();
           const taskId = this.dataset.taskId;
           const task = boardData.tasks[taskId];
-          console.log("[MoveDown] Clicked for taskId:", taskId, "task:", task);
+          // console.log("[MoveDown] Clicked for taskId:", taskId, "task:", task);
           if (!task) return;
           const currentIdx = columnOrder.findIndex(
             (col) => col.key === task.columnID
@@ -411,7 +411,7 @@ export async function registerTaskCardDetailOverlay(
           );
           if (currentIdx < columnOrder.length - 1) {
             const newColumnID = columnOrder[currentIdx + 1].key;
-            console.log("[MoveDown] Moving task to new columnID:", newColumnID);
+            // console.log("[MoveDown] Moving task to new columnID:", newColumnID);
             task.columnID = newColumnID;
             await CWDATA(task, boardData); // Persistiere Änderung
             console.log(
@@ -420,10 +420,10 @@ export async function registerTaskCardDetailOverlay(
             window.location.href = "board-site.html";
           }
         });
-        console.log(
-          "[registerTaskCardDetailOverlay] MoveDown-Listener attached for card:",
-          card.id
-        );
+        // console.log(
+        //   "[registerTaskCardDetailOverlay] MoveDown-Listener attached for card:",
+        //   card.id
+        // );
       }
     }
 

@@ -2,7 +2,8 @@ import {
   openSpecificOverlay,
   initOverlayListeners,
 } from "../../js/events/overlay-handler.js";
-import { initAddTaskForm, clearForm } from "./add-task.js";
+import { clearForm } from "./add-task.js";
+import { initAddTaskForm } from "./add-task-auxiliary-functions.js";
 import { getAddTaskFormHTML } from "../templates/add-task-template.js";
 
 import { loadFirebaseData } from "../../main.js";

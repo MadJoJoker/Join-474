@@ -12,11 +12,13 @@ import {
 import {
   selectedCategory,
   selectedContacts,
-  initDropdowns,
   clearAssignedTo,
   clearCategory,
-  clearInvalidFields,
 } from "../events/dropdown-menu.js";
+import {
+  clearInvalidFields,
+  initDropdowns,
+} from "../events/dropdown-menu-auxiliary-function.js";
 import { CWDATA } from "../data/task-to-firbase.js";
 import {
   initAddTaskForm,
