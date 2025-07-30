@@ -10,7 +10,6 @@
   background-color: var(--dark);
   padding: 19px 25px;
   border-radius: 20px;
-  /* max-height: 72px; */
   color: var(--white);
   font-size: 20px;
   letter-spacing: 0.8px;
@@ -24,10 +23,10 @@
   left: 50%;
   transform: translate(-50%, 0);
   opacity: 0;
-}
 
-.blue-box.animate {
-  animation: moveToCenter 1s ease forwards;
+  &.animate {
+    animation: moveToCenter 1s ease forwards;
+  }
 }
 
 .d-none {

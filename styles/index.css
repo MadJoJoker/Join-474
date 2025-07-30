@@ -297,7 +297,7 @@ body {
   }
 }
 
-/* inputfield overlays (Password) */
+/* inputfield overlays */
 .overlay-anchor {
   position: relative;
 }
@@ -330,32 +330,3 @@ body {
 .d-none {
   display: none;
 }
-
-/* @media (max-width: 768px) {
-  .dark-fill {
-    animation: changeColor 1s ease forwards;
-  }
-
-  @keyframes changeColor {
-    0% {
-      fill: #ffffff;
-    }
-    100% {
-      fill: #2A3647;
-    }
-  }
-
-  @keyframes showBackground {
-    0% {
-      background-color: var(--dark);
-    }
-    100% {
-      background-color: rgba(255, 255, 255, 0);
-    }
-  }
-} */
-
-
-
-
-

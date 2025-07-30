@@ -24,13 +24,11 @@ async function objectBuilding(requestedCategory = "users") {
   // console.log("ready for upload: ", pushObjectId, entryData);
   await sendNewObject(pushObjectId, entryData, requestedCategory);
   confirmSignup(); // da bräuchte es auch eine Weiche: users = confirmSignup, contacts = NN (animation)
-
-  // resetInputs(fieldMap);
 }
 
 // determine structure of data-source: nested (= complete fetch) or flat (= only "users"-fetch)
 function setDataContainer(requestedCategory) {
-  if (!fetchedData || typeof fetchedData !== 'object') {
+  if (!fetchedData || typeof fetchedData != 'object') {
     console.error('no valid fetchedData; processing not possible.');
     currentDataContainer = {};
     currentCategory = null;
@@ -121,13 +119,6 @@ function getLastKey(category) {
     return itemKeys.at(-1); // ist dasselbe wie: itemKeys[taskKeys.length -1];
   }
 }
-
-// function resetInputs(fieldMap) {
-//   fieldMap.forEach(({id}) => {
-//     const element = document.getElementById(id);
-//     if (element) element.value = "";
-//   });
-// }
 
 // FUNKTION MODULARISIEREN!
 async function sendNewObject(pushObjectId, entryData, requestedCategory) {

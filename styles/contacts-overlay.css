@@ -1,0 +1,320 @@
+/*
+ * Overlay (Modal) Styles
+ * Styles for the contact add/edit overlay, including its general layout, sections, form elements, and action buttons.
+ */
+.overlay-wrapper {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1200;
+    opacity: 0;
+}
+
+.overlay-wrapper.active {
+    opacity: 1;
+}
+
+.overlay-wrapper.slide-in .overlay-content {
+    animation: slideInRight 0.4s ease forwards;
+}
+
+.overlay-wrapper.slide-out .overlay-content {
+    animation: slideOutRight 0.4s ease forwards;
+}
+
+.overlay-wrapper.hidden {
+    display: none !important;
+}
+
+.overlay-content {
+    display: flex;
+    width: auto;
+    height: 512px;
+    background-color: var(--white);
+    border-radius: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    animation-duration: 0.4s;
+    animation-fill-mode: forwards;
+}
+
+.overlay-left {
+    width: 453px;
+    background-color: var(--dark);
+    color: var(--white);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    flex-shrink: 0;
+    border-radius: 20px 0 0 20px;
+}
+
+.overlay-left h2 {
+    font-size: 61px;
+    margin: 0;
+    font-weight: 700;
+    padding: 0;
+}
+
+.overlay-left p {
+    font-size: 27px;
+}
+
+.overlay-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    min-width: 0;
+    position: relative;
+    padding: 40px 0;
+    border-radius: 20px 0 0 20px;
+}
+
+.overlay-close {
+    position: absolute;
+    top: 34px;
+    right: 34px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay-close:hover {
+    background-color: var(--lightGrey);
+    border-radius: 50%;
+}
+
+.overlay-form-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 32px;
+    height: auto;
+    flex-grow: 1;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+}
+
+.form-row-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-add-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: var(--borderGrey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 3px solid var(--white);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    margin-left: 16px;
+}
+
+.form-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 420px;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    font-size: 16px;
+    border: 1px solid var(--sidebarNoticeGrey);
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.input-wrapper input:focus {
+    border: 1px solid var(--lightBlue);
+    outline: none;
+}
+
+.input-wrapper input:hover:not(:focus) {
+    border: 1px solid var(--lightBlue);
+}
+
+.input-wrapper svg {
+    position: absolute;
+    right: 12px;
+    top: 35%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}
+
+.overlay-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.overlay-actions button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+}
+
+.overlay-logo {
+    height: 55px;
+}
+
+/*
+ * Styles for screens up to 1150px wide
+ * Significant layout changes for the overlay (modal) to a column-based design,
+ * along with adjustments for contact details and mobile-specific elements.
+ */
+@media (max-width: 1150px) {
+    .overlay-content {
+        flex-direction: column;
+        width: none;
+        height: auto;
+        max-height: none;
+        height: none;
+    }
+
+    .overlay-form-content {
+        padding: 56px 0px;
+    }
+
+    .overlay-left {
+        width: 100%;
+        border-radius: 20px 20px 0 0;
+        align-items: center;
+        align-items: flex-start;
+        height: 250px;
+    }
+
+    .overlay-right {
+        width: 100%;
+        border-radius: 0 0 20px 20px;
+        padding: 24px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .overlay-right .overlay-close {
+        display: none !important;
+    }
+
+    .overlay-close-mobile-wrapper {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 10;
+    }
+
+    .overlay-close-mobile {
+        display: flex;
+        background: none;
+        border: none;
+        font-size: 24px;
+        height: 35px;
+        width: 35px;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+    }
+
+    .overlay-close-mobile:hover {
+        background-color: var(--lightGrey);
+    }
+
+    .mobile-display-none {
+        display: none;
+    }
+
+    .overlay-close:hover {
+        background-color: var(--dark);
+    }
+
+    .contact-add-avatar {
+        margin-left: 0px;
+    }
+
+    .contact-initial {
+        font-weight: 400;
+        border-bottom: 1px solid var(--white);
+        font-size: 20px;
+        border-bottom: 1px solid var(--grey);
+        max-width: 100%;
+        padding-left: 30px;
+        width: 100%;
+    }
+
+    .overlay-content {
+        position: relative;
+    }
+
+    .form-row-wrapper {
+        padding-top: 0px;
+    }
+
+    .overlay-avatar-mobile {
+        width: 120px !important;
+        height: 120px !important;
+        font-size: 47px !important;
+        position: fixed;
+        display: flex;
+        top: 250px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        position: relative;
+    }
+
+    .overlay-close-mobile {
+        right: 0px;
+        top: 0;
+    }
+}

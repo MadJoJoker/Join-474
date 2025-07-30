@@ -377,13 +377,13 @@ function setupContactListClickNavigation() {
  * - Hides the dropdown menu when clicking outside of it.
  */
 function setupMobileDropdownToggle() {
-    document.addEventListener('click', (e) => {
-        const toggleBtn = e.target.closest('.dropdown-mobile-btn');
+    document.addEventListener('click', (element) => {
+        const toggleBtn = element.target.closest('.dropdown-mobile-btn');
         const dropdown = document.querySelector('.mobile-dropdown-menu');
         if (toggleBtn && dropdown) {
             dropdown.classList.toggle('mobile-dropdown-menu-hidden');
         } else {
-            const clickedInsideDropdown = e.target.closest('.mobile-dropdown-menu');
+            const clickedInsideDropdown = element.target.closest('.mobile-dropdown-menu');
             if (!clickedInsideDropdown) {
                 dropdown?.classList.add('mobile-dropdown-menu-hidden');
             }
