@@ -246,6 +246,7 @@
 
   &:hover {
     background-color: var(--borderGrey);
+    cursor: pointer;
   }
 }
 

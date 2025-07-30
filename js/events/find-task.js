@@ -1,21 +1,30 @@
 import { loadFirebaseData } from "../../main.js";
 import { showFindTaskInfoNoFoundMsg } from "../pages/board-initializer.js";
 
+/** Filters task cards based on the title input.
+ * Searches for tasks that match the input value and displays them.
+ */
 export async function filterTaskCardsByTitle() {
-  console.log("filterTaskCardsByTitle aufgerufen");
-
   const searchTerm = document.getElementById("find-task").value.toLowerCase();
-
   const loadedData = await loadFirebaseData();
 
   if (!loadedData || !loadedData.tasks) {
-    console.warn(
-      "Aufgaben zum Filtern (loadedData.tasks) sind nicht verfügbar, oder Daten wurden nicht geladen."
-    );
+    console.warn("Filtering tasks (loadedData.tasks) are not available, or data has not been loaded.");
     return;
   }
 
   const allTaskCards = document.querySelectorAll(".task-card");
+  let found = 0;
+  const foundCount = filterAndDisplayTaskCards(allTaskCards, loadedData, searchTerm);
+  if (found === 0) {
+    showFindTaskInfoNoFoundMsg();
+  }
+}
+
+/** Filters task cards based on the search term.
+ * Displays only those cards whose title includes the search term.
+ */
+function filterAndDisplayTaskCards(allTaskCards, loadedData, searchTerm) {
   let found = 0;
   allTaskCards.forEach((cardElement) => {
     const taskId = cardElement.id;
@@ -32,7 +41,5 @@ export async function filterTaskCardsByTitle() {
       cardElement.style.display = "none";
     }
   });
-  if (found === 0) {
-    showFindTaskInfoNoFoundMsg();
-  }
+  return found;
 }
