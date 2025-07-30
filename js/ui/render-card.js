@@ -7,7 +7,7 @@ import {
 import { getAddTaskFormHTML } from "../templates/add-task-template.js";
 import {
   setCategoryFromTaskForCard,
-  setAssignedContactsFromTaskForCard
+  setAssignedContactsFromTaskForCard,
 } from "../events/dropdown-menu-auxiliary-function.js";
 import { CWDATA } from "../data/task-to-firbase.js";
 
@@ -542,7 +542,7 @@ export async function registerTaskCardDetailOverlay(
             );
             if (prioBtn) mod.setPriority(prioBtn, prio);
           });
-          import("../events/dropdown-menu.js").then(async (mod) => {
+          import("../events/dropdown-menu-auxiliary-function.js").then(async (mod) => {
             await mod.initDropdowns(
               Object.values(boardData.contacts),
               taskEditContainer
