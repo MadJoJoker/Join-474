@@ -1,0 +1,291 @@
+/*
+ * General Styles & Layout
+ * Styles that apply globally or define the main structural layout of the application.
+ */
+body,
+html {
+    margin: 0;
+    height: 100%;
+    background-color: var(--lightGrey);
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    overflow-x: hidden;
+}
+
+.app-container,
+.main-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.contacts-main {
+    display: flex;
+    min-height: calc(100vh - 96px);
+}
+
+/*
+ * Sidebar Styles
+ * Styles related to the contacts sidebar, including its general appearance and the "Add New Contact" button.
+ */
+.contacts-sidebar {
+    min-width: 456px;
+    background-color: var(--white);
+    border-right: 4px solid #eee;
+    overflow-y: auto;
+    box-shadow: 4px 0 4px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 100px;
+}
+
+/*
+ * Contact List Items
+ * Styles for individual contact entries displayed in the sidebar, including their layout, hover states, and active states.
+ */
+.contact-initial {
+    font-weight: 400;
+    border-bottom: 1px solid var(--white);
+    font-size: 20px;
+    border-bottom: 1px solid var(--grey);
+    max-width: 352px;
+    padding-left: 30px;
+}
+
+.contact-section {
+    margin: 20px 0;
+}
+
+.contact {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    width: 352px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    gap: 16px;
+    padding-left: 16px;
+}
+
+.contact:hover:not(.active) {
+    background: linear-gradient(to bottom, #f8f8f8, #f0f0f0);
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.contact.active {
+    background-color: var(--dark);
+    color: var(--white);
+    border-radius: 8px;
+}
+
+.contact.active .contact-name {
+    color: var(--white);
+}
+
+.contact-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--white);
+    box-sizing: border-box;
+    border: 2px solid var(--white);
+    flex-shrink: 0;
+    flex-grow: 0;
+    aspect-ratio: 1 / 1;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-name {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.contact-email {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--lightBlue);
+    word-break: break-word;
+}
+
+.contact-email a {
+    color: var(--lightBlue);
+}
+
+/*
+ * Contact Details Section
+ * Styles for the displayed details of a selected contact, including the header, avatar, name, actions, and information blocks.
+ */
+.contacts-details {
+    flex-grow: 1;
+    padding-top: 108px;
+    padding-left: 32px;
+    background-color: var(--lightGrey);
+    position: relative;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.contacts-text-separator {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.contacts-text-separator h1 {
+    font-size: 61px;
+}
+
+.contacts-text-separator span {
+    font-size: 27px;
+}
+
+.contact-details-card {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.4s ease-in-out;
+    width: 100%;
+    padding: 32px 0;
+    border-radius: 12px;
+    padding-bottom: 150px;
+}
+
+.contact-details-card.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.contact-details-card.no-animation {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.contact-details-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.contact-details-avatar-big {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    font-size: 47px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--white);
+    color: var(--white);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+    flex-grow: 0;
+    aspect-ratio: 1 / 1;
+}
+
+.contact-details-name-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact-details-name-actions h2 {
+    font-size: 47px;
+    margin: 0;
+    font-weight: 100;
+}
+
+.contact-details-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.contact-details-info-block {
+    margin-top: 24px;
+}
+
+.contact-details-info-block h3 {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 24px;
+}
+
+.contact-details-info-block p {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.contact-details-info-block a {
+    color: var(--lightBlue);
+}
+
+/*
+ * Utility Classes & Responsiveness
+ * General utility classes for hiding elements and styles related to touch/drag interactions and responsive design.
+ */
+.hidden {
+    display: none !important;
+}
+
+.drag-scroll-active {
+    cursor: grabbing !important;
+    user-select: none;
+}
+
+.separator-horizontal {
+    display: none;
+}
+
+.dropdown-help {
+    display: none;
+}
+
+.hide-on-desktop {
+    display: none;
+}
+
+/*
+ * Styles for screens up to 1350px wide
+ * Adjustments for medium-sized screens, primarily affecting contact list layout and text separators.
+ */
+@media (max-width: 1350px) {
+    .contact {
+        margin-left: 0px;
+    }
+
+    .contact-details-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .contacts-text-separator {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .separator-vertical {
+        display: none;
+    }
+
+    .separator-horizontal {
+        display: flex;
+    }
+}
