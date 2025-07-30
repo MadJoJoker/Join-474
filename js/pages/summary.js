@@ -1,4 +1,3 @@
-// To do: 
 // Code dokumentieren
 
 let taskData;

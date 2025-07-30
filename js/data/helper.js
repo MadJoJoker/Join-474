@@ -1,3 +1,10 @@
+/**
+ * fetch data from Firebase, parse them to json for further use
+ * 
+ * @param {string} path - endpoint in database (empty string, if entire content is fetched)
+ * @returns fetched data, parsed to json
+ */
+
 async function getFirebaseData(path = '') {
   const URL_FIREBASE_JOIN = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/' + path + '.json';
   try {

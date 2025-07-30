@@ -51,10 +51,8 @@ function chooseFieldsMap(requestedCategory) {
 }
 
 function createNewObject(fieldMap, requestedCategory, fallbackCategoryString) {
-  // console.log("alle da? ", fieldMap, requestedCategory, fallbackCategoryString);
   const entryData = fillObjectFromInputfields(fieldMap);
   specificEntries(requestedCategory, entryData);
-  // console.log("composed obj.: ", entryData);
   const pushObjectId = setNextId(fallbackCategoryString);
   console.log("new ID", pushObjectId);
   return [pushObjectId, entryData];
