@@ -1,3 +1,5 @@
+import { isContactSelected } from "../events/dropdown-menu.js";
+
 /**
  * Initialisiert den Datepicker für das Fälligkeitsdatum-Feld.
  * @param {HTMLElement} container - Das Container-Element, das das Feld enthält.
@@ -363,5 +365,40 @@ export function getAddTaskFormHTML(task = null) {
             </form>
             </div>
         </main>
+    `;
+}
+
+/** * Generates the HTML for the category options.
+ * @returns {string} The HTML string for the category options.
+ */
+export function getCategoryOptions() {
+  return `
+        <div class="option" data-category="Technical Task">Technical Task</div>
+        <div class="option" data-category="User Story">User Story</div>
+        <div class="option" data-category="Meeting">Meeting</div>
+    `;
+}
+
+/** * Renders a single contact option in the dropdown.
+ * @param {number} i - The index of the contact.
+ * @param {string} name - The name of the contact.
+ * @param {string} initials - The initials of the contact.
+ * @param {string} avatarColor - The avatar color of the contact.
+ * @returns {string} The HTML string for the contact option.
+ */
+export function renderAssignedToContacts(i, name, initials, avatarColor) {
+  const isSelected = isContactSelected(name, initials, avatarColor);
+  return `
+        <div class="contact-option ${isSelected ? "assigned" : ""}" 
+          data-name="${name}" data-initials="${initials}" data-avatar-color="${avatarColor}">
+            <div class="contact-checkbox">
+                <div class="initials-container">
+                <div class="assigned-initials-circle"style="background-color: var(${avatarColor});">${initials}</div>
+                <div>${name}</div>
+            </div>
+            <img src="../assets/icons/btn/${isSelected ? "checkbox-filled-white" : "checkbox-empty-black"}.svg" 
+              alt="checkbox ${isSelected ? "filled" : "empty"}" 
+              class="checkbox-icon ${isSelected ? "checked" : ""}">
+        </div>
     `;
 }

@@ -1,4 +1,4 @@
-import { firebaseData } from "../../main.js";
+import { getCategoryOptions, renderAssignedToContacts } from "../templates/add-task-template.js";
 
 export let currentContacts = [];
 export let selectedCategory = null;
@@ -42,17 +42,6 @@ export function toggleCategoryDropdown() {
     wrapper.classList.remove("open");
     setTimeout(() => { container.innerHTML = ""; }, 300);
   }
-}
-
-/** * Generates the HTML for the category options.
- * @returns {string} The HTML string for the category options.
- */
-export function getCategoryOptions() {
-  return `
-        <div class="option" data-category="Technical Task">Technical Task</div>
-        <div class="option" data-category="User Story">User Story</div>
-        <div class="option" data-category="Meeting">Meeting</div>
-    `;
 }
 
 /** * Sets the selected category in the dropdown.
@@ -127,7 +116,6 @@ export function clearCategory() {
   }
 }
 
-
 /** * Toggles the assigned contacts dropdown.
  */
 export function toggleAssignedToDropdown() {
@@ -189,30 +177,6 @@ function renderContactsList(contacts, contactContainer, currentUser) {
     const displayName = name === currentUser ? `${name} (You)` : name;
     contactContainer.innerHTML += renderAssignedToContacts(i, displayName, initials, avatarColor);
   });
-}
-
-/** * Renders a single contact option in the dropdown.
- * @param {number} i - The index of the contact.
- * @param {string} name - The name of the contact.
- * @param {string} initials - The initials of the contact.
- * @param {string} avatarColor - The avatar color of the contact.
- * @returns {string} The HTML string for the contact option.
- */
-export function renderAssignedToContacts(i, name, initials, avatarColor) {
-  const isSelected = isContactSelected(name, initials, avatarColor);
-  return `
-        <div class="contact-option ${isSelected ? "assigned" : ""}" 
-          data-name="${name}" data-initials="${initials}" data-avatar-color="${avatarColor}">
-            <div class="contact-checkbox">
-                <div class="initials-container">
-                <div class="assigned-initials-circle"style="background-color: var(${avatarColor});">${initials}</div>
-                <div>${name}</div>
-            </div>
-            <img src="../assets/icons/btn/${isSelected ? "checkbox-filled-white" : "checkbox-empty-black"}.svg" 
-              alt="checkbox ${isSelected ? "filled" : "empty"}" 
-              class="checkbox-icon ${isSelected ? "checked" : ""}">
-        </div>
-    `;
 }
 
 /** * Selects a contact by name for demo purposes.
@@ -338,38 +302,49 @@ function renderFilteredContacts(container, filteredContacts) {
   });
 }
 
+/** * Displays the selected contacts in the assigned area.
+ * Creates circles for each selected contact and appends them to the assigned area.
+ */
 function displaySelectedContacts() {
   const assignedToArea = document.getElementById("assigned-to-area");
   if (!assignedToArea) return;
 
   assignedToArea.innerHTML = '';
-  // Hauptcontainer für die Kontakte
+
   const mainContainer = document.createElement('div');
   mainContainer.className = 'assigned-main-container';
-  // Wenn mehr als 3 Kontakte, mache den Bereich scrollbar
-  if (selectedContacts.length > 3) {
-    // mainContainer.style.maxHeight = '50px';
-    // mainContainer.style.overflowX = 'auto';
-    mainContainer.style.display = 'flex';
-    // mainContainer.style.gap = '4px';
-  }
   selectedContacts.forEach(contact => {
-    const initialsDiv = document.createElement('div');
-    initialsDiv.className = 'assigned-initials-circle';
-    initialsDiv.style.backgroundColor = `var(${contact.avatarColor})`;
-    initialsDiv.textContent = contact.initials;
-    initialsDiv.style.flex = '0 0 auto';
-    mainContainer.appendChild(initialsDiv);
+    renderContactCircle(contact, mainContainer);
   });
+
   assignedToArea.appendChild(mainContainer);
 }
 
+/** * Renders a contact circle in the assigned area.
+ * @param {Object} contact - The contact object containing name, initials, and avatarColor.
+ * @param {HTMLElement} container - The container to append the contact circle to.
+ */
+function renderContactCircle(contact, container) {
+  const initialsDiv = document.createElement('div');
+  initialsDiv.className = 'assigned-initials-circle';
+  initialsDiv.style.backgroundColor = `var(${contact.avatarColor})`;
+  initialsDiv.textContent = contact.initials;
+  initialsDiv.style.flex = '0 0 auto';
+  container.appendChild(initialsDiv);
+}
+
+/** * Removes a contact from the selected contacts.
+ * @param {number} index - The index of the contact to remove.
+ */
 export function removeContact(index) {
   // @param {number} index - Der Index des zu entfernenden Kontakts.
   selectedContacts.splice(index, 1);
   displaySelectedContacts();
 }
 
+/** * Clears the assigned contacts area.
+ * Resets the selected contacts and clears the assigned area.
+ */
 export function clearAssignedTo() {
   const assignedToArea = document.getElementById("assigned-to-area");
 
@@ -380,6 +355,9 @@ export function clearAssignedTo() {
   }
 }
 
+/** * Sets the sorted contacts for the dropdown.
+ * @param {Array} contactsData - The array of contacts to sort and set.
+ */
 export function setSortedContacts(contactsData) {
   currentContacts = contactsData.sort((a, b) => {
     const nameA = (a.name || "").toLowerCase();
@@ -388,6 +366,9 @@ export function setSortedContacts(contactsData) {
   });
 }
 
+/** * Resets the dropdown state.
+ * Clears the selected category and contacts.
+ */
 export function resetDropdownState() {
   selectedCategory = null;
   selectedContacts = [];
