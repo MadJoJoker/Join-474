@@ -91,6 +91,7 @@ export function demoSelectCategory(categoryName = "User Story") {
   fakeOptionElement.dataset.category = categoryName;
 
   setCategory(fakeOptionElement);
+  toggleDropdownIcon("category")
 }
 
 export function clearCategory() {
