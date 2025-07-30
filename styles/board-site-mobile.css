@@ -1,0 +1,315 @@
+@media (max-width: 992px) {
+  .form-fill-part {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .border {
+    display: none;
+  }
+
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .form-buttons-part {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .buttons-area {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .clear-btn,
+  .create-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (max-width: 768px) {
+  .dropdown-menu-board-site-btn {
+    display: flex;
+  }
+  #board-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+  }
+  .task-category {
+    padding: 2px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .no-tasks-placeholder {
+    min-width: 70%;
+  }
+  #board-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 15px;
+    justify-items: center;
+    align-items: center;
+  }
+
+  .task-column {
+    justify-content: center;
+    margin: 0 auto;
+    align-items: center;
+  }
+  .column-wrapper {
+    min-width: 70%;
+    align-items: center !important;
+    padding-left: 45px;
+  }
+  .frame-192 {
+    flex-direction: column;
+  }
+  .board-wrapper.frame-191 {
+    padding-top: 3rem;
+  }
+  .header-right-controls {
+    flex-direction: column;
+    margin-bottom: 25px;
+    gap: 10px;
+  }
+  .frame-192.board-top-section {
+    height: auto;
+  }
+  .menu-color {
+    margin-bottom: 10px;
+  }
+  .modal-content {
+    padding: 15px;
+  }
+
+  .content-overlay h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  .priority-btn {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .priority-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .task-card {
+    max-width: 100%;
+    padding: 8px;
+  }
+  .task-content {
+    width: 100% !important;
+  }
+}
+@media (min-width: 1921px) {
+    .form-buttons-part {
+        position: relative;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+}
+
+@media (max-width: 1140px) {
+    .priority-btn {
+        gap: 4px;
+        padding: 16px 6px;
+    }
+
+    .priority-button-container {
+        gap: unset;
+        justify-content: space-between;
+    }
+
+    #assigned-to-options-container {
+        font-size: 16px;
+    }
+
+    .contact-option {
+        padding: 7px 14px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .content-container {
+        height: calc(100vh - 176px);
+        flex-direction: column;
+    }
+
+    .content {
+        padding: 0 40px 0 40px;
+    }
+
+    .priority-btn {
+        gap: 8px;
+        padding: 16px 10px;
+    }
+
+    #assigned-to-options-container {
+        font-size: 20px;
+    }
+
+    .contact-option {
+        padding: 7px 21px;
+    }
+
+    .content h1 {
+        position: fixed;
+        top: 122px;
+        left: 40px;
+    }
+
+    .form-fill-part {
+        flex-direction: column;
+    }
+
+    .left-form {
+        padding: 0 0 0 0;
+    }
+
+    .border {
+        display: none;
+    }
+
+    .form {
+        padding-top: 0;
+    }
+
+    .right-form {
+        padding: 0 0 0 0;
+    }
+
+    #priority-legend {
+        padding: 10px 0;
+    }
+
+    .priority-button-container {
+        gap: 16px;
+        justify-content: unset;
+    }
+
+    .form-buttons-part {
+        position: fixed;
+        bottom: 96px;
+        left: 40px;
+        right: 40px;
+    }
+
+    .responsive-div {
+        height: 96px;
+        width: 100%;
+        background-color: var(--lightGrey);
+    }
+
+    #responsive-div-one {
+        height: 114px;
+    }
+
+    .priority-btn {
+        height: 41px;
+        padding: 10px 16px;
+    }
+
+    #taskSuccessMsg {
+        bottom: 50%;
+        left: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 0 16px 0 16px;
+    }
+
+    .content h1 {
+        top: 102px;
+        left: 16px;
+        font-size: 47px;
+    }
+
+    .responsive-div {
+        height: 88px;
+    }
+
+    #responsive-div-one {
+        height: 88px;
+    }
+
+    .font-size-20 {
+        font-size: 16px;
+    }
+
+    .input-field {
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .task-description-area {
+        height: 88px;
+        font-size: 16px;
+    }
+
+    .priority-button-container {
+        justify-content: space-between;
+    }
+
+    .priority-btn {
+        font-size: 16px;
+    }
+
+    .contact-input {
+        font-size: 16px;
+    }
+
+    .input-field-subtask {
+        font-size: 16px;
+    }
+
+    #assigned-to-options-container {
+        font-size: 16px;
+    }
+
+    #category-options-container {
+        font-size: 16px;
+    }
+
+    .select-wrapper {
+        height: 48px !important;
+    }
+
+    .form-buttons-part {
+        left: 16px;
+        right: 16px;
+        justify-content: flex-end;
+    }
+
+    #title-error {
+        top: 66px;
+    }
+
+    #due-date-error {
+        top: 66px;
+    }
+
+    #taskSuccessMsg {
+        width: 80%;
+    }
+}
+
+@media (max-width: 380px) {
+    .priority-button-container {
+        gap: 0px;
+    }
+
+    .priority-btn {
+        padding: 10px 10px;
+    }
+}
