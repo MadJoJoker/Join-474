@@ -28,7 +28,9 @@ body {
 }
 
 .board-wrapper.frame-191 {
-  padding-top: 6.5rem;
+  padding-top: 100px;
+  padding-left: 40px;
+  padding-right: 40px;
   background-color: transparent;
   box-sizing: border-box;
   display: flex;
@@ -40,7 +42,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 4vw;
   height: 6.5rem;
   background-color: var(--lightwhite);
   box-sizing: border-box;
@@ -112,8 +113,7 @@ body {
       img {
         width: 1.25rem;
         height: 1.25rem;
-        filter: invert(50%) sepia(0%) saturate(1%) hue-rotate(253deg)
-          brightness(85%) contrast(80%);
+        filter: invert(50%) sepia(0%) saturate(1%) hue-rotate(253deg) brightness(85%) contrast(80%);
       }
     }
   }
@@ -153,8 +153,7 @@ body {
 }
 
 .status-button:hover img {
-  filter: invert(20%) sepia(100%) saturate(2000%) hue-rotate(200deg)
-    brightness(90%) contrast(100%);
+  filter: invert(20%) sepia(100%) saturate(2000%) hue-rotate(200deg) brightness(90%) contrast(100%);
 }
 
 .menu-color {
@@ -181,7 +180,8 @@ body {
     height: 100%;
     max-width: 75%;
     padding: 10px;
-    box-sizing: border-box; /* Wichtig, damit Padding die Höhe nicht sprengt */
+    box-sizing: border-box;
+    /* Wichtig, damit Padding die Höhe nicht sprengt */
 
     /* Text-Styling */
     font-style: italic;
@@ -212,6 +212,7 @@ body {
   padding: 10px;
   font-weight: 500;
 }
+
 .dropdown-menu-board-site-btn {
   background-color: var(--white);
   border-radius: 6px;
@@ -224,6 +225,7 @@ body {
   color: var(--white);
   text-align: center;
 }
+
 .dropdown-menu-board-site a {
   padding: 12px 16px;
   text-decoration: none;
@@ -245,14 +247,13 @@ body {
 #board-content-wrapper {
   display: flex;
   justify-content: space-between;
-  gap: 5px;
-  padding: 30px 64px;
   box-sizing: border-box;
   flex-wrap: nowrap;
   overflow-x: hidden;
   flex-grow: 1;
   align-items: flex-start;
   max-width: 1440px;
+  padding-top: 20px;
 }
 
 .column-wrapper {
@@ -274,6 +275,7 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   border: 1px solid #dcdcdc;
 }
+
 .content-board-site {
   flex: 1;
   display: flex;
