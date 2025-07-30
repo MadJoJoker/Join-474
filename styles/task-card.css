@@ -169,10 +169,19 @@
 }
 
 .subtasks-text {
-  display: block;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  min-height: 1.2em; /* adjust as needed to reserve space */
   text-align: right;
   font-size: 0.85rem;
   margin-top: 4px;
+  display: block;
+}
+
+.progress-container:hover .subtasks-text {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .task-footer {

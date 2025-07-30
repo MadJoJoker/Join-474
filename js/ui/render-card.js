@@ -59,7 +59,21 @@ function getCategoryClass(type) {
  * @returns {{done: number, total: number, percent: number, subText: string}} Der Fortschritt der Subtasks.
  */
 function calculateSubtaskProgress(task) {
-  const subtasksArray = Array.isArray(task.subtasks) ? task.subtasks : [];
+  let subtasksArray = [];
+  // Standard: Array von Objekten mit .completed
+  if (Array.isArray(task.subtasks) && task.subtasks.length > 0) {
+    subtasksArray = task.subtasks;
+  } else if (
+    Array.isArray(task.totalSubtask) &&
+    Array.isArray(task.checkedSubtasks) &&
+    task.totalSubtask.length === task.checkedSubtasks.length
+  ) {
+    // Kompatibilität: totalSubtask (Texte) + checkedSubtasks (Booleans)
+    subtasksArray = task.totalSubtask.map((text, i) => ({
+      text,
+      completed: !!task.checkedSubtasks[i],
+    }));
+  }
   const done = subtasksArray.filter((sub) => sub.completed).length;
   const total = subtasksArray.length;
   const percent = total > 0 ? (done / total) * 100 : 0;
@@ -314,70 +328,102 @@ export async function registerTaskCardDetailOverlay(
         if (window.innerWidth <= 768) {
           e.stopPropagation();
           dropdownMenu.classList.toggle("show");
-          document.querySelectorAll('.dropdown-menu-board-site.show').forEach(menu => {
-            if (menu !== dropdownMenu) menu.classList.remove('show');
-          });
+          document
+            .querySelectorAll(".dropdown-menu-board-site.show")
+            .forEach((menu) => {
+              if (menu !== dropdownMenu) menu.classList.remove("show");
+            });
           const closeDropdown = (ev) => {
-            if (!dropdownMenu.contains(ev.target) && ev.target !== dropdownBtn) {
+            if (
+              !dropdownMenu.contains(ev.target) &&
+              ev.target !== dropdownBtn
+            ) {
               dropdownMenu.classList.remove("show");
               document.removeEventListener("click", closeDropdown);
             }
           };
-          setTimeout(() => document.addEventListener("click", closeDropdown), 0);
+          setTimeout(
+            () => document.addEventListener("click", closeDropdown),
+            0
+          );
         }
       });
 
       // Move-Up/Down-Handler
-      const moveUp = dropdownMenu.querySelector('.move-task-up');
-      const moveDown = dropdownMenu.querySelector('.move-task-down');
+      const moveUp = dropdownMenu.querySelector(".move-task-up");
+      const moveDown = dropdownMenu.querySelector(".move-task-down");
       // Mapping für Firebase-kompatible columnIDs
       const columnOrder = [
-        { key: 'toDo', label: 'todo' },
-        { key: 'inProgress', label: 'inProgress' },
-        { key: 'review', label: 'review' },
-        { key: 'done', label: 'done' }
+        { key: "toDo", label: "todo" },
+        { key: "inProgress", label: "inProgress" },
+        { key: "review", label: "review" },
+        { key: "done", label: "done" },
       ];
       if (moveUp) {
-        moveUp.addEventListener('click', async function(ev) {
+        moveUp.addEventListener("click", async function (ev) {
           ev.preventDefault();
           ev.stopPropagation();
           const taskId = this.dataset.taskId;
           const task = boardData.tasks[taskId];
-          console.log('[MoveUp] Clicked for taskId:', taskId, 'task:', task);
+          console.log("[MoveUp] Clicked for taskId:", taskId, "task:", task);
           if (!task) return;
-          const currentIdx = columnOrder.findIndex(col => col.key === task.columnID);
-          console.log('[MoveUp] Current column index:', currentIdx, 'columnID:', task.columnID);
+          const currentIdx = columnOrder.findIndex(
+            (col) => col.key === task.columnID
+          );
+          console.log(
+            "[MoveUp] Current column index:",
+            currentIdx,
+            "columnID:",
+            task.columnID
+          );
           if (currentIdx > 0) {
             const newColumnID = columnOrder[currentIdx - 1].key;
-            console.log('[MoveUp] Moving task to new columnID:', newColumnID);
+            console.log("[MoveUp] Moving task to new columnID:", newColumnID);
             task.columnID = newColumnID;
             await CWDATA(task, boardData); // Persistiere Änderung
-            console.log('[MoveUp] Persisted new columnID, redirecting to board-site.html');
+            console.log(
+              "[MoveUp] Persisted new columnID, redirecting to board-site.html"
+            );
             window.location.href = "board-site.html";
           }
         });
-        console.log('[registerTaskCardDetailOverlay] MoveUp-Listener attached for card:', card.id);
+        console.log(
+          "[registerTaskCardDetailOverlay] MoveUp-Listener attached for card:",
+          card.id
+        );
       }
       if (moveDown) {
-        moveDown.addEventListener('click', async function(ev) {
+        moveDown.addEventListener("click", async function (ev) {
           ev.preventDefault();
           ev.stopPropagation();
           const taskId = this.dataset.taskId;
           const task = boardData.tasks[taskId];
-          console.log('[MoveDown] Clicked for taskId:', taskId, 'task:', task);
+          console.log("[MoveDown] Clicked for taskId:", taskId, "task:", task);
           if (!task) return;
-          const currentIdx = columnOrder.findIndex(col => col.key === task.columnID);
-          console.log('[MoveDown] Current column index:', currentIdx, 'columnID:', task.columnID);
+          const currentIdx = columnOrder.findIndex(
+            (col) => col.key === task.columnID
+          );
+          console.log(
+            "[MoveDown] Current column index:",
+            currentIdx,
+            "columnID:",
+            task.columnID
+          );
           if (currentIdx < columnOrder.length - 1) {
             const newColumnID = columnOrder[currentIdx + 1].key;
-            console.log('[MoveDown] Moving task to new columnID:', newColumnID);
+            console.log("[MoveDown] Moving task to new columnID:", newColumnID);
             task.columnID = newColumnID;
             await CWDATA(task, boardData); // Persistiere Änderung
-            console.log('[MoveDown] Persisted new columnID, redirecting to board-site.html');
+            console.log(
+              "[MoveDown] Persisted new columnID, redirecting to board-site.html"
+            );
             window.location.href = "board-site.html";
           }
         });
-        console.log('[registerTaskCardDetailOverlay] MoveDown-Listener attached for card:', card.id);
+        console.log(
+          "[registerTaskCardDetailOverlay] MoveDown-Listener attached for card:",
+          card.id
+        );
       }
     }
 
@@ -395,123 +441,178 @@ export async function registerTaskCardDetailOverlay(
       const taskId = card.id;
       const task = boardData.tasks[taskId];
       if (!task) {
-        console.error(`Task with ID ${taskId} not found. Cannot open detail overlay.`);
+        console.error(
+          `Task with ID ${taskId} not found. Cannot open detail overlay.`
+        );
         return;
       }
       if (!detailOverlayElement) {
-        console.error("Detail overlay element not initialized. Cannot open detail overlay.");
+        console.error(
+          "Detail overlay element not initialized. Cannot open detail overlay."
+        );
         return;
       }
-      openSpecificOverlay("overlay-task-detail");
-      const container = detailOverlayElement.querySelector("#task-container");
-      if (container) {
-        const html = getTaskOverlay(task, taskId, boardData.contacts);
-        container.innerHTML = html;
-      }
-      const closeBtn = detailOverlayElement.querySelector(
-        ".close-modal-btn, .close-modal-btn-svg"
-      );
-      if (closeBtn) {
-        closeBtn.onclick = () => {
-          closeSpecificOverlay("overlay-task-detail");
-          if (container) {
-            container.innerHTML = "";
-          }
-        };
-      }
-      const editButton = detailOverlayElement.querySelector(".edit-task-btn");
-      if (editButton) {
-        editButton.dataset.taskId = taskId;
-        editButton.onclick = null;
-        editButton.addEventListener("click", async (event) => {
-          event.stopPropagation();
-          const taskToEditId = event.currentTarget.dataset.taskId;
-          const taskToEdit = boardData.tasks[taskToEditId];
-          if (!taskToEdit) {
-            console.error(`Task with ID ${taskToEditId} not found for editing.`);
-            return;
-          }
-          closeSpecificOverlay("overlay-task-detail");
-          openSpecificOverlay("overlay-task-detail-edit");
-          if (!editOverlayElement) {
-            console.error("Edit overlay element not initialized. Cannot open edit overlay.");
-            return;
-          }
-          const taskEditContainer = editOverlayElement.querySelector("#task-edit-container");
-          if (taskEditContainer) {
-            taskEditContainer.innerHTML = getAddTaskFormHTML(taskToEdit);
-            import("../events/priorety-handler.js").then((mod) => {
-              mod.initPriorityButtons();
-              const prio = taskToEdit.priority || "medium";
-              const prioBtn = taskEditContainer.querySelector(
-                `.priority-btn[data-priority="${prio}"]`
-              );
-              if (prioBtn) mod.setPriority(prioBtn, prio);
-            });
-            import("../events/dropdown-menu.js").then(async (mod) => {
-              await mod.initDropdowns(
-                Object.values(boardData.contacts),
-                taskEditContainer
-              );
-              await setCategoryFromTaskForCard(taskToEdit.type);
-              await setAssignedContactsFromTaskForCard(
-                taskToEdit.assignedUsers
-              );
-            });
-            import("../templates/add-task-template.js").then((mod) => {
-              if (mod.initDatePicker) mod.initDatePicker(taskEditContainer);
-            });
-            import("../events/subtask-handler.js").then((mod) => {
-              if (mod.initSubtaskManagementLogic)
-                mod.initSubtaskManagementLogic(taskEditContainer);
-            });
-            const cancelEditBtn = taskEditContainer.querySelector(".cancel-btn");
-            if (cancelEditBtn) {
-              cancelEditBtn.onclick = () => {
-                closeSpecificOverlay("overlay-task-detail-edit");
-                openSpecificOverlay("overlay-task-detail");
-              };
+      function renderDetailOverlay(taskId) {
+        openSpecificOverlay("overlay-task-detail");
+        const task = boardData.tasks[taskId];
+        const container = detailOverlayElement.querySelector("#task-container");
+        if (container) {
+          const html = getTaskOverlay(task, taskId, boardData.contacts);
+          container.innerHTML = html;
+        }
+        // Attach close button listener
+        const closeBtn = detailOverlayElement.querySelector(
+          ".close-modal-btn, .close-modal-btn-svg"
+        );
+        if (closeBtn) {
+          closeBtn.onclick = () => {
+            closeSpecificOverlay("overlay-task-detail");
+            if (container) {
+              container.innerHTML = "";
             }
-            const taskEditForm = taskEditContainer.querySelector("#add-task-form");
-            if (taskEditForm) {
-              taskEditForm.addEventListener("submit", async (formEvent) => {
-                const submitter = formEvent.submitter;
-                if (!submitter || submitter.type !== "submit") {
-                  formEvent.preventDefault();
-                  return;
-                }
+          };
+        }
+        // Attach edit button listener
+        const editButton = detailOverlayElement.querySelector(".edit-task-btn");
+        if (editButton) {
+          editButton.dataset.taskId = taskId;
+          editButton.onclick = null;
+          editButton.addEventListener("click", async (event) => {
+            event.stopPropagation();
+            renderEditOverlay(taskId);
+          });
+        }
+
+        // Delegated delete button listener
+        const deleteButton =
+          detailOverlayElement.querySelector(".delete-task-btn");
+        if (deleteButton) {
+          deleteButton.dataset.taskId = taskId;
+          deleteButton.onclick = null;
+          deleteButton.addEventListener("click", async (event) => {
+            event.stopPropagation();
+            const deleteId = event.currentTarget.dataset.taskId;
+            console.debug("[Delete] Clicked for taskId:", deleteId);
+            if (boardData.tasks[deleteId]) {
+              delete boardData.tasks[deleteId];
+              console.debug("[Delete] Task removed from boardData:", deleteId);
+              await CWDATA({}, boardData);
+              console.debug(
+                "[Delete] CWDATA called with empty object for:",
+                deleteId
+              );
+              closeSpecificOverlay("overlay-task-detail");
+              if (updateBoardFunction) {
+                await updateBoardFunction();
+              }
+            } else {
+              console.warn("[Delete] Task not found for deletion:", deleteId);
+            }
+          });
+          console.debug(
+            "[Delete] Delegated event listener set for delete button, taskId:",
+            taskId
+          );
+        } else {
+          console.debug(
+            "[Delete] No delete button found in detail overlay for taskId:",
+            taskId
+          );
+        }
+      }
+
+      function renderEditOverlay(taskToEditId) {
+        closeSpecificOverlay("overlay-task-detail");
+        openSpecificOverlay("overlay-task-detail-edit");
+        if (!editOverlayElement) {
+          console.error(
+            "Edit overlay element not initialized. Cannot open edit overlay."
+          );
+          return;
+        }
+        const taskToEdit = boardData.tasks[taskToEditId];
+        const taskEditContainer = editOverlayElement.querySelector(
+          "#task-edit-container"
+        );
+        if (taskEditContainer) {
+          taskEditContainer.innerHTML = getAddTaskFormHTML(taskToEdit);
+          import("../events/priorety-handler.js").then((mod) => {
+            mod.initPriorityButtons();
+            const prio = taskToEdit.priority || "medium";
+            const prioBtn = taskEditContainer.querySelector(
+              `.priority-btn[data-priority="${prio}"]`
+            );
+            if (prioBtn) mod.setPriority(prioBtn, prio);
+          });
+          import("../events/dropdown-menu.js").then(async (mod) => {
+            await mod.initDropdowns(
+              Object.values(boardData.contacts),
+              taskEditContainer
+            );
+            await setCategoryFromTaskForCard(taskToEdit.type);
+            await setAssignedContactsFromTaskForCard(taskToEdit.assignedUsers);
+          });
+          import("../templates/add-task-template.js").then((mod) => {
+            if (mod.initDatePicker) mod.initDatePicker(taskEditContainer);
+          });
+          import("../events/subtask-handler.js").then((mod) => {
+            if (mod.initSubtaskManagementLogic)
+              mod.initSubtaskManagementLogic(taskEditContainer);
+          });
+          // Cancel button returns to details overlay
+          const cancelEditBtn = taskEditContainer.querySelector(".cancel-btn");
+          if (cancelEditBtn) {
+            cancelEditBtn.onclick = () => {
+              closeSpecificOverlay("overlay-task-detail-edit");
+              renderDetailOverlay(taskToEditId);
+            };
+          }
+          // Submit handler
+          const taskEditForm =
+            taskEditContainer.querySelector("#add-task-form");
+          if (taskEditForm) {
+            taskEditForm.addEventListener("submit", async (formEvent) => {
+              const submitter = formEvent.submitter;
+              if (!submitter || submitter.type !== "submit") {
                 formEvent.preventDefault();
-                const formData = new FormData(taskEditForm);
-                editedTaskData = {
-                  id: taskToEditId,
-                  title: formData.get("title"),
-                  description: formData.get("task-description"),
-                  dueDate: formData.get("datepicker"),
-                  assignedTo: formData.get("select-contacts")
-                    ? formData
-                        .get("select-contacts")
-                        .split(",")
-                        .map((s) => s.trim())
-                        .filter(Boolean)
-                    : [],
-                  category: formData.get("hidden-category-input"),
-                  subtasks: Array.from(
-                    taskEditForm.querySelectorAll("#subtasks-list li")
-                  ).map((li) => li.textContent),
-                };
-                closeSpecificOverlay("overlay-task-detail-edit");
-                if (updateBoardFunction) {
-                  await updateBoardFunction();
-                }
-              });
-            }
-          } else {
-            console.error("Task edit container (#task-edit-container) not found in edit overlay.");
+                return;
+              }
+              formEvent.preventDefault();
+              const formData = new FormData(taskEditForm);
+              editedTaskData = {
+                id: taskToEditId,
+                title: formData.get("title"),
+                description: formData.get("task-description"),
+                dueDate: formData.get("datepicker"),
+                assignedTo: formData.get("select-contacts")
+                  ? formData
+                      .get("select-contacts")
+                      .split(",")
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                  : [],
+                category: formData.get("hidden-category-input"),
+                subtasks: Array.from(
+                  taskEditForm.querySelectorAll("#subtasks-list li")
+                ).map((li) => li.textContent),
+              };
+              closeSpecificOverlay("overlay-task-detail-edit");
+              if (updateBoardFunction) {
+                await updateBoardFunction();
+              }
+              // Show the details overlay for the updated task
+              renderDetailOverlay(taskToEditId);
+            });
           }
-        });
-      } else {
-        console.warn("Edit button (.edit-task-btn) not found in detail overlay. Ensure it has this class and data-taskId.");
+        } else {
+          console.error(
+            "Task edit container (#task-edit-container) not found in edit overlay."
+          );
+        }
       }
+
+      // Initial render of details overlay for this card
+      renderDetailOverlay(taskId);
     };
     card.addEventListener("click", newClickListener);
     card.setAttribute("data-has-click-listener", "true");
