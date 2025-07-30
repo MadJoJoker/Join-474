@@ -3,8 +3,8 @@ import { updateTaskColumnData } from '../ui/render-board.js';
 
 let currentDraggedElement = null;
 
-/**
- * Initialisiert Drag-and-Drop-Funktionalität für Task-Karten und Spalten.
+/** * Initializes the drag-and-drop functionality for task cards.
+ * Adds event listeners for drag start, drag end, drag over, drag leave, and drop events.
  */
 export function initDragAndDrop() {
     const taskCards = document.querySelectorAll('.task-card');
@@ -22,8 +22,8 @@ export function initDragAndDrop() {
     });
 }
 
-/**
- * Wird ausgelöst, wenn eine Task-Karte gezogen wird.
+/** * Handles the drag start event.
+ * Sets the current dragged element and adds a class for styling.
  * @param {DragEvent} event
  */
 function dragStart(event) {
@@ -34,8 +34,8 @@ function dragStart(event) {
     }, 0);
 }
 
-/**
- * Wird ausgelöst, wenn das Ziehen einer Task-Karte endet.
+/** * Handles the drag end event.
+ * Removes the dragging class and resets the current dragged element.
  * @param {DragEvent} event
  */
 function dragEnd(event) {
@@ -47,8 +47,8 @@ function dragEnd(event) {
     CWDATA();
 }
 
-/**
- * Ermöglicht das Ablegen von Elementen in eine Spalte.
+/** * Allows dropping on the target element.
+ * Prevents the default behavior and adds a class for styling.
  * @param {DragEvent} event
  */
 function allowDrop(event) {
@@ -58,8 +58,8 @@ function allowDrop(event) {
     }
 }
 
-/**
- * Wird ausgelöst, wenn ein Element den Dropbereich verlässt.
+/** * Handles the drag leave event.
+ * Removes the drag-over class from the target element.
  * @param {DragEvent} event
  */
 function dragLeave(event) {
@@ -68,8 +68,8 @@ function dragLeave(event) {
     }
 }
 
-/**
- * Wird ausgelöst, wenn eine Task-Karte in eine neue Spalte gezogen wird.
+/** * Handles the drop event.
+ * Moves the dragged element to the new column and updates the task data.
  * @param {DragEvent} event
  */
 async function drop(event) {
