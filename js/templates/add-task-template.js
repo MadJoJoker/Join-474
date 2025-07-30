@@ -1,29 +1,41 @@
 import { isContactSelected } from "../events/dropdown-menu.js";
 
-/**
- * Initialisiert den Datepicker für das Fälligkeitsdatum-Feld.
- * @param {HTMLElement} container - Das Container-Element, das das Feld enthält.
+/** Initializes the drag-and-drop functionality for task cards.
+ * Adds event listeners for drag start, drag end, drag over, drag leave, and drop events.
+ */
+export function initDragAndDrop(container = document) {
+    const taskCards = container.querySelectorAll(".task-card");
+    taskCards.forEach((card) => {
+        card.addEventListener("dragstart", handleDragStart);
+        card.addEventListener("dragend", handleDragEnd);
+        card.addEventListener("dragover", handleDragOver);
+        card.addEventListener("dragleave", handleDragLeave);
+        card.addEventListener("drop", handleDrop);
+    });
+}
+
+/** Handles the drag start event.
+ * Sets the current dragged element and adds a class for styling.
+ * @param {DragEvent} event
  */
 export function initDatePicker(container = document) {
-  const dateInput = container.querySelector("#datepicker");
-  if (!dateInput) return;
-  // Beispiel: Einfaches Datepicker-Polyfill, kann durch ein echtes Datepicker-Plugin ersetzt werden
-  dateInput.addEventListener("focus", () => {
-    dateInput.type = "date";
-  });
-  dateInput.addEventListener("blur", () => {
-    dateInput.type = "text";
-  });
+    const dateInput = container.querySelector("#datepicker");
+    if (!dateInput) return;
+    // Beispiel: Einfaches Datepicker-Polyfill, kann durch ein echtes Datepicker-Plugin ersetzt werden
+    dateInput.addEventListener("focus", () => {
+        dateInput.type = "date";
+    });
+    dateInput.addEventListener("blur", () => {
+        dateInput.type = "text";
+    });
 }
-/**
- * @returns {string} Der HTML-String für das Add Task Formular.
- */
-/**
- * Generiert das HTML für das Titel-Eingabefeld.
- * @returns {string} Der HTML-String für das Titel-Eingabefeld.
+
+/** Handles the drag start event.
+ * Sets the current dragged element and adds a class for styling.
+ * @param {DragEvent} event
  */
 export function renderTitleInput(task) {
-  return `
+    return `
         <div class="label-container">
             <label for="title" class="required font-size-20">Title</label>
             <input
@@ -40,12 +52,11 @@ export function renderTitleInput(task) {
     `;
 }
 
-/**
- * Generiert das HTML für das Beschreibungs-Textfeld.
- * @returns {string} Der HTML-String für das Beschreibungs-Textfeld.
+/** Handles the drag end event.
+ * @param {DragEvent} event
  */
 export function renderDescriptionInput(task) {
-  return `
+    return `
         <div class="label-container">
             <label for="task-description" class="font-size-20">Description</label>
             <div class="textarea-wrapper">
@@ -66,28 +77,25 @@ export function renderDescriptionInput(task) {
     `;
 }
 
-/**
- * Generiert das HTML für das Fälligkeitsdatum-Eingabefeld und das Kalender-Icon.
- * @returns {string} Der HTML-String für das Fälligkeitsdatum.
+/** Handles the drag over event.
+ * @param {DragEvent} event
  */
 export function renderDueDateInput(task) {
-  // Konvertiere deadline zu dueDate, falls dueDate fehlt
-  let dateValue = "";
-  if (task?.dueDate) {
-    dateValue = task.dueDate;
-  } else if (task?.deadline) {
-    // Beispiel-Konvertierung: ISO zu d.m.Y
-    let d = new Date(task.deadline);
-    if (!isNaN(d)) {
-      let day = String(d.getDate()).padStart(2, "0");
-      let month = String(d.getMonth() + 1).padStart(2, "0");
-      let year = d.getFullYear();
-      dateValue = `${day}.${month}.${year}`;
-    } else {
-      dateValue = task.deadline;
+    let dateValue = "";
+    if (task?.dueDate) {
+        dateValue = task.dueDate;
+    } else if (task?.deadline) {
+        let d = new Date(task.deadline);
+        if (!isNaN(d)) {
+            let day = String(d.getDate()).padStart(2, "0");
+            let month = String(d.getMonth() + 1).padStart(2, "0");
+            let year = d.getFullYear();
+            dateValue = `${day}.${month}.${year}`;
+        } else {
+            dateValue = task.deadline;
+        }
     }
-  }
-  return `
+    return `
         <div class="label-container">
             <label for="datepicker" class="required font-size-20">Due Date</label>
             <div class="input-inline">
@@ -111,12 +119,11 @@ export function renderDueDateInput(task) {
     `;
 }
 
-/**
- * Generiert das HTML für den linken Teil des Formulars (Titel, Beschreibung, Fälligkeitsdatum).
- * @returns {string} Der HTML-String für den linken Formularteil.
+/** Handles the drag over event.
+ * @param {DragEvent} event
  */
 export function renderLeftFormFields(task) {
-  return `
+    return `
         <div class="left-form">
             ${renderTitleInput(task)}
             ${renderDescriptionInput(task)}
@@ -125,139 +132,83 @@ export function renderLeftFormFields(task) {
     `;
 }
 
-/**
- * Generiert das HTML für die Prioritätsauswahl-Buttons.
- * @returns {string} Der HTML-String für die Prioritätsauswahl.
+/** Handles the drag leave event.
+ * @param {DragEvent} event
  */
 export function renderPrioritySection(task) {
-  return `
+    return `
         <div class="label-container">
             <fieldset aria-labelledby="priority-legend" style="border: none">
                 <legend id="priority-legend" class="font-size-20">Priority</legend>
                 <div class="priority-button-container" role="group">
-                    <button type="button" class="priority-btn urgent-btn${
-                      task?.priority === "urgent" ? " active" : ""
-                    }" data-priority="urgent" data-event-handle="true">Urgent <img src="../assets/icons/property/urgent.svg" alt="Urgent Icon" /></button>
-                    <button type="button" class="priority-btn medium-btn${
-                      task?.priority === "medium" ? " active" : ""
-                    }" data-priority="medium" data-event-handle="true">Medium <img src="../assets/icons/property/medium.svg" alt="Medium Icon" /></button>
-                    <button type="button" class="priority-btn low-btn${
-                      task?.priority === "low" ? " active" : ""
-                    }" data-priority="low" data-event-handle="true">Low <img src="../assets/icons/property/low.svg" alt="Low Icon" /></button>
+                    <button type="button" class="priority-btn urgent-btn${task?.priority === "urgent" ? " active" : ""
+        }" data-priority="urgent" data-event-handle="true">Urgent <img src="../assets/icons/property/urgent.svg" alt="Urgent Icon" /></button>
+                    <button type="button" class="priority-btn medium-btn${task?.priority === "medium" ? " active" : ""
+        }" data-priority="medium" data-event-handle="true">Medium <img src="../assets/icons/property/medium.svg" alt="Medium Icon" /></button>
+                    <button type="button" class="priority-btn low-btn${task?.priority === "low" ? " active" : ""
+        }" data-priority="low" data-event-handle="true">Low <img src="../assets/icons/property/low.svg" alt="Low Icon" /></button>
                 </div>
             </fieldset>
         </div>
     `;
 }
 
-/**
- * Generiert das HTML für den "Assigned to"-Dropdown-Bereich.
- * @returns {string} Der HTML-String für den "Assigned to"-Bereich.
+/** Handles the drag leave event.
+ * @param {DragEvent} event
  */
 export function renderAssignedToSection(task) {
-  return `
+    return `
         <div class="label-container">
             <label for="select-contacts" class="required font-size-20">Assigned to</label>
-            <div
-                class="select-wrapper input-field"
-                id="dropdown-assigned-to"
-                data-event-handle="true"
-            >
-
-                <input name="select-contacts" type="text" id="select-contacts" class="contact-input" placeholder="Select contacts to assign" value="${
-                  Array.isArray(task?.assignedTo)
-                    ? task.assignedTo.join(", ")
-                    : ""
-                }" />
-
-                <div
-                    class="dropdown-icon-container"
-                    id="dropdown-icon-container-one"
-                >
-                    <img
-                        src="../assets/icons/btn/arrow_drop_down.svg"
-                        alt="Dropdown Arrow"
-                        class="dropdown-icon"
-                        id="dropdown-icon-one"
-                    />
+            <div class="select-wrapper input-field" id="dropdown-assigned-to" data-event-handle="true">
+                <input name="select-contacts" type="text" id="select-contacts" class="contact-input" placeholder="Select contacts to assign" 
+                value="${Array.isArray(task?.assignedTo) ? task.assignedTo.join(", ") : ""}" />
+                <div class="dropdown-icon-container" id="dropdown-icon-container-one">
+                    <img src="../assets/icons/btn/arrow_drop_down.svg" alt="Dropdown Arrow" class="dropdown-icon" id="dropdown-icon-one" />
                 </div>
             </div>
             <div class="options-wrapper" id="assigned-to-options-wrapper">
-                <div
-                    class="assigned-to-options-container"
-                    id="assigned-to-options-container"
-                ></div>
+                <div class="assigned-to-options-container" id="assigned-to-options-container"></div>
             </div>
-            <div
-                    id="assigned-to-area"
-                    class="initials-container"
-                    style=" border:none"
-            ></div>
+            <div id="assigned-to-area" class="initials-container" style=" border:none"></div>
             <div id="assigned-to-error" class="error-message">This field is required</div>
         </div>
     `;
 }
 
-/**
- * Generiert das HTML für den Kategorie-Dropdown-Bereich.
- * @returns {string} Der HTML-String für den Kategorie-Bereich.
+/** Handles the drop event.
+ * @param {DragEvent} event
  */
 export function renderCategorySection(task) {
-  return `
+    return `
         <div class="label-container">
             <div for="dropdown-category" class="required font-size-20">Category</div>
-            <input type="hidden" id="hidden-category-input" value="${
-              task?.category || ""
-            }" />
-
-            <div
-                class="select-wrapper input-field"
-                id="dropdown-category"
-                name="category"
-                data-event-handle="true"
-            >
-                <div class="selected-option" id="selected-category">${
-                  task?.category ? task.category : "Select task category"
-                }</div>
-                <div
-                    class="dropdown-icon-container"
-                    id="dropdown-icon-container-two"
-                >
-                    <img
-                        src="../assets/icons/btn/arrow_drop_down.svg"
-                        alt="Dropdown Arrow"
-                        class="dropdown-icon"
-                        id="dropdown-icon-two"
-                    />
+            <input type="hidden" id="hidden-category-input" 
+                value="${task?.category || ""}" />
+            <div class="select-wrapper input-field" id="dropdown-category" name="category" data-event-handle="true">
+                <div class="selected-option" 
+                    id="selected-category">${task?.category ? task.category : "Select task category"}</div>
+                <div class="dropdown-icon-container" id="dropdown-icon-container-two">
+                    <img src="../assets/icons/btn/arrow_drop_down.svg" alt="Dropdown Arrow" class="dropdown-icon" id="dropdown-icon-two"/>
                 </div>
             </div>
             <div class="options-wrapper" id="category-options-wrapper">
-                <div
-                    class="category-options-container"
-                    id="category-options-container"
-                ></div>
+                <div class="category-options-container" id="category-options-container"></div>
             </div>
             <div id="category-error" class="error-message">This field is required</div>
         </div>
     `;
 }
 
-/**
- * Generiert das HTML für den Subtasks-Eingabebereich und die Liste.
- * @returns {string} Der HTML-String für den Subtasks-Bereich.
+/** Handles the drop event.
+ * @param {DragEvent} event
  */
 export function renderSubtasksSection(task) {
-  return `
+    return `
         <div class="label-container">
             <label for="subtask-input" class="font-size-20">Subtasks</label>
             <div class="select-wrapper">
-                <input
-                    type="text"
-                    id="subtask-input"
-                    class="input-field-subtask"
-                    placeholder="Add new subtask"
-                    data-event-handle="true"
-                />
+                <input type="text" id="subtask-input" class="input-field-subtask" placeholder="Add new subtask" data-event-handle="true"/>
                 <div id="subtask-icons" class="input-button" style="opacity: 0;">
                     <button type="button" class="subtask-action-btn" id="subtask-clear-btn" data-event-handle="true">
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -273,34 +224,25 @@ export function renderSubtasksSection(task) {
                         </svg>
                     </button>
                 </div>
-                <button
-                    type="button"
-                    class="input-button"
-                    id="add-subtask-btn"
-                    style="display: block"
-                    data-event-handle="true"
-                >
+                <button type="button" class="input-button" id="add-subtask-btn" style="display: block" data-event-handle="true">
                     <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6.14453 8H1.14453C0.861198 8 0.623698 7.90417 0.432031 7.7125C0.240365 7.52083 0.144531 7.28333 0.144531 7C0.144531 6.71667 0.240365 6.47917 0.432031 6.2875C0.623698 6.09583 0.861198 6 1.14453 6H6.14453V1C6.14453 0.716667 6.24036 0.479167 6.43203 0.2875C6.6237 0.0958333 6.8612 0 7.14453 0C7.42786 0 7.66536 0.0958333 7.85703 0.2875C8.0487 0.479167 8.14453 0.716667 8.14453 1V6H13.1445C13.4279 6 13.6654 6.09583 13.857 6.2875C14.0487 6.47917 14.1445 6.71667 14.1445 7C14.1445 7.28333 14.0487 7.52083 13.857 7.7125C13.6654 7.90417 13.4279 8 13.1445 8H8.14453V13C8.14453 13.2833 8.0487 13.5208 7.85703 13.7125C7.66536 13.9042 7.42786 14 7.14453 14C6.8612 14 6.6237 13.9042 6.43203 13.7125C6.24036 13.5208 6.14453 13.2833 6.14453 13V8Z"
                         fill="#2A3647"/>
                     </svg>
                 </button>
             </div>
-            <ul id="subtasks-list" class="subtasks-list">${
-              Array.isArray(task?.subtasks)
-                ? task.subtasks.map((st) => `<li>${st}</li>`).join("")
-                : ""
-            }</ul>
+            <ul id="subtasks-list" class="subtasks-list">
+                ${Array.isArray(task?.subtasks) ? task.subtasks.map((st) => `<li>${st}</li>`).join("") : ""}
+            </ul>
         </div>
     `;
 }
 
-/**
- * Generiert das HTML für den rechten Teil des Formulars (Priorität, Zugewiesen, Kategorie, Unteraufgaben).
- * @returns {string} Der HTML-String für den rechten Formularteil.
+/** Handles the drop event.
+ * @param {DragEvent} event
  */
 export function renderRightFormFields(task) {
-  return `
+    return `
         <div class="right-form">
             ${renderPrioritySection(task)}
             ${renderAssignedToSection(task)}
@@ -310,18 +252,16 @@ export function renderRightFormFields(task) {
     `;
 }
 
-/**
- * Generiert das HTML für die Formular-Buttons (Clear, Create Task).
- * @returns {string} Der HTML-String für die Formular-Buttons.
+/** Handles the drop event.
+ * @param {DragEvent} event
  */
 export function renderFormButtons() {
-  return `
+    return `
         <div class="form-buttons-part">
             <div id="sign-info-desktop" class="sign-info">This field is required</div>
             <div class="buttons-area">
-                ${
-                  !arguments[0]
-                    ? `
+                ${!arguments[0]
+            ? `
                 <button type="reset" class="clear-btn" data-event-handle="true">
                     Clear
                         <svg class="x-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 24 24"
@@ -332,8 +272,8 @@ export function renderFormButtons() {
                         </svg>
                 </button>
                 `
-                    : ""
-                }
+            : ""
+        }
                 <button type="submit" class="create-btn" data-event-handle="true">
                     ${arguments[0] ? "OK" : "Create Task"}
                     <img
@@ -346,12 +286,11 @@ export function renderFormButtons() {
     `;
 }
 
-/**
- * Generiert das vollständige HTML für das "Add Task"-Formular.
- * @returns {string} Der komplette HTML-String für das Add Task Formular.
+/** Initializes the task detail edit template.
+ * @param {Object} task - The task object to edit.
  */
 export function getAddTaskFormHTML(task = null) {
-  return `
+    return `
         <main id="add-task-main" class="content">
         <div class="size-wrapper">
             ${!task ? `<h1>Add Task</h1>` : ""}
@@ -372,7 +311,7 @@ export function getAddTaskFormHTML(task = null) {
  * @returns {string} The HTML string for the category options.
  */
 export function getCategoryOptions() {
-  return `
+    return `
         <div class="option" data-category="Technical Task">Technical Task</div>
         <div class="option" data-category="User Story">User Story</div>
         <div class="option" data-category="Meeting">Meeting</div>
@@ -387,8 +326,8 @@ export function getCategoryOptions() {
  * @returns {string} The HTML string for the contact option.
  */
 export function renderAssignedToContacts(i, name, initials, avatarColor) {
-  const isSelected = isContactSelected(name, initials, avatarColor);
-  return `
+    const isSelected = isContactSelected(name, initials, avatarColor);
+    return `
         <div class="contact-option ${isSelected ? "assigned" : ""}" 
           data-name="${name}" data-initials="${initials}" data-avatar-color="${avatarColor}">
             <div class="contact-checkbox">

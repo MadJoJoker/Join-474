@@ -11,8 +11,9 @@ import {
 } from "../events/overlay-handler.js";
 import {
   initAssignedToDropdownLogic,
-  addAssignedContactsToEditForm,
+  // addAssignedContactsToEditForm,
 } from "../events/dropdown-menu.js";
+import { renderAssignedToContacts} from "../templates/add-task-template.js";
 import { initDatePicker } from "../events/animation.js";
 import { initSubtaskManagementLogic } from "../events/subtask-handler.js";
 import { getContacts } from "../data/storage.js";

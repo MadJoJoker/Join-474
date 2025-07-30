@@ -318,7 +318,7 @@ export async function handleCreateTask(event) {
     }
     window.location.href = "board-site.html";
   } else {
-    console.log("Formularvalidierung fehlgeschlagen.");
+    console.log("Form validation failed.");
   }
 }
 

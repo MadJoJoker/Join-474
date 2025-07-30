@@ -7,8 +7,8 @@ import {
 import { getAddTaskFormHTML } from "../templates/add-task-template.js";
 import {
   setCategoryFromTaskForCard,
-  setAssignedContactsFromTaskForCard,
-} from "../events/dropdown-menu.js";
+  setAssignedContactsFromTaskForCard
+} from "../events/dropdown-menu-auxiliary-function.js";
 import { CWDATA } from "../data/task-to-firbase.js";
 
 /**
@@ -98,9 +98,8 @@ function generateAssignedAvatarsHtml(assignedUserIDs, contacts) {
     avatarsHtml += renderContactAvatar(contact);
   }
   if (users.length > displayCount) {
-    avatarsHtml += `<div class="assigned-initials-circle more-users-circle">+${
-      users.length - displayCount
-    }</div>`;
+    avatarsHtml += `<div class="assigned-initials-circle more-users-circle">+${users.length - displayCount
+      }</div>`;
   }
   return avatarsHtml;
 }
@@ -188,17 +187,16 @@ function buildTaskCardHtmlContent(
             <div class="task-content">
                 <h3 class="task-title">${title}</h3>
                 <p class="task-description">${description}</p>
-                ${
-                  total > 0
-                    ? `
+                ${total > 0
+      ? `
                     <div class="progress-container">
                         <div class="progress-bar-track">
                             <div class="progress-bar-fill" style="width: ${percent}%;"></div>
                         </div>
                         <span class="subtasks-text">${subText}</span>
                     </div>`
-                    : ""
-                }
+      : ""
+    }
             </div>
             <div class="task-footer">
                 <div class="assigned-users">${avatarsHtml}</div>
@@ -569,7 +567,7 @@ export async function registerTaskCardDetailOverlay(
               Array.isArray(taskToEdit.totalSubtask) &&
               Array.isArray(taskToEdit.checkedSubtasks) &&
               taskToEdit.totalSubtask.length ===
-                taskToEdit.checkedSubtasks.length
+              taskToEdit.checkedSubtasks.length
             ) {
               subtasks = taskToEdit.totalSubtask.map((text, i) => ({
                 text,
@@ -609,10 +607,10 @@ export async function registerTaskCardDetailOverlay(
                 dueDate: formData.get("datepicker"),
                 assignedTo: formData.get("select-contacts")
                   ? formData
-                      .get("select-contacts")
-                      .split(",")
-                      .map((s) => s.trim())
-                      .filter(Boolean)
+                    .get("select-contacts")
+                    .split(",")
+                    .map((s) => s.trim())
+                    .filter(Boolean)
                   : [],
                 category: formData.get("hidden-category-input"),
                 subtasks: Array.from(

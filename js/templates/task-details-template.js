@@ -1,4 +1,4 @@
-import { renderAssignedToContacts } from "../events/dropdown-menu.js";
+import { renderAssignedToContacts } from "../templates/add-task-template.js";
 import { firebaseData } from "../../main.js";
 
 /**
