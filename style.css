@@ -43,6 +43,10 @@
   }
 }
 
+#landscape-overlay h2 {
+  display: none !important;
+}
+
 @media (max-width: 1024px) {
   .app-container {
     display: flex;
@@ -113,5 +117,9 @@
     z-index: 1;
     max-width: 90vw;
     line-height: 1.4;
+  }
+
+  #landscape-overlay h2 {
+    display: flex !important;
   }
 }
