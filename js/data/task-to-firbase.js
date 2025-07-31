@@ -31,6 +31,21 @@ export async function CWDATA(receivedObject, fetchData) {
 }
 
 /**
+ * main function to proceed rawObject and send it to Firebase
+ * @param {object} input - raw object
+ * 
+ * @returns object (only for console.log while working)
+ */
+async function processRawObject(input) {
+  let { pushObjectId, rawNewObject } = checkDataStructure(input);
+  rawNewObject.assignedTo = convertContacts(rawNewObject);
+  rawNewObject = arraysToObjects(rawNewObject);
+  if (pushObjectId == null) pushObjectId = setNextId("task");
+  const result = await sendObject(pushObjectId, rawNewObject);
+  return result;
+}
+
+/**
  * check structure of incomming object
  * @param {object} input - expected type is nested or flat object, i.e. with or without key like "task-003"
  * @returns flat object or values of nested object, to process.
@@ -49,21 +64,6 @@ function checkDataStructure(input) {
     pushObjectId: null,
     rawNewObject: input,
   };
-}
-
-/**
- * main function to proceed rawObject and send it to Firebase
- * @param {object} input - raw object
- * 
- * @returns object (only for console.log while working)
- */
-async function processRawObject(input) {
-  let { pushObjectId, rawNewObject } = checkDataStructure(input);
-  rawNewObject.assignedTo = convertContacts(rawNewObject);
-  rawNewObject = arraysToObjects(rawNewObject);
-  if (pushObjectId == null) pushObjectId = setNextId("task");
-  const result = await sendObject(pushObjectId, rawNewObject);
-  return result;
 }
 
 /**
