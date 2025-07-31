@@ -73,6 +73,16 @@
   &.nav-4 > svg { width: 24px; }
 }
 
+.active-page {
+  background-color: var(--darkHover);
+  color: var(--white);
+
+  .sidebar-icon {
+    color: var(--white);
+    fill: var(--white);
+  }
+}
+
 .sidebar-icon {
   color: var(--sidebarGrey);
 }
@@ -94,6 +104,13 @@
   }
 }
 
+.infoPagesMobile {
+  /* display: flex;
+  border: 1px solid red; */
+  /* visibility: hidden; */
+  display: none;
+}
+
 .d-none {
   display: none!important;
 }
@@ -101,6 +118,7 @@
 .hide {
   visibility: hidden;
 }
+
 
 @media (max-width: 1024px) {
   .sidebar-wrapper {
@@ -156,6 +174,16 @@
 
   .legal {
     display: none;
+  }
+
+.infoPagesMobile {
+  display: flex;
+  /* visibility: visible; */
+  /* border: 1px solid red; */
+
+    > .nav-element {
+    width: 100px;
+    }
   }
 }
 
