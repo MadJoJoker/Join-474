@@ -11,6 +11,9 @@ import { filterTaskCardsByTitle } from "../events/find-task.js";
 
 let isOverlayLoaded = false;
 
+/** * Loads the add-task overlay and initializes it.
+ * If the overlay is already loaded, it clears the form and opens the overlay.
+ */
 export async function loadAndInitAddTaskOverlay() {
   if (isOverlayLoaded) {
     clearForm();
@@ -22,12 +25,12 @@ export async function loadAndInitAddTaskOverlay() {
     const response = await fetch("../js/templates/add-task-overlay.html");
     if (!response.ok) {
       throw new Error(
-        `HTTP-Fehler! Status: ${response.status} beim Abrufen von add-task-overlay.html`
+        `HTTP Error! Status: ${response.status} when retrieving add-task-overlay.html`
       );
     }
     const addTaskOverlayHtml = await response.text();
-
     const overlayContainer = document.getElementById("overlay-container");
+
     if (overlayContainer) {
       const existingOverlay = document.getElementById("overlay");
       if (existingOverlay) {
@@ -43,9 +46,7 @@ export async function loadAndInitAddTaskOverlay() {
 
       initOverlayListeners("overlay");
 
-      const formContainerInOverlay = overlayElement.querySelector(
-        "#add-task-form-container"
-      );
+      const formContainerInOverlay = overlayElement.querySelector("#add-task-form-container");
       if (formContainerInOverlay) {
         formContainerInOverlay.innerHTML = getAddTaskFormHTML();
       } else {
@@ -55,27 +56,24 @@ export async function loadAndInitAddTaskOverlay() {
       await initAddTaskForm();
     }
   } catch (error) {
-    // Fehlerbehandlung bei Bedarf
+    console.error("Error loading add-task overlay:", error);
   }
 }
 
+/** * Initializes the add-task overlay and sets up event listeners.
+ * This function is called when the DOM content is loaded.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   const addTaskButton = document.getElementById("add-task");
   if (addTaskButton) {
-    /** @param {HTMLButtonElement} addTaskButton */
     addTaskButton.addEventListener("click", async () => {
       await loadAndInitAddTaskOverlay();
       openSpecificOverlay("overlay");
     });
   }
 
-  const fastAddTaskButtons = document.querySelectorAll(
-    '[id^="fast-add-task-"]'
-  );
+  const fastAddTaskButtons = document.querySelectorAll('[id^="fast-add-task-"]');
   fastAddTaskButtons.forEach((button) => {
-    /**
-     * @param {Event} event
-     */
     button.addEventListener("click", async (event) => {
       const columnId = event.currentTarget.id.replace("fast-add-task-", "");
       await loadAndInitAddTaskOverlay();
@@ -85,10 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const searchInput = document.getElementById("find-task");
   if (searchInput) {
-    /** @param {HTMLInputElement} searchInput */
     searchInput.addEventListener("input", filterTaskCardsByTitle);
   }
 });
+
 /** * Shows a find-task-info-no-found message after no task is found.
  * The message slides in, stays visible for a short time, and then slides out.
  */
@@ -96,9 +94,8 @@ export async function showFindTaskInfoNoFoundMsg() {
   const noFoundMsg = document.getElementById("find-task-info-no-found-Msg");
   if (!noFoundMsg) return;
 
-  // Animation- und Sichtbarkeitsklassen zurücksetzen
   noFoundMsg.classList.remove("slide-in", "slide-out", "hidden");
-  void noFoundMsg.offsetWidth; // Force reflow für erneute Animation
+  void noFoundMsg.offsetWidth;
   noFoundMsg.classList.add("slide-in");
   await new Promise((resolve) => setTimeout(resolve, 900));
 

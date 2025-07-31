@@ -31,7 +31,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .container{
+  .container {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -65,5 +65,53 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+  }
+}
+
+/* landscape orientation on devices up to 1024px (e.g. smartphones and tablets) */
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+
+  #landscape-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    font-family: sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, var(--dark), var(--darkHover), var(--sidebarNoticeGrey));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  #landscape-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .landscape-overlay-logo {
+    position: absolute;
+    inset: 0;
+    background: url('./assets/icons/logo/joinLogo.svg') center/contain no-repeat;
+    opacity: 0.05;
+    filter: blur(2px);
+    pointer-events: none;
+  }
+
+  .landscape-overlay-message h2 {
+    font-size: 24px;
+    color: var(--white);
+    background: rgba(42, 54, 71, 0.85);
+    /* basiert auf var(--dark) */
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    max-width: 90vw;
+    line-height: 1.4;
   }
 }

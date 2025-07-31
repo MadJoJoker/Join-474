@@ -136,7 +136,7 @@
 .form-inputs {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
     width: 420px;
 }
 
@@ -168,8 +168,7 @@
 .input-wrapper svg {
     position: absolute;
     right: 12px;
-    top: 35%;
-    transform: translateY(-50%);
+    top: 30%;
     width: 18px;
     height: 18px;
     pointer-events: none;
@@ -210,6 +209,9 @@
         height: auto;
         max-height: none;
         height: none;
+        position: relative;
+        width: 90%;
+        height: 80%;
     }
 
     .overlay-form-content {
@@ -285,10 +287,6 @@
         width: 100%;
     }
 
-    .overlay-content {
-        position: relative;
-    }
-
     .form-row-wrapper {
         padding-top: 0px;
     }
@@ -318,3 +316,16 @@
         top: 0;
     }
 }
+
+@media (max-width: 1024px) {
+    .overlay-content {
+        flex-direction: column;
+        width: none;
+        height: auto;
+        max-height: none;
+        height: none;
+        position: relative;
+        width: 90%;
+        height: 80%;
+    }
+    }

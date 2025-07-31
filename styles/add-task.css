@@ -841,7 +841,6 @@
 
 .assigned-main-container {
   display: flex;
-  gap: 4px;
   max-width: 100%;
   overflow-x: auto;
 

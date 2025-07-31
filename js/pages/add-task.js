@@ -279,7 +279,7 @@ function createTaskObject() {
       }
     } else {
       console.warn(
-        "WARNUNG: 'fetchData.contacts' ist nicht definiert oder leer. Zugewiesene Benutzer-IDs konnten nicht ermittelt werden."
+        "WARNING: 'fetchData.contacts' is undefined or empty. Assigned user IDs could not be determined."
       );
     }
     return foundId;
@@ -317,9 +317,7 @@ export async function handleCreateTask(event) {
       initAddTaskForm();
     }
     window.location.href = "board-site.html";
-  } else {
-    console.log("Form validation failed.");
-  }
+  } 
 }
 
 /** * Processes the creation of a new task.

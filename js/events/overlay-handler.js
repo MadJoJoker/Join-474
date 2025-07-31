@@ -1,8 +1,8 @@
 let currentOverlay = null;
 
-/**
- * @param {string} id - Die ID des zu suchenden Elements.
- * @returns {HTMLElement|null} Das gefundene Element oder null, wenn es nicht gefunden wurde.
+/** * Retrieves an element by its ID and ensures it exists.
+ * @param {string} id - The ID of the element to retrieve.
+ * @returns {HTMLElement|null} The element if found, otherwise null.
  */
 function getValidatedElementById(id) {
   const element = document.getElementById(id);
@@ -12,20 +12,22 @@ function getValidatedElementById(id) {
   return element;
 }
 
-/**
- * @param {HTMLElement} parent - Das Elternelement, in dem gesucht werden soll.
- * @param {string} selector - Der CSS-Selektor des zu suchenden Elements.
- * @returns {HTMLElement|null} Das gefundene Element oder null, wenn es nicht gefunden wurde.
+/** * Retrieves an element by its ID and ensures it exists.
+ * @param {string} id - The ID of the element to retrieve.
+ * @returns {HTMLElement|null} The element if found, otherwise null.
  */
 function getValidatedQuerySelector(parent, selector) {
   const element = parent.querySelector(selector);
   if (!element) {
-    return element;
+    return null;
   }
+  return element;
 }
-/**
- * @param {HTMLElement} overlay - Das Overlay-Element.
- * @param {boolean} isVisible - Ob das Overlay sichtbar sein soll (true) oder nicht (false).
+
+/** * Sets the visibility of the overlay.
+ * Adds or removes the 'overlay-hidden' class based on the visibility state.
+ * @param {HTMLElement} overlay - The overlay element to modify.
+ * @param {boolean} isVisible - Whether the overlay should be visible.
  */
 function setOverlayVisibility(overlay, isVisible) {
   if (isVisible) {
@@ -35,22 +37,23 @@ function setOverlayVisibility(overlay, isVisible) {
   }
 }
 
-/**
- * @param {boolean} disableScroll - Ob der Body-Scroll deaktiviert (true) oder aktiviert (false) werden soll.
+/** * Manages the body scroll behavior.
+ * Disables or enables scrolling based on the provided flag.
+ * @param {boolean} disableScroll - Whether to disable scrolling.
  */
 function manageBodyScroll(disableScroll) {
   document.body.style.overflow = disableScroll ? "hidden" : "";
 }
 
-/**
- * @param {HTMLElement} overlay - Das aktuell geöffnete Overlay-Element.
+/** * Updates the current overlay reference.
+ * @param {HTMLElement} overlay - The overlay element to set as current.
  */
 function updateCurrentOverlay(overlay) {
   currentOverlay = overlay;
 }
 
-/**
- * @param {string} overlayId - Die ID des Overlays, das als aktuelles Overlay gelöscht werden soll.
+/** * Clears the current overlay reference if it matches the provided ID.
+ * @param {string} overlayId - The ID of the overlay to clear.
  */
 function clearCurrentOverlay(overlayId) {
   if (currentOverlay && currentOverlay.id === overlayId) {
@@ -58,8 +61,8 @@ function clearCurrentOverlay(overlayId) {
   }
 }
 
-/**
- * @param {string} newOverlayId - Die ID des Overlays, das geöffnet werden soll (um bestehende zu schließen).
+/** * Closes any existing overlay if it is different from the new one.
+ * @param {string} newOverlayId - The ID of the new overlay to open.
  */
 function closeExistingOverlay(newOverlayId) {
   if (currentOverlay && currentOverlay.id !== newOverlayId) {
@@ -67,9 +70,10 @@ function closeExistingOverlay(newOverlayId) {
   }
 }
 
-/**
- * @param {HTMLElement|null} button - Der Schließen-Button des Overlays.
- * @param {string} overlayId - Die ID des Overlays, das geschlossen werden soll.
+/** * Attaches a click event listener to the close button of the overlay.
+ * Closes the overlay when the button is clicked.
+ * @param {HTMLElement} button - The close button element.
+ * @param {string} overlayId - The ID of the overlay to close.
  */
 function attachCloseButtonListener(button, overlayId) {
   if (button) {
@@ -77,9 +81,10 @@ function attachCloseButtonListener(button, overlayId) {
   }
 }
 
-/**
- * @param {HTMLElement} overlay - Das Overlay-Element.
- * @param {string} overlayId - Die ID des Overlays, das geschlossen werden soll.
+/** * Attaches a click event listener to the overlay background.
+ * Closes the overlay when the background is clicked.
+ * @param {HTMLElement} overlay - The overlay element.
+ * @param {string} overlayId - The ID of the overlay to close.
  */
 function attachBackgroundClickListener(overlay, overlayId) {
   overlay.addEventListener("click", (event) => {
@@ -89,8 +94,9 @@ function attachBackgroundClickListener(overlay, overlayId) {
   });
 }
 
-/**
- * @param {HTMLElement|null} modalContent - Der Inhalt des Modals.
+/** * Attaches a click event listener to the modal content to stop propagation.
+ * Prevents clicks inside the modal from closing the overlay.
+ * @param {HTMLElement} modalContent - The modal content element.
  */
 function attachModalContentStopper(modalContent) {
   if (modalContent) {
@@ -98,9 +104,8 @@ function attachModalContentStopper(modalContent) {
   }
 }
 
-/**
- * @param {HTMLElement} overlay - Das Overlay-Element.
- * @param {string} overlayId - Die ID des Overlays, das geschlossen werden soll.
+/** * Initializes the overlay by setting up event listeners and visibility.
+ * @param {string} overlayId - The ID of the overlay to initialize.
  */
 function attachEscapeKeyListener(overlay, overlayId) {
   document.addEventListener("keydown", (event) => {
@@ -114,8 +119,9 @@ function attachEscapeKeyListener(overlay, overlayId) {
   });
 }
 
-/**
- * @param {string} overlayId - Die ID des zu öffnenden Overlays.
+/** * Opens a specific overlay by its ID.
+ * Closes any existing overlay first, then sets the new overlay as current.
+ * @param {string} overlayId - The ID of the overlay to open.
  */
 export function openSpecificOverlay(overlayId) {
   closeExistingOverlay(overlayId);
@@ -127,8 +133,9 @@ export function openSpecificOverlay(overlayId) {
   console.log(`Overlay '${overlayId}' opened.`);
 }
 
-/**
- * @param {string} overlayId - Die ID des zu schließenden Overlays.
+/** * Closes a specific overlay by its ID.
+ * Sets the overlay visibility to hidden and clears the current overlay reference.
+ * @param {string} overlayId - The ID of the overlay to close.
  */
 export function closeSpecificOverlay(overlayId) {
   const overlay = getValidatedElementById(overlayId);
@@ -139,13 +146,14 @@ export function closeSpecificOverlay(overlayId) {
   console.log(`Overlay '${overlayId}' closed.`);
 }
 
-/**
- * @param {string} overlayId - Die ID des Overlays, für das die Listener initialisiert werden sollen.
+/** * Initializes event listeners for the overlay.
+ * Attaches listeners to the close button, background click, and modal content.
+ * @param {string} overlayId - The ID of the overlay to initialize.
  */
 export function initOverlayListeners(overlayId) {
   const overlay = getValidatedElementById(overlayId);
   if (!overlay) return;
-  // Suche nach allen gängigen Modal-Content-Klassen/IDs
+
   let modalContent = getValidatedQuerySelector(overlay, ".modal-content");
   if (!modalContent)
     modalContent = getValidatedQuerySelector(overlay, ".modal-content-task");
@@ -169,7 +177,7 @@ export function initOverlayListeners(overlayId) {
       "#modal-content-task-edit"
     );
   if (!modalContent) {
-    // Fallback: Nimm das erste direkte Kind-DIV des Overlays
+
     modalContent = overlay.querySelector("div");
     if (!modalContent) {
       console.warn(

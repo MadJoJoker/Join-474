@@ -7,7 +7,6 @@
   <title>Add Task</title>
 
   <link rel="icon" href="../assets/icons/logo/joinLogo.svg" />
-
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../styles/add-task.css" />
   <link rel="stylesheet" href="../styles/standard.css" />
@@ -23,14 +22,11 @@
 <body onload="includeHeaderAndSidebar()">
   <div class="app-container">
     <section id="sidebar" class="sidebar-container"></section>
-
     <section class="main-content">
       <header id="header"></header>
-
       <div id="content" class="content-container"></div>
 
       <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
       <script type="module" src="../js/templates/add-task-template.js"></script>
       <script type="module" src="../js/pages/add-task.js"></script>
       <script type="module" src="../js/pages/sidebar.js"></script>
@@ -41,7 +37,7 @@
       <script type="module">
         import { getAddTaskFormHTML } from '../js/templates/add-task-template.js';
         import { initAddTaskForm, addBgColorGrey } from '../js/pages/add-task-auxiliary-functions.js';
-        
+
         document.addEventListener('DOMContentLoaded', () => {
           const container = document.getElementById('content');
           if (container) {

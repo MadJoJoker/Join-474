@@ -317,7 +317,7 @@
 
     .form-inputs,
     .input-wrapper {
-        width: 100%;
+        width: 320px;
     }
 
     .contacts-list {
@@ -326,22 +326,66 @@
     }
 }
 
-/*
- * Styles for screens up to 320px wide
- * Specific adjustments for very small mobile devices, affecting overlay height and avatar positioning.
- */
-@media (max-width: 320px) {
+@media (max-width: 480px) {
 
     .form-inputs,
     .input-wrapper {
         width: 100%;
     }
+}
+
+@media (max-height: 740px) {
+    .overlay-avatar-mobile {
+        top: 185px;
+    }
 
     .overlay-left {
-        height: 200px;
+        height: 185px;
+    }
+}
+
+@media (max-height: 700px) {
+    .overlay-content {
+        height: 95% !important;
+        overflow-y: auto;
     }
 
     .overlay-avatar-mobile {
-        top: 200px;
+        top: 220px;
+    }
+
+    .overlay-left {
+        height: 180px;
+    }
+
+    h1,
+    h2 {
+        font-size: 90%;
+    }
+}
+
+@media (max-height: 667px) {
+    .overlay-avatar-mobile {
+        top: 185px;
+    }
+
+    .overlay-left {
+        height: 185px;
+    }
+}
+
+@media (max-height: 600px) {
+    .overlay-avatar-mobile {
+        top: 160px !important;
+        height: 100px !important;
+        width: 100px !important;
+    }
+
+    .overlay-left {
+        height: 160px !important;
+    }
+
+    .overlay-content {
+        overflow: hidden;
     }
 }
