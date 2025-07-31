@@ -1,34 +1,32 @@
-(async function () {
-  let overlayLoaded = false;
+/**
+ * @file landscape-blocker.js
+ * This script checks if the user is using a small screen (1024px or less)
+ * in landscape orientation. If so, it shows a blocking overlay.
+ * The overlay HTML must already be in the HTML file.
+ */
 
-  async function loadOverlayHTML() {
-    const response = await fetch("../js/templates/landscape-warning.html");
-    if (!response.ok) {
-      console.error("Failed to load landscape-warning.html:", response.status);
-      return;
-    }
-    const html = await response.text();
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = html;
-    document.body.appendChild(wrapper.firstElementChild);
-    overlayLoaded = true;
+/**
+ * @returns {void}
+ * Checks screen orientation and toggles the overlay visibility
+ */
+async function checkLandscapeOverlay() {
+  const isLandscape = window.matchMedia("(orientation: landscape) and (max-width: 1024px)").matches;
+  const overlay = document.getElementById("landscape-overlay");
+  if (!overlay) return;
+  if (isLandscape) {
+    overlay.classList.add("show");
+    document.body.classList.add("landscape-blocked");
+  } else {
+    overlay.classList.remove("show");
+    document.body.classList.remove("landscape-blocked");
   }
+}
 
-  async function showOverlayIfLandscape() {
-    const isLandscape = window.matchMedia("(orientation: landscape)").matches;
-    let overlay = document.getElementById("landscape-overlay");
+// Run once when the page loads
+window.addEventListener("load", checkLandscapeOverlay);
 
-    if (isLandscape) {
-      if (!overlayLoaded) {
-        await loadOverlayHTML();
-        overlay = document.getElementById("landscape-overlay");
-      }
-      overlay?.classList.add("show");
-    } else {
-      overlay?.classList.remove("show");
-    }
-  }
+// Run when the screen is resized
+window.addEventListener("resize", checkLandscapeOverlay);
 
-  window.addEventListener("resize", showOverlayIfLandscape);
-  showOverlayIfLandscape();
-})();
+// Run when device is rotated
+window.addEventListener("orientationchange", checkLandscapeOverlay);

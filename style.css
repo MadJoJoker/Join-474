@@ -43,8 +43,8 @@
   }
 }
 
-#landscape-overlay h2 {
-  display: none !important;
+#landscape-overlay {
+  display: none;
 }
 
 @media (max-width: 1024px) {
