@@ -12,16 +12,16 @@ function getValidatedElementById(id) {
   return element;
 }
 
-/**
- * @param {HTMLElement} parent - Das Elternelement, in dem gesucht werden soll.
- * @param {string} selector - Der CSS-Selektor des zu suchenden Elements.
+/** * @param {HTMLElement} parent - Das übergeordnete Element, in dem nach dem Selektor gesucht wird.
+ * @param {string} selector - Der CSS-Selektor, der verwendet wird, um das Element zu finden.
  * @returns {HTMLElement|null} Das gefundene Element oder null, wenn es nicht gefunden wurde.
  */
 function getValidatedQuerySelector(parent, selector) {
   const element = parent.querySelector(selector);
   if (!element) {
-    return element;
+    return null;
   }
+  return element;
 }
 /**
  * @param {HTMLElement} overlay - Das Overlay-Element.
