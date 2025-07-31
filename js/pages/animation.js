@@ -1,5 +1,5 @@
 /**
- * 3 popup-message calls for "signup"
+ * 4 popup-message calls for "signup"
  */
 function acceptPrivacyP() {
   const text = "Please accept the Privacy Policy";
@@ -23,6 +23,11 @@ function stopSignIn() {
   goToPage(link);
 }
 
+function emailAlreadyStored() {
+  const text = "Email of registrated user";
+  const color = "transparent";
+  animateMessageBox(text, color);
+}
 
 /**
  * main function for popup handling ("signup"-page)
