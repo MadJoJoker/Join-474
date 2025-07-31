@@ -2,7 +2,7 @@
   let overlayLoaded = false;
 
   async function loadOverlayHTML() {
-    const response = await fetch("/js/templates/landscape-warning.html");
+    const response = await fetch("../js/templates/landscape-warning.html");
     if (!response.ok) {
       console.error("Failed to load landscape-warning.html:", response.status);
       return;

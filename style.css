@@ -96,7 +96,7 @@
   .landscape-overlay-logo {
     position: absolute;
     inset: 0;
-    background: url('../../assets/icons/logo/joinLogo.svg') center/contain no-repeat;
+    background: url('./assets/icons/logo/joinLogo.svg') center/contain no-repeat;
     opacity: 0.05;
     filter: blur(2px);
     pointer-events: none;

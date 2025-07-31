@@ -51,6 +51,7 @@ html {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    z-index: 690;
 }
 
 .help-content::-webkit-scrollbar {
@@ -127,7 +128,7 @@ html {
     border: none;
     background: none;
     cursor: pointer;
-    z-index: 1000;
+    z-index: 700;
     display: flex;
     align-items: center;
     justify-content: center;
