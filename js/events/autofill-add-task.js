@@ -1,4 +1,3 @@
-// import { clearInvalidFields } from "./dropdown-menu.js";
 import { addSubtask } from "./subtask-handler.js";
 import { demoSelectAssignedContact,demoSelectCategory } from "./dropdown-menu.js";
 import { clearInvalidFields } from "./dropdown-menu-auxiliary-function.js";
