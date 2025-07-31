@@ -7,6 +7,8 @@ async function includeHeaderAndSidebar() {
   displayInitialsInHeader();
   partiallyHideSidebar();
   initDropdown();
+
+  highlightCurrentPage();
 }
 
 /**
@@ -55,7 +57,7 @@ function initDropdown() {
  * security function: user who is not logged in can access to "privacy policy" and "legal notice".
  * from there, access to "summary", "board", "addTask" and "contacts" is blocked by hiding these icons.
  */
-async function partiallyHideSidebar() {
+function partiallyHideSidebar() {
   const name = sessionStorage.getItem('headerInitials');
   // console.log("name: ", name);
   if(!name && (
@@ -64,5 +66,17 @@ async function partiallyHideSidebar() {
     )) {
     document.getElementById('login-nav').classList.remove("d-none");
     document.getElementById('app-nav').classList.add("hide");
+  }
+}
+
+/**
+ * change colors of the nav-element which corresponds to the page where we are.
+ */
+function highlightCurrentPage() {
+  const pageIds = ["summary", "add-task", "board-site", "contacts"];
+  const currentPage = pageIds.find(id => window.location.pathname.includes(id));
+  if (currentPage) {
+    const sidebarElement = document.getElementById(`${currentPage}Bar`);
+    sidebarElement.classList.add("active-page");
   }
 }
