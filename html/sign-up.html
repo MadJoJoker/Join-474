@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign up</title>
-    <link rel="shortcut icon" href="../assets/icons/logo/joinLogo.svg" type="image/x-icon" />
+    <link id="favicon" rel="icon" href="../assets/icons/logo/joinLogo.svg">
     <link rel="stylesheet" href="../styles/index.css" />
     <link rel="stylesheet" href= "../styles/index-mobile.css">
     <link rel="stylesheet" href="../style.css">
@@ -12,8 +12,9 @@
     <link rel="stylesheet" href="../styles/animation.css">
     <script src="../js/data/helper.js"></script>
     <script src="../js/pages/index.js"></script>
-    <script src="../js/pages/animation.js"></script>
-    <script src="../js/pages/upload-and-edit.js"></script>
+    <script src="../js/events/signup-popups.js"></script>
+    <script src="../js/data/upload-and-edit.js"></script>
+    <script src="../js/ui/login-signup-demo.js"></script>
     <script src="../js/events/landscape-blocker.js" defer></script>
   </head>
   <body onload="initIndex()">
@@ -21,7 +22,7 @@
       <div class="blue-box" id="message-box"></div>
     </div>
 
-    <div class="content-wrapper">
+    <div class="content-wrapper scrollable">
       <section class="index-title">
         <a href="../index.html"> <!--link am Ende entfernen-->
           <img src="../assets/icons/logo/whiteJoinLogo.svg" alt="join Logo">
