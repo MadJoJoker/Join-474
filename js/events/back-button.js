@@ -4,15 +4,10 @@
  */
 export function initBackButton() {
     const btn = document.getElementById('backBtn');
-
     if (btn) {
         btn.addEventListener('click', () => window.history.back());
     }
-
-    // Wait until .backBtn-max-content is in the DOM
     waitForContainerAndPosition();
-
-    // Reposition on resize and scroll
     window.addEventListener('resize', updateBackButtonPosition);
     window.addEventListener('scroll', updateBackButtonPosition);
 }
@@ -20,22 +15,19 @@ export function initBackButton() {
 function waitForContainerAndPosition() {
     const maxTries = 20;
     let attempts = 0;
-
     const interval = setInterval(() => {
         const container = document.querySelector('.backBtn-max-content');
         const btn = document.getElementById('backBtn');
-
         if (container && btn) {
             updateBackButtonPosition();
             clearInterval(interval);
         }
-
         attempts++;
         if (attempts >= maxTries) {
-            clearInterval(interval); // stop after 20 tries (2 seconds)
+            clearInterval(interval);
             console.warn("Back button container not found in time.");
         }
-    }, 100); // check every 100ms
+    }, 100);
 }
 
 /**
