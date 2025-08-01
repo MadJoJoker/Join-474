@@ -239,6 +239,10 @@ body {
   align-items: center;
 }
 
+.vertical-grey {
+  height: 105px;
+}
+
 .smry-number {
   font-size: 64px;
   font-weight: 600;
