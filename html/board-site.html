@@ -310,11 +310,20 @@
       </section>
     </div>
 
+    <div id="landscape-overlay">
+        <div class="landscape-overlay-logo"></div>
+        <div class="landscape-overlay-message">
+          <h2>
+            Please rotate your device to portrait mode to use this application.
+          </h2>
+        </div>
+      </div>
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script type="module" src="../js/ui/render-board.js"></script>
     <script type="module" src="../js/events/drag-and-drop.js"></script>
-    <script type="module" src="../js/pages/sidebar.js"></script>
+    <script src="../js/events/landscape-blocker.js" defer></script>
     <script type="module" src="../js/events/overlay-handler.js"></script>
     <script type="module" src="../js/pages/board-initializer.js"></script>
     <script type="module" src="../js/pages/add-task.js"></script>
