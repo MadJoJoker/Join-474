@@ -334,28 +334,10 @@
     }
 }
 
-@media (max-height: 740px) {
-    .overlay-avatar-mobile {
-        top: 185px;
-    }
-
-    .overlay-left {
-        height: 185px;
-    }
-}
-
-@media (max-height: 700px) {
+@media (max-height: 780px) {
     .overlay-content {
         height: 95% !important;
         overflow-y: auto;
-    }
-
-    .overlay-avatar-mobile {
-        top: 220px;
-    }
-
-    .overlay-left {
-        height: 180px;
     }
 
     h1,

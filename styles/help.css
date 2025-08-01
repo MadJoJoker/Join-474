@@ -28,7 +28,7 @@ html {
 
 /* === Content Wrapper (max width 1920px like other pages) === */
 .content-wrapper {
-    max-width: 1920px;
+    max-width: 1688px;
     width: 100%;
     box-sizing: border-box;
     padding: 0 40px;
@@ -118,10 +118,10 @@ html {
 }
 
 /* === Back Button === */
+/* right wird dynamisch per JS gesetzt */
 #backBtn {
     position: fixed;
-    top: 120px;
-    right: 40px;
+    top: 200px;
     width: 32px;
     height: 32px;
     padding: 0;
@@ -133,7 +133,7 @@ html {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, right 0.2s ease;
 }
 
 #backBtn svg {
@@ -148,6 +148,14 @@ html {
 
 #backBtn:hover svg {
     transform: scale(1.15);
+}
+
+/* === Container für Back Button === */
+.backBtn-max-content {
+    max-width: 1688px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
 }
 
 /* === Indented List === */
@@ -166,7 +174,6 @@ html {
     }
 
     #backBtn {
-        top: 100px;
-        right: 16px;
+        top: 120px;
     }
 }
