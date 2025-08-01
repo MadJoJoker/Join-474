@@ -15,6 +15,7 @@
     <script src="../js/data/helper.js"></script>
     <script src="../js/pages/summary.js"></script>
     <script src="../js/pages/header-and-sidebar.js"></script>
+    <script src="../js/events/landscape-blocker.js" defer></script>
   </head>
   <body onload="includeHeaderAndSidebar(), initSummary();">
 
@@ -128,6 +129,15 @@
           </div>
         </main>
       </section>
+    </div>
+
+    <div id="landscape-overlay">
+      <div class="landscape-overlay-logo"></div>
+      <div class="landscape-overlay-message">
+        <h2>
+          Please rotate your device to portrait mode to use this application.
+        </h2>
+      </div>
     </div>
   </body>
 </html>

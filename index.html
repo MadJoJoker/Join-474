@@ -6,11 +6,13 @@
     <meta name="description" content="Coordinate your team's work with our Kanban app “join-474” and keep track of your project at all times."/>
     <title>Login</title>
     <link rel="shortcut icon" href="./assets/icons/logo/joinLogo.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./styles/colors.css">
     <link rel="stylesheet" href="./styles/index.css" />
     <link rel="stylesheet" href= "./styles/index-mobile.css">
     <script src="./js/data/helper.js"></script>
     <script src="./js/pages/index.js"></script>
+    <script src="./js/events/landscape-blocker.js" defer></script>
   </head>
   <body onload="initIndex(), removeOverlay()">
     <div class="idx-overlay">
@@ -82,6 +84,15 @@
       <div class="legal-part">
         <a href="./html/privacy-policy.html">Privacy Policy</a>
         <a href="./html/legal-notice.html">Legal notice</a>
+      </div>
+    </div>
+
+    <div id="landscape-overlay">
+      <div class="landscape-overlay-logo"></div>
+      <div class="landscape-overlay-message">
+        <h2>
+          Please rotate your device to portrait mode to use this application.
+        </h2>
       </div>
     </div>
   </body>

@@ -7,12 +7,14 @@
     <link rel="shortcut icon" href="../assets/icons/logo/joinLogo.svg" type="image/x-icon" />
     <link rel="stylesheet" href="../styles/index.css" />
     <link rel="stylesheet" href= "../styles/index-mobile.css">
+    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../styles/colors.css">
     <link rel="stylesheet" href="../styles/animation.css">
     <script src="../js/data/helper.js"></script>
     <script src="../js/pages/index.js"></script>
     <script src="../js/pages/animation.js"></script>
     <script src="../js/pages/upload-and-edit.js"></script>
+    <script src="../js/events/landscape-blocker.js" defer></script>
   </head>
   <body onload="initIndex()">
     <div id="idx-overlay" class="index-overlay d-none" onclick="closeOverlay()">
@@ -112,6 +114,15 @@
       <div class="legal-part">
         <a href="./privacy-policy.html">Privacy Policy</a>
         <a href="./legal-notice.html">Legal notice</a>
+      </div>
+    </div>
+
+    <div id="landscape-overlay">
+      <div class="landscape-overlay-logo"></div>
+      <div class="landscape-overlay-message">
+        <h2>
+          Please rotate your device to portrait mode to use this application.
+        </h2>
       </div>
     </div>
   </body>
