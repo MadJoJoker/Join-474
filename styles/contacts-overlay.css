@@ -328,4 +328,40 @@
         width: 90%;
         height: 80%;
     }
+}
+
+@media (max-width: 1280px) and (min-width: 1025px) {
+    .overlay-content {
+        width: 90%;
+        height: auto;
+        flex-direction: column;
     }
+
+    .overlay-left,
+    .overlay-right {
+        width: 100%;
+        padding: 24px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .contacts-list {
+        padding: 0 64px;
+    }
+
+    .contact-section {
+        flex-direction: column;
+    }
+
+    .add-new-contact-button-div {
+        bottom: 20px;
+        right: 24px;
+    }
+
+    .overlay-right .overlay-close {
+        display: none;
+    }
+}

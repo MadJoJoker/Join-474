@@ -1,18 +1,41 @@
 /**
- * Dynamically positions the back button so that it stays visually inside
- * the centered container (max-width: 1688px), even when the page is zoomed
- * or the viewport is resized.
+ * Adds click behavior to the back button and ensures it stays
+ * visually within the main container even when resizing or zooming.
  */
-function updateBackButtonPosition() {
-    const container = document.querySelector('.backBtn-max-content');
-    const backBtn = document.getElementById('backBtn');
-    if (!container || !backBtn) return;
-    const containerRect = container.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const distanceFromRightEdge = viewportWidth - containerRect.right;
-    const minRightPadding = 40;
-    const computedRight = Math.max(distanceFromRightEdge + minRightPadding, minRightPadding);
-    backBtn.style.right = `${computedRight}px`;
+export function initBackButton() {
+    const btn = document.getElementById('backBtn');
+
+    if (btn) {
+        btn.addEventListener('click', () => window.history.back());
+    }
+
+    // Wait until .backBtn-max-content is in the DOM
+    waitForContainerAndPosition();
+
+    // Reposition on resize and scroll
+    window.addEventListener('resize', updateBackButtonPosition);
+    window.addEventListener('scroll', updateBackButtonPosition);
+}
+
+function waitForContainerAndPosition() {
+    const maxTries = 20;
+    let attempts = 0;
+
+    const interval = setInterval(() => {
+        const container = document.querySelector('.backBtn-max-content');
+        const btn = document.getElementById('backBtn');
+
+        if (container && btn) {
+            updateBackButtonPosition();
+            clearInterval(interval);
+        }
+
+        attempts++;
+        if (attempts >= maxTries) {
+            clearInterval(interval); // stop after 20 tries (2 seconds)
+            console.warn("Back button container not found in time.");
+        }
+    }, 100); // check every 100ms
 }
 
 /**
@@ -27,7 +50,7 @@ function updateBackButtonPosition() {
     const viewportWidth = window.innerWidth;
     const containerRight = containerRect.right;
     const distanceFromRightEdge = viewportWidth - containerRight;
-    const minRightPadding = 40;
+    const minRightPadding = 0;
     const computedRight = Math.max(distanceFromRightEdge + minRightPadding, minRightPadding);
     backBtn.style.right = `${computedRight}px`;
 }
