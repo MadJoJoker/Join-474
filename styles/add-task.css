@@ -340,8 +340,8 @@
 .size-wrapper {
   display: flex;
   flex-direction: column;
-  max-width: 1572px;
-  max-height: 1199px;
+  max-width: 1580px;
+  height: min(calc(100vh - 150px), 1650px);
 }
 
 .error-message {

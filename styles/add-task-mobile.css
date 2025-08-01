@@ -1,9 +1,19 @@
 @media (min-width: 1921px) {
-    .form-buttons-part {
+    .content {
+        padding: 54px 0 0 54px;
+    }
+
+    .size-wrapper {
         position: relative;
-        bottom: 0;
+        padding: 0 54px 54px 0;
+        max-width: 1634px;
+    }
+
+    .form-buttons-part {
+        position: absolute;
+        bottom: 54px;
         left: 0;
-        right: 0;
+        right: 54px;
     }
 }
 
