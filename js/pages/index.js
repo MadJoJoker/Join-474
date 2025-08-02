@@ -4,13 +4,14 @@ let fetchedData = null;
  * 1st onload-function: call database fetch function, store data in global variable "fetchedData"
  */
 async function initIndex() {
-  updateFaviconForTheme();
   const data = await getFirebaseData("users");
   if (!data) {
     console.error('No data received');
     return;
   }
   fetchedData = data;
+  updateFaviconForTheme();
+  console.log("Daten: ", fetchedData);
 }
 
 /**
