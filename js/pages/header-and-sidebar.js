@@ -74,7 +74,7 @@ function partiallyHideSidebar() {
  * change colors of the nav-element which corresponds to the page where we are.
  */
 function highlightCurrentPage() {
-  const pageIds = ["summary", "add-task", "board-site", "contacts"];
+  const pageIds = ["summary", "add-task", "board-site", "contacts", "privacy-policy", "legal-notice"];
   const currentPage = pageIds.find(id => window.location.pathname.includes(id));
   if (currentPage) {
     const sidebarElement = document.getElementById(`${currentPage}Bar`);

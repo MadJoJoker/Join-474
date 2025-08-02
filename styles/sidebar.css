@@ -55,12 +55,12 @@
 
   &:hover {
     color: var(--white);
-    background-color: var(--darkHover);
+    background-color: var(--sidebarHover);
     transition: all 225ms ease-in-out;
   }
 
   &:hover .sidebar-icon {
-    color: var(--white);
+    fill: var(--white);
   }
 
   > svg {
@@ -73,18 +73,21 @@
   &.nav-4 > svg { width: 24px; }
 }
 
-.active-page {
-  background-color: var(--darkHover);
-  color: var(--white);
+.sidebar-icon {
+  fill: var(--sidebarGrey);
+}
 
-  .sidebar-icon {
-    color: var(--white);
+a.active-page {
+  color: var(--white);
+  background-color: var(--sidebarHighlight);
+
+    .sidebar-icon {
     fill: var(--white);
   }
 }
 
-.sidebar-icon {
-  color: var(--sidebarGrey);
+.legal > a.active-page {
+  color: var(--white);
 }
 
 .legal {
@@ -94,20 +97,25 @@
   justify-content: flex-end;
   width: 100%;
   row-gap: 4px;
-
+  
   > a {
   text-decoration: none;
   height: 35px;
+  width: 100%;
+  text-align: center;
   color: var(--sidebarNoticeGrey);
   padding: 8px;
   cursor: pointer;
+  
+    &:hover {
+      color: var(--white);
+      background-color: var(--sidebarHover);
+      transition: all 225ms ease-in-out;
+    }
   }
 }
 
 .infoPagesMobile {
-  /* display: flex;
-  border: 1px solid red; */
-  /* visibility: hidden; */
   display: none;
 }
 
