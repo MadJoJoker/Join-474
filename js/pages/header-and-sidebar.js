@@ -8,6 +8,7 @@ async function includeHeaderAndSidebar() {
   partiallyHideSidebar();
   initDropdown();
 
+  updateFaviconForTheme();
   highlightCurrentPage();
 }
 
@@ -80,3 +81,12 @@ function highlightCurrentPage() {
     sidebarElement.classList.add("active-page");
   }
 }
+
+function updateFaviconForTheme() {
+  const favicon = document.getElementById("favicon");
+  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  favicon.href = isDark
+    ? '../assets/icons/logo/joinLogo.svg'
+    : '../assets/icons/logo/whiteJoinLogo.svg';
+}
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateFaviconForTheme);

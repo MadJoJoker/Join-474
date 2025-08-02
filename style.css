@@ -123,3 +123,39 @@
     display: flex !important;
   }
 }
+
+
+.scrollable,
+.app-container {
+  overflow-y: auto; /* or: scroll */
+  max-height: 100vh;
+}
+
+.scrollable::-webkit-scrollbar,
+.app-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.scrollable::-webkit-scrollbar-track,
+.app-container::-webkit-scrollbar-track {
+  background: #F6F7F8;
+}
+
+.scrollable::-webkit-scrollbar-thumb,
+.app-container::-webkit-scrollbar-thumb {
+  background: #29ABE2;
+  border-radius: 12px;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover,
+.app-container::-webkit-scrollbar-thumb:hover {
+  background: #42526E;
+}
+
+@-moz-document url-prefix() {
+  .scrollable,
+  .app-container {
+    scrollbar-color: #29ABE2 #F6F7F8;
+    scrollbar-width: auto;
+  }
+}
