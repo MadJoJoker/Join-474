@@ -1,0 +1,868 @@
+{
+  "boards": {
+    "board-1": {
+      "columns": {
+        "done": {
+          "name": "Done",
+          "order": 3
+        },
+        "inProgress": {
+          "name": "In Progress",
+          "order": 1
+        },
+        "review": {
+          "name": "Review",
+          "order": 2
+        },
+        "todo": {
+          "name": "To Do",
+          "order": 0
+        }
+      },
+      "name": "Demo Board"
+    },
+    "board1": {
+      "columns": {
+        "done": {
+          "name": "Done",
+          "order": 3
+        },
+        "inProgress": {
+          "name": "In Progress",
+          "order": 1
+        },
+        "review": {
+          "name": "Review",
+          "order": 2
+        },
+        "todo": {
+          "name": "To Do",
+          "order": 0
+        }
+      },
+      "name": "Demo Board"
+    }
+  },
+  "contacts": {
+    "contact-001": {
+      "assignedTo": [
+        "contact-005"
+      ],
+      "avatarColor": "--lila",
+      "email": "Mathias@voigt-vital.de",
+      "initials": "MV",
+      "name": "Mathias Voigt",
+      "phone": "0151-17276037"
+    },
+    "contact-002": {
+      "assignedTo": [
+        "contact-001"
+      ],
+      "avatarColor": "--orange",
+      "email": "claudia@wick.test.de",
+      "initials": "CW",
+      "name": "Claudia Wick",
+      "phone": "02042-1234567"
+    },
+    "contact-003": {
+      "assignedTo": [
+        "contact-001",
+        "contact-002"
+      ],
+      "avatarColor": "--yellow",
+      "email": "dominik.rapp@join.de",
+      "initials": "DR",
+      "name": "Dominik Rapp",
+      "phone": "0151-34434"
+    },
+    "contact-004": {
+      "avatarColor": "--red",
+      "email": "eugen-birich@join.de",
+      "id": "contact-004",
+      "initials": "EB",
+      "name": "Eugen Birich",
+      "phone": "0201-787878"
+    },
+    "contact-005": {
+      "avatarColor": "--petrol",
+      "email": "anna.schmidt@example.de",
+      "id": "contact-005",
+      "initials": "AS",
+      "name": "Anna Schmid",
+      "phone": "0152-46578"
+    },
+    "contact-006": {
+      "assignedTo": [
+        "contact-003",
+        "contact-008"
+      ],
+      "avatarColor": "--coralRed",
+      "email": "peter.pauli@Hamburg.de",
+      "initials": "PP",
+      "name": "Peter Paulsen",
+      "phone": "0201-223344"
+    },
+    "contact-007": {
+      "assignedTo": [
+        "contact-004",
+        "contact-005"
+      ],
+      "avatarColor": "--red",
+      "email": "s.meier@demo.au",
+      "initials": "SM",
+      "name": "Sara Meier",
+      "phone": "+49152-234968"
+    },
+    "contact-008": {
+      "assignedTo": [
+        "contact-002",
+        "contact-003"
+      ],
+      "avatarColor": "--neonPink",
+      "email": "Fritz.W@lter.de",
+      "initials": "FW",
+      "name": "Fritz Walter",
+      "phone": "0800-234567"
+    },
+    "contact-009": {
+      "assignedTo": [
+        "contact-010",
+        "contact-011"
+      ],
+      "avatarColor": "--turquoise",
+      "email": "M.M@join.de",
+      "initials": "MM",
+      "name": "Monika Möwenherz",
+      "phone": "0208-64646"
+    },
+    "contact-010": {
+      "assignedTo": [
+        "contact-009",
+        "contact-011"
+      ],
+      "avatarColor": "--neonGreen",
+      "email": "Fuchs-Schreck@Hühnerstall.de",
+      "initials": "FF",
+      "name": "Frederike Fuchs-Schreck",
+      "phone": "030-33223"
+    },
+    "contact-011": {
+      "assignedTo": [
+        "contact-009"
+      ],
+      "avatarColor": "--vividBlue",
+      "email": "Gänsehaut@hotmail.de",
+      "initials": "GG",
+      "name": "Gisela Gänsehaut",
+      "phone": "+49 151 56 57 89"
+    },
+    "contact-012": {
+      "avatarColor": "--neonPink",
+      "email": "sofiam@gmail.com",
+      "id": "contact-012",
+      "initials": "SM",
+      "name": "Sofia Müller",
+      "phone": "+49175 48165795"
+    },
+    "contact-013": {
+      "avatarColor": "--red",
+      "email": "demoncontact@demon.con",
+      "id": "contact-013",
+      "initials": "DC",
+      "name": "Demon Contact",
+      "phone": "+12345-123456789666"
+    }
+  },
+  "tasks": {
+    "task-002": {
+      "assignedUsers": [
+        "contact-004",
+        "contact-003",
+        "contact-002"
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        true,
+        false
+      ],
+      "columnID": "review",
+      "createdAt": "10.05.2025",
+      "deadline": "18.08.2025",
+      "description": "Es gilt, GitHub zu überprüfen und alle Branches in den 'main'-Branch zu mergen, damit alle Änderungen dort konsolidiert sind",
+      "priority": "medium",
+      "subtasksCompleted": 1,
+      "title": "Finale Github  Kontrolle",
+      "totalSubtasks": [
+        "Jeder hat alles gepusht",
+        "All Pulls sind abgeschlossen"
+      ],
+      "type": "User Story",
+      "updatedAt": [
+        "20.06.2025"
+      ]
+    },
+    "task-003": {
+      "assignedUsers": [
+        "contact-009"
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "columnID": "done",
+      "createdAt": "12.06.2025",
+      "deadline": "31.12.2025",
+      "description": "Alle Bugs und Design Probleme werden in einer Checkliste zusammengefasst um sie im Anschluss abzuarbeiten.",
+      "priority": "urgent",
+      "subtaskCompleted": "3",
+      "title": "Punchliste erstellen",
+      "totalSubtask": [
+        "Claudias´ Liste erstellen",
+        "Eugens Liste erstellen",
+        "Dominiks Liste erstellen",
+        "Mathias´ Liste  erstellen",
+        "Alle Listen zusammenführen und sortieren"
+      ],
+      "type": "Technical Task",
+      "updatedAt": [
+        "2025-06-16T11:30:00Z"
+      ]
+    },
+    "task-004": {
+      "assignedUsers": [
+        "contact-010"
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": "",
+      "columnID": "review",
+      "createdAt": "22.06.2025",
+      "deadline": "19.10.2025",
+      "description": "Der Content wird über eine Funktion dynamisch erzeugt, funktioniert diese nicht wird der Content auf keiner Seite angezeigt",
+      "priority": "urgent",
+      "subtaskCompleted": "0",
+      "title": "Fetch des Contents prüfen",
+      "type": "Technical Task",
+      "updatedAt": [
+        "19.07.2025"
+      ]
+    },
+    "task-005": {
+      "assignedUsers": [
+        "contact-004"
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        true
+      ],
+      "columnID": "inProgress",
+      "createdAt": "19.06.2025",
+      "deadline": "22.12.2025",
+      "description": "In dieser Besprechung wird festgelegt in welcher Reihenfolge die Aufgaben der Punch Liste erledigt werden",
+      "priority": "low",
+      "subtaskCompleted": "1",
+      "title": "Besprechung der Aufgaben Priorisierung ",
+      "totalSubtask": [
+        "Punch Liste erstellen"
+      ],
+      "type": "Meeting",
+      "updatedAt": [
+        "19.06.2025"
+      ]
+    },
+    "task-006": {
+      "assignedUsers": [
+        "contact-003"
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        true,
+        true,
+        false,
+        true
+      ],
+      "columnID": "done",
+      "createdAt": "09.06.2025",
+      "deadline": "17.09.2025",
+      "description": "In dieser Besprechung soll geklärt werden wie lange jeder für seine Aufgaben braucht damit wir einen Abgabetermin eingrenzen können",
+      "priority": "medium",
+      "subtaskCompleted": "3",
+      "title": "Besprechung zum Abgabetermin",
+      "totalSubtask": [
+        "Vorgespräch Mathias",
+        "Vorgespräch Claudia",
+        "Vorgespräch Eugen",
+        "Vorgespräch Dominik"
+      ],
+      "type": "Meeting",
+      "updatedAt": [
+        "11.06.2025"
+      ]
+    },
+    "task-007": {
+      "assignedTo": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ]
+      ],
+      "assignedUsers": [
+        [
+          0,
+          "contact-001"
+        ],
+        [
+          1,
+          "contact-002"
+        ],
+        [
+          2,
+          "contact-003"
+        ],
+        [
+          3,
+          "contact-004"
+        ]
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        [
+          0,
+          true
+        ],
+        [
+          1,
+          false
+        ]
+      ],
+      "columnID": "review",
+      "createdAt": [
+        [
+          0,
+          "21.06.2025"
+        ]
+      ],
+      "deadline": "22.08.2025",
+      "description": "Nach Erstellung des Kanban Projektes und der Überprüfung der Checkliste wird das Projekt eingereicht",
+      "priority": "urgent",
+      "subtasksCompleted": 1,
+      "title": "Join abgeben",
+      "totalSubtask": [
+        [
+          0,
+          "Checkliste durchgehen"
+        ],
+        [
+          1,
+          "Auf Projektseite hochgeladen"
+        ]
+      ],
+      "type": "User Story",
+      "updatedAt": [
+        [
+          0,
+          "20.06.2025"
+        ],
+        [
+          1,
+          "20.06.2025"
+        ]
+      ]
+    },
+    "task-008": {
+      "assignedTo": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ]
+      ],
+      "assignedUsers": [
+        [
+          0,
+          [
+            0,
+            "contact-001"
+          ]
+        ],
+        [
+          1,
+          [
+            1,
+            "contact-002"
+          ]
+        ],
+        [
+          2,
+          [
+            2,
+            "contact-003"
+          ]
+        ],
+        [
+          3,
+          [
+            3,
+            "contact-004"
+          ]
+        ]
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        [
+          0,
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          1,
+          [
+            1,
+            false
+          ]
+        ]
+      ],
+      "columnID": "inProgress",
+      "createdAt": [
+        [
+          0,
+          [
+            0,
+            "21.06.2025"
+          ]
+        ]
+      ],
+      "deadline": "22.08.2025",
+      "description": "Nach Erstellung des Kanban Projektes und der Überprüfung der Checkliste wird das Projekt eingereicht",
+      "priority": "urgent",
+      "subtasksCompleted": 1,
+      "title": "Join abgeben",
+      "totalSubtask": [
+        [
+          0,
+          [
+            0,
+            "Checkliste durchgehen"
+          ]
+        ],
+        [
+          1,
+          [
+            1,
+            "Auf Projektseite hochgeladen"
+          ]
+        ]
+      ],
+      "type": "User Story",
+      "updatedAt": [
+        [
+          0,
+          [
+            0,
+            "20.06.2025"
+          ]
+        ],
+        [
+          1,
+          [
+            1,
+            "20.06.2025"
+          ]
+        ]
+      ]
+    },
+    "task-009": {
+      "assignedTo": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ]
+      ],
+      "assignedUsers": [
+        [
+          0,
+          [
+            0,
+            "contact-001"
+          ]
+        ],
+        [
+          1,
+          [
+            1,
+            "contact-002"
+          ]
+        ],
+        [
+          2,
+          [
+            2,
+            "contact-003"
+          ]
+        ],
+        [
+          3,
+          [
+            3,
+            "contact-004"
+          ]
+        ]
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        [
+          0,
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          1,
+          [
+            1,
+            false
+          ]
+        ]
+      ],
+      "columnID": "done",
+      "createdAt": [
+        [
+          0,
+          [
+            0,
+            "21.06.2025"
+          ]
+        ]
+      ],
+      "deadline": "22.08.2025",
+      "description": "Nach Erstellung des Kanban Projektes und der Überprüfung der Checkliste wird das Projekt eingereicht",
+      "priority": "urgent",
+      "subtasksCompleted": 1,
+      "title": "Join abgeben",
+      "totalSubtask": [
+        [
+          0,
+          [
+            0,
+            "Checkliste durchgehen"
+          ]
+        ],
+        [
+          1,
+          [
+            1,
+            "Auf Projektseite hochgeladen"
+          ]
+        ]
+      ],
+      "type": "User Story",
+      "updatedAt": [
+        [
+          0,
+          [
+            0,
+            "20.06.2025"
+          ]
+        ],
+        [
+          1,
+          [
+            1,
+            "20.06.2025"
+          ]
+        ]
+      ]
+    },
+    "task-010": {
+      "assignedTo": [
+        [
+          0
+        ]
+      ],
+      "assignedUsers": [
+        [
+          0,
+          "contact-004"
+        ]
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        [
+          0,
+          true
+        ]
+      ],
+      "columnID": "review",
+      "createdAt": "19.06.2025",
+      "deadline": "22.12.2025",
+      "description": "In dieser Besprechung wird festgelegt in welcher Reihenfolge die Aufgaben der Punch Liste erledigt werden",
+      "priority": "low",
+      "subtaskCompleted": "1",
+      "title": "Besprechung der Aufgaben Priorisierung ",
+      "totalSubtask": [
+        [
+          0,
+          "Punch Liste erstellen"
+        ]
+      ],
+      "type": "Meeting",
+      "updatedAt": [
+        [
+          0,
+          "19.06.2025"
+        ]
+      ]
+    },
+    "task-011": {
+      "assignedTo": [
+        [
+          0
+        ]
+      ],
+      "assignedUsers": [
+        [
+          0,
+          "contact-011"
+        ]
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        [
+          0,
+          false
+        ]
+      ],
+      "columnID": "inProgress",
+      "createdAt": "01.08.2025",
+      "deadline": "22.07.2025",
+      "description": "Die erfolgreiche Prüfung eines IT-Projekts ist entscheidend. Beginnen Sie mit der Verifizierung der Projektziele und Anforderungen. Dokumentieren Sie alle Erkenntnisse präzise. Fassen Sie die Ergebnisse zusammen und leiten Sie konkrete Handlungsempfehlungen ab. Eine transparente und systematische Prüfung ebnet den Weg für den Erfolg Ihres IT-Projekts.",
+      "priority": "medium",
+      "subtasksCompleted": 0,
+      "title": "Join prüfen",
+      "totalSubtask": [
+        [
+          0,
+          "Smile if it worked until here."
+        ]
+      ],
+      "type": "User Story",
+      "updatedAt": "01.08.2025"
+    },
+    "task-012": {
+      "assignedTo": [
+        [
+          0
+        ]
+      ],
+      "assignedUsers": [
+        [
+          0,
+          "contact-010"
+        ]
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": "",
+      "columnID": "done",
+      "createdAt": "22.06.2025",
+      "deadline": "19.10.2025",
+      "description": "Der Content wird über eine Funktion dynamisch erzeugt, funktioniert diese nicht wird der Content auf keiner Seite angezeigt",
+      "priority": "urgent",
+      "subtaskCompleted": "0",
+      "title": "Fetch des Contents prüfen",
+      "type": "Technical Task",
+      "updatedAt": [
+        [
+          0,
+          "19.07.2025"
+        ]
+      ]
+    },
+    "task-013": {
+      "assignedTo": [
+        [
+          0
+        ]
+      ],
+      "assignedUsers": [
+        [
+          0,
+          "contact-004"
+        ]
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        [
+          0,
+          true
+        ]
+      ],
+      "columnID": "review",
+      "createdAt": "19.06.2025",
+      "deadline": "22.12.2025",
+      "description": "In dieser Besprechung wird festgelegt in welcher Reihenfolge die Aufgaben der Punch Liste erledigt werden",
+      "priority": "low",
+      "subtaskCompleted": "1",
+      "title": "Besprechung der Aufgaben Priorisierung ",
+      "totalSubtask": [
+        [
+          0,
+          "Punch Liste erstellen"
+        ]
+      ],
+      "type": "Meeting",
+      "updatedAt": [
+        [
+          0,
+          "19.06.2025"
+        ]
+      ]
+    },
+    "task-014": {
+      "assignedTo": [
+        [
+          0
+        ]
+      ],
+      "assignedUsers": [
+        [
+          0,
+          "contact-004"
+        ]
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        [
+          0,
+          true
+        ]
+      ],
+      "columnID": "review",
+      "createdAt": "19.06.2025",
+      "deadline": "22.12.2025",
+      "description": "In dieser Besprechung wird festgelegt in welcher Reihenfolge die Aufgaben der Punch Liste erledigt werden",
+      "priority": "low",
+      "subtaskCompleted": "1",
+      "title": "Besprechung der Aufgaben Priorisierung ",
+      "totalSubtask": [
+        [
+          0,
+          "Punch Liste erstellen"
+        ]
+      ],
+      "type": "Meeting",
+      "updatedAt": [
+        [
+          0,
+          "19.06.2025"
+        ]
+      ]
+    },
+    "task-015": {
+      "assignedTo": [
+        [
+          0
+        ]
+      ],
+      "assignedUsers": [
+        [
+          0,
+          "contact-004"
+        ]
+      ],
+      "boardID": "board-1",
+      "checkedSubtasks": [
+        [
+          0,
+          true
+        ]
+      ],
+      "columnID": "review",
+      "createdAt": "19.06.2025",
+      "deadline": "22.12.2025",
+      "description": "In dieser Besprechung wird festgelegt in welcher Reihenfolge die Aufgaben der Punch Liste erledigt werden",
+      "priority": "low",
+      "subtaskCompleted": "1",
+      "title": "Besprechung der Aufgaben Priorisierung ",
+      "totalSubtask": [
+        [
+          0,
+          "Punch Liste erstellen"
+        ]
+      ],
+      "type": "Meeting",
+      "updatedAt": [
+        [
+          0,
+          "19.06.2025"
+        ]
+      ]
+    }
+  },
+  "users": {
+    "demoUser-001": {
+      "associatedContacts": "",
+      "displayName": "User Uwe",
+      "email": "demo1@example.de",
+      "password": "uu54321"
+    },
+    "demoUser-002": {
+      "associatedContacts": "",
+      "displayName": "Jim Knopf",
+      "email": "bahnhof@lummlerland.ml",
+      "passwrd": "wilde13"
+    },
+    "demoUser-003": {
+      "associatedContacts": "",
+      "displayName": "Tyrannosaurus Rex",
+      "email": "monster@jurassic.parc",
+      "password": "dino1993"
+    },
+    "demoUser-004": {
+      "associatedContacts": "",
+      "displayName": "Franzi Preuss",
+      "email": "winner@biathlon.org",
+      "password": "wc2025"
+    },
+    "demoUser-005": {
+      "associatedContacts": "",
+      "displayName": "Tom Sawyer",
+      "email": "home@tante.polly",
+      "password": "Mark02"
+    },
+    "demoUser-006": {
+      "associatedContacts": "",
+      "displayName": "Sofia Müller",
+      "email": "sofiam@gmail.com",
+      "password": "mypassword123"
+    }
+  }
+}
