@@ -44,9 +44,9 @@
     }
   },
   "contacts": {
-    "contact-1": {
+    "contact-001": {
       "assignedTo": [
-        "demo-user-1-uid"
+        "contact-005"
       ],
       "avatarColor": "--lila",
       "email": "Mathias@voigt-vital.de",
@@ -54,30 +54,9 @@
       "name": "Mathias Voigt",
       "phone": "0151-17276037"
     },
-    "contact-10": {
-      " initials": "FF",
-      " name": "Frederike Fuchs-Schreck",
+    "contact-002": {
       "assignedTo": [
-        "contact-9",
-        "contact-11"
-      ],
-      "avatarColor": "--menthol",
-      "email": "Fuchs-Schreck@Hühnerstall.de",
-      "phone": "030-33223"
-    },
-    "contact-11": {
-      " initials": "GG",
-      " name": "Gisela Gänsehaut",
-      "assignedTo": [
-        "contact-9"
-      ],
-      "avatarColor": "--lightGreen",
-      "email": "Gänsehaut@hotmail.de",
-      "phone": "+49 151 56 57 89"
-    },
-    "contact-2": {
-      "assignedTo": [
-        "contact-1"
+        "contact-001"
       ],
       "avatarColor": "--orange",
       "email": "claudia@wick.test.de",
@@ -85,10 +64,10 @@
       "name": "Claudia Wick",
       "phone": "02042-1234567"
     },
-    "contact-3": {
+    "contact-003": {
       "assignedTo": [
-        "contact-1",
-        "contact-2"
+        "contact-001",
+        "contact-002"
       ],
       "avatarColor": "--yellow",
       "email": "dominik.rapp@join.de",
@@ -96,108 +75,132 @@
       "name": "Dominik Rapp",
       "phone": "0151-34434"
     },
-    "contact-4": {
-      "assignedTo": [
-        "contact-2"
-      ],
+    "contact-004": {
       "avatarColor": "--red",
       "email": "eugen-birich@join.de",
+      "id": "contact-004",
       "initials": "EB",
       "name": "Eugen Birich",
       "phone": "0201-787878"
     },
-    "contact-5": {
-      "assignedTo": [
-        "contact-1",
-        "contact-7"
-      ],
+    "contact-005": {
       "avatarColor": "--petrol",
       "email": "anna.schmidt@example.de",
+      "id": "contact-005",
       "initials": "AS",
-      "name": "Anna Schmidt",
+      "name": "Anna Schmid",
       "phone": "0152-46578"
     },
-    "contact-6": {
+    "contact-006": {
       "assignedTo": [
-        "contact-3",
-        "contact-8"
+        "contact-003",
+        "contact-008"
       ],
-      "avatarColor": "--menthol",
+      "avatarColor": "--coralRed",
       "email": "peter.pauli@Hamburg.de",
       "initials": "PP",
       "name": "Peter Paulsen",
       "phone": "0201-223344"
     },
-    "contact-7": {
+    "contact-007": {
       "assignedTo": [
-        "contact-4",
-        "contact-5"
+        "contact-004",
+        "contact-005"
       ],
-      "avatarColor": "--darkViolet",
+      "avatarColor": "--red",
       "email": "s.meier@demo.au",
       "initials": "SM",
       "name": "Sara Meier",
       "phone": "+49152-234968"
     },
-    "contact-8": {
+    "contact-008": {
       "assignedTo": [
-        "contact-2",
-        "contact-3"
+        "contact-002",
+        "contact-003"
       ],
-      "avatarColor": "--pink",
+      "avatarColor": "--neonPink",
       "email": "Fritz.W@lter.de",
       "initials": "FW",
       "name": "Fritz Walter",
       "phone": "0800-234567"
     },
-    "contact-9": {
-      " initials": "MM",
-      " name": "Monika Möwenherz",
+    "contact-009": {
       "assignedTo": [
-        "contact-10",
-        "contact-11"
+        "contact-010",
+        "contact-011"
       ],
-      "avatarColor": "--indigo",
+      "avatarColor": "--turquoise",
       "email": "M.M@join.de",
+      "initials": "MM",
+      "name": "Monika Möwenherz",
       "phone": "0208-64646"
+    },
+    "contact-010": {
+      "assignedTo": [
+        "contact-009",
+        "contact-011"
+      ],
+      "avatarColor": "--neonGreen",
+      "email": "Fuchs-Schreck@Hühnerstall.de",
+      "initials": "FF",
+      "name": "Frederike Fuchs-Schreck",
+      "phone": "030-33223"
+    },
+    "contact-011": {
+      "assignedTo": [
+        "contact-009"
+      ],
+      "avatarColor": "--vividBlue",
+      "email": "Gänsehaut@hotmail.de",
+      "initials": "GG",
+      "name": "Gisela Gänsehaut",
+      "phone": "+49 151 56 57 89"
+    },
+    "contact-012": {
+      "avatarColor": "--neonPink",
+      "email": "sofiam@gmail.com",
+      "id": "contact-012",
+      "initials": "SM",
+      "name": "Sofia Müller",
+      "phone": "+49175 48165795"
     }
   },
-  "rooms": "",
   "tasks": {
-    "task-1": {
+    "task-001": {
       "assignedUsers": [
-        "contact-1",
-        "contact-2",
-        "contact-3",
-        "contact-4"
+        "contact-001",
+        "contact-002",
+        "contact-003",
+        "contact-004"
       ],
       "boardID": "board-1",
-      "columnID": "inProgress",
-      "createdAt": [
-        "21.06.2025"
+      "checkedSubtasks": [
+        true
       ],
+      "columnID": "inProgress",
+      "createdAt": "21.06.2025",
       "deadline": "22.08.2025",
       "description": "Nach Erstellung des Kanban Projektes und der Überprüfung der Checkliste wird das Projekt eingereicht",
       "priority": "urgent",
-      "subtasksCompleted": 1,
+      "subtasksCompleted": "1",
       "title": "Join abgeben",
       "totalSubtask": [
-        1,
         "Auf Projektseite hochgeladen"
       ],
       "type": "User Story",
-      "updatedAt": [
-        "20.06.2025",
-        "20.06.2025"
-      ]
+      "updatedAt": "20.06.2025"
     },
-    "task-2": {
+    "task-002": {
       "assignedUsers": [
-        "contact-4",
-        "contact-3",
-        "contact-2"
+        "contact-004",
+        "contact-003",
+        "contact-002"
       ],
       "boardID": "board-1",
+      "checkedSubtasks": [
+        true,
+        false
+      ],
       "columnID": "review",
       "createdAt": "10.05.2025",
       "deadline": "18.08.2025",
@@ -214,17 +217,24 @@
         "20.06.2025"
       ]
     },
-    "task-3": {
-      " description": "Alle Bugs und Design Probleme werden in einer Checkliste zusammengefasst um sie im Anschluss abzuarbeiten.",
+    "task-003": {
       "assignedUsers": [
-        "contact-9"
+        "contact-009"
       ],
       "boardID": "board-1",
+      "checkedSubtasks": [
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
       "columnID": "done",
       "createdAt": "12.06.2025",
       "deadline": "31.12.2025",
+      "description": "Alle Bugs und Design Probleme werden in einer Checkliste zusammengefasst um sie im Anschluss abzuarbeiten.",
       "priority": "urgent",
-      "subtaskCompleted": "5",
+      "subtaskCompleted": "3",
       "title": "Punchliste erstellen",
       "totalSubtask": [
         "Claudias´ Liste erstellen",
@@ -238,15 +248,16 @@
         "2025-06-16T11:30:00Z"
       ]
     },
-    "task-4": {
-      " description": "Der Content wird über eine Funktion dynamisch erzeugt, funktioniert diese nicht wird der Content auf keiner Seite angezeigt",
+    "task-004": {
       "assignedUsers": [
-        "contact-10"
+        "contact-010"
       ],
       "boardID": "board-1",
+      "checkedSubtasks": "",
       "columnID": "review",
       "createdAt": "22.06.2025",
       "deadline": "19.10.2025",
+      "description": "Der Content wird über eine Funktion dynamisch erzeugt, funktioniert diese nicht wird der Content auf keiner Seite angezeigt",
       "priority": "urgent",
       "subtaskCompleted": "0",
       "title": "Fetch des Contents prüfen",
@@ -255,15 +266,18 @@
         "19.07.2025"
       ]
     },
-    "task-5": {
-      " description": "In dieser Besprechung wird festgelegt in welcher Reihenfolge die Aufgaben der Punch Liste erledigt werden",
+    "task-005": {
       "assignedUsers": [
-        "contact-4"
+        "contact-004"
       ],
       "boardID": "board-1",
+      "checkedSubtasks": [
+        true
+      ],
       "columnID": "inProgress",
       "createdAt": "19.06.2025",
       "deadline": "22.12.2025",
+      "description": "In dieser Besprechung wird festgelegt in welcher Reihenfolge die Aufgaben der Punch Liste erledigt werden",
       "priority": "low",
       "subtaskCompleted": "1",
       "title": "Besprechung der Aufgaben Priorisierung ",
@@ -275,17 +289,23 @@
         "19.06.2025"
       ]
     },
-    "task-6": {
-      " description": "In dieser Besprechung soll geklärt werden wie lange jeder für seine Aufgaben braucht damit wir einen Abgabetermin eingrenzen können",
+    "task-006": {
       "assignedUsers": [
-        "contact-3"
+        "contact-003"
       ],
       "boardID": "board-1",
+      "checkedSubtasks": [
+        true,
+        true,
+        false,
+        true
+      ],
       "columnID": "done",
       "createdAt": "09.06.2025",
       "deadline": "17.09.2025",
+      "description": "In dieser Besprechung soll geklärt werden wie lange jeder für seine Aufgaben braucht damit wir einen Abgabetermin eingrenzen können",
       "priority": "medium",
-      "subtaskCompleted": "4",
+      "subtaskCompleted": "3",
       "title": "Besprechung zum Abgabetermin",
       "totalSubtask": [
         "Vorgespräch Mathias",
@@ -300,19 +320,41 @@
     }
   },
   "users": {
-    "demoUser-1": {
-      "associatedContacts": [
-        "contact-1",
-        "contact-2",
-        "contact-3",
-        "contact-4",
-        "contact-5",
-        "contact-6",
-        "contact-7",
-        "contact-8"
-      ],
+    "demoUser-001": {
+      "associatedContacts": "",
       "displayName": "User Uwe",
-      "email": "demo1@example.de"
+      "email": "demo1@example.de",
+      "password": "uu54321"
+    },
+    "demoUser-002": {
+      "associatedContacts": "",
+      "displayName": "Jim Knopf",
+      "email": "bahnhof@lummlerland.ml",
+      "passwrd": "wilde13"
+    },
+    "demoUser-003": {
+      "associatedContacts": "",
+      "displayName": "Tyrannosaurus Rex",
+      "email": "monster@jurassic.parc",
+      "password": "dino1993"
+    },
+    "demoUser-004": {
+      "associatedContacts": "",
+      "displayName": "Franzi Preuss",
+      "email": "winner@biathlon.org",
+      "password": "wc2025"
+    },
+    "demoUser-005": {
+      "associatedContacts": "",
+      "displayName": "Tom Sawyer",
+      "email": "home@tante.polly",
+      "password": "Mark02"
+    },
+    "demoUser-006": {
+      "associatedContacts": "",
+      "displayName": "Sofia Müller",
+      "email": "sofiam@gmail.com",
+      "password": "mypassword123"
     }
   }
 }
