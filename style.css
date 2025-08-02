@@ -72,8 +72,8 @@
   }
 }
 
-/* landscape orientation on devices up to 1024px (e.g. smartphones and tablets) */
-@media screen and (max-width: 1024px) and (orientation: landscape) {
+/* landscape orientation on devices up to 768px (e.g. mobile) */
+@media screen and (max-width: 768px) and (orientation: landscape) {
 
   #landscape-overlay {
     position: fixed;
@@ -110,7 +110,6 @@
     font-size: 24px;
     color: var(--white);
     background: rgba(42, 54, 71, 0.85);
-    /* basiert auf var(--dark) */
     padding: 16px 24px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);

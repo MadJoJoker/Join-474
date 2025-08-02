@@ -111,9 +111,3 @@
     margin-top: 4px;
     min-height: 16px;
 }
-
-@media (hover: hover) and (pointer: fine) {
-  button:hover {
-    background-color: #eee;
-  }
-}
