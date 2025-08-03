@@ -12,7 +12,7 @@ function confirmSignup() {
   const color = "rgba(0, 0, 0, 0.5)";
   const link = "../index.html"
   animateMessageBox(text, color, link);
-  goToPage(link);
+  // goToPage(link);
 }
 
 function stopSignIn() {
@@ -20,7 +20,7 @@ function stopSignIn() {
   const color = "transparent";
   const link = "../index.html"
   animateMessageBox(text, color, link);
-  goToPage(link);
+  // goToPage(link);
 }
 
 function emailAlreadyStored() {

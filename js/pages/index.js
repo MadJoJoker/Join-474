@@ -11,18 +11,18 @@ async function initIndex() {
   }
   fetchedData = data;
   updateFaviconForTheme();
-  console.log("Daten: ", fetchedData);
 }
 
 /**
- * changes favicon depending on browser-mode: light or dark.
+ * changes favicon depending on browser-mode: light or dark (even on index.html)
  */
 function updateFaviconForTheme() {
   const favicon = document.getElementById("favicon");
   const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const base = window.location.pathname.includes('/html/') ? '..' : '.';
   favicon.href = isDark
-    ? '../assets/icons/logo/joinLogo.svg?v=1'
-    : '../assets/icons/logo/whiteJoinLogo.svg?v=1';
+    ? `${base}/assets/icons/logo/joinLogo.svg?v=1`
+    : `${base}/assets/icons/logo/whiteJoinLogo.svg?v=1`;
 }
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateFaviconForTheme);
 

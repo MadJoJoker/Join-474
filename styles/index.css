@@ -24,29 +24,37 @@ body {
 }
 
 /* animation */
-/* für Dauerposition Logo während der animation */
 .invisible {
   visibility: hidden;
 }
 
 .idx-overlay {
   z-index: 5;
-  position: fixed; /* Referenz für das Kind-Element (Logo) */
+  position: fixed;
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 1);
-  /* overflow: hidden; */
   animation: showBackground 1s ease-in forwards;
 }
 
 .floating-logo {
   position: absolute;
   height: 200px;
+
+  /* startet nicht in der Mitte; linke obere Logo-Ecke ist in der Mitte */
   top: 50%;
-  left: 50%; /* die beiden positionieren das linke obere Eck in der Mitte*/
-  transform: translate(-50%, -50%) scale(1); /* das verschiebt das Logo in die wirkliche Mitte */
-  animation: moveToCorner 1s ease forwards;
+  left: 50%;
+
+  transform: translate(-50%, -50%) scale(1);
+
+ /* inset: 0; */
+  /* margin: auto; */
+
   /* border: 1px solid red; */
+
+  &.animate {
+    animation: moveToCorner 1s ease forwards;
+  }
 }
 
 .dark-fill {
@@ -60,8 +68,8 @@ body {
     transform: translate(-50%, -50%) scale(1);
   }
   100% {
-    top: 41px; /* erwartet: 80px, s. l. 15 */
-    left: 43px; /* erwartet: 76px, s. l. 15 */
+    top: 41px; /* erwartet: 80px, s. l. 18 */
+    left: 43px; /* erwartet: 76px, s. l. 18 */
     transform: translate(0, 0) scale(0.61);
   }
 }
@@ -94,9 +102,9 @@ body {
   }
 }
 
- #login-mobile {
+#login-mobile {
   display: none;
- }
+}
 
 .sign-up {
   > p {

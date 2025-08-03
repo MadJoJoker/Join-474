@@ -10,6 +10,10 @@
   background-color: var(--dark);
   padding: 19px 25px;
   border-radius: 20px;
+  width: fit-content;
+  height: fit-content;
+  inset: 0;
+  margin: auto;
   color: var(--white);
   font-size: 20px;
   letter-spacing: 0.8px;
@@ -18,14 +22,10 @@
   display: flex;
   align-items: center;
   gap: 40px;
-  
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
   opacity: 0;
 
   &.animate {
-    animation: moveToCenter 1s ease forwards;
+    animation: moveToCenter 1s ease-in-out forwards;
   }
 }
 
@@ -35,21 +35,18 @@
 
 @keyframes moveToCenter {
   from {
-    /* bottom: 0; */
-    /*bottom würde keine height der box erfordern, plaziert sie aber zu hoch (halbe Höhe)*/
-    max-height: 140px;
-    top: 100%;
-    /* top plaziert korrekt, ohne height der box wird sie aber gedehnt */
-    transform: translate(-50%, 0);
+    top: 110%;
     opacity: 0;
   }
   to {
-    /* bottom: 50%; */
-    /*bottom würde keine height der box erfordern, plaziert sie aber zu hoch (halbe Höhe)*/
-    max-height: 140px;
-    top: 50%;
-    /* top plaziert korrekt, ohne height der box wird sie aber gedehnt */
-    transform: translate(-50%, -50%);
+    top: 0%;
     opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .blue-box {
+    padding: 14px 20px;
+    font-size: 18px;
   }
 }
