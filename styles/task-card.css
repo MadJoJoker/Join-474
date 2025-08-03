@@ -166,6 +166,13 @@
   text-align: right;
   font-size: clamp(0.7rem, 1vw, 0.85rem);
   margin-top: clamp(2px, 0.7vw, 4px);
+  opacity: 0;
+  min-height: 1.2em;
+  transition: opacity 0.2s;
+}
+
+.task-card:hover .subtasks-text {
+  opacity: 1;
 }
 
 .task-footer {
