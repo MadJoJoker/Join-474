@@ -180,7 +180,7 @@ body {
     font-style: italic;
     text-align: center;
     color: var(--lightGrey);
-    background-color: var(--grey);
+    background-color: var(--sidebarNoticeGrey);
     border: 2px dashed var(--lightGrey);
   }
 }
@@ -317,4 +317,7 @@ body {
 
 #find-task-info-no-found-Msg.hidden {
   display: none;
+}
+#app-container-board-site{
+  overflow: hidden;
 }

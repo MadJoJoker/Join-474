@@ -1,5 +1,8 @@
 import { loadFirebaseData } from "../../main.js";
-import { showFindTaskInfoNoFoundMsg } from "../pages/board-initializer.js";
+import {
+  showFindTaskInfoNoFoundMsg,
+  hideFindTaskInfoNoFoundMsg,
+} from "../pages/board-initializer.js";
 
 /** Filters task cards based on the title input.
  * Searches for tasks that match the input value and displays them.
@@ -37,6 +40,8 @@ export async function filterTaskCardsByTitle() {
   );
   if (foundCount === 0) {
     showFindTaskInfoNoFoundMsg();
+  } else {
+    hideFindTaskInfoNoFoundMsg();
   }
 }
 

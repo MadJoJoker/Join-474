@@ -64,7 +64,6 @@
   .column-wrapper {
     min-width: 70%;
     align-items: center !important;
-    padding-left: 45px;
   }
   .frame-192 {
     flex-direction: column;

@@ -88,27 +88,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const searchInput = document.getElementById("find-task");
   if (searchInput) {
-    searchInput.addEventListener("input", filterTaskCardsByTitle);
+    searchInput.addEventListener("input", async (event) => {
+      if (event.target.value.trim() === "") {
+        // If search is cleared, reload and render the full board
+        const { loadAndRenderBoard } = await import("../ui/render-board.js");
+        await loadAndRenderBoard();
+        // Hide info text if visible
+        hideFindTaskInfoNoFoundMsg();
+      } else {
+        filterTaskCardsByTitle();
+      }
+    });
   }
 });
 
 /**
- * Shows a find-task-info-no-found message after no task is found.
- * The message slides in, stays visible for a short time, and then slides out.
+ * Shows a find-task-info-no-found message and keeps it visible until tasks are found or search is cleared.
  */
-export async function showFindTaskInfoNoFoundMsg() {
+export function showFindTaskInfoNoFoundMsg() {
   const noFoundMsg = document.getElementById("find-task-info-no-found-Msg");
   if (!noFoundMsg) return;
-
-  noFoundMsg.classList.remove("slide-in", "slide-out", "hidden");
-  void noFoundMsg.offsetWidth;
+  noFoundMsg.classList.remove("slide-out", "hidden");
   noFoundMsg.classList.add("slide-in");
-  await new Promise((resolve) => setTimeout(resolve, 900));
+}
 
+/**
+ * Hides the find-task-info-no-found message immediately.
+ */
+export function hideFindTaskInfoNoFoundMsg() {
+  const noFoundMsg = document.getElementById("find-task-info-no-found-Msg");
+  if (!noFoundMsg) return;
   noFoundMsg.classList.remove("slide-in");
   noFoundMsg.classList.add("slide-out");
-
-  await new Promise((resolve) => setTimeout(resolve, 1600));
-
-  noFoundMsg.classList.add("hidden");
+  setTimeout(() => {
+    noFoundMsg.classList.add("hidden");
+  }, 400); // hide after animation
 }

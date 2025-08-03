@@ -220,7 +220,7 @@ export async function updateTaskColumnData(taskId, newColumnId) {
  * Loads and renders the board with tasks.
  * @returns {Promise<void>} Resolves when the board is loaded and rendered.
  */
-async function loadAndRenderBoard() {
+export async function loadAndRenderBoard() {
   const firebaseBoardData = await loadFirebaseData();
   if (firebaseBoardData) {
     renderTasksByColumn(firebaseBoardData);
