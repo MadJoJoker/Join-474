@@ -9,20 +9,46 @@ export async function filterTaskCardsByTitle() {
   const loadedData = await loadFirebaseData();
 
   if (!loadedData || !loadedData.tasks) {
-    console.warn("Filtering tasks (loadedData.tasks) are not available, or data has not been loaded.");
+    console.warn(
+      "Filtering tasks (loadedData.tasks) are not available, or data has not been loaded."
+    );
     return;
   }
 
   const allTaskCards = document.querySelectorAll(".task-card");
+  // Hide placeholders while searching
+  const placeholders = document.querySelectorAll(".no-tasks-placeholder");
+  if (searchTerm.length > 0) {
+    placeholders.forEach((ph) => (ph.style.display = "none"));
+  } else {
+    // If search field is empty, restore default display (empty columns show placeholder)
+    placeholders.forEach((ph) => {
+      const parent = ph.parentElement;
+      const visibleCards = parent.querySelectorAll(
+        '.task-card:not([style*="display: none"])'
+      );
+      ph.style.display = visibleCards.length === 0 ? "" : "none";
+    });
+  }
+
   let found = 0;
-  const foundCount = filterAndDisplayTaskCards(allTaskCards, loadedData, searchTerm);
-  if (found === 0) {
+  const foundCount = filterAndDisplayTaskCards(
+    allTaskCards,
+    loadedData,
+    searchTerm
+  );
+  if (foundCount === 0) {
     showFindTaskInfoNoFoundMsg();
   }
 }
 
-/** Filters task cards based on the search term.
+/**
+ * Filters task cards based on the search term.
  * Displays only those cards whose title includes the search term.
+ * @param {NodeList} allTaskCards - All task card DOM elements to filter.
+ * @param {Object} loadedData - The loaded data object containing all tasks.
+ * @param {string} searchTerm - The search term to filter task titles by.
+ * @returns {number} The number of found tasks.
  */
 function filterAndDisplayTaskCards(allTaskCards, loadedData, searchTerm) {
   let found = 0;

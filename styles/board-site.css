@@ -113,11 +113,11 @@ body {
     img {
       width: 1.25rem;
       height: 1.25rem;
-      filter: invert(50%) sepia(0%) saturate(1%) hue-rotate(253deg) brightness(85%) contrast(80%);
+      filter: invert(50%) sepia(0%) saturate(1%) hue-rotate(253deg)
+        brightness(85%) contrast(80%);
     }
   }
 }
-
 
 .status-navigation-wrapper {
   display: flex;
@@ -153,7 +153,8 @@ body {
 }
 
 .status-button:hover img {
-  filter: invert(20%) sepia(100%) saturate(2000%) hue-rotate(200deg) brightness(90%) contrast(100%);
+  filter: invert(20%) sepia(100%) saturate(2000%) hue-rotate(200deg)
+    brightness(90%) contrast(100%);
 }
 
 .menu-color {
@@ -169,26 +170,16 @@ body {
 }
 
 .task-column {
-  /* Annahme: .task-column ist der Eltern-Container für .no-tasks-placeholder.
-     Wenn .no-tasks-placeholder direkt im Root ist, kannst du diese äußere Nesting-Ebene weglassen. */
-
   .no-tasks-placeholder {
-    /* Layout und Box-Modell */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
-    max-width: 75%;
     padding: 10px;
     box-sizing: border-box;
-    /* Wichtig, damit Padding die Höhe nicht sprengt */
-
-    /* Text-Styling */
     font-style: italic;
     text-align: center;
     color: var(--lightGrey);
-
-    /* Hintergrund und Rahmen */
     background-color: var(--grey);
     border: 2px dashed var(--lightGrey);
   }
@@ -294,9 +285,9 @@ body {
 }
 
 #find-task-info-no-found-Msg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  position: fixed;
+  left: 60%;
+  bottom: 50vh;
   background-color: var(--dark);
   color: var(--white);
   font-size: clamp(1.1rem, 2vw, 1.4rem);
@@ -309,18 +300,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translate(-50%, -50%) scale(0.8);
+  transform: translate(-50%, 100%) scale(0.8);
   opacity: 0;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.4, 1.6, 0.4, 1), opacity 1.4s ease;
 }
 
 #find-task-info-no-found-Msg.slide-in {
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, 0) scale(1);
   opacity: 1;
 }
 
 #find-task-info-no-found-Msg.slide-out {
-  transform: translate(-50%, -50%) scale(0.8);
+  transform: translate(-50%, 100%) scale(0.8);
   opacity: 0;
 }
 

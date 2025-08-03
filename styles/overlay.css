@@ -1,3 +1,35 @@
+/* Kein Hover-Effekt und kein Pointer für .contact-option.assigned im Task-Details-Overlay */
+#overlay-task-detail .contact-option.assigned,
+#overlay-task-detail-edit .contact-option.assigned {
+  cursor: default !important;
+}
+#overlay-task-detail .contact-option.assigned:hover,
+#overlay-task-detail-edit .contact-option.assigned:hover {
+  background-color: var(--white);
+}
+/* Kontakt-Option assigned: Overlay-Optik wie Add-Task-Standalone */
+#overlay-task-detail-edit .contact-option.assigned {
+  background-color: var(--dark) !important;
+  color: var(--white) !important;
+}
+/* Checkbox-Icon in allen Overlays immer sichtbar machen (maximale Spezifität, ganz am Ende) */
+html body #overlay-task-detail .checkbox-icon.checked,
+html body #overlay-task-detail-edit .checkbox-icon.checked {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline !important;
+  pointer-events: auto !important;
+  position: static !important;
+}
+
+/* Checkbox-Icon im Edit-Overlay immer sichtbar machen (maximale Spezifität, ganz am Ende) */
+html body #overlay-task-detail-edit .checkbox-icon.checked {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline !important;
+  pointer-events: auto !important;
+  position: static !important;
+}
 .modal-content-task {
   background-color: var(--white);
   padding: clamp(10px, 2vw, 32px);
@@ -6,6 +38,7 @@
   width: clamp(310px, 80vw, 900px);
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: none;
   position: relative;
   transform: translateX(100vw);
   opacity: 0;
@@ -235,6 +268,13 @@
   width: clamp(310px, 60vw, 900px);
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: none;
+
+  /* Hide scrollbars for modal-content overlays (Chrome, Safari, Opera) */
+  .modal-content-task::-webkit-scrollbar,
+  .modal-content::-webkit-scrollbar {
+    display: none;
+  }
   position: relative;
   transform: translateX(100vw);
   opacity: 0;
@@ -252,16 +292,24 @@
   position: absolute;
   top: clamp(8px, 2vw, 20px);
   right: clamp(8px, 2vw, 20px);
-  background: none;
+  background: var(--white);
   border: none;
   font-size: clamp(1.5rem, 3vw, 30px);
   cursor: pointer;
   z-index: 2001;
   color: var(--black);
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
 }
 
 .close-modal-btn:hover {
-  color: var(--grey);
+  background: var(--borderGrey);
+  color: var(--black);
 }
 
 .content-overlay {
@@ -273,7 +321,10 @@
   width: clamp(310px, 60vw, 900px);
   border-radius: clamp(12px, 2vw, 30px);
   background-color: var(--white);
+  overflow: hidden;
+  scrollbar-width: none; /* Firefox */
 }
+
 .content-overlay-task {
   padding: 0;
   margin: 0;
@@ -283,6 +334,14 @@
   width: clamp(320px, 80vw, 1440px);
   border-radius: clamp(12px, 2vw, 30px);
   background-color: var(--white);
+  overflow: h;
+  scrollbar-width: none;
+}
+
+/* Hide scrollbars for overlays (Chrome, Safari, Opera) */
+.content-overlay::-webkit-scrollbar,
+.content-overlay-task::-webkit-scrollbar {
+  display: none;
 }
 
 .content-overlay h1 {

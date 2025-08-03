@@ -7,7 +7,7 @@ let currentOverlay = null;
 function getValidatedElementById(id) {
   const element = document.getElementById(id);
   if (!element) {
-    console.error(`Element #${id} not found.`);
+    // Fehlerbehandlung entfernt
   }
   return element;
 }
@@ -130,7 +130,7 @@ export function openSpecificOverlay(overlayId) {
   setOverlayVisibility(overlay, true);
   manageBodyScroll(true);
   updateCurrentOverlay(overlay);
-  console.log(`Overlay '${overlayId}' opened.`);
+  // Debug-Log entfernt
 }
 
 /** * Closes a specific overlay by its ID.
@@ -143,7 +143,7 @@ export function closeSpecificOverlay(overlayId) {
   setOverlayVisibility(overlay, false);
   manageBodyScroll(false);
   clearCurrentOverlay(overlayId);
-  console.log(`Overlay '${overlayId}' closed.`);
+  // Debug-Log entfernt
 }
 
 /** * Initializes event listeners for the overlay.
@@ -177,13 +177,7 @@ export function initOverlayListeners(overlayId) {
       "#modal-content-task-edit"
     );
   if (!modalContent) {
-
     modalContent = overlay.querySelector("div");
-    if (!modalContent) {
-      console.warn(
-        `Kein modalContent gefunden für Overlay '${overlayId}'. Event-Handler werden nicht gesetzt.`
-      );
-    }
   }
   const closeModalButton = getValidatedQuerySelector(
     overlay,
