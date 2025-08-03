@@ -242,15 +242,29 @@ function getTaskAssignmentSection(task, allContactsObject) {
  * @returns {string} The HTML string for the subtask.
  */
 function createSubtaskHtml(subtaskName, isChecked, taskId, subtaskIndex) {
-  const checkedAttr = isChecked ? "checked" : "";
   return `
-        <div class="subtask-item">
-            <input type="checkbox" class="subtask-checkbox" id="subtask-${taskId}-${subtaskIndex}"
-                   data-task-id="${taskId}" data-subtask-index="${subtaskIndex}"
-                   ${checkedAttr}>
-            <label for="subtask-${taskId}-${subtaskIndex}">${subtaskName}</label>
-        </div>
-    `;
+    <div class="subtask-item">
+      <label for="subtask-${taskId}-${subtaskIndex}" class="subtask-label" style="cursor:pointer;">
+        <input type="checkbox" class="subtask-checkbox" id="subtask-${taskId}-${subtaskIndex}"
+          data-task-id="${taskId}" data-subtask-index="${subtaskIndex}" ${
+    isChecked ? "checked" : ""
+  } onclick="toggleCheckbox(this)">
+        <span class="checkbox-svg-wrapper" onclick="toggleCheckbox(this.parentElement.querySelector('input[type=checkbox]'))" style="display:inline-flex;align-items:center;cursor:pointer;">
+          ${
+            isChecked
+              ? `<svg class="checkbox-icon checked" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="16" height="16" rx="3" stroke="#2A3647" stroke-width="2" fill="white"/>
+                <path d="M3 9L7 13L15 3.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>`
+              : `<svg class="checkbox-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="16" height="16" rx="3" stroke="#2A3647" stroke-width="2" fill="white"/>
+              </svg>`
+          }
+        </span>
+        <span>${subtaskName}</span>
+      </label>
+    </div>
+  `;
 }
 
 /**
@@ -300,6 +314,29 @@ function renderSubtasks(task) {
 function getTaskSubtasksSection(task) {
   const subtasksHtml = renderSubtasks(task);
   if (subtasksHtml === "") return "";
+  // Checkbox-Icon-Toggle für Subtasks im Overlay
+  setTimeout(() => {
+    document.querySelectorAll(".subtask-label").forEach((label) => {
+      const checkbox = label.querySelector(".subtask-checkbox");
+      const icon = label.querySelector(".checkbox-icon");
+      if (!checkbox || !icon) return;
+      label.addEventListener("click", function (e) {
+        // Nur toggeln, wenn nicht auf das Label-Text-Span geklickt wurde (sonst Doppelklick)
+        if (e.target.tagName === "SPAN") return;
+        setTimeout(() => {
+          if (checkbox.checked) {
+            icon.src = "../assets/icons/btn/checkbox-filled-white.svg";
+            icon.alt = "checkbox filled";
+            icon.classList.add("checked");
+          } else {
+            icon.src = "../assets/icons/btn/checkbox-empty-black.svg";
+            icon.alt = "checkbox empty";
+            icon.classList.remove("checked");
+          }
+        }, 0);
+      });
+    });
+  }, 0);
   return `
     <div class="taskCardField subtasks-section">
       <p class="subtasks-title">Subtasks:</p>
@@ -314,10 +351,10 @@ function getTaskSubtasksSection(task) {
  * @returns {string} The HTML string for the edit button.
  */
 function getEditButtonHtml(taskId) {
-  return `<button class="edit-task-btn" data-task-id="${taskId}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 13.5V16H4.5L14.13 6.37L11.63 3.87L2 13.5ZM16.73 5.04C17.1 4.67 17.1 4.09 16.73 3.72L15.28 2.27C14.91 1.9 14.33 1.9 13.96 2.27L12.54 3.69L15.04 6.19L16.73 5.04Z" fill="#2A3647"/></svg>Edit</button>`;
+  return `<button class="edit-task-btn" data-task-id="${taskId}"><svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M2 13.5V16H4.5L14.13 6.37L11.63 3.87L2 13.5ZM16.73 5.04C17.1 4.67 17.1 4.09 16.73 3.72L15.28 2.27C14.91 1.9 14.33 1.9 13.96 2.27L12.54 3.69L15.04 6.19L16.73 5.04Z" fill="currentColor"/></svg>Edit</button>`;
 }
 function getVerticalSeparator() {
-  return `<span class="task-detail-separator" style="display:flex;align-items:center;"><svg width="1" height="24" viewBox="0 0 1 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="24" fill="#D1D1D1"/></svg></span>`;
+  return `<span class="task-detail-separator" style="display:flex;align-items:center;"><svg width="1" height="24" viewBox="0 0 1 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="24" fill="#D1D1D1"/></svg></span>`;
 }
 function getDeleteButtonSvgPaths() {
   return (
@@ -327,6 +364,7 @@ function getDeleteButtonSvgPaths() {
 }
 
 /**
+/**
  * Erstellt den HTML-String für den Löschen-Button einer Aufgabe.
  * @param {string} taskId - Die ID der Aufgabe.
  * @returns {string} Der HTML-String des Löschen-Buttons.
@@ -334,8 +372,8 @@ function getDeleteButtonSvgPaths() {
 function getDeleteButtonHtml(taskId) {
   return `
     <button class="delete-task-btn" data-task-id="${taskId}">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 7V13H8V7H6ZM10 7V13H12V7H10ZM4 15V5H14V15C14 15.55 13.55 16 13 16H5C4.45 16 4 15.55 4 15ZM16 3H13.5L12.71 2.21C12.53 2.03 12.28 1.92 12 1.92H6C5.72 1.92 5.47 2.03 5.29 2.21L4.5 3H2V5H16V3Z" fill="#2A3647"/>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 7V13H8V7H6ZM10 7V13H12V7H10ZM4 15V5H14V15C14 15.55 13.55 16 13 16H5C4.45 16 4 15.55 4 15ZM16 3H13.5L12.71 2.21C12.53 2.03 12.28 1.92 12 1.92H6C5.72 1.92 5.47 2.03 5.29 2.21L4.5 3H2V5H16V3Z" fill="currentColor"/>
       </svg>
       Delete
     </button>

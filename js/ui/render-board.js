@@ -2,6 +2,9 @@ import { loadFirebaseData } from "../../main.js";
 import { initDragAndDrop } from "../events/drag-and-drop.js";
 import { createSimpleTaskCard } from "./render-card.js";
 import { allData } from "../data/task-to-firbase.js";
+import { toggleCheckbox } from "../ui/toggle-checkbox.js";
+
+window.toggleCheckbox = toggleCheckbox;
 
 let tasksData = {};
 

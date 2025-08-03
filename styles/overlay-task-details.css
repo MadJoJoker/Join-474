@@ -1,0 +1,171 @@
+/* Hide native checkbox for custom SVG styling in task details overlay */
+.subtask-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+.content-task {
+  max-width: 400px;
+  padding: 15px;
+}
+.taskCardField.priority-section,
+.taskCardField.taskCardField.date {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-start;
+  align-items: center;
+}
+#overlay-task-detail .modal-content-task,
+#overlay-task-detail-edit .modal-content-task {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: 32px 32px 24px 32px;
+  max-width: 450px;
+  width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+  position: relative;
+  font-family: "Inter", Arial, sans-serif;
+  max-height: 90vh;
+}
+.task-category,
+.category-user-story,
+.category-technical-task,
+.category-meeting {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 18px;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #222;
+  cursor: pointer;
+  z-index: 2;
+}
+.titleText {
+  font-size: 61px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.description {
+  color: #444;
+  font-size: 1.1rem;
+  margin-bottom: 18px;
+}
+.taskCardField.date p:first-child,
+.taskCardField.priority-section p:first-child,
+.taskCardField.assigned-section .assigned-title,
+.taskCardField.subtasks-section .subtasks-title {
+  color: #6c757d;
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.taskCardField.date p:last-child {
+  color: #222;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+.priority-display {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.assigned-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.assigned-initials-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-right: 10px;
+}
+.contact-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  color: #222;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+.subtasks-section {
+  margin-top: 18px;
+}
+.subtaskList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+}
+.subtask-checkbox {
+  accent-color: #20c997;
+  width: 18px;
+  height: 18px;
+}
+.cardMenu {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 24px;
+}
+.cardMenu button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+  padding: 5px;
+}
+.cardMenu button:hover {
+  color: var(--lightBlue);
+  padding: 5px;
+}
+@media (max-width: 600px) {
+  #overlay-task-detail .modal-content-task,
+  #overlay-task-detail-edit .modal-content-task {
+    padding: 16px 4px 12px 4px;
+    max-width: 450px;
+    border-radius: 12px;
+  }
+  .titleText {
+    font-size: 1.3rem;
+  }
+}

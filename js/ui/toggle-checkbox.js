@@ -1,16 +1,26 @@
-// Toggle function for checkboxes in task-details-overlay
-// Usage: Add 'onclick="toggleCheckbox(this)"' to your checkbox input or label
-
 export function toggleCheckbox(checkboxElem) {
+  let cb, svg;
   if (checkboxElem.tagName === "INPUT" && checkboxElem.type === "checkbox") {
-    checkboxElem.checked = !checkboxElem.checked;
-  } else if (checkboxElem.querySelector('input[type="checkbox"]')) {
-    const cb = checkboxElem.querySelector('input[type="checkbox"]');
-    cb.checked = !cb.checked;
+    cb = checkboxElem;
+    svg = cb.parentElement.querySelector(".checkbox-icon");
+  } else {
+    cb = checkboxElem.querySelector('input[type="checkbox"]');
+    svg = checkboxElem.querySelector(".checkbox-icon");
+  }
+  if (!cb || !svg) return;
+  cb.checked = !cb.checked;
+  if (cb.checked) {
+    svg.innerHTML =
+      '<rect x="1" y="1" width="16" height="16" rx="3" stroke="#2A3647" stroke-width="2" fill="white"/>' +
+      '<path d="M3 9L7 13L15 3.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+    svg.classList.add("checked");
+  } else {
+    svg.innerHTML =
+      '<rect x="1" y="1" width="16" height="16" rx="3" stroke="#2A3647" stroke-width="2" fill="white"/>';
+    svg.classList.remove("checked");
   }
 }
 
-// Optional: Attach event listeners automatically for all checkboxes in the overlay
 export function initTaskDetailsCheckboxToggles(
   overlaySelector = "#overlay-task-detail, #overlay-task-detail-edit"
 ) {
