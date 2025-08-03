@@ -50,7 +50,7 @@ function getColumnIdData(keys) {
     if (summaryData.hasOwnProperty(columnID)) {
       summaryData[columnID]++;
     } else {
-      summaryData[columnID] = 1;
+      summaryData[columnID] = 1; // für Ungewöhnliches, Fehler
     }
   });
 }

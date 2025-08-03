@@ -133,7 +133,6 @@ function getLastKey(category) {
 async function sendObject(pushObjectId, rawNewObject) {
   let path = `tasks/${pushObjectId}`;
   await saveToFirebase(path, rawNewObject);
-  // await putObjectToDatabase(path, rawNewObject);
 
   const localObject = {
     [pushObjectId]: rawNewObject,
@@ -142,21 +141,6 @@ async function sendObject(pushObjectId, rawNewObject) {
   Object.assign(allData.tasks, localObject);
   return rawNewObject;
 }
-
-// async function putObjectToDatabase(path, data={}) {
-//   let url = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/';
-//   const res = await fetch(url + path + '.json', {
-//     method: "PUT",
-//     headers: {
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify(data)
-//   });
-//   if (!res.ok) throw new Error(`PUT failed: ${res.status}`);
-//   const result = await res.json();
-//   console.log("PUT result:", result);
-//   return result;
-// }
 
 /**
  * upload function for data traffic to Firebase
