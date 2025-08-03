@@ -318,7 +318,6 @@ html body #overlay-task-detail-edit .checkbox-icon.checked {
   display: block;
   min-height: 100%;
   min-width: 0;
-  width: clamp(310px, 60vw, 900px);
   border-radius: clamp(12px, 2vw, 30px);
   background-color: var(--white);
   overflow: hidden;

@@ -126,9 +126,30 @@ export function openSpecificOverlay(overlayId) {
   closeExistingOverlay(overlayId);
   const overlay = getValidatedElementById(overlayId);
   if (!overlay) return;
+  // Dynamically load the appropriate CSS for the overlay
+  if (overlayId === "overlay-task-detail-edit") {
+    ensureOverlayCSS("../styles/overlay-task-detail-edit.css");
+  } else if (overlayId === "overlay-task-detail") {
+    ensureOverlayCSS("../styles/overlay-task-details.css");
+  }
   setOverlayVisibility(overlay, true);
   manageBodyScroll(true);
   updateCurrentOverlay(overlay);
+}
+
+// Ensures that the overlay CSS is included in the <head>.
+// @param {string} href - The path to the CSS file (relative to the main HTML document)
+function ensureOverlayCSS(href) {
+  if (
+    ![...document.head.querySelectorAll('link[rel="stylesheet"]')].some((l) =>
+      l.href.includes(href)
+    )
+  ) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    document.head.appendChild(link);
+  }
 }
 
 /** * Closes a specific overlay by its ID.

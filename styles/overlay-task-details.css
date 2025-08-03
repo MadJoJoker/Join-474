@@ -18,8 +18,7 @@
   justify-content: flex-start;
   align-items: center;
 }
-#overlay-task-detail .modal-content-task,
-#overlay-task-detail-edit .modal-content-task {
+#overlay-task-detail .modal-content-task{
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
