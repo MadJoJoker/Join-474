@@ -2,9 +2,9 @@ import { renderAssignedToContacts } from "../templates/add-task-template.js";
 import { firebaseData } from "../../main.js";
 
 /**
- * Formatiert ein Datum von "DD.MM.YYYY" in "DD/MM/YYYY".
- * @param {string} dateString - Das Datumsstring im Format "DD.MM.YYYY".
- * @returns {string} Das formatierte Datumsstring im Format "DD/MM/YYYY".
+ * Formats a date from "DD.MM.YYYY" to "DD/MM/YYYY".
+ * @param {string} dateString - The date string in format "DD.MM.YYYY".
+ * @returns {string} The formatted date string in format "DD/MM/YYYY".
  */
 function getFormattedDate(dateString) {
   const parts = dateString.split(".");
@@ -19,9 +19,9 @@ function getFormattedDate(dateString) {
 }
 
 /**
- * Überprüft, ob ein Datumsstring im Format "DD.MM.YYYY" gültig ist.
- * @param {string} dateString - Der zu überprüfende Datumsstring.
- * @returns {boolean} True, wenn das Datum gültig ist, sonst false.
+ * Checks if a date string in format "DD.MM.YYYY" is valid.
+ * @param {string} dateString - The date string to check.
+ * @returns {boolean} True if the date is valid, otherwise false.
  */
 function isValidDate(dateString) {
   if (!dateString) return false;
@@ -32,18 +32,18 @@ function isValidDate(dateString) {
 }
 
 /**
- * Formatiert ein Abgabetermindatum.
- * @param {string} deadline - Der Abgabetermindatum-String.
- * @returns {string} Das formatierte Abgabetermindatum oder ein leerer String, wenn ungültig.
+ * Formats a deadline date string.
+ * @param {string} deadline - The deadline date string.
+ * @returns {string} The formatted deadline or an empty string if invalid.
  */
 function formatDeadline(deadline) {
   return isValidDate(deadline) ? getFormattedDate(deadline) : "";
 }
 
 /**
- * Erstellt den HTML-Header für eine Aufgabenkarte.
- * @param {object} task - Das Aufgabenobjekt.
- * @returns {string} Der HTML-String für den Aufgabenheader.
+ * Creates the HTML header for a task card.
+ * @param {object} task - The task object.
+ * @returns {string} The HTML string for the task header.
  */
 function getTaskHeader(task) {
   // Gleiche Kategorie-Klassen wie auf den Board-Karten
@@ -61,9 +61,9 @@ function getTaskHeader(task) {
 }
 
 /**
- * Erstellt den HTML-Beschreibungsbereich für eine Aufgabenkarte.
- * @param {object} task - Das Aufgabenobjekt.
- * @returns {string} Der HTML-String für die Aufgabenbeschreibung.
+ * Creates the HTML description section for a task card.
+ * @param {object} task - The task object.
+ * @returns {string} The HTML string for the task description.
  */
 function getTaskDescription(task) {
   return `
@@ -74,9 +74,9 @@ function getTaskDescription(task) {
 }
 
 /**
- * Erstellt den HTML-Fälligkeitsdatumsbereich für eine Aufgabenkarte.
- * @param {string} formattedDeadline - Das bereits formatierte Fälligkeitsdatum.
- * @returns {string} Der HTML-String für das Fälligkeitsdatum.
+ * Creates the HTML due date section for a task card.
+ * @param {string} formattedDeadline - The already formatted due date.
+ * @returns {string} The HTML string for the due date.
  */
 function getTaskDueDate(formattedDeadline) {
   return `
@@ -87,19 +87,19 @@ function getTaskDueDate(formattedDeadline) {
 }
 
 /**
- * Gibt den formatierten Prioritätstext zurück.
- * @param {string} priority - Der Prioritätsstring (z.B. "urgent").
- * @returns {string} Der formatierte Prioritätstext.
+ * Returns the formatted priority text.
+ * @param {string} priority - The priority string (e.g., "urgent").
+ * @returns {string} The formatted priority text.
  */
 function getPriorityText(priority) {
   return priority ? priority.charAt(0).toUpperCase() + priority.slice(1) : "No";
 }
 
 /**
- * Erstellt den HTML-Anzeigebereich für die Priorität.
- * @param {string} priorityClass - Die CSS-Klasse für die Priorität.
- * @param {string} priorityText - Der anzuzeigende Prioritätstext.
- * @returns {string} Der HTML-String für die Prioritätsanzeige.
+ * Creates the HTML display section for priority.
+ * @param {string} priorityClass - The CSS class for the priority.
+ * @param {string} priorityText - The priority text to display.
+ * @returns {string} The HTML string for the priority display.
  */
 function getPriorityDisplayHtml(priorityClass, priorityText) {
   return `
@@ -111,9 +111,9 @@ function getPriorityDisplayHtml(priorityClass, priorityText) {
 }
 
 /**
- * Erstellt den HTML-Prioritätsbereich für eine Aufgabenkarte.
- * @param {object} task - Das Aufgabenobjekt.
- * @returns {string} Der HTML-String für den Aufgabenprioritätsbereich.
+ * Creates the HTML priority section for a task card.
+ * @param {object} task - The task object.
+ * @returns {string} The HTML string for the task priority section.
  */
 function getTaskPriority(task) {
   const priorityClass = task.priority?.toLowerCase() ?? "";
@@ -126,12 +126,12 @@ function getTaskPriority(task) {
 }
 
 /**
- * Überprüft, ob ein Kontakt mit den gegebenen Details übereinstimmt.
- * @param {object} contact - Das Kontaktobjekt.
- * @param {string} name - Der Name des Kontakts.
- * @param {string} initials - Die Initialen des Kontakts.
- * @param {string} avatarColor - Die Avatarfarbe des Kontakts.
- * @returns {boolean} True, wenn der Kontakt übereinstimmt, sonst false.
+ * Checks if a contact matches the given details.
+ * @param {object} contact - The contact object.
+ * @param {string} name - The contact's name.
+ * @param {string} initials - The contact's initials.
+ * @param {string} avatarColor - The contact's avatar color.
+ * @returns {boolean} True if the contact matches, otherwise false.
  */
 function contactMatches(contact, name, initials, avatarColor) {
   return (
@@ -142,12 +142,12 @@ function contactMatches(contact, name, initials, avatarColor) {
 }
 
 /**
- * Überprüft, ob ein Kontakt in der Liste der zugewiesenen Kontakte enthalten ist.
- * @param {string} name - Der Name des zu überprüfenden Kontakts.
- * @param {string} initials - Die Initialen des zu überprüfenden Kontakts.
- * @param {string} avatarColor - Die Avatarfarbe des zu überprüfenden Kontakts.
- * @param {Array<object>} assignedContacts - Die Liste der bereits zugewiesenen Kontaktobjekte.
- * @returns {boolean} True, wenn der Kontakt zugewiesen ist, sonst false.
+ * Checks if a contact is in the list of assigned contacts.
+ * @param {string} name - The name of the contact to check.
+ * @param {string} initials - The initials of the contact to check.
+ * @param {string} avatarColor - The avatar color of the contact to check.
+ * @param {Array<object>} assignedContacts - The list of already assigned contact objects.
+ * @returns {boolean} True if the contact is assigned, otherwise false.
  */
 function isContactSelected(name, initials, avatarColor, assignedContacts) {
   return (
@@ -158,10 +158,10 @@ function isContactSelected(name, initials, avatarColor, assignedContacts) {
 }
 
 /**
- * Rendert die HTML-Darstellung eines Kontakts mit Auswahlstatus.
- * @param {object} contact - Das Kontaktobjekt zum Rendern.
- * @param {Array<object>} assignedContactObjects - Die Liste der bereits zugewiesenen Kontaktobjekte für den Vergleich.
- * @returns {string} Der HTML-String für die Kontaktoption.
+ * Renders the HTML for a contact with selection status.
+ * @param {object} contact - The contact object to render.
+ * @param {Array<object>} assignedContactObjects - The list of already assigned contact objects for comparison.
+ * @returns {string} The HTML string for the contact option.
  */
 export function renderAssignedToContactsWithSelection(
   contact,
@@ -188,10 +188,10 @@ export function renderAssignedToContactsWithSelection(
 }
 
 /**
- * Filtert Kontaktobjekte basierend auf zugewiesenen Benutzer-IDs.
- * @param {Array<string>} assignedUserIDs - Eine Liste von Benutzer-IDs.
- * @param {object} allContactsObject - Ein Objekt, das alle Kontaktobjekte nach ID enthält.
- * @returns {Array<object>} Eine gefilterte Liste von Kontaktobjekten.
+ * Filters contact objects based on assigned user IDs.
+ * @param {Array<string>} assignedUserIDs - A list of user IDs.
+ * @param {object} allContactsObject - An object containing all contact objects by ID.
+ * @returns {Array<object>} A filtered list of contact objects.
  */
 function getFilteredContacts(assignedUserIDs, allContactsObject) {
   if (!assignedUserIDs) return [];
@@ -199,10 +199,10 @@ function getFilteredContacts(assignedUserIDs, allContactsObject) {
 }
 
 /**
- * Generiert den HTML-String für zugewiesene Kontakte.
- * @param {Array<string>} assignedUserIDs - Eine Liste von Benutzer-IDs, die einer Aufgabe zugewiesen sind.
- * @param {object} allContactsObject - Ein Objekt, das alle Kontaktobjekte nach ID enthält.
- * @returns {string} Der HTML-String für die Liste der zugewiesenen Kontakte.
+ * Generates the HTML string for assigned contacts.
+ * @param {Array<string>} assignedUserIDs - A list of user IDs assigned to a task.
+ * @param {object} allContactsObject - An object containing all contact objects by ID.
+ * @returns {string} The HTML string for the list of assigned contacts.
  */
 function getAssignedContactsHtml(assignedUserIDs, allContactsObject) {
   const assignedContacts = getFilteredContacts(
@@ -215,10 +215,10 @@ function getAssignedContactsHtml(assignedUserIDs, allContactsObject) {
 }
 
 /**
- * Erstellt den HTML-Bereich für die Aufgabenzuweisung.
- * @param {object} task - Das Aufgabenobjekt.
- * @param {object} allContactsObject - Ein Objekt, das alle Kontaktobjekte nach ID enthält.
- * @returns {string} Der HTML-String für den Aufgabenzuweisungsbereich.
+ * Creates the HTML section for task assignment.
+ * @param {object} task - The task object.
+ * @param {object} allContactsObject - An object containing all contact objects by ID.
+ * @returns {string} The HTML string for the task assignment section.
  */
 function getTaskAssignmentSection(task, allContactsObject) {
   const contactsHtml = getAssignedContactsHtml(
@@ -234,12 +234,12 @@ function getTaskAssignmentSection(task, allContactsObject) {
 }
 
 /**
- * Erstellt den HTML-String für eine einzelne Unteraufgabe.
- * @param {string} subtaskName - Der Name der Unteraufgabe.
- * @param {boolean} isChecked - Gibt an, ob die Unteraufgabe aktiviert ist.
- * @param {string} taskId - Die ID der übergeordneten Aufgabe.
- * @param {number} subtaskIndex - Der Index der Unteraufgabe.
- * @returns {string} Der HTML-String für die Unteraufgabe.
+ * Creates the HTML string for a single subtask.
+ * @param {string} subtaskName - The name of the subtask.
+ * @param {boolean} isChecked - Whether the subtask is checked.
+ * @param {string} taskId - The ID of the parent task.
+ * @param {number} subtaskIndex - The index of the subtask.
+ * @returns {string} The HTML string for the subtask.
  */
 function createSubtaskHtml(subtaskName, isChecked, taskId, subtaskIndex) {
   const checkedAttr = isChecked ? "checked" : "";
@@ -254,10 +254,10 @@ function createSubtaskHtml(subtaskName, isChecked, taskId, subtaskIndex) {
 }
 
 /**
- * Ermittelt den Checked-Status einer Unteraufgabe.
- * @param {object} task - Das Aufgabenobjekt, das die Unteraufgaben enthält.
- * @param {number} index - Der Index der Unteraufgabe.
- * @returns {boolean} True, wenn die Unteraufgabe als 'checked' markiert ist, sonst false.
+ * Gets the checked status of a subtask.
+ * @param {object} task - The task object containing the subtasks.
+ * @param {number} index - The index of the subtask.
+ * @returns {boolean} True if the subtask is checked, otherwise false.
  */
 function getSubtaskCheckedStatus(task, index) {
   return (
@@ -266,10 +266,10 @@ function getSubtaskCheckedStatus(task, index) {
 }
 
 /**
- * Rendert eine einzelne Unteraufgabe.
- * @param {object} task - Das Aufgabenobjekt, das die Unteraufgabe enthält.
- * @param {number} i - Der Index der Unteraufgabe.
- * @returns {string} Der HTML-String der gerenderten Unteraufgabe.
+ * Renders a single subtask.
+ * @param {object} task - The task object containing the subtask.
+ * @param {number} i - The index of the subtask.
+ * @returns {string} The HTML string of the rendered subtask.
  */
 function renderSingleSubtask(task, i) {
   const subtaskName = task.totalSubtask[i];
@@ -278,9 +278,9 @@ function renderSingleSubtask(task, i) {
 }
 
 /**
- * Rendert alle Unteraufgaben für eine gegebene Aufgabe.
- * @param {object} task - Das Aufgabenobjekt.
- * @returns {string} Der kombinierte HTML-String aller Unteraufgaben.
+ * Renders all subtasks for a given task.
+ * @param {object} task - The task object.
+ * @returns {string} The combined HTML string of all subtasks.
  */
 function renderSubtasks(task) {
   if (!Array.isArray(task?.totalSubtask) || task.totalSubtask.length === 0)
@@ -293,9 +293,9 @@ function renderSubtasks(task) {
 }
 
 /**
- * Erstellt den HTML-Bereich für die Unteraufgaben einer Aufgabenkarte.
- * @param {object} task - Das Aufgabenobjekt.
- * @returns {string} Der HTML-String für den Unteraufgabenbereich.
+ * Creates the HTML section for the subtasks of a task card.
+ * @param {object} task - The task object.
+ * @returns {string} The HTML string for the subtasks section.
  */
 function getTaskSubtasksSection(task) {
   const subtasksHtml = renderSubtasks(task);
@@ -308,6 +308,11 @@ function getTaskSubtasksSection(task) {
   `;
 }
 
+/**
+ * Returns the HTML for the edit button.
+ * @param {string} taskId - The ID of the task.
+ * @returns {string} The HTML string for the edit button.
+ */
 function getEditButtonHtml(taskId) {
   return `<button class="edit-task-btn" data-task-id="${taskId}"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 13.5V16H4.5L14.13 6.37L11.63 3.87L2 13.5ZM16.73 5.04C17.1 4.67 17.1 4.09 16.73 3.72L15.28 2.27C14.91 1.9 14.33 1.9 13.96 2.27L12.54 3.69L15.04 6.19L16.73 5.04Z" fill="#2A3647"/></svg>Edit</button>`;
 }

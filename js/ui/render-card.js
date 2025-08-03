@@ -6,10 +6,9 @@ import {
 } from "./render-card-events.js";
 
 /**
- * Validiert die Eingabedaten für die Task-Karte.
- * @param {object} boardData - Die gesamten Board-Daten.
- * @param {string} taskID - Die ID der Task.
- * @returns {boolean} True, wenn die Daten gültig sind, sonst false.
+ * @param {object} boardData - The complete board data object.
+ * @param {string} taskID - The ID of the task.
+ * @returns {boolean} True if the data is valid, otherwise false.
  */
 function validateTaskCardInput(boardData, taskID) {
   if (!boardData || !taskID || !boardData.tasks || !boardData.contacts) {
@@ -23,9 +22,8 @@ function validateTaskCardInput(boardData, taskID) {
 }
 
 /**
- * Extrahiert grundlegende Task-Details.
- * @param {object} task - Das Task-Objekt.
- * @returns {{title: string, description: string, type: string, priority: string}} Die extrahierten Details.
+ * @param {object} task - The task object.
+ * @returns {{title: string, description: string, type: string, priority: string}} The extracted details.
  */
 function getTaskDetails(task) {
   const title = task.title || "Kein Titel";
@@ -36,9 +34,8 @@ function getTaskDetails(task) {
 }
 
 /**
- * Ermittelt die CSS-Klasse für die Task-Kategorie.
- * @param {string} type - Der Typ der Task (z.B. 'User Story').
- * @returns {string} Die entsprechende CSS-Klasse.
+ * @param {string} type - The type of the task (e.g., 'User Story').
+ * @returns {string} The corresponding CSS class.
  */
 function getCategoryClass(type) {
   if (type === "User Story") return "category-user-story";
@@ -48,13 +45,12 @@ function getCategoryClass(type) {
 }
 
 /**
- * Berechnet den Fortschritt der Subtasks.
- * @param {object} task - Das Task-Objekt.
- * @returns {{done: number, total: number, percent: number, subText: string}} Der Fortschritt der Subtasks.
+ * @param {object} task - The task object.
+ * @returns {{done: number, total: number, percent: number, subText: string}} The progress of the subtasks.
  */
 function calculateSubtaskProgress(task) {
   let subtasksArray = [];
-  // Standard: Array von Objekten mit .completed
+  // ...existing code...
   if (Array.isArray(task.subtasks) && task.subtasks.length > 0) {
     subtasksArray = task.subtasks;
   } else if (
@@ -62,7 +58,6 @@ function calculateSubtaskProgress(task) {
     Array.isArray(task.checkedSubtasks) &&
     task.totalSubtask.length === task.checkedSubtasks.length
   ) {
-    // Kompatibilität: totalSubtask (Texte) + checkedSubtasks (Booleans)
     subtasksArray = task.totalSubtask.map((text, i) => ({
       text,
       completed: !!task.checkedSubtasks[i],
@@ -71,16 +66,14 @@ function calculateSubtaskProgress(task) {
   const done = subtasksArray.filter((sub) => sub.completed).length;
   const total = subtasksArray.length;
   const percent = total > 0 ? (done / total) * 100 : 0;
-  const subText =
-    total > 0 ? `${done}/${total} Subtasks` : "Keine Unteraufgaben";
+  const subText = total > 0 ? `${done}/${total} Subtasks` : "No subtasks";
   return { done, total, percent, subText };
 }
 
 /**
- * Generiert den HTML-String für die Avatare der zugewiesenen Benutzer.
- * @param {string[]} assignedUserIDs - IDs der zugewiesenen Benutzer.
- * @param {object} contacts - Das Kontakte-Objekt.
- * @returns {string} Der HTML-String der Avatare.
+ * @param {string[]} assignedUserIDs - IDs of the assigned users.
+ * @param {object} contacts - The contacts object.
+ * @returns {string} The HTML string of the avatars.
  */
 function generateAssignedAvatarsHtml(assignedUserIDs, contacts) {
   let avatarsHtml = "";
@@ -100,13 +93,12 @@ function generateAssignedAvatarsHtml(assignedUserIDs, contacts) {
 }
 
 /**
- * Rendert einen einzelnen Kontakt-Avatar.
- * @param {object} contact - Das Kontakt-Objekt.
- * @returns {string} Der HTML-String des Avatars.
+ * @param {object} contact - The contact object.
+ * @returns {string} The HTML string of the avatar.
  */
 function renderContactAvatar(contact) {
   if (!contact) {
-    return `<div class="assigned-initials-circle" style="background-color: var(--grey);" title="Unbekannt">?</div>`;
+    return `<div class="assigned-initials-circle" style="background-color: var(--grey);" title="Unknown">?</div>`;
   }
   const initials = (contact.initials || "").trim();
   const name = (contact.name || "").trim();
@@ -116,34 +108,32 @@ function renderContactAvatar(contact) {
 }
 
 /**
- * Ermittelt das Icon und den Text für die Priorität.
- * @param {string} prio - Die Priorität ('low', 'medium', 'urgent').
- * @returns {{icon: string, prioText: string}} Icon-Pfad und Prioritäts-Text.
+ * @param {string} prio - The priority ('low', 'medium', 'urgent').
+ * @returns {{icon: string, prioText: string}} Icon path and priority text.
  */
 function getPriorityIconAndText(prio) {
   if (prio === "low")
-    return { icon: `../assets/icons/property/low.svg`, prioText: "Niedrig" };
+    return { icon: `../assets/icons/property/low.svg`, prioText: "Low" };
   if (prio === "medium")
-    return { icon: `../assets/icons/property/medium.svg`, prioText: "Mittel" };
+    return { icon: `../assets/icons/property/medium.svg`, prioText: "Medium" };
   if (prio === "urgent")
     return {
       icon: `../assets/icons/property/urgent.svg`,
-      prioText: "Dringend",
+      prioText: "Urgent",
     };
   return {
     icon: `../assets/icons/property/default.svg`,
-    prioText: "Unbekannt",
+    prioText: "Unknown",
   };
 }
 
 /**
- * Baut den vollständigen HTML-Inhalt einer Task-Karte.
- * @param {string} taskID - Die ID der Task.
- * @param {object} taskDetails - Die Task-Details.
- * @param {object} subtaskProgress - Der Subtask-Fortschritt.
- * @param {string} avatarsHtml - Die Avatare der zugewiesenen Benutzer.
- * @param {object} priorityInfo - Prioritätsinformationen.
- * @returns {string} Der HTML-String der Task-Karte.
+ * @param {string} taskID - The ID of the task.
+ * @param {object} taskDetails - The task details.
+ * @param {object} subtaskProgress - The subtask progress.
+ * @param {string} avatarsHtml - The avatars of the assigned users.
+ * @param {object} priorityInfo - Priority information.
+ * @returns {string} The HTML string of the task card.
  */
 function buildTaskCardHtmlContent(
   taskID,
@@ -205,10 +195,9 @@ function buildTaskCardHtmlContent(
 }
 
 /**
- * Erstellt den HTML-String für eine einzelne Task-Karte auf dem Board.
- * @param {object} boardData - Das gesamte Board-Datenobjekt (Tasks, Kontakte etc.).
- * @param {string} taskID - Die ID der Task, die gerendert werden soll.
- * @returns {string} Der HTML-String der Task-Karte.
+ * @param {object} boardData - The complete board data object (tasks, contacts, etc.).
+ * @param {string} taskID - The ID of the task to be rendered.
+ * @returns {string} The HTML string of the task card.
  */
 export function createSimpleTaskCard(boardData, taskID) {
   if (!validateTaskCardInput(boardData, taskID)) return "";
@@ -227,8 +216,6 @@ export function createSimpleTaskCard(boardData, taskID) {
   );
 }
 
-// Gemeinsames Objekt für Task-Edit-Daten (wird von beiden Dateien genutzt)
 export const editedTaskData = {};
 
-// Re-Export für dynamischen Import in render-board.js
 export { registerTaskCardDetailOverlay } from "./render-card-events.js";

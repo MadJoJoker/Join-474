@@ -7,7 +7,6 @@ let currentOverlay = null;
 function getValidatedElementById(id) {
   const element = document.getElementById(id);
   if (!element) {
-    // Fehlerbehandlung entfernt
   }
   return element;
 }
@@ -130,7 +129,6 @@ export function openSpecificOverlay(overlayId) {
   setOverlayVisibility(overlay, true);
   manageBodyScroll(true);
   updateCurrentOverlay(overlay);
-  // Debug-Log entfernt
 }
 
 /** * Closes a specific overlay by its ID.
@@ -143,7 +141,6 @@ export function closeSpecificOverlay(overlayId) {
   setOverlayVisibility(overlay, false);
   manageBodyScroll(false);
   clearCurrentOverlay(overlayId);
-  // Debug-Log entfernt
 }
 
 /** * Initializes event listeners for the overlay.

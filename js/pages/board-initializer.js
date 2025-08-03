@@ -11,7 +11,8 @@ import { filterTaskCardsByTitle } from "../events/find-task.js";
 
 let isOverlayLoaded = false;
 
-/** * Loads the add-task overlay and initializes it.
+/**
+ * Loads the add-task overlay and initializes it.
  * If the overlay is already loaded, it clears the form and opens the overlay.
  */
 export async function loadAndInitAddTaskOverlay() {
@@ -46,7 +47,9 @@ export async function loadAndInitAddTaskOverlay() {
 
       initOverlayListeners("overlay");
 
-      const formContainerInOverlay = overlayElement.querySelector("#add-task-form-container");
+      const formContainerInOverlay = overlayElement.querySelector(
+        "#add-task-form-container"
+      );
       if (formContainerInOverlay) {
         formContainerInOverlay.innerHTML = getAddTaskFormHTML();
       } else {
@@ -60,8 +63,8 @@ export async function loadAndInitAddTaskOverlay() {
   }
 }
 
-/** * Initializes the add-task overlay and sets up event listeners.
- * This function is called when the DOM content is loaded.
+/**
+ * Initializes the add-task overlay and sets up event listeners when the DOM content is loaded.
  */
 document.addEventListener("DOMContentLoaded", () => {
   const addTaskButton = document.getElementById("add-task");
@@ -72,7 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const fastAddTaskButtons = document.querySelectorAll('[id^="fast-add-task-"]');
+  const fastAddTaskButtons = document.querySelectorAll(
+    '[id^="fast-add-task-"]'
+  );
   fastAddTaskButtons.forEach((button) => {
     button.addEventListener("click", async (event) => {
       const columnId = event.currentTarget.id.replace("fast-add-task-", "");
@@ -87,7 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-/** * Shows a find-task-info-no-found message after no task is found.
+/**
+ * Shows a find-task-info-no-found message after no task is found.
  * The message slides in, stays visible for a short time, and then slides out.
  */
 export async function showFindTaskInfoNoFoundMsg() {

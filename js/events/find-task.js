@@ -16,12 +16,10 @@ export async function filterTaskCardsByTitle() {
   }
 
   const allTaskCards = document.querySelectorAll(".task-card");
-  // Hide placeholders while searching
   const placeholders = document.querySelectorAll(".no-tasks-placeholder");
   if (searchTerm.length > 0) {
     placeholders.forEach((ph) => (ph.style.display = "none"));
   } else {
-    // If search field is empty, restore default display (empty columns show placeholder)
     placeholders.forEach((ph) => {
       const parent = ph.parentElement;
       const visibleCards = parent.querySelectorAll(

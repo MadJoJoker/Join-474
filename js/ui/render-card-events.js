@@ -1,5 +1,3 @@
-// Event-Listener und Overlay-Management für Task-Karten
-// Ausgelagert aus render-card.js
 
 import { getTaskOverlay } from "../templates/task-details-template.js";
 import {
@@ -15,10 +13,13 @@ import {
 import { CWDATA } from "../data/task-to-firbase.js";
 import { editedTaskData } from "./render-card.js";
 
-// Globale Referenzen für die Overlay-Elemente (exportiert für geteilte Nutzung)
 export let detailOverlayElement = null;
 export let editOverlayElement = null;
 
+/**
+ * Loads the detail overlay HTML into the DOM if not already loaded.
+ * @returns {Promise<void>} Resolves when the overlay is loaded.
+ */
 async function loadDetailOverlayHtmlOnce() {
   if (detailOverlayElement) {
     return;
@@ -36,10 +37,13 @@ async function loadDetailOverlayHtmlOnce() {
       initOverlayListeners("overlay-task-detail");
     }
   } catch (error) {
-    // DEBUG log removed
   }
 }
 
+/**
+ * Loads the edit overlay HTML into the DOM if not already loaded.
+ * @returns {Promise<void>} Resolves when the overlay is loaded.
+ */
 async function loadEditOverlayHtmlOnce() {
   if (editOverlayElement) return;
   try {
@@ -61,6 +65,12 @@ async function loadEditOverlayHtmlOnce() {
   }
 }
 
+/**
+ * Registers click and dropdown event listeners for all task cards, and manages overlays.
+ * @param {object} boardData - The complete board data object (tasks, contacts, etc.).
+ * @param {function} updateBoardFunction - Callback to update the board after changes.
+ * @returns {Promise<void>} Resolves when listeners are registered.
+ */
 export async function registerTaskCardDetailOverlay(
   boardData,
   updateBoardFunction
@@ -165,7 +175,6 @@ export async function registerTaskCardDetailOverlay(
         openSpecificOverlay("overlay-task-detail");
         const task = boardData.tasks[taskId];
         const container = detailOverlayElement.querySelector("#task-container");
-        // DEBUG log removed
         if (container) {
           const html = getTaskOverlay(task, taskId, boardData.contacts);
           container.innerHTML = html;

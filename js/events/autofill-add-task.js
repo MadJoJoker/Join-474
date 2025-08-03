@@ -1,16 +1,20 @@
 import { addSubtask } from "./subtask-handler.js";
-import { demoSelectAssignedContact,demoSelectCategory } from "./dropdown-menu.js";
+import {
+  demoSelectAssignedContact,
+  demoSelectCategory,
+} from "./dropdown-menu.js";
 import { clearInvalidFields } from "./dropdown-menu-auxiliary-function.js";
 
 export let autofillLeft = true;
 export let autofillRight = true;
 
-/** * Automatically fills the left form with predefined values.
+/**
+ * Automatically fills the left form with predefined values.
  * Clears invalid fields before filling.
  */
 export function autoFillLeftForm() {
   clearInvalidFields();
-  
+
   if (autofillLeft) {
     document.getElementById("title").value = "Join prüfen";
     document.getElementById("task-description").value =
@@ -20,7 +24,8 @@ export function autoFillLeftForm() {
   }
 }
 
-/** * Automatically fills the right form with predefined values.
+/**
+ * Automatically fills the right form with predefined values.
  * Clears invalid fields before filling.
  */
 export async function autofillRightForm() {

@@ -9,21 +9,18 @@ import {
   openSpecificOverlay,
   initOverlayListeners,
 } from "../events/overlay-handler.js";
-import {
-  initAssignedToDropdownLogic,
-  // addAssignedContactsToEditForm,
-} from "../events/dropdown-menu.js";
+import { initAssignedToDropdownLogic } from "../events/dropdown-menu.js";
 import { renderAssignedToContacts } from "../templates/add-task-template.js";
 import { initDatePicker } from "../events/animation.js";
 import { initSubtaskManagementLogic } from "../events/subtask-handler.js";
 import { getContacts } from "../data/storage.js";
 
-/** * Opens the task detail edit overlay and initializes it with the provided task data.
- * Fetches the overlay HTML, sets up the form with task data, and initializes event listeners.
- * @param {Object} task - The task data to populate the form.
+/**
+ * Opens the task detail edit overlay and initializes it with the provided task data.
+ * @param {object} task - The task data to populate the form.
+ * @returns {Promise<void>} Resolves when the overlay is opened and initialized.
  */
 export async function openTaskDetailEditOverlay(task) {
-
   const response = await fetch("js/templates/task-detail-edit-overlay.html");
   const editOverlayHtml = await response.text();
 
@@ -104,7 +101,6 @@ export async function openTaskDetailEditOverlay(task) {
   if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-
     });
   }
 

@@ -5,8 +5,8 @@ import { allData } from "../data/task-to-firbase.js";
 
 let tasksData = {};
 
-/** * Validates the board data structure.
- * Checks if the board data contains tasks and contacts.
+/**
+ * Validates the board data structure.
  * @param {object} boardData - The board data object to validate.
  * @returns {boolean} True if the board data is valid, false otherwise.
  */
@@ -25,8 +25,9 @@ const COLUMN_MAPPING = {
   done: "done",
 };
 
-/** * Initializes the tasks by column structure.
- * Creates an object with keys for each valid column and initializes them as empty arrays.
+/**
+ * Initializes the tasks by column structure.
+ * @returns {object} An object with keys for each valid column and empty arrays as values.
  */
 function initializeTasksByColumn() {
   const tasksByColumn = {};
@@ -36,8 +37,11 @@ function initializeTasksByColumn() {
   return tasksByColumn;
 }
 
-/** * Updates the current overlay reference.
- * @param {HTMLElement} overlay - The overlay element to set as current.
+/**
+ * Processes a task and assigns it to the correct column in tasksByColumn.
+ * @param {string} taskID - The ID of the task.
+ * @param {object} task - The task object.
+ * @param {object} tasksByColumn - The object grouping tasks by column.
  */
 function processTaskForColumn(taskID, task, tasksByColumn) {
   const colID = task.columnID;
@@ -50,8 +54,10 @@ function processTaskForColumn(taskID, task, tasksByColumn) {
   tasksByColumn[mappedColID].push({ taskID, createdAt: createdAtDate });
 }
 
-/** * Groups tasks by their column ID.
- * Iterates through the tasks and organizes them into an object with arrays for each column.
+/**
+ * Groups tasks by their column ID.
+ * @param {object} tasks - The tasks object to group.
+ * @returns {object} An object with arrays of tasks for each column.
  */
 function groupTasksByColumn(tasks) {
   const tasksByColumn = initializeTasksByColumn();
@@ -63,8 +69,9 @@ function groupTasksByColumn(tasks) {
   return tasksByColumn;
 }
 
-/** * Sorts tasks within each column by their creation date.
- * Iterates through each column's tasks and sorts them by the createdAt date.
+/**
+ * Sorts tasks within each column by their creation date.
+ * @param {object} tasksByColumn - The grouped tasks object to sort.
  */
 function sortGroupedTasks(tasksByColumn) {
   VALID_COLUMNS.forEach((colID) => {
@@ -72,8 +79,10 @@ function sortGroupedTasks(tasksByColumn) {
   });
 }
 
-/** * Clears the column container and prepares it for rendering tasks.
- * Removes all existing task cards and returns the container element.
+/**
+ * Clears the column container and prepares it for rendering tasks.
+ * @param {string} colID - The column ID.
+ * @returns {HTMLElement|null} The container element or null if not found.
  */
 function clearAndPrepareColumnContainer(colID) {
   const container = document.getElementById(colID);
@@ -82,8 +91,10 @@ function clearAndPrepareColumnContainer(colID) {
   return container;
 }
 
-/** * Retrieves or creates a placeholder for the column container.
- * Checks if a placeholder exists, and if not, creates one with a message.
+/**
+ * Retrieves or creates a placeholder for the column container.
+ * @param {HTMLElement} container - The column container element.
+ * @returns {HTMLElement} The placeholder element.
  */
 function getOrCreatePlaceholder(container) {
   let placeholder = container.querySelector(".no-tasks-placeholder");
@@ -96,8 +107,11 @@ function getOrCreatePlaceholder(container) {
   return placeholder;
 }
 
-/** * Renders tasks in the specified column container.
- * Iterates through the tasks in the column and appends them to the container.
+/**
+ * Renders tasks in the specified column container.
+ * @param {HTMLElement} container - The column container element.
+ * @param {Array} tasksInColumn - Array of tasks in the column.
+ * @param {object} boardData - The board data object.
  */
 function renderColumnTasks(container, tasksInColumn, boardData) {
   const placeholder = getOrCreatePlaceholder(container);
@@ -114,8 +128,8 @@ function renderColumnTasks(container, tasksInColumn, boardData) {
   }
 }
 
-/** * Renders tasks by their column.
- * Groups tasks by their column ID, sorts them, and renders them in the respective containers.
+/**
+ * Renders tasks by their column.
  * @param {object} boardData - The board data containing tasks and contacts.
  */
 function renderTasksByColumn(boardData) {
@@ -146,8 +160,10 @@ function renderTasksByColumn(boardData) {
   initDragAndDrop();
 }
 
-/** * Initializes the board by loading and rendering tasks.
- * Loads the board data from Firebase and renders the tasks by column.
+/**
+ * Maps a client column ID to a Firebase column ID.
+ * @param {string} clientColumnId - The client column ID.
+ * @returns {string} The corresponding Firebase column ID.
  */
 function mapClientToFirebaseColumnId(clientColumnId) {
   const firebaseColumnMapping = {
@@ -159,8 +175,10 @@ function mapClientToFirebaseColumnId(clientColumnId) {
   return firebaseColumnMapping[clientColumnId];
 }
 
-/** * Updates the local task column data.
- * Updates the task's column ID in the local tasksData object.
+/**
+ * Updates the local task column data.
+ * @param {string} taskId - The ID of the task to update.
+ * @param {string} firebaseColumnId - The new Firebase column ID.
  */
 function updateLocalTaskColumn(taskId, firebaseColumnId) {
   if (tasksData[taskId]) {
@@ -168,15 +186,21 @@ function updateLocalTaskColumn(taskId, firebaseColumnId) {
   }
 }
 
-/** * Triggers a Firebase update for the task's column.
- * This function is currently a placeholder and does not perform any action.
+/**
+ * Triggers a Firebase update for the task's column.
+ * @param {string} taskId - The ID of the task to update.
+ * @param {string} firebaseColumnId - The new Firebase column ID.
+ * @returns {Promise<void>} Resolves when the update is complete.
  */
 async function triggerFirebaseUpdate(taskId, firebaseColumnId) {
   // Firebase update currently commented out or not implemented
 }
 
-/** * Initializes the board by loading and rendering tasks.
- * Loads the board data from Firebase and renders the tasks by column.
+/**
+ * Updates the task's column data and triggers updates.
+ * @param {string} taskId - The ID of the task to update.
+ * @param {string} newColumnId - The new column ID from the client.
+ * @returns {Promise<void>} Resolves when the update is complete.
  */
 export async function updateTaskColumnData(taskId, newColumnId) {
   if (!tasksData[taskId]) return;
@@ -189,8 +213,9 @@ export async function updateTaskColumnData(taskId, newColumnId) {
   await initializeBoard();
 }
 
-/** * Loads and renders the board with tasks.
- * Fetches the board data from Firebase and renders the tasks by column.
+/**
+ * Loads and renders the board with tasks.
+ * @returns {Promise<void>} Resolves when the board is loaded and rendered.
  */
 async function loadAndRenderBoard() {
   const firebaseBoardData = await loadFirebaseData();
@@ -199,8 +224,9 @@ async function loadAndRenderBoard() {
   }
 }
 
-/** * Initializes the board when the DOM content is loaded.
- * Sets up the board by loading and rendering tasks.
+/**
+ * Initializes the board when the DOM content is loaded.
+ * @returns {Promise<void>} Resolves when the board is initialized.
  */
 async function initializeBoard() {
   await loadAndRenderBoard();
