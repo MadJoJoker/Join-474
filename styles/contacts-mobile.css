@@ -346,25 +346,20 @@
     }
 }
 
-@media (max-height: 667px) {
-    .overlay-avatar-mobile {
-        top: 185px;
+@media (max-height: 650px) {
+    .overlay-left {
+        height: 200px;
     }
 
-    .overlay-left {
-        height: 185px;
+    .overlay-avatar-mobile {
+        top: 200px;
     }
 }
 
 @media (max-height: 600px) {
     .overlay-avatar-mobile {
-        top: 160px !important;
         height: 100px !important;
         width: 100px !important;
-    }
-
-    .overlay-left {
-        height: 160px !important;
     }
 
     .overlay-content {
