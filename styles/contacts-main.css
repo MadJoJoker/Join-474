@@ -38,7 +38,7 @@ html {
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding-bottom: 100px;
+    padding-bottom: 80px;
 }
 
 /*
@@ -259,6 +259,11 @@ html {
 
 .hide-on-desktop {
     display: none;
+}
+
+.app-container,
+.main-content {
+    overflow: hidden;
 }
 
 /*
