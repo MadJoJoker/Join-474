@@ -24,11 +24,10 @@
 
     async function startCleanUp() {
       localData = await getFirebaseData();
-      (console.log("Daten sind da", localData));
       await cleanUpFirebaseDatabase(localData);
     }
 
-    async function getFirebaseData(path = '') {
+    async function getFirebaseData(path = "") {
       const url = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/' + path + '.json';
       try {
         const response = await fetch(url);
@@ -45,7 +44,6 @@
     }
 
     async function saveToFirebase(path, data) {
-      console.log("Deleted entry: ", path);
       const url = `https://join-474-default-rtdb.europe-west1.firebasedatabase.app/${path}.json`;
       try {
         const response = await fetch(url, {
@@ -54,6 +52,7 @@
           body: data === null ? undefined : JSON.stringify(data),
         });
         const resText = await response.text();
+        console.log("Deleted entry: ", path);
         // console.log("Firebase response:", response.status, resText);
         if (!response.ok) {
           throw new Error("Firebase update failed: " + response.statusText);
