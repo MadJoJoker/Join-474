@@ -56,11 +56,16 @@
 
   .sidebar-container {
     position: fixed;
+    /* position: sticky; */
+    top: auto;
     bottom: 0;
     left: 0;
     width: 100%;
+    /* width: calc(100% - 12px); */
     height: 80px;
-    z-index: 900;
+
+    /* border: 1px solid red; */
+    z-index: 960;
   }
 
   .main-content {
@@ -124,37 +129,38 @@
 }
 
 
-.scrollable,
-.app-container {
+.scrollable
+{
   overflow-y: auto; /* or: scroll */
   max-height: 100vh;
 }
 
-.scrollable::-webkit-scrollbar,
-.app-container::-webkit-scrollbar {
+.scrollable::-webkit-scrollbar
+{
   width: 12px;
 }
 
-.scrollable::-webkit-scrollbar-track,
-.app-container::-webkit-scrollbar-track {
-  background: #F6F7F8;
+.scrollable::-webkit-scrollbar-track
+{
+  background: #E7E7E7;
 }
 
-.scrollable::-webkit-scrollbar-thumb,
-.app-container::-webkit-scrollbar-thumb {
+.scrollable::-webkit-scrollbar-thumb
+{
   background: #29ABE2;
   border-radius: 12px;
 }
 
-.scrollable::-webkit-scrollbar-thumb:hover,
-.app-container::-webkit-scrollbar-thumb:hover {
+.scrollable::-webkit-scrollbar-thumb:hover
+{
   background: #42526E;
 }
 
 @-moz-document url-prefix() {
-  .scrollable,
-  .app-container {
-    scrollbar-color: #29ABE2 #F6F7F8;
+  .scrollable
+  /* .app-container  */
+  {
+    scrollbar-color: #29ABE2 #E7E7E7;
     scrollbar-width: auto;
   }
 }

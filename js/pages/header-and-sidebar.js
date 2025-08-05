@@ -82,6 +82,9 @@ function highlightCurrentPage() {
   }
 }
 
+/**
+ * depending on dark-/light-mode, another favicon is used.
+ */
 function updateFaviconForTheme() {
   const favicon = document.getElementById("favicon");
   const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -90,3 +93,18 @@ function updateFaviconForTheme() {
     : '../assets/icons/logo/whiteJoinLogo.svg';
 }
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateFaviconForTheme);
+
+/**
+ * UA sniffing (https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Browser_detection_using_the_user_agent)
+ * Firefox doesn't accept css-properties for "body"; move it to child-element "app-container"
+ * Concerns customized scrollbar, esp. in mobilde version.
+ */
+const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+
+if (isFirefox) {
+  console.log("user agent: Firefox");
+  document.body.classList.remove('scrollable');
+  document.querySelector('.app-container')?.classList.add('scrollable');
+} else {
+  console.log("user agent: Chrome, Edge");
+}

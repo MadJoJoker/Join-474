@@ -79,7 +79,7 @@
 
 a.active-page {
   color: var(--white);
-  background-color: var(--sidebarHighlight);
+  background-color: var(--darkHover);
 
     .sidebar-icon {
     fill: var(--white);
