@@ -24,13 +24,13 @@
 </head>
 
 <body onload="includeHeaderAndSidebar()">
-    <div class="app-container scrollable">
+    <div class="app-container">
         <section id="sidebar" class="sidebar-container"></section>
         <section class="main-content">
             <header id="header">
             </header>
             <main class="contacts-main">
-                <aside class="contacts-sidebar">
+                <aside class="contacts-sidebar scrollable">
                     <div class="add-new-contact-button-div">
                         <button class="add-new-contact-button">
                             <p class="add-new-contact-button-text">Add new contact</p><svg width="31" height="22"
@@ -42,7 +42,7 @@
                     </div>
                     <div class="contacts-list"></div>
                 </aside>
-                <section class="contacts-details">
+                <section class="contacts-details scrollable">
                     <button class="mobile-back-button" data-action="close-mobile-contact">
                         <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
