@@ -1,22 +1,43 @@
 /* mobile-css for index.html and signup.css */
 
+@media (max-width: 1024px) {
+  .signup-title > a {
+    height: 122px;
+
+    > img {
+      height: calc(80px + (100vw - 768px) * 0.16406);
+    }
+  }
+}
+
 @media (max-width: 816px) {
   .dialogue-frame {
-    width: calc(605.0px + (100vw - 768.0px) * 0.97917);
+    width: calc(605px + (100vw - 768px) * 0.97917);
   }
 }
 
 @media (max-width: 768px) {
+  .content-wrapper.sgn-wrapper {
+    padding-top: 36px;
+  }
+
+  .floating-logo {
+    height: 122px;
+    width: 64px;
+  }
+
   @keyframes moveToCorner {
     0% {
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(1);
+      transform: translate(-50%, -50%) scale(1.7);
+      z-index: 10;
     }
     100% {
-      top: -14px;
-      left: calc(13vw - 106px);
-      transform: translate(0, 0) scale(0.387);
+      top: 25px;
+      left: calc(0px + (100vw - 480px) * 0.11806);
+      transform: translate(0, 0) scale(1);
+      z-index: 1;
     }
   }
 
@@ -36,9 +57,11 @@
   @keyframes showBackground {
     0% {
       background-color: var(--dark);
+      z-index: 5;
     }
     100% {
       background-color: rgba(255, 255, 255, 0);
+      z-index: 1;
     }
   }
 
@@ -55,21 +78,30 @@
     padding: 34px calc(18vw - 104px);
   }
 
-  .index-title img {
-    width: 64px;
-    padding-bottom: 17px;
-    margin-left: 14px;
+  .index-title {
+    display: none;
+  }
+
+  .signup-title
+  {
+    height: 80px;
+    margin-bottom: 38px;
+
+    > a > img {
+      height: 80px;
+      margin-left: 14px;
+    }
   }
 
   .dialogue-frame {
-    margin: 78px 0;
+    margin: 204px 0 78px;
     width: calc(444px + (100vw - 480px) * 0.54167);
     height: calc(476px + (100vw - 480px) * 0.055);
     padding: 32px 0;
 
     &.signup-height {
       margin-top: 14px;
-      margin-bottom: 67px;
+      margin-bottom: 110px;
       width: calc(430px + (100vw - 460px) * 0.5833);
       height: clamp(587px, calc(587px + (100vw - 480px) * 0.04514), 600px);
       padding: 32px 0;
@@ -141,6 +173,10 @@
 
   .legal-part {
     margin-top: 42px;
+
+    &.lp-sgn {
+      margin-top: 0; 
+    }
   }
 }
 
@@ -149,12 +185,14 @@
     0% {
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(1);
+      transform: translate(-50%, -50%) scale(1.7);
+      z-index: 10;
     }
     100% {
-      top: -14px;
-      left: -36px;
-      transform: translate(0, 0) scale(0.387);
+      top: 25px;
+      left: 14px;
+      transform: translate(0, 0) scale(1);
+      z-index: 1;
     }
   }
 

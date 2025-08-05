@@ -10,21 +10,7 @@ async function initIndex() {
     return;
   }
   fetchedData = data;
-  updateFaviconForTheme();
 }
-
-/**
- * changes favicon depending on browser-mode: light or dark (even on index.html)
- */
-function updateFaviconForTheme() {
-  const favicon = document.getElementById("favicon");
-  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const base = window.location.pathname.includes('/html/') ? '..' : '.';
-  favicon.href = isDark
-    ? `${base}/assets/icons/logo/joinLogo.svg?v=1`
-    : `${base}/assets/icons/logo/whiteJoinLogo.svg?v=1`;
-}
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateFaviconForTheme);
 
 /**
  * 2nd onload-function: handles start animation, remove overlay when finished
@@ -36,8 +22,7 @@ function removeOverlay() {
   logo.classList.add('animate');
   setTimeout(() => {
     overlay.classList.add('d-none');
-    document.getElementById('join-logo').classList.remove('invisible');
-  }, 1100);
+  }, 1200);
 }
 
 /**
@@ -126,40 +111,6 @@ function loginAlert() {
   document.getElementById('login-email').closest('.input-frame').classList.add('active');
   document.getElementById('login-password').closest('.input-frame').classList.add('active');
   document.getElementById('alert').classList.remove('d-none');
-}
-
-
-// COMMON FUNCTIONS LOG-IN AND SIGN-UP
-/**
- * helper function for validations; check for empty input; call marker-function, if necessary.
- * @param {string} inputId - id of input-field to check
- * @param {string} alertId - it of alert-message-overlay
- * @returns boolean, used in "processEmailString"
- */
-function blameEmptyInput(inputId, alertId) {
-  const input = document.getElementById(inputId);
-  const field = input.value;
-  const valid = field != "";
-  const container = input.closest('.input-frame');
-  validateAndMark(container, valid, alertId);
-  return valid;
-}
-
-/**
- * helper function for "blameEmptyInput"; handles red alert elements
- * @param {string} container - parent element of input with colored border
- * @param {boolean} isValid - status of input-field
- * @param {string} alertId - id of alert-message-overlay
- */
-function validateAndMark(container, isValid, alertId) {
-  const alertBox = document.getElementById(alertId);
-  if (!isValid) {
-    container.classList.add('active');
-    alertBox.classList.remove('d-none');
-  } else {
-    container.classList.remove('active');
-    alertBox.classList.add('d-none');
-  }
 }
 
 // SIGN UP
@@ -262,6 +213,59 @@ function checkRequiredFields(validEmail) {
 }
 
 /**
+ * helper function for "checkRequiredFieldss". check status of checkbox, start next step.
+ */
+function checkboxChecked() {
+  document.getElementById("unchecked").classList.contains("d-none")
+    ? objectBuilding()
+    : acceptPrivacyP();
+}
+
+/**
+ * onclick-function of checkbox "accept policy"; toggle its icons
+ */
+function toggleCheckbox() {
+  const unchecked = document.getElementById('unchecked');
+  const checked = document.getElementById('checked');
+  unchecked.classList.toggle("d-none");
+  checked.classList.toggle("d-none");
+}
+
+
+// COMMON FUNCTIONS LOG-IN AND SIGN-UP
+/**
+ * helper function for validations; check for empty input; call marker-function, if necessary.
+ * @param {string} inputId - id of input-field to check
+ * @param {string} alertId - it of alert-message-overlay
+ * @returns boolean, used in "processEmailString"
+ */
+function blameEmptyInput(inputId, alertId) {
+  const input = document.getElementById(inputId);
+  const field = input.value;
+  const valid = field != "";
+  const container = input.closest('.input-frame');
+  validateAndMark(container, valid, alertId);
+  return valid;
+}
+
+/**
+ * helper function for "blameEmptyInput"; handles red alert elements
+ * @param {string} container - parent element of input with colored border
+ * @param {boolean} isValid - status of input-field
+ * @param {string} alertId - id of alert-message-overlay
+ */
+function validateAndMark(container, isValid, alertId) {
+  const alertBox = document.getElementById(alertId);
+  if (!isValid) {
+    container.classList.add('active');
+    alertBox.classList.remove('d-none');
+  } else {
+    container.classList.remove('active');
+    alertBox.classList.add('d-none');
+  }
+}
+
+/**
  * input-click function: deactivate red alerts (if activated): hide messages, reset red border.
  */
 function clearRedAlerts() {
@@ -323,23 +327,4 @@ function toggleInputType(inputEl, iconContainer) {
     iconContainer.innerHTML = closedEyeSVG;
   }
   iconContainer.onclick = () => toggleInputType(inputEl, iconContainer);
-}
-
-/**
- * onclick-function of checkbox "accept policy"; toggle its icons
- */
-function toggleCheckbox() {
-  const unchecked = document.getElementById('unchecked');
-  const checked = document.getElementById('checked');
-  unchecked.classList.toggle("d-none");
-  checked.classList.toggle("d-none");
-}
-
-/**
- * helper function for "validateInputs". check status of checkbox, start next step.
- */
-function checkboxChecked() {
-  document.getElementById("unchecked").classList.contains("d-none")
-    ? objectBuilding()
-    : acceptPrivacyP();
 }
