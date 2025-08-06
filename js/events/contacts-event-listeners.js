@@ -38,6 +38,7 @@ function setupOpenNewContactOverlayButton() {
         clearNewContactFormInputs();
         openOverlay('contactOverlay');
         setupCreateContactButton();
+        setupLiveValidationForNewContactForm();
     });
 }
 
@@ -88,8 +89,141 @@ function setupDemoContactAutofill() {
 function setupCreateContactButton() {
     const createBtn = document.getElementById('createContactBtn');
     if (!createBtn) return console.warn('createContactBtn not found');
-    createBtn.removeEventListener('click', handleNewContactSubmit); // prevent duplicates
+    createBtn.removeEventListener('click', handleNewContactSubmit);
     createBtn.addEventListener('click', handleNewContactSubmit);
+}
+
+/**
+ * Sets up live validation for the "Add New Contact" form inputs.
+ * Validates name, email, and phone fields as the user types.
+ */
+function setupLiveValidationForNewContactForm() {
+    setupLiveFieldValidation(
+        'newContactName',
+        getNewContactName,
+        'nameError',
+        validateName
+    );
+    setupLiveFieldValidation(
+        'newContactEmail',
+        getNewContactEmail,
+        'emailError',
+        validateEmail
+    );
+    setupLiveFieldValidation(
+        'newContactPhone',
+        getNewContactPhone,
+        'phoneError',
+        validatePhone
+    );
+}
+
+/**
+ * Retrieves the current value of the "New Contact Name" input.
+ * @returns {string}
+ */
+function getNewContactName() {
+    return document.getElementById('newContactName')?.value.trim() || '';
+}
+
+/**
+ * Retrieves the current value of the "New Contact Email" input.
+ * @returns {string}
+ */
+function getNewContactEmail() {
+    return document.getElementById('newContactEmail')?.value.trim() || '';
+}
+
+/**
+ * Retrieves the current value of the "New Contact Phone" input.
+ * @returns {string}
+ */
+function getNewContactPhone() {
+    return document.getElementById('newContactPhone')?.value.trim() || '';
+}
+
+/**
+ * Validates the name field using the global validation logic.
+ * @param {string} name - The name to validate.
+ * @returns {string} Error message or empty string.
+ */
+function validateName(name) {
+    return validateCustomContactForm(name, '', '').name;
+}
+
+/**
+ * Validates the email field using the global validation logic.
+ * @param {string} email - The email to validate.
+ * @returns {string} Error message or empty string.
+ */
+function validateEmail(email) {
+    return validateCustomContactForm('', email, '').email;
+}
+
+/**
+ * Validates the phone field using the global validation logic.
+ * @param {string} phone - The phone number to validate.
+ * @returns {string} Error message or empty string.
+ */
+function validatePhone(phone) {
+    return validateCustomContactForm('', '', phone).phone;
+}
+
+/**
+ * Sets up real-time validation for a single input field.
+ * @param {string} inputId - The ID of the input field.
+ * @param {() => string} getValue - A function that returns the current input value.
+ * @param {string} errorId - The ID of the element to display the error message in.
+ * @param {(value: string) => string} validateFn - A function that returns an error message or empty string.
+ */
+function setupLiveFieldValidation(inputId, getValue, errorId, validateFn) {
+    const input = document.getElementById(inputId);
+    const errorElement = document.getElementById(errorId);
+    if (!input || !errorElement) return;
+    input.addEventListener('input', () => {
+        const value = getValue();
+        const error = validateFn(value);
+        errorElement.textContent = error || '';
+    });
+}
+
+/**
+ * Sets up live validation for the "Edit Contact" form inputs.
+ * Applies validation to name, email, and phone fields.
+ */
+function setupLiveValidationForEditContactForm() {
+    const fields = [
+        { inputId: 'editNameInput', errorId: 'editNameError', getValue: getEditName, validate: validateName },
+        { inputId: 'editEmailInput', errorId: 'editEmailError', getValue: getEditEmail, validate: validateEmail },
+        { inputId: 'editPhoneInput', errorId: 'editPhoneError', getValue: getEditPhone, validate: validatePhone },
+    ];
+    fields.forEach(({ inputId, errorId, getValue, validate }) => {
+        setupLiveFieldValidation(inputId, getValue, errorId, validate);
+    });
+}
+
+/**
+ * Retrieves the current value of the "Edit Contact Name" input.
+ * @returns {string}
+ */
+function getEditName() {
+    return document.getElementById('editNameInput')?.value.trim() || '';
+}
+
+/**
+ * Retrieves the current value of the "Edit Contact Email" input.
+ * @returns {string}
+ */
+function getEditEmail() {
+    return document.getElementById('editEmailInput')?.value.trim() || '';
+}
+
+/**
+ * Retrieves the current value of the "Edit Contact Phone" input.
+ * @returns {string}
+ */
+function getEditPhone() {
+    return document.getElementById('editPhoneInput')?.value.trim() || '';
 }
 
 /**
@@ -105,33 +239,57 @@ function getNewContactInputValues() {
 }
 
 /**
- * Sets up global click listener to handle deletion via .delete-button.
+ * Sets up global click listener for contact actions (edit, delete, back).
  */
 function setupGlobalContactButtons() {
     document.addEventListener('click', async (event) => {
-        const deleteBtn = event.target.closest('.delete-button');
-        const editBtn = event.target.closest('.edit-button');
-        const backBtn = event.target.closest('[data-action="close-mobile-contact"]');
-        if (backBtn) {
-            document.body.classList.remove('mobile-contact-visible');
-            setActiveContactId(null);
-            return;
-        }
-        if (deleteBtn) {
-            const id = deleteBtn.dataset.id;
-            if (!id) return;
-            await deleteContact(id);
-            document.querySelector('.contact-details-card').innerHTML = '';
-            setActiveContactId(null);
-            await renderContacts();
-            document.body.classList.remove('mobile-contact-visible');
-        }
-        if (editBtn) {
-            const id = editBtn.dataset.id;
-            if (!id) return;
-            onEditContact(id);
-        }
+        if (handleBackButton(event)) return;
+        if (await handleDeleteButton(event)) return;
+        handleEditButton(event);
     });
+}
+
+/**
+ * Handles the back button on mobile view.
+ * @param {MouseEvent} event
+ * @returns {boolean} True if handled.
+ */
+function handleBackButton(event) {
+    const backBtn = event.target.closest('[data-action="close-mobile-contact"]');
+    if (!backBtn) return false;
+    document.body.classList.remove('mobile-contact-visible');
+    setActiveContactId(null);
+    return true;
+}
+
+/**
+ * Handles the delete contact button.
+ * @param {MouseEvent} event
+ * @returns {Promise<boolean>} True if delete action was triggered.
+ */
+async function handleDeleteButton(event) {
+    const deleteBtn = event.target.closest('.delete-button');
+    if (!deleteBtn) return false;
+    const id = deleteBtn.dataset.id;
+    if (!id) return true;
+    await deleteContact(id);
+    document.querySelector('.contact-details-card').innerHTML = '';
+    setActiveContactId(null);
+    await renderContacts();
+    document.body.classList.remove('mobile-contact-visible');
+    return true;
+}
+
+/**
+ * Handles the edit contact button.
+ * @param {MouseEvent} event
+ */
+function handleEditButton(event) {
+    const editBtn = event.target.closest('.edit-button');
+    if (!editBtn) return;
+    const id = editBtn.dataset.id;
+    if (!id) return;
+    onEditContact(id);
 }
 
 /**
@@ -209,6 +367,7 @@ function setupEditOverlayEvents() {
     overlay.addEventListener('click', handleOverlayClickOutside);
     if (closeButton) closeButton.addEventListener('click', handleOverlayCloseClick);
     if (mobileCloseButton) mobileCloseButton.addEventListener('click', handleOverlayCloseClick);
+    setupLiveValidationForEditContactForm();
 }
 
 /**
@@ -281,7 +440,7 @@ function validateCustomContactForm(name, email, phone) {
         errors.email = 'Please enter a valid email address.';
     }
     if (!phone || !/^\+?[0-9\s\/\-]{6,}$/.test(phone)) {
-        errors.phone = 'Please enter a valid phone number (digits only, no letters).';
+        errors.phone = 'Please enter a valid phone number (digits only, min. 6).';
     }
     return errors;
 }

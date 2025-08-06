@@ -39,6 +39,7 @@ html {
     align-items: center;
     flex-direction: column;
     padding-bottom: 80px;
+    overflow-x: hidden;
 }
 
 /*
