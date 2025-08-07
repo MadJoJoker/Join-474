@@ -53,7 +53,7 @@ export function addSubtask() {
 
   const subtaskText = subtaskInput.value.trim();
   if (subtaskText) {
-    addedSubtasks.push({ text: subtaskText, completed: false });
+    addedSubtasks.unshift({ text: subtaskText, completed: false });
     subtaskInput.value = "";
     renderSubtasks();
     toggleSubtaskInputIcons(false);
@@ -273,6 +273,7 @@ function showSubtaskIcons(addSubtaskBtn, subtaskIcons, subtaskInputField) {
   addSubtaskBtn.style.pointerEvents = "none";
   subtaskIcons.style.opacity = "1";
   subtaskIcons.style.pointerEvents = "auto";
+  subtaskIcons.style.width = "51px";
   subtaskInputField.focus();
 }
 

@@ -215,6 +215,11 @@
   z-index: 1000;
   display: flex;
   align-items: center;
+
+  &:focus {
+        border-color: var(--lightBlue);
+        outline: none;
+    }
 }
 
 .styled-select {
@@ -253,32 +258,6 @@
 :root {
   --white: #ffffff;
   --borderGrey: #e0e0e0;
-}
-
-.input-button {
-  position: absolute;
-  right: 26px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: hidden;
-  background-color: var(--white);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: var(--borderGrey);
-  }
-
-  img {
-    width: 14px;
-    height: 14px;
-    border-radius: 10px;
-  }
 }
 
 .form-buttons-part {

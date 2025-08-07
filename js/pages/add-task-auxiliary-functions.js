@@ -45,6 +45,7 @@ export function initDatePicker() {
         allowInput: true,
         disableMobile: true,
         clickOpens: true,
+        minDate: "today",
         onReady: function () {
             document.querySelectorAll(".numInput:not([name])").forEach((el) => {
                 el.setAttribute("name", "flatpickr_day");
