@@ -4,16 +4,15 @@
     }
 
     .size-wrapper {
-        position: relative;
+        /* position: relative; */
         padding: 0 54px 54px 0;
         max-width: 1634px;
     }
 
     .form-buttons-part {
-        position: absolute;
-        bottom: 54px;
+        position: relative;
+        top: 120px;
         left: 0;
-        right: 54px;
     }
 }
 
