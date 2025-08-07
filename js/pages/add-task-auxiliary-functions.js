@@ -138,11 +138,10 @@ function initAutoFillListeners() {
     }
 }
 
-/** * Initializes listeners for the "assigned to" area and contact input.
- * It adds a click listener to the assigned to area and an input listener to the contact input.
+/** * Initializes listeners for the assigned to dropdown.
+ * It adds an input event listener to the contact input field to filter contacts based on the input value.
  */
 export function initAssignedToListeners() {
-    document.getElementById("assigned-to-area")?.addEventListener("click", toggleAssignedToArea);
 
     const contactInput = document.getElementById("select-contacts");
     if (contactInput) {
@@ -257,12 +256,12 @@ export function initWindowResizeListeners() {
 
 /** * Toggles the visibility of the "assigned to" area.
  */
-export function toggleAssignedToArea() {
-    const assignedToArea = document.getElementById("assigned-to-area");
-    if (!assignedToArea) return;
+// export function toggleAssignedToArea() {
+//     const assignedToArea = document.getElementById("assigned-to-area");
+//     if (!assignedToArea) return;
 
-    assignedToArea.classList.toggle("width-100");
-}
+//     assignedToArea.classList.toggle("width-100");
+// }
 
 /** * Adds a grey background color to the main content area.
  */

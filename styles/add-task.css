@@ -11,7 +11,7 @@
   padding: 54px;
   overflow-y: auto;
   background-color: var(--white);
-  scrollbar-width: none;
+  /* scrollbar-width: none; */
 
   h1 {
     font-size: 63px;

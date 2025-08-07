@@ -185,16 +185,11 @@
 }
 
 #assigned-to-area {
-    width: 150px;
+    width: 100%;
     transition: width 0.3s ease;
     overflow: auto;
     cursor: pointer;
     will-change: transform;
-}
-
-#assigned-to-area.width-100 {
-    width: 100%;
-    overflow: auto;
 }
 
 .assigned-main-container {
