@@ -286,7 +286,7 @@ export function renderFormButtons() {
                 `
             : ""
         }
-                <button type="submit" class="create-btn" data-event-handle="true">
+                <button type="submit" id="submit-button" class="create-btn" data-event-handle="true">
                     ${arguments[0] ? "OK" : "Create Task"}
                     <img
                         src="../assets/icons/btn/check-mark.svg"
