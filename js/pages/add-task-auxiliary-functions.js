@@ -20,8 +20,7 @@ import {
     deleteSubtask,
     toggleSubtaskInputIcons,
 } from "../events/subtask-handler.js";
-import { autoFillLeftForm } from "../events/autofill-add-task.js";
-import { autofillRightForm } from "../events/autofill-add-task.js";
+import { autofillForms } from "../events/autofill-add-task.js";
 
 export let picker = null;
 
@@ -133,14 +132,10 @@ function initCalendarIconListener() {
  * It adds focus event listeners to the title, task description, and date picker fields.
  */
 function initAutoFillListeners() {
-    const autoFillFields = ["title", "task-description", "datepicker"];
-    autoFillFields.forEach((fieldId) => {
-        const field = document.getElementById(fieldId);
-        if (!field) return;
-
-        field.addEventListener("focus", autoFillLeftForm, { once: true });
-        field.addEventListener("focus", autofillRightForm, { once: true });
-    });
+    const autofillBtn = document.getElementById("add-task-autofill-btn");
+    if (autofillBtn) {
+        autofillBtn.addEventListener("click", autofillForms);
+    }
 }
 
 /** * Initializes listeners for the "assigned to" area and contact input.

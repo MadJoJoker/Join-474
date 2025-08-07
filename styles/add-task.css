@@ -300,6 +300,10 @@
   gap: 16px;
 }
 
+#add-task-autofill-btn svg {
+  margin-bottom: 6px;
+}
+
 .width-100 {
   width: 100%;
   max-width: unset;
