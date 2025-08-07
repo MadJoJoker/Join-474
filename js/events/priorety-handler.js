@@ -33,3 +33,34 @@ export function initPriorityButtons() {
     });
     setMedium();
 }
+
+export function setButtonIconsMobile() {
+    const allButtons = document.querySelectorAll('.priority-btn');
+    const isMobile = window.innerWidth <= 370;
+
+    allButtons.forEach(button => {
+        const priority = button.dataset.priority;
+
+        // Speichere originalen Inhalt nur einmal
+        if (!button.dataset.originalContent) {
+            button.dataset.originalContent = button.innerHTML;
+        }
+
+        // Icon-Modus aktiv
+        if (isMobile && button.dataset.hasIcon !== "true") {
+            if (priority === 'urgent') {
+                button.innerHTML = '<img src="../assets/icons/property/urgent.svg" alt="Urgent Icon" />';
+            } else if (priority === 'medium') {
+                button.innerHTML = '<img src="../assets/icons/property/medium.svg" alt="Medium Icon" />';
+            } else if (priority === 'low') {
+                button.innerHTML = '<img src="../assets/icons/property/low.svg" alt="Low Icon" />';
+            }
+            button.dataset.hasIcon = "true";
+
+        // Original-Modus aktiv
+        } else if (!isMobile && button.dataset.hasIcon === "true") {
+            button.innerHTML = button.dataset.originalContent;
+            button.dataset.hasIcon = "false";
+        }
+    });
+}

@@ -9,6 +9,7 @@ import {
 } from "./add-task.js";
 import {
     initPriorityButtons,
+    setButtonIconsMobile
 } from "../events/priorety-handler.js";
 import {
     filterContacts
@@ -253,6 +254,9 @@ export function initWindowResizeListeners() {
 
     handleSignInfoMobile();
     window.addEventListener("resize", handleSignInfoMobile);
+
+    setButtonIconsMobile();
+    window.addEventListener("resize", setButtonIconsMobile);
 }
 
 /** * Toggles the visibility of the "assigned to" area.

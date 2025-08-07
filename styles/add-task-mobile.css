@@ -228,9 +228,9 @@
     }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 370px) {
 
     .priority-btn {
-        width: 88px;
+        width: 60px;
     }
 }
