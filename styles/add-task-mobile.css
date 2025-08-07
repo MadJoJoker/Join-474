@@ -17,23 +17,30 @@
     }
 }
 
-@media (max-width: 1140px) {
+@media (max-width: 1222px) {
+    .priority-button-container>* {
+        margin-right: 8px;
+    }
+
+    .priority-button-container>*:last-child {
+        margin-right: 0;
+    }
+    
     .priority-btn {
-        gap: 4px;
-        padding: 16px 6px;
-    }
-
-    .priority-button-container {
-        gap: unset;
-        justify-content: space-between;
-    }
-
-    #assigned-to-options-container {
+        width: 96px;
         font-size: 16px;
     }
 
+    .options-wrapper.open-assigned-to #assigned-to-options-container {
+        font-size: 16px;
+    }
+
+    #assigned-to-options-container {
+        font-size: 16px !important;
+    }
+
     .contact-option {
-        padding: 7px 14px;
+        padding: 7px 8px;
     }
 }
 
@@ -53,7 +60,7 @@
     }
 
     #assigned-to-options-container {
-        font-size: 20px;
+        font-size: 20px !important;
     }
 
     .contact-option {
@@ -62,7 +69,7 @@
 
     .content h1 {
         position: fixed;
-        top: 122px;
+        top: 120px;
         left: 40px;
     }
 
@@ -91,8 +98,13 @@
     }
 
     .priority-button-container {
-        gap: 16px;
-        justify-content: unset;
+        padding-top: 0;
+    }
+
+    .priority-btn {
+        height: 41px;
+        width: 180px;
+        font-size: 20px;
     }
 
     .form-buttons-part {
@@ -110,11 +122,6 @@
 
     #responsive-div-one {
         height: 114px;
-    }
-
-    .priority-btn {
-        height: 41px;
-        padding: 10px 16px;
     }
 
     #taskSuccessMsg {
@@ -161,11 +168,16 @@
     }
 
     .priority-btn {
+        width: 160px;
         font-size: 16px;
     }
 
     .contact-input {
-        font-size: 16px;
+        font-size: 16px !important;
+    }
+
+    #assigned-to-options-container {
+        font-size: 16px !important;
     }
 
     .input-field-subtask {
@@ -177,7 +189,7 @@
     }
 
     #category-options-container {
-        font-size: 16px;
+        font-size: 16px !important;
     }
 
     .select-wrapper {
@@ -203,12 +215,23 @@
     }
 }
 
-@media (max-width: 380px) {
-    .priority-button-container {
-        gap: 0px;
-    }
+@media (max-width: 540px) {
 
     .priority-btn {
-        padding: 10px 10px;
+        width: 120px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .priority-btn {
+        width: 100px;
+    }
+}
+
+@media (max-width: 350px) {
+
+    .priority-btn {
+        width: 88px;
     }
 }

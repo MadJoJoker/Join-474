@@ -152,11 +152,19 @@
   user-select: none;
 }
 
+.priority-button-container {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
 .priority-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: var(--white);
   height: 56px;
+  width: 120px;
   border: none;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -355,11 +363,6 @@
   display: none;
   position: absolute;
   top: 74px;
-}
-
-.priority-button-container {
-  display: flex;
-  gap: 16px;
 }
 
 #taskSuccessMsg {
