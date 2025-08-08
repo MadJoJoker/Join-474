@@ -264,3 +264,12 @@
         transform: scale(1.01);
     }
 }
+
+.border-grey {
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+.border-light-blue {
+    border-color: var(--lightBlue);
+    outline: none;
+}

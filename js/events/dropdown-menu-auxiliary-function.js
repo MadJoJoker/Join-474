@@ -10,6 +10,7 @@ import {
   selectedCategory,
   selectedContacts,
   resetDropdownState,
+  setBorderColorGrey
 } from "./dropdown-menu.js";
 
 /** Initializes the dropdown menus for category and assigned contacts.
@@ -127,13 +128,13 @@ export function closeCategoryDropdown() {
   const wrapper = document.getElementById("category-options-wrapper");
   const container = document.getElementById("category-options-container");
   const dropdownIconTwo = document.getElementById("dropdown-icon-two");
-  const dropdownIconContainerTwo = document.getElementById(
-    "dropdown-icon-container-two"
-  );
+  const dropdownIconContainerTwo = document.getElementById("dropdown-icon-container-two");
+  const input = document.getElementById("dropdown-category");
 
   if (!wrapper || !container) return;
 
   if (wrapper.classList.contains("open")) {
+    input.classList.remove("border-light-blue");
     wrapper.classList.remove("open");
     dropdownIconTwo?.classList.remove("open");
     dropdownIconContainerTwo?.classList.remove("active");
@@ -150,13 +151,12 @@ export function closeAssignedToDropdown() {
   const wrapper = document.getElementById("assigned-to-options-wrapper");
   const container = document.getElementById("assigned-to-options-container");
   const dropdownIconOne = document.getElementById("dropdown-icon-one");
-  const dropdownIconContainerOne = document.getElementById(
-    "dropdown-icon-container-one"
-  );
+  const dropdownIconContainerOne = document.getElementById("dropdown-icon-container-one");
 
   if (!wrapper || !container) return;
 
   if (wrapper.classList.contains("open-assigned-to")) {
+    setBorderColorGrey("dropdown-assigned-to");
     wrapper.classList.remove("open-assigned-to");
     dropdownIconOne?.classList.remove("open");
     dropdownIconContainerOne?.classList.remove("active");
