@@ -1,6 +1,7 @@
 import {
   openSpecificOverlay,
   initOverlayListeners,
+  redirectOnSmallScreen
 } from "../../js/events/overlay-handler.js";
 import { clearForm } from "./add-task.js";
 import { initAddTaskForm } from "./add-task-auxiliary-functions.js";
@@ -19,6 +20,7 @@ export async function loadAndInitAddTaskOverlay() {
   if (isOverlayLoaded) {
     clearForm();
     openSpecificOverlay("overlay");
+    redirectOnSmallScreen();
     return;
   }
 
@@ -57,6 +59,8 @@ export async function loadAndInitAddTaskOverlay() {
       }
 
       await initAddTaskForm();
+
+      redirectOnSmallScreen();
     }
   } catch (error) {
     console.error("Error loading add-task overlay:", error);
