@@ -1,4 +1,13 @@
 /* mobile-css for index.html and signup.css */
+/* @media (min-height: 1000px) {
+  .big-screen-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    height: 100vh;
+  }
+} */
+
 
 @media (max-width: 1024px) {
   .signup-title > a {

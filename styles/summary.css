@@ -9,6 +9,21 @@ body {
   background-color: var(--lightGrey);
 }
 
+.smr-margin {
+  width: auto;
+  height: calc(100vh - 96px);
+  justify-content: center;
+  align-items: center;
+  padding: 0!important;
+}
+
+@media (max-width: 1480px) {
+  .smr-margin {
+    padding-top: 108px;
+    padding-left: 96px;
+  }
+}
+
 .summary-wrapper {
   width: 1150px;
   height: 700px;
