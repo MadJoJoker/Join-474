@@ -9,6 +9,7 @@ import {
 } from "./add-task.js";
 import {
     initPriorityButtons,
+    setButtonIconsMobile
 } from "../events/priorety-handler.js";
 import {
     filterContacts
@@ -20,8 +21,7 @@ import {
     deleteSubtask,
     toggleSubtaskInputIcons,
 } from "../events/subtask-handler.js";
-import { autoFillLeftForm } from "../events/autofill-add-task.js";
-import { autofillRightForm } from "../events/autofill-add-task.js";
+import { autofillForms } from "../events/autofill-add-task.js";
 
 export let picker = null;
 
@@ -46,6 +46,7 @@ export function initDatePicker() {
         allowInput: true,
         disableMobile: true,
         clickOpens: true,
+        minDate: "today",
         onReady: function () {
             document.querySelectorAll(".numInput:not([name])").forEach((el) => {
                 el.setAttribute("name", "flatpickr_day");
@@ -133,21 +134,16 @@ function initCalendarIconListener() {
  * It adds focus event listeners to the title, task description, and date picker fields.
  */
 function initAutoFillListeners() {
-    const autoFillFields = ["title", "task-description", "datepicker"];
-    autoFillFields.forEach((fieldId) => {
-        const field = document.getElementById(fieldId);
-        if (!field) return;
-
-        field.addEventListener("focus", autoFillLeftForm, { once: true });
-        field.addEventListener("focus", autofillRightForm, { once: true });
-    });
+    const autofillBtn = document.getElementById("add-task-autofill-btn");
+    if (autofillBtn) {
+        autofillBtn.addEventListener("click", autofillForms);
+    }
 }
 
-/** * Initializes listeners for the "assigned to" area and contact input.
- * It adds a click listener to the assigned to area and an input listener to the contact input.
+/** * Initializes listeners for the assigned to dropdown.
+ * It adds an input event listener to the contact input field to filter contacts based on the input value.
  */
 export function initAssignedToListeners() {
-    document.getElementById("assigned-to-area")?.addEventListener("click", toggleAssignedToArea);
 
     const contactInput = document.getElementById("select-contacts");
     if (contactInput) {
@@ -258,16 +254,19 @@ export function initWindowResizeListeners() {
 
     handleSignInfoMobile();
     window.addEventListener("resize", handleSignInfoMobile);
+
+    setButtonIconsMobile();
+    window.addEventListener("resize", setButtonIconsMobile);
 }
 
 /** * Toggles the visibility of the "assigned to" area.
  */
-export function toggleAssignedToArea() {
-    const assignedToArea = document.getElementById("assigned-to-area");
-    if (!assignedToArea) return;
+// export function toggleAssignedToArea() {
+//     const assignedToArea = document.getElementById("assigned-to-area");
+//     if (!assignedToArea) return;
 
-    assignedToArea.classList.toggle("width-100");
-}
+//     assignedToArea.classList.toggle("width-100");
+// }
 
 /** * Adds a grey background color to the main content area.
  */
@@ -347,45 +346,56 @@ export function createResponsiveDiv(id) {
 }
 
 /** * Handles the visibility of the sign info message based on the screen size.
- * If the screen width is less than or equal to 768px, it shows a mobile version of the sign info.
+ * If the screen width is less than or equal to 768px, it shows the mobile version of the sign info.
  * Otherwise, it shows the desktop version.
  */
 export function handleSignInfoMobile() {
     const container = document.querySelector(".right-form");
     const desktop = document.getElementById("sign-info-desktop");
     const mobile = document.getElementById("sign-info-mobile");
+    const autofillBtn = document.getElementById("add-task-autofill-btn");
 
     if (window.innerWidth <= 768) {
-        handleMobileView(container, desktop, mobile);
+        handleMobileView(container, desktop, mobile, autofillBtn);
     } else {
-        handleDesktopView(mobile, desktop);
+        handleDesktopView(mobile, desktop, autofillBtn);
     }
 }
 
 /** * Handles the mobile view of the sign info message.
- * If the desktop version exists, it hides it and shows the mobile version.
- * @param {HTMLElement} container - The container to append the mobile sign info.
- * @param {HTMLElement} desktop - The desktop sign info element.
- * @param {HTMLElement} mobile - The mobile sign info element.
+ * If the mobile version does not exist and the desktop version does, it creates a new mobile div and button.
+ * It also hides the desktop version and the autofill button.
  */
-export function handleMobileView(container, desktop, mobile) {
+export function handleMobileView(container, desktop, mobile, autofillBtn) {
     if (!mobile && desktop) {
         const newDiv = document.createElement("div");
         newDiv.id = "sign-info-mobile";
         newDiv.className = "sign-info";
         newDiv.textContent = "This field is required";
+        const newButton = document.createElement("button");
+        newButton.type = "button";
+        newButton.textContent = "Autofill";
+        newButton.addEventListener("click", autofillForms);
+        newButton.id = "add-task-autofill-btn-mobile";
+        newButton.className = "autofill-mobile-btn";
         container?.appendChild(newDiv);
+        container?.appendChild(newButton);
         desktop.classList.add("d-none");
+        autofillBtn.classList.add("d-none");
     }
 }
 
 /** * Handles the desktop view of the sign info message.
- * If the mobile version exists, it removes it and shows the desktop version.
+ * If both mobile and desktop versions exist, it removes the mobile version and button,
  */
-export function handleDesktopView(mobile, desktop) {
-    if (mobile && desktop) {
+export function handleDesktopView(mobile, desktop, autofillBtn) {
+    const mobileAutofillBtn = document.getElementById("add-task-autofill-btn-mobile");
+
+    if (mobile && desktop && mobileAutofillBtn) {
         mobile.remove();
+        mobileAutofillBtn.remove();
         desktop.classList.remove("d-none");
+        autofillBtn.classList.remove("d-none");
     }
 }
 

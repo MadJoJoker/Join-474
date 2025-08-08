@@ -24,18 +24,6 @@
     transition: fill 0.3s ease;
 }
 
-/*  passende html dazu:
-    <button type="reset" class="clear-btn" onclick="clearForm()">
-        Clear
-        <svg class="x-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 24 24"
-            fill="none">
-            <path
-                d="M12.14 13.4l-4.9 4.9a.95.95 0 0 1-1.4-1.4l4.9-4.9-4.9-4.9a.95.95 0 0 1 1.4-1.4l4.9 4.9 4.9-4.9a.95.95 0 1 1 1.4 1.4l-4.9 4.9 4.9 4.9a.95.95 0 0 1-1.4 1.4l-4.9-4.9z"
-                fill="currentColor" />
-        </svg>
-    </button>
-*/
-
 .create-btn {
     display: flex;
     align-items: center;
@@ -65,12 +53,6 @@
     object-fit: cover;
 }
 
-/*  passende html dazu:
-    <button type="submit" class="create-btn">
-        Create Task
-        <img src="../assets/icons/btn/check-mark.svg" alt="Check-mark Icon" />
-    </button>
-*/
 #add-task {
   padding: 10px 15px;
   display: flex;

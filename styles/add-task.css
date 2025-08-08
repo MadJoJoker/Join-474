@@ -152,11 +152,19 @@
   user-select: none;
 }
 
+.priority-button-container {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
 .priority-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: var(--white);
   height: 56px;
+  width: 120px;
   border: none;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
@@ -207,6 +215,11 @@
   z-index: 1000;
   display: flex;
   align-items: center;
+
+  &:focus {
+        border-color: var(--lightBlue);
+        outline: none;
+    }
 }
 
 .styled-select {
@@ -247,32 +260,6 @@
   --borderGrey: #e0e0e0;
 }
 
-.input-button {
-  position: absolute;
-  right: 26px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: hidden;
-  background-color: var(--white);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: var(--borderGrey);
-  }
-
-  img {
-    width: 14px;
-    height: 14px;
-    border-radius: 10px;
-  }
-}
-
 .form-buttons-part {
   position: absolute;
   bottom: 54px;
@@ -298,6 +285,10 @@
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+#add-task-autofill-btn svg {
+  margin-bottom: 6px;
 }
 
 .width-100 {
@@ -346,16 +337,11 @@
 
 .error-message {
   color: var(--peachyPink);
-  font-size: 12px;
+  font-size: 16px;
   margin-top: 4px;
   display: none;
   position: absolute;
   top: 74px;
-}
-
-.priority-button-container {
-  display: flex;
-  gap: 16px;
 }
 
 #taskSuccessMsg {

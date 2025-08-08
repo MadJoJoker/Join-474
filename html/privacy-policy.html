@@ -83,9 +83,8 @@
     <script src="../js/events/landscape-blocker.js" defer></script>
     <script type="module">
         import { enableMouseDragScroll } from '../js/events/drag-to-scroll.js';
-
         document.addEventListener('DOMContentLoaded', () => {
-            const helpContent = document.querySelector('.help-content');
+            const helpContent = document.querySelector('.main-content');
             if (helpContent) {
                 enableMouseDragScroll(helpContent);
             }

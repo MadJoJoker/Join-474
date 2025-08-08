@@ -325,10 +325,19 @@ export async function handleCreateTask(event) {
  * @returns {Promise<void>} - A promise that resolves when the task is processed.
  */
 async function processNewTask() {
-  const newTask = createTaskObject();
-  const rawNewObject = createTaskObject();
-  await CWDATA(rawNewObject, fetchData);
-  await showTaskSuccessMsg();
-  clearForm();
+  const submitButton = document.getElementById("submit-button");
+  submitButton.disabled = true;
+
+  try {
+    const newTask = createTaskObject();
+    const rawNewObject = createTaskObject();
+
+    await CWDATA(rawNewObject, fetchData);
+    await showTaskSuccessMsg();
+
+    clearForm();
+  } finally {
+    submitButton.disabled = false;
+  }
   return;
 }

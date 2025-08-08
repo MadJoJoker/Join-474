@@ -28,6 +28,7 @@ export function toggleDropdownIcon(id) {
 export function toggleCategoryDropdown() {
   const wrapper = document.getElementById("category-options-wrapper");
   const container = document.getElementById("category-options-container");
+  const input = document.getElementById("dropdown-category"); 
   if (!wrapper || !container) return;
 
   const isOpen = wrapper.classList.contains("open");
@@ -36,9 +37,11 @@ export function toggleCategoryDropdown() {
   toggleDropdownIcon("category");
 
   if (!isOpen) {
+    input.classList.add("border-light-blue");
     container.innerHTML = getCategoryOptions();
     requestAnimationFrame(() => { wrapper.classList.add("open"); });
   } else {
+    setBorderColorGrey("dropdown-category");
     wrapper.classList.remove("open");
     setTimeout(() => { container.innerHTML = ""; }, 300);
   }
@@ -59,8 +62,19 @@ export function setCategory(optionElement) {
   resetCategoryError();
   closeCategoryDropdownAtSet(wrapper, optionsContainer);
   toggleDropdownIcon("category");
+  setBorderColorGrey("dropdown-category");
 
   selectedCategory = optionElement.dataset.category;
+}
+
+/** * Sets the border color of the input to grey.
+ * @param {string} id - The ID of the input element.
+ */
+export function setBorderColorGrey(id) {
+  const input = document.getElementById(id);
+  if (input) {
+    input.classList.remove("border-light-blue");
+  }
 }
 
 /** * Updates the selected category text and hidden input value.
@@ -121,6 +135,7 @@ export function clearCategory() {
 export function toggleAssignedToDropdown() {
   const wrapper = document.getElementById("assigned-to-options-wrapper");
   const container = document.getElementById("assigned-to-options-container");
+  const input = document.getElementById("dropdown-assigned-to");
   if (!wrapper || !container) return;
 
   const isOpen = wrapper.classList.contains("open-assigned-to");
@@ -128,9 +143,11 @@ export function toggleAssignedToDropdown() {
   toggleDropdownIcon("assignedTo");
 
   if (!isOpen) {
+    input.classList.add("border-light-blue");
     getAssignedToOptions();
     requestAnimationFrame(() => { wrapper.classList.add("open-assigned-to"); });
   } else {
+    setBorderColorGrey("dropdown-assigned-to");
     wrapper.classList.remove("open-assigned-to");
     setTimeout(() => { container.innerHTML = ""; }, 300);
   }
