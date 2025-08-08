@@ -102,9 +102,9 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', upd
 const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
 
 if (isFirefox) {
-  console.log("user agent: Firefox");
+  // console.log("user agent: Firefox");
   document.body.classList.remove('scrollable');
   document.querySelector('.app-container')?.classList.add('scrollable');
-} else {
-  console.log("user agent: Chrome, Edge");
+// } else {
+//   console.log("user agent: Chrome, Edge");
 }
