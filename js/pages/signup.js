@@ -53,41 +53,63 @@ function validateInputs() {
   if (!newEmail) return;
   const validEmail = validateEmailPattern(newEmail);
   if (!validEmail) return;
-  const passwordsMatch = validateRegistrationPasswords();
+  const passwordsMatch = passwordLength();
   if (!passwordsMatch) return;
   checkRequiredFields(validEmail);
 }
 
 /**
- * helper function for "validateInputs". check for valid pattern; if invalid: show red alerts
+ * helper function for "validateInputs". check for valid pattern (all unicode letter signs ok); if invalid: show red alerts
  * @param {string} name - user name from input
  * @returns boolean
  */
 function validateNamePattern(name) {
   const nameRegex = /^\p{L}{2,}(?:[- ]\p{L}{2,})+$/u
   const valid = nameRegex.test(name);
-  if(!valid) {blameInvalidInput('no-name', 'new-name', 'Enter complete first and last name');
-  } else return true;
+  if(!valid) {
+    blameInvalidInput('no-name', 'new-name', 'Enter complete first and last name');
+    return false;
+  }
+  return true;
 }
 
 /**
- * helper function for "validateInputs". check for valid pattern; if invalid: show red alerts
+ * helper function for "validateInputs"; check for valid pattern; if invalid: show red alerts
  * @param {string} email - user email
  * @returns boolean
  */
 function validateEmailPattern(email) {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
   const valid = emailRegex.test(email);
-  if(!valid) {blameInvalidInput('no-email', 'new-email', 'Invalid email pattern');
-  } else return true;
+  if(!valid) {
+    blameInvalidInput('no-email', 'new-email', 'Invalid email pattern');
+    return false;
+  }
+  return true;
 }
 
 /**
- * helper function for "validateInputs". check whether passwords are identical.
+ * helper function for "validateInputs"; check for minimal password-length of 8 signs
+ * @returns boolean
+ */
+function passwordLength() {
+  const pw = document.getElementById('password-first').value;
+  if (pw.length < 8) {
+    blameInvalidInput('alert', 'password-first', 'Minimal Password length: 8 signs.');
+    return false;
+  }
+  document.getElementById('alert').innerText ="Your passwords don't match. Please try again.";
+  validateRegistrationPasswords();
+  return validateRegistrationPasswords();
+}
+
+/**
+ * helper function for "validateInputs"/"passwordLength". check whether passwords are identical.
  * if not: show red alerts.
  * @returns boolean
  */
 function validateRegistrationPasswords() {
+  document.getElementById('alert').innerText ="Your passwords don't match. Please try again.";
   const pw1 = document.getElementById('password-first').value;
   const pw2 = document.getElementById('password-second').value;
   const valid = pw1 != "" && pw1 == pw2;
