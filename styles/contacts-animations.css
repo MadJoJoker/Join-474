@@ -8,13 +8,13 @@
     }
 
     to {
-        transform: translateX(0%);
+        transform: translateX(0vw);
     }
 }
 
 @keyframes slideOutRight {
     from {
-        transform: translateX(0%);
+        transform: translateX(0vw);
     }
 
     to {
@@ -28,13 +28,13 @@
     }
 
     to {
-        transform: translateY(0%);
+        transform: translateY(0vh);
     }
 }
 
 @keyframes slideOutBottom {
     from {
-        transform: translateY(0%);
+        transform: translateY(0vh);
     }
 
     to {
@@ -44,24 +44,24 @@
 
 @keyframes slideInBottomMessage {
     from {
-        transform: translateX(-50%) translateY(100vw);
+        transform: translateX(-50vw) translateY(100vw);
         opacity: 0;
     }
 
     to {
-        transform: translateX(-50%) translateY(0%);
+        transform: translateX(-50vw) translateY(0vw);
         opacity: 1;
     }
 }
 
 @keyframes slideOutBottomMessage {
     from {
-        transform: translateX(-50%) translateY(0%);
+        transform: translateX(-50vw) translateY(0vw);
         opacity: 1;
     }
 
     to {
-        transform: translateX(-50%) translateY(100vw);
+        transform: translateX(-50vw) translateY(100vw);
         opacity: 0;
     }
 }
