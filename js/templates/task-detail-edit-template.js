@@ -14,6 +14,7 @@ import { renderAssignedToContacts } from "../templates/add-task-template.js";
 import { initDatePicker } from "../events/animation.js";
 import { initSubtaskManagementLogic } from "../events/subtask-handler.js";
 import { getContacts } from "../data/storage.js";
+import { CWDATA } from "../data/task-to-firbase.js";
 
 /**
  * Opens the task detail edit overlay and initializes it with the provided task data.
@@ -107,3 +108,110 @@ export async function openTaskDetailEditOverlay(task) {
   openSpecificOverlay("overlay-task-detail-edit");
   initOverlayListeners("overlay-task-detail-edit");
 }
+
+/**
+ * Speichert die Änderungen eines Tasks und übergibt sie an die Datenbank.
+ * @param {string} taskId - Die ID des zu bearbeitenden Tasks.
+ */
+export async function saveEditedTask(taskId) {
+  const form = document.querySelector("#add-task-form");
+  if (!form) {
+    console.error("[DEBUG] Edit-Formular nicht gefunden!");
+    return;
+  }
+
+  // Titel
+  const title = form.querySelector("[name='title']")?.value || "";
+  // Beschreibung
+  const description = form.querySelector("[name='description']")?.value || "";
+  // Deadline
+  const deadline = form.querySelector("[name='deadline']")?.value || "";
+
+  // Kategorie (type)
+  let type = "";
+  const categoryDropdown = document.getElementById("dropdown-category");
+  if (categoryDropdown) {
+    const selected = categoryDropdown.querySelector(
+      ".dropdown-selected, .selected-category"
+    );
+    type = selected ? selected.textContent.trim() : "";
+  }
+
+  // Priority
+  let priority = "";
+  const priorityInput = form.querySelector("[name='priority']:checked");
+  if (priorityInput) {
+    priority = priorityInput.value;
+  } else {
+    // Fallback falls als Button umgesetzt
+    const prioBtn = form.querySelector(".priority-btn.selected");
+    priority = prioBtn ? prioBtn.getAttribute("data-priority") : "";
+  }
+
+  // Subtasks
+  const subtaskInputs = form.querySelectorAll(".subtask-input");
+  const totalSubtask = Array.from(subtaskInputs).map((input) => input.value);
+  const checkedSubtasks = Array.from(subtaskInputs).map(
+    (input) => input.checked
+  );
+  const subtasksCompleted = checkedSubtasks.filter(Boolean).length;
+
+  // Assigned Users (IDs aus Kontakten)
+  let assignedUsers = [];
+  const assignedCheckboxes = form.querySelectorAll(
+    ".assigned-contact-checkbox:checked"
+  );
+  if (window.firebaseData && window.firebaseData.contacts) {
+    assignedUsers = Array.from(assignedCheckboxes)
+      .map((cb) => {
+        const name = cb.getAttribute("data-name");
+        const contact = Object.entries(window.firebaseData.contacts).find(
+          ([id, obj]) => obj.name === name
+        );
+        return contact ? contact[0] : null;
+      })
+      .filter(Boolean);
+  }
+
+  // Zeitstempel
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const year = now.getFullYear();
+  const formattedDate = `${day}.${month}.${year}`;
+
+  // Task-Objekt wie bei createTaskObject
+  const editTaskObjekt = {
+    assignedUsers,
+    boardID: "board-1",
+    checkedSubtasks,
+    columnID: "inProgress",
+    createdAt: formattedDate,
+    deadline,
+    description,
+    priority,
+    subtasksCompleted,
+    title,
+    totalSubtask,
+    type,
+    updatedAt: formattedDate,
+  };
+
+  // Objekt mit ID für CWDATA vorbereiten
+  const objForCWDATA = {
+    [taskId]: editTaskObjekt,
+  };
+
+  console.log("[DEBUG] Übergabe an CWDATA:", objForCWDATA, window.firebaseData);
+
+  // Übergabe an CWDATA mit fetchData
+  await CWDATA(objForCWDATA, window.firebaseData);
+}
+
+// Event-Listener für Speichern-Button
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("save-edit-task-btn")) {
+    const taskId = e.target.getAttribute("data-task-id");
+    saveEditedTask(taskId);
+  }
+});

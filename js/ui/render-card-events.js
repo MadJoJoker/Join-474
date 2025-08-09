@@ -1,4 +1,3 @@
-
 import { getTaskOverlay } from "../templates/task-details-template.js";
 import {
   openSpecificOverlay,
@@ -36,8 +35,7 @@ async function loadDetailOverlayHtmlOnce() {
       overlayContainer.appendChild(detailOverlayElement);
       initOverlayListeners("overlay-task-detail");
     }
-  } catch (error) {
-  }
+  } catch (error) {}
 }
 
 /**
@@ -299,22 +297,109 @@ export async function registerTaskCardDetailOverlay(
                 return;
               }
               formEvent.preventDefault();
-              const formData = new FormData(taskEditForm);
-              editedTaskData.id = taskToEditId;
-              editedTaskData.title = formData.get("title");
-              editedTaskData.description = formData.get("task-description");
-              editedTaskData.dueDate = formData.get("datepicker");
-              editedTaskData.assignedTo = formData.get("select-contacts")
-                ? formData
-                    .get("select-contacts")
-                    .split(",")
-                    .map((s) => s.trim())
-                    .filter(Boolean)
-                : [];
-              editedTaskData.category = formData.get("hidden-category-input");
-              editedTaskData.subtasks = Array.from(
+              const fetchData = window.firebaseData || boardData;
+
+              const title =
+                taskEditForm.querySelector("[name='title']")?.value || "";
+              console.log("[DEBUG] Titel:", title);
+              const description =
+                taskEditForm.querySelector("[name='task-description']")
+                  ?.value || "";
+              console.log("[DEBUG] Beschreibung:", description);
+              const deadline =
+                taskEditForm.querySelector("[name='datepicker']")?.value || "";
+              console.log("[DEBUG] Deadline:", deadline);
+              let type = "";
+              const selectedCategoryElem =
+                taskEditForm.querySelector("#selected-category");
+              if (selectedCategoryElem) {
+                type = selectedCategoryElem.textContent.trim();
+              }
+              console.log("[DEBUG] Typ/Kategorie:", type);
+              let priority = "";
+              const activePrioBtn = taskEditForm.querySelector(
+                ".priority-btn.active"
+              );
+              if (activePrioBtn) {
+                priority = activePrioBtn.getAttribute("data-priority");
+              }
+              console.log("[DEBUG] Priority:", priority);
+
+              let assignedUsers = [];
+              // Namen aus den ausgewählten Kontaktoptionen extrahieren und mit fetchData.contacts abgleichen
+              const assignedOptions = taskEditForm.querySelectorAll(
+                ".contact-option.assigned"
+              );
+              const contactsObj =
+                fetchData && fetchData.contacts ? fetchData.contacts : {};
+              if (assignedOptions && contactsObj) {
+                assignedUsers = Array.from(assignedOptions)
+                  .map((option) => {
+                    const name =
+                      option.getAttribute("data-name") ||
+                      option.textContent.trim();
+                    return (
+                      Object.entries(contactsObj).find(
+                        ([id, contact]) => contact.name === name
+                      )?.[0] || null
+                    );
+                  })
+                  .filter(Boolean);
+              }
+              console.log("[DEBUG] assignedUsers:", assignedUsers);
+              // Subtasks aus .subtask-item-content > .subtask-text auslesen
+              const subtaskItems = Array.from(
+                taskEditForm.querySelectorAll(".subtask-item-content")
+              );
+              let totalSubtask = subtaskItems.map((item) => {
+                const textSpan = item.querySelector(".subtask-text");
+                return textSpan ? textSpan.textContent.trim() : "";
+              });
+              // checkedSubtasks wie gehabt aus <li>
+              const subtaskLis = Array.from(
                 taskEditForm.querySelectorAll("#subtasks-list li")
-              ).map((li) => li.textContent);
+              );
+              let checkedSubtasks = subtaskLis.map((li) =>
+                li.classList.contains("completed")
+              );
+              console.log("[DEBUG] totalSubtask:", totalSubtask);
+              console.log("[DEBUG] checkedSubtasks:", checkedSubtasks);
+              const subtasksCompleted = checkedSubtasks.filter(Boolean).length;
+              // Zeitstempel
+              const now = new Date();
+              const day = String(now.getDate()).padStart(2, "0");
+              const month = String(now.getMonth() + 1).padStart(2, "0");
+              const year = now.getFullYear();
+              const updatedAt = `${day}.${month}.${year}`;
+              console.log("[DEBUG] updatedAt:", updatedAt);
+              // Task-ID
+              let currentTaskId =
+                taskEditForm.getAttribute("data-task-id") || taskToEditId;
+              // Objekt exakt wie im Add-Task-Overlay
+              const editTaskObjekt = {
+                assignedUsers: Array.isArray(assignedUsers)
+                  ? assignedUsers
+                  : [],
+                boardID: "board-1",
+                checkedSubtasks,
+                columnID: taskToEdit.columnID || "inProgress",
+                createdAt: taskToEdit.createdAt || updatedAt,
+                deadline,
+                description,
+                priority,
+                subtasksCompleted: subtasksCompleted,
+                title,
+                totalSubtask,
+                type,
+                updatedAt,
+              };
+              const objForCWDATA = { [currentTaskId]: editTaskObjekt };
+              console.log(
+                "[DEBUG] Übergabe an CWDATA:",
+                objForCWDATA,
+                fetchData
+              );
+              await CWDATA(objForCWDATA, fetchData);
               closeSpecificOverlay("overlay-task-detail-edit");
               if (updateBoardFunction) {
                 await updateBoardFunction();
