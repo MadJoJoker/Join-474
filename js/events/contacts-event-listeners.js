@@ -184,6 +184,7 @@ function setupLiveFieldValidation(inputId, getValue, errorId, validateFn) {
         const value = getValue();
         const error = validateFn(value);
         errorElement.textContent = error || '';
+        toggleErrorClass(input, !!error);
     });
 }
 
@@ -352,8 +353,6 @@ async function handleEditContactDelete() {
     setCurrentlyEditingContact(null);
     closeOverlay('editContactOverlay', true);
     await renderContacts();
-
-    // 👇 Mobile View verlassen (nur falls aktiv)
     document.body.classList.remove('mobile-contact-visible');
 }
 
@@ -395,9 +394,15 @@ function handleOverlayCloseClick() {
  * @param {Object} errors - An object with possible error messages
  */
 function showNewContactErrors(errors) {
+    const nameInput = document.getElementById('newContactName');
+    const emailInput = document.getElementById('newContactEmail');
+    const phoneInput = document.getElementById('newContactPhone');
     document.getElementById('nameError').textContent = errors.name;
     document.getElementById('emailError').textContent = errors.email;
     document.getElementById('phoneError').textContent = errors.phone;
+    toggleErrorClass(nameInput, !!errors.name);
+    toggleErrorClass(emailInput, !!errors.email);
+    toggleErrorClass(phoneInput, !!errors.phone);
 }
 
 /**
@@ -405,9 +410,16 @@ function showNewContactErrors(errors) {
  * This ensures that old errors are not displayed when reopening the overlay.
  */
 function clearEditContactErrors() {
-    ['editNameError', 'editEmailError', 'editPhoneError'].forEach(id => {
-        const element = document.getElementById(id);
-        if (element) element.textContent = '';
+    const map = [
+        ['editNameInput', 'editNameError'],
+        ['editEmailInput', 'editEmailError'],
+        ['editPhoneInput', 'editPhoneError'],
+    ];
+    map.forEach(([inputId, errorId]) => {
+        const el = document.getElementById(errorId);
+        if (el) el.textContent = '';
+        const input = document.getElementById(inputId);
+        if (input) input.classList.remove('input-error');
     });
 }
 
@@ -416,16 +428,22 @@ function clearEditContactErrors() {
  * @param {Object} errors - Error messages for each field
  */
 function showEditContactErrors(errors) {
+    const nameInput = document.getElementById('editNameInput');
+    const emailInput = document.getElementById('editEmailInput');
+    const phoneInput = document.getElementById('editPhoneInput');
     document.getElementById('editNameError').textContent = errors.name;
     document.getElementById('editEmailError').textContent = errors.email;
     document.getElementById('editPhoneError').textContent = errors.phone;
+    toggleErrorClass(nameInput, !!errors.name);
+    toggleErrorClass(emailInput, !!errors.email);
+    toggleErrorClass(phoneInput, !!errors.phone);
 }
 
 /**
  * Custom validation for editing a contact.
  */
 function validateEditContact(name, email, phone) {
-    return validateCustomContactForm(name, email, phone); // reuse same rules
+    return validateCustomContactForm(name, email, phone);
 }
 
 /**
@@ -443,6 +461,11 @@ function validateCustomContactForm(name, email, phone) {
         errors.phone = 'Please enter a valid phone number (digits only, min. 6).';
     }
     return errors;
+}
+
+function toggleErrorClass(inputEl, hasError) {
+    if (!inputEl) return;
+    inputEl.classList.toggle('input-error', !!hasError);
 }
 
 /**
@@ -504,8 +527,13 @@ function hasErrors(errors) {
  */
 function clearNewContactFormInputs() {
     ['newContactName', 'newContactEmail', 'newContactPhone'].forEach(inputId => {
-        document.getElementById(inputId).value = '';
-        const errorDiv = document.getElementById(inputId.replace('newContact', '').toLowerCase() + 'Error');
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        input.value = '';
+        input.classList.remove('input-error');
+        const errorDiv = document.getElementById(
+            inputId.replace('newContact', '').toLowerCase() + 'Error'
+        );
         if (errorDiv) errorDiv.textContent = '';
     });
 }
