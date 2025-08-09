@@ -4,64 +4,64 @@
  */
 @keyframes slideInRight {
     from {
-        transform: translateX(200%);
+        transform: translateX(100vw);
     }
 
     to {
-        transform: translateX(0%);
+        transform: translateX(0vw);
     }
 }
 
 @keyframes slideOutRight {
     from {
-        transform: translateX(0%);
+        transform: translateX(0vw);
     }
 
     to {
-        transform: translateX(200%);
+        transform: translateX(100vw);
     }
 }
 
 @keyframes slideInBottom {
     from {
-        transform: translateY(150%);
+        transform: translateY(100vh);
     }
 
     to {
-        transform: translateY(0%);
+        transform: translateY(0vh);
     }
 }
 
 @keyframes slideOutBottom {
     from {
-        transform: translateY(0%);
+        transform: translateY(0vh);
     }
 
     to {
-        transform: translateY(150%);
+        transform: translateY(100vh);
     }
 }
 
 @keyframes slideInBottomMessage {
     from {
-        transform: translateX(-50%) translateY(200px);
+        transform: translateX(-50vw) translateY(100vw);
         opacity: 0;
     }
 
     to {
-        transform: translateX(-50%) translateY(0%);
+        transform: translateX(-50vw) translateY(0vw);
         opacity: 1;
     }
 }
 
 @keyframes slideOutBottomMessage {
     from {
-        transform: translateX(-50%) translateY(0%);
+        transform: translateX(-50vw) translateY(0vw);
         opacity: 1;
     }
 
     to {
-        transform: translateX(-50%) translateY(200px);
+        transform: translateX(-50vw) translateY(100vw);
         opacity: 0;
     }
 }
@@ -86,7 +86,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: translateX(150%);
+    transform: translateX(100vw);
     opacity: 0;
     transition: transform 0.4s ease, opacity 0.4s ease;
 }
@@ -97,7 +97,7 @@
 }
 
 #contactSuccessMsg.slide-out {
-    transform: translateX(150%);
+    transform: translateX(100vw);
     opacity: 0;
 }
 
