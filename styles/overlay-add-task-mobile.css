@@ -1,22 +1,40 @@
+.content {
+    padding: 0;
+}
+
+.form-buttons-part {
+    position: static;
+    bottom: 54px;
+    left: 7%;
+    right: 7%;
+}
+
+.form-fill-part {
+    margin-bottom: 48px;
+}
+
+.left-form {
+    padding: 0 48px 24px 0;
+}
+
+.right-form {
+    padding: 0 0 24px 48px;
+}
+
 @media (min-width: 1921px) {
-    .content {
-        padding: 54px 0 0 54px;
-    }
-
-    .size-wrapper {
-        /* position: relative; */
-        padding: 0 54px 54px 0;
-        max-width: 1634px;
-    }
-
-    .form-buttons-part {
-        position: relative;
-        top: 120px;
-        left: 0;
+    #modal-content{
+        min-width: unset;
+        min-height: unset;
+        width: 1920px;
+        height: 1800px;
     }
 }
 
 @media (max-width: 1222px) {
+    .size-wrapper {
+        height: unset;
+    }
+
     .priority-button-container>* {
         margin-right: 8px;
     }
@@ -24,7 +42,7 @@
     .priority-button-container>*:last-child {
         margin-right: 0;
     }
-    
+
     .priority-btn {
         width: 96px;
         font-size: 16px;
@@ -68,16 +86,21 @@
 
     .content h1 {
         position: fixed;
-        top: 120px;
-        left: 40px;
+        top: 0px;
+        left: 10%;
+        right: 10%;
+        padding-top: 20px;
+        /* margin-bottom: unset; */
     }
 
     .form-fill-part {
         flex-direction: column;
+        gap: unset;
     }
 
     .left-form {
         padding: 0 0 0 0;
+        gap: 0;
     }
 
     .border {
@@ -85,7 +108,8 @@
     }
 
     .form {
-        padding-top: 0;
+        padding: 0;
+        gap: 0;
     }
 
     .right-form {
@@ -102,50 +126,52 @@
 
     .priority-btn {
         height: 41px;
-        width: 180px;
+        width: 160px;
         font-size: 20px;
     }
 
     .form-buttons-part {
-        position: fixed;
-        bottom: 96px;
-        left: 40px;
-        right: 40px;
+        position: static;
+        bottom: -200px;
+        left: 7%;
+        right: 7%;
+        flex-direction: column;
     }
 
     .responsive-div {
         display: flex;
+        height: 20px;
+        width: 100%;
+        background-color: var(--white);
     }
 
     #responsive-div-one {
-        height: 114px;
+        height: 56px;
     }
 
     #taskSuccessMsg {
         bottom: 50%;
         left: 50%;
     }
+
+    .buttons-area {
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .create-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .clear-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 768px) {
-    .content {
-        padding: 0 16px 0 16px;
-    }
-
-    .content h1 {
-        top: 102px;
-        left: 16px;
-        font-size: 47px;
-    }
-
-    .responsive-div {
-        height: 88px;
-    }
-
-    #responsive-div-one {
-        height: 88px;
-    }
-
     .font-size-20 {
         font-size: 16px;
     }
@@ -160,12 +186,16 @@
         font-size: 16px;
     }
 
+    .input-field-subtask {
+    font-size: 16px !important;
+    }
+
     .priority-button-container {
         justify-content: space-between;
     }
 
     .priority-btn {
-        width: 160px;
+        width: 140px;
         font-size: 16px;
     }
 
@@ -193,6 +223,10 @@
         height: 48px !important;
     }
 
+    .form-fill-part {
+        margin-bottom: 0;
+    }
+
     .form-buttons-part {
         left: 16px;
         right: 16px;
@@ -210,23 +244,36 @@
     #taskSuccessMsg {
         width: 80%;
     }
-}
 
-@media (max-width: 540px) {
+    .create-btn {
+        font-size: 16px !important;
+    }
 
-    .priority-btn {
-        width: 120px;
+    .clear-btn {
+        font-size: 16px !important;
+    }
+
+    .autofill-mobile-btn {
+        margin-bottom: 8px;
+        font-size: 16px !important;
     }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 650px) {
 
     .priority-btn {
         width: 100px;
     }
 }
 
-@media (max-width: 370px) {
+@media (max-width: 500px) {
+
+    .priority-btn {
+        width: 88px;
+    }
+}
+
+@media (max-width: 460px) {
 
     .priority-btn {
         width: 60px;

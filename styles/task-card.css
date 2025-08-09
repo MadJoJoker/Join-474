@@ -51,10 +51,12 @@
   margin-top: 16px;
   margin-bottom: 16px;
 }
-.contact-option.assigned {
+
+/* .contact-option.assigned {
   background-color: var(--white);
   color: var(--black);
-}
+} */
+
 .cardMenu {
   display: flex;
   justify-content: flex-end;

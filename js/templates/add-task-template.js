@@ -303,6 +303,7 @@ export function renderFormButtons() {
  */
 export function getAddTaskFormHTML(task = null) {
     return `
+        <div id="responsive-div-one" class="responsive-div"></div>
         <main id="add-task-main" class="content">
         <div class="size-wrapper">
             ${!task ? `<h1>Add Task</h1>` : ""}
@@ -316,6 +317,7 @@ export function getAddTaskFormHTML(task = null) {
             </form>
             </div>
         </main>
+        <div id="responsive-div-two" class="responsive-div"></div>
     `;
 }
 

@@ -40,7 +40,7 @@ export function initPriorityButtons() {
  */
 export function setButtonIconsMobile() {
     const allButtons = document.querySelectorAll('.priority-btn');
-    const isMobile = window.innerWidth <= 370;
+    const isMobile = window.innerWidth <= 460;
 
     allButtons.forEach(button => {
         const priority = button.dataset.priority;

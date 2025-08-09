@@ -236,13 +236,16 @@ body {
 /* --- Drag-and-Drop Visualisierung --- */
 
 #board-content-wrapper {
+  height: calc(80vh - 150px);
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   justify-content: space-between;
   gap: 5px;
   padding: 30px 64px;
   box-sizing: border-box;
   flex-wrap: nowrap;
-  overflow-x: hidden;
   flex-grow: 1;
   align-items: flex-start;
   max-width: 1440px;
@@ -318,6 +321,6 @@ body {
 #find-task-info-no-found-Msg.hidden {
   display: none;
 }
-#app-container-board-site{
+#app-container-board-site {
   overflow: hidden;
 }

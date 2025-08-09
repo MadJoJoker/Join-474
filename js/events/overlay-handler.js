@@ -223,3 +223,11 @@ export function initOverlayListeners(overlayId) {
   if (modalContent) attachModalContentStopper(modalContent);
   attachEscapeKeyListener(overlay, overlayId);
 }
+
+/** * Loads and initializes the add-task overlay.
+ */
+export function redirectOnSmallScreen() {
+  if (window.matchMedia("(max-width: 768px)").matches) {
+    window.location.href = "add-task.html";
+  }
+}

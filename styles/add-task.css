@@ -217,9 +217,9 @@
   align-items: center;
 
   &:focus {
-        border-color: var(--lightBlue);
-        outline: none;
-    }
+    border-color: var(--lightBlue);
+    outline: none;
+  }
 }
 
 .styled-select {
@@ -344,6 +344,14 @@
   top: 74px;
 }
 
+.error.d-flex {
+  display: flex !important;
+}
+
+.d-flex {
+  display: flex;
+}
+
 #taskSuccessMsg {
   position: fixed;
   gap: 12px;
@@ -382,4 +390,11 @@
 
 .font-size-20 {
   font-size: 20px;
+}
+
+.responsive-div {
+  display: none;
+  height: 96px;
+  width: 100%;
+  background-color: var(--lightGrey);
 }

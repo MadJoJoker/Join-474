@@ -246,9 +246,6 @@ function handleSubtaskListClick(event) {
 export function initWindowResizeListeners() {
     document.querySelector(".resize-handle")?.addEventListener("mousedown", startResize);
 
-    handleResponsiveDiv();
-    window.addEventListener("resize", handleResponsiveDiv);
-
     syncMaxWidth();
     window.addEventListener("resize", syncMaxWidth);
 
@@ -258,15 +255,6 @@ export function initWindowResizeListeners() {
     setButtonIconsMobile();
     window.addEventListener("resize", setButtonIconsMobile);
 }
-
-/** * Toggles the visibility of the "assigned to" area.
- */
-// export function toggleAssignedToArea() {
-//     const assignedToArea = document.getElementById("assigned-to-area");
-//     if (!assignedToArea) return;
-
-//     assignedToArea.classList.toggle("width-100");
-// }
 
 /** * Adds a grey background color to the main content area.
  */
@@ -294,22 +282,6 @@ export async function showTaskSuccessMsg() {
     await new Promise((resolve) => setTimeout(resolve, 1600));
 
     msg.classList.add("hidden");
-}
-
-/** * Handles the creation and removal of responsive divs based on the screen size.
- * If the screen width is less than or equal to 1024px, it creates two responsive divs.
- * Otherwise, it removes them.
- */
-export function handleResponsiveDiv() {
-    const container = document.getElementById("content");
-    const divOne = document.getElementById("responsive-div-one");
-    const divTwo = document.getElementById("responsive-div-two");
-
-    if (window.innerWidth <= 1024) {
-        createResponsiveDivs(container, divOne, divTwo);
-    } else {
-        removeResponsiveDivs(divOne, divTwo);
-    }
 }
 
 /** * Creates responsive divs if they don't already exist.

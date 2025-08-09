@@ -2,6 +2,8 @@
 #overlay-task-detail .contact-option.assigned,
 #overlay-task-detail-edit .contact-option.assigned {
   cursor: default !important;
+  background-color: var(--white);
+  color: var(--black);
 }
 #overlay-task-detail .contact-option.assigned:hover,
 #overlay-task-detail-edit .contact-option.assigned:hover {
@@ -278,7 +280,8 @@ html body #overlay-task-detail-edit .checkbox-icon.checked {
   position: relative;
   transform: translateX(100vw);
   opacity: 0;
-  min-height: 80%;
+  min-height: 90%;
+  min-width: 90%;
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     opacity 0.4s ease-in-out;
 }
