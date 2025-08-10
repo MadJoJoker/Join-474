@@ -134,7 +134,9 @@
   color: #666;
   margin-bottom: clamp(6px, 2vw, 15px);
   max-height: clamp(60px, 12vw, 150px);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
 }
 
 .progress-container {
