@@ -1,20 +1,22 @@
 /* mobile-css for index.html and signup.css */
-/* @media (min-height: 1000px) {
-  .big-screen-container {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    height: 100vh;
+@media (min-width: 1920px) {
+  .frame-max-width {
+    margin-right: calc(100vw - 1920px);
   }
-} */
+}
 
+@media (max-width: 1480px) {
+  .legal-part {
+    margin-top: 162px;
+  }
+}
 
 @media (max-width: 1024px) {
   .signup-title > a {
     height: 122px;
 
     > img {
-      height: calc(80px + (100vw - 768px) * 0.16406);
+      height: calc(98px + (100vw - 768px) * 0.09375);
     }
   }
 }
@@ -26,8 +28,8 @@
 }
 
 @media (max-width: 768px) {
-  .content-wrapper.sgn-wrapper {
-    padding-top: 36px;
+  body {
+    align-items: flex-start;  
   }
 
   .floating-logo {
@@ -43,7 +45,7 @@
       z-index: 10;
     }
     100% {
-      top: 25px;
+      top: 28px;
       left: calc(0px + (100vw - 480px) * 0.11806);
       transform: translate(0, 0) scale(1);
       z-index: 1;
@@ -82,9 +84,12 @@
     display: flex;
   }
 
-  .content-wrapper {
+  .content-wrapper-idx,
+  .content-wrapper-sgn {
     row-gap: 0;
-    padding: 34px calc(18vw - 104px);
+    padding: 34px 0;
+    width: 100vw;
+    height: 100vh;
   }
 
   .index-title {
@@ -94,23 +99,26 @@
   .signup-title
   {
     height: 80px;
+    margin-top: 16px;
     margin-bottom: 38px;
 
     > a > img {
       height: 80px;
-      margin-left: 14px;
+      margin-left: calc(14px + (100vw - 480px) * 0.21528);
     }
   }
 
   .dialogue-frame {
-    margin: 204px 0 78px;
+    margin-top: calc(144px + (100vw - 480px) * 0.20833);
+    margin-bottom: calc(55px + (100vw - 480px) * 0.07986);
     width: calc(444px + (100vw - 480px) * 0.54167);
     height: calc(476px + (100vw - 480px) * 0.055);
     padding: 32px 0;
 
     &.signup-height {
       margin-top: 14px;
-      margin-bottom: 110px;
+      margin-bottom: calc(55px + (100vw - 480px) * 0.19097);
+
       width: calc(430px + (100vw - 460px) * 0.5833);
       height: clamp(587px, calc(587px + (100vw - 480px) * 0.04514), 600px);
       padding: 32px 0;
@@ -198,7 +206,7 @@
       z-index: 10;
     }
     100% {
-      top: 25px;
+      top: 28px;
       left: 14px;
       transform: translate(0, 0) scale(1);
       z-index: 1;
@@ -229,15 +237,22 @@
 }
 
 @media (max-width: 480px) {
+  .signup-title > a > img {
+    margin-left: 14px;
+  }
+
   .dialogue-frame,
   .dialogue-frame.s-up-margins {
     padding: 32px 16px;
     height: 476px;
     width: 95%;
+    margin-top: 144px;
+    margin-bottom: 55px;
     
     &.signup-height {
       width: 95%;
       padding: 32px 0;
+      margin-bottom: 55px;
     }
 
     .blue-arrow {

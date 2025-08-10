@@ -1,5 +1,6 @@
 /**
- * 2nd onload-function: handles start animation, remove overlay when finished
+ * 2nd onload-function: handles start animation, remove overlay when finished.
+ * prevents false positioning when page is reloaded
  */
 function removeOverlay() {
   const overlay = document.querySelector('.idx-overlay');
@@ -36,7 +37,6 @@ function validateLogin(userEmail, userPw) {
   if(!validEmail && !validPw) {
     blameInvalidInput('alert-login', 'login-email', 'Unkown user. Please sign up');
     goToPage('html/sign-up.html');
-    // window.location.href = 'html/sign-up.html';
   } else if(validEmail && validPw) {
     window.location.href = 'html/summary.html';
   } else {
