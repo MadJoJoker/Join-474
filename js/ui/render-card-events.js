@@ -351,9 +351,10 @@ export async function registerTaskCardDetailOverlay(
               const subtaskItems = Array.from(
                 taskEditForm.querySelectorAll(".subtask-item-content")
               );
-              let totalSubtask = subtaskItems.map((item) => {
+              let totalSubtask = {};
+              subtaskItems.forEach((item, i) => {
                 const textSpan = item.querySelector(".subtask-text");
-                return textSpan ? textSpan.textContent.trim() : "";
+                totalSubtask[i] = textSpan ? textSpan.textContent.trim() : "";
               });
               // checkedSubtasks wie gehabt aus <li>
               const subtaskLis = Array.from(

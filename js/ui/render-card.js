@@ -1,4 +1,5 @@
 import { getTaskOverlay } from "../templates/task-details-template.js";
+console.error("render-card.js geladen (Test)");
 import {
   registerTaskCardDetailOverlay,
   detailOverlayElement,
@@ -215,6 +216,106 @@ export function createSimpleTaskCard(boardData, taskID) {
     priorityInfo
   );
 }
+
+const columnOrder = ["toDo", "inProgress", "review", "done"];
+document.addEventListener("click", function (e) {
+  console.error("Global Click Event ausgelöst (Test)", e.target);
+  const upBtn = e.target.closest(".move-task-up");
+  const downBtn = e.target.closest(".move-task-down");
+  if (upBtn || downBtn) {
+    e.preventDefault();
+    const taskId = (upBtn || downBtn).getAttribute("data-task-id");
+    const boardData = window.firebaseData;
+    console.debug("[DEBUG] boardData snapshot:", JSON.stringify(boardData));
+    console.log(
+      "[Move Task] Clicked:",
+      upBtn ? "Up" : "Down",
+      "TaskID:",
+      taskId
+    );
+    if (!boardData || !boardData.tasks || !boardData.tasks[taskId]) {
+      console.warn("[Move Task] Invalid boardData or task:", boardData, taskId);
+      return;
+    }
+    // Hole die Task direkt aus dem Board
+    const originalTask = boardData.tasks[taskId];
+    console.debug(
+      "[DEBUG] Original Task Objekt:",
+      JSON.stringify(originalTask)
+    );
+    const currentIndex = columnOrder.indexOf(originalTask.columnID);
+    let newIndex = currentIndex;
+    console.log(
+      "[Move Task] Current column:",
+      originalTask.columnID,
+      "Index:",
+      currentIndex
+    );
+    if (upBtn && currentIndex > 0) {
+      newIndex = currentIndex - 1;
+      console.log(
+        "[Move Task] Move Up: New Index:",
+        newIndex,
+        "New Column:",
+        columnOrder[newIndex]
+      );
+    }
+    if (downBtn && currentIndex < columnOrder.length - 1) {
+      newIndex = currentIndex + 1;
+      console.log(
+        "[Move Task] Move Down: New Index:",
+        newIndex,
+        "New Column:",
+        columnOrder[newIndex]
+      );
+    }
+    if (newIndex !== currentIndex) {
+      // Ändere die columnID direkt im bestehenden Objekt
+      boardData.tasks[taskId].columnID = columnOrder[newIndex];
+      console.debug(
+        "[DEBUG] Updated Task Objekt:",
+        JSON.stringify(boardData.tasks[taskId])
+      );
+      console.log(
+        "[Move Task] Updating Task:",
+        taskId,
+        "New columnID:",
+        boardData.tasks[taskId].columnID
+      );
+      if (window.CWDATA && window.firebaseData) {
+        console.error("[CHECK] Datenübergabe an CWDATA:", {
+          taskId,
+          taskObjekt: boardData.tasks[taskId],
+          fullBoardData: boardData,
+        });
+        console.debug(
+          "[DEBUG] Übergabe an CWDATA:",
+          { [taskId]: boardData.tasks[taskId] },
+          window.firebaseData
+        );
+        window.CWDATA(
+          { [taskId]: boardData.tasks[taskId] },
+          window.firebaseData
+        );
+        console.log(
+          "[Move Task] CWDATA called for:",
+          taskId,
+          "updatedTask:",
+          boardData.tasks[taskId]
+        );
+      }
+      if (window.board && typeof window.board.site === "function") {
+        window.board.site();
+        console.log("[Move Task] window.board.site() called");
+      } else if (typeof window.boardSiteHtml === "function") {
+        window.boardSiteHtml();
+        console.log("[Move Task] window.boardSiteHtml() called");
+      }
+    } else {
+      console.log("[Move Task] No column change for:", taskId);
+    }
+  }
+});
 
 export const editedTaskData = {};
 

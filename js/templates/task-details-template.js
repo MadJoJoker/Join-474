@@ -1,3 +1,13 @@
+// Global event handler for task delete buttons
+import { CWDATA, allData } from "../data/task-to-firbase.js";
+document.addEventListener("click", function (e) {
+  const btn = e.target.closest(".delete-task-btn");
+  if (btn) {
+    const taskId = btn.getAttribute("data-task-id");
+    CWDATA({ [taskId]: null }, allData);
+  }
+});
+// ...existing code...
 import { renderAssignedToContacts } from "../templates/add-task-template.js";
 import { firebaseData } from "../../main.js";
 
@@ -297,10 +307,10 @@ function renderSingleSubtask(task, i) {
  * @returns {string} The combined HTML string of all subtasks.
  */
 function renderSubtasks(task) {
-  if (!Array.isArray(task?.totalSubtask) || task.totalSubtask.length === 0)
+  if (!task?.totalSubtask || Object.keys(task.totalSubtask).length === 0)
     return "";
   let subtasksHtml = "";
-  for (let i = 0; i < task.totalSubtask.length; i++) {
+  for (const i in task.totalSubtask) {
     subtasksHtml += renderSingleSubtask(task, i);
   }
   return subtasksHtml;
