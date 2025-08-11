@@ -1,5 +1,4 @@
 import { getTaskOverlay } from "../templates/task-details-template.js";
-console.error("render-card.js geladen (Test)");
 import {
   registerTaskCardDetailOverlay,
   detailOverlayElement,
@@ -55,11 +54,11 @@ function calculateSubtaskProgress(task) {
   if (Array.isArray(task.subtasks) && task.subtasks.length > 0) {
     subtasksArray = task.subtasks;
   } else if (
-    Array.isArray(task.totalSubtask) &&
+    Array.isArray(task.totalSubtasks) &&
     Array.isArray(task.checkedSubtasks) &&
-    task.totalSubtask.length === task.checkedSubtasks.length
+    task.totalSubtasks.length === task.checkedSubtasks.length
   ) {
-    subtasksArray = task.totalSubtask.map((text, i) => ({
+    subtasksArray = task.totalSubtasks.map((text, i) => ({
       text,
       completed: !!task.checkedSubtasks[i],
     }));
@@ -219,7 +218,6 @@ export function createSimpleTaskCard(boardData, taskID) {
 
 const columnOrder = ["toDo", "inProgress", "review", "done"];
 document.addEventListener("click", function (e) {
-  console.error("Global Click Event ausgelöst (Test)", e.target);
   const upBtn = e.target.closest(".move-task-up");
   const downBtn = e.target.closest(".move-task-down");
   if (upBtn || downBtn) {
@@ -234,7 +232,7 @@ document.addEventListener("click", function (e) {
       taskId
     );
     if (!boardData || !boardData.tasks || !boardData.tasks[taskId]) {
-      console.warn("[Move Task] Invalid boardData or task:", boardData, taskId);
+      // [Move Task] Invalid boardData or task
       return;
     }
     // Hole die Task direkt aus dem Board
@@ -283,11 +281,7 @@ document.addEventListener("click", function (e) {
         boardData.tasks[taskId].columnID
       );
       if (window.CWDATA && window.firebaseData) {
-        console.error("[CHECK] Datenübergabe an CWDATA:", {
-          taskId,
-          taskObjekt: boardData.tasks[taskId],
-          fullBoardData: boardData,
-        });
+        // [CHECK] Datenübergabe an CWDATA
         console.debug(
           "[DEBUG] Übergabe an CWDATA:",
           { [taskId]: boardData.tasks[taskId] },

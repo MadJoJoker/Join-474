@@ -296,7 +296,7 @@ function getSubtaskCheckedStatus(task, index) {
  * @returns {string} The HTML string of the rendered subtask.
  */
 function renderSingleSubtask(task, i) {
-  const subtaskName = task.totalSubtask[i];
+  const subtaskName = task.totalSubtasks[i];
   const isChecked = getSubtaskCheckedStatus(task, i);
   return createSubtaskHtml(subtaskName, isChecked, task.id, i);
 }
@@ -307,10 +307,10 @@ function renderSingleSubtask(task, i) {
  * @returns {string} The combined HTML string of all subtasks.
  */
 function renderSubtasks(task) {
-  if (!task?.totalSubtask || Object.keys(task.totalSubtask).length === 0)
+  if (!task?.totalSubtasks || Object.keys(task.totalSubtasks).length === 0)
     return "";
   let subtasksHtml = "";
-  for (const i in task.totalSubtask) {
+  for (const i in task.totalSubtasks) {
     subtasksHtml += renderSingleSubtask(task, i);
   }
   return subtasksHtml;

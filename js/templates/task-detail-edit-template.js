@@ -150,10 +150,21 @@ export async function saveEditedTask(taskId) {
 
   // Subtasks
   const subtaskInputs = form.querySelectorAll(".subtask-input");
-  const totalSubtask = Array.from(subtaskInputs).map((input) => input.value);
-  const checkedSubtasks = Array.from(subtaskInputs).map(
-    (input) => input.checked
-  );
+  let totalSubtasks = Array.from(subtaskInputs).map((input) => input.value);
+  let checkedSubtasks = Array.from(subtaskInputs).map((input) => input.checked);
+  // Wenn keine Subtasks im Formular, dann Werte aus dem Task-Objekt verwenden
+  if (totalSubtasks.length === 0 || totalSubtasks.every((v) => v === "")) {
+    // Hole das ursprüngliche Task-Objekt aus dem globalen State oder DOM
+    const task = window.firebaseData?.tasks?.[taskId];
+    if (task) {
+      totalSubtasks = Array.isArray(task.totalSubtasks)
+        ? [...task.totalSubtasks]
+        : [];
+      checkedSubtasks = Array.isArray(task.checkedSubtasks)
+        ? [...task.checkedSubtasks]
+        : [];
+    }
+  }
   const subtasksCompleted = checkedSubtasks.filter(Boolean).length;
 
   // Assigned Users (IDs aus Kontakten)
@@ -192,7 +203,7 @@ export async function saveEditedTask(taskId) {
     priority,
     subtasksCompleted,
     title,
-    totalSubtask,
+    totalSubtasks,
     type,
     updatedAt: formattedDate,
   };

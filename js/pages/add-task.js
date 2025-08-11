@@ -5,10 +5,7 @@ import {
   renderSubtasks,
   addedSubtasks,
 } from "../events/subtask-handler.js";
-import {
-  currentPriority,
-  setMedium,
-} from "../events/priorety-handler.js";
+import { currentPriority, setMedium } from "../events/priorety-handler.js";
 import {
   selectedCategory,
   selectedContacts,
@@ -261,29 +258,33 @@ function createTaskObject() {
   const year = now.getFullYear();
   const formattedCreatedAt = `${day}.${month}.${year}`;
 
-  const totalSubtask = addedSubtasks.map((subtask) => subtask.text);
+  const totalSubtasks = addedSubtasks.map((subtask) => subtask.text);
   const checkedSubtasks = addedSubtasks.map((subtask) => subtask.completed);
-  const subtasksCompleted = checkedSubtasks.filter((completed) => completed).length;
-  const assignedUsers = selectedContacts.map((selectedContact) => {
-    let foundId = undefined;
-    if (fetchData && fetchData.contacts) {
-      for (const contactId in fetchData.contacts) {
-        if (
-          Object.prototype.hasOwnProperty.call(fetchData.contacts, contactId)
-        ) {
-          if (fetchData.contacts[contactId].name === selectedContact.name) {
-            foundId = contactId;
-            break;
+  const subtasksCompleted = checkedSubtasks.filter(
+    (completed) => completed
+  ).length;
+  const assignedUsers = selectedContacts
+    .map((selectedContact) => {
+      let foundId = undefined;
+      if (fetchData && fetchData.contacts) {
+        for (const contactId in fetchData.contacts) {
+          if (
+            Object.prototype.hasOwnProperty.call(fetchData.contacts, contactId)
+          ) {
+            if (fetchData.contacts[contactId].name === selectedContact.name) {
+              foundId = contactId;
+              break;
+            }
           }
         }
+      } else {
+        console.warn(
+          "WARNING: 'fetchData.contacts' is undefined or empty. Assigned user IDs could not be determined."
+        );
       }
-    } else {
-      console.warn(
-        "WARNING: 'fetchData.contacts' is undefined or empty. Assigned user IDs could not be determined."
-      );
-    }
-    return foundId;
-  }).filter((id) => id !== undefined);
+      return foundId;
+    })
+    .filter((id) => id !== undefined);
 
   return {
     assignedUsers: assignedUsers,
@@ -296,7 +297,7 @@ function createTaskObject() {
     priority: currentPriority,
     subtasksCompleted: subtasksCompleted,
     title: title,
-    totalSubtask: totalSubtask,
+    totalSubtasks: totalSubtasks,
     type: selectedCategory,
     updatedAt: formattedCreatedAt,
   };
@@ -317,7 +318,7 @@ export async function handleCreateTask(event) {
       initAddTaskForm();
     }
     window.location.href = "board-site.html";
-  } 
+  }
 }
 
 /** * Processes the creation of a new task.

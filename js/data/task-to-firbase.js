@@ -33,12 +33,12 @@ export async function CWDATA(receivedObject, fetchData) {
 /**
  * main function to proceed rawObject and send it to Firebase
  * @param {object} input - raw object
- * 
+ *
  * @returns object (only for console.log while working)
  */
 async function processRawObject(input) {
   let { pushObjectId, rawNewObject } = checkDataStructure(input);
-  rawNewObject.assignedTo = convertContacts(rawNewObject);
+  // assignedTo wird nicht mehr erzeugt, damit die Struktur wie Objekt 1 bleibt
   rawNewObject = arraysToObjects(rawNewObject);
   if (pushObjectId == null) pushObjectId = setNextId("task");
   const result = await sendObject(pushObjectId, rawNewObject);
@@ -89,7 +89,13 @@ function convertContacts(rawNewObject) {
  */
 function arraysToObjects(obj) {
   for (const key in obj) {
-    if (Array.isArray(obj[key])) {
+    // checkedSubtasks NICHT umwandeln, sondern als Array von Booleans lassen
+    if (
+      Array.isArray(obj[key]) &&
+      key !== "assignedUsers" &&
+      key !== "checkedSubtasks" &&
+      key !== "totalSubtasks"
+    ) {
       obj[key] = obj[key].map((item, index) => [index, item]);
     }
   }
@@ -125,9 +131,9 @@ function getLastKey(category) {
 
 /**
  * send object to Firebase and update local copy (for instant rendering without new fetch)
- * @param {string} pushObjectId 
- * @param {object} rawNewObject - former raw Object 
- * 
+ * @param {string} pushObjectId
+ * @param {object} rawNewObject - former raw Object
+ *
  * @returns final object; only for console.log purpose.
  */
 async function sendObject(pushObjectId, rawNewObject) {

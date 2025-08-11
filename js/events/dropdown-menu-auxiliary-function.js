@@ -10,7 +10,7 @@ import {
   selectedCategory,
   selectedContacts,
   resetDropdownState,
-  setBorderColorGrey
+  setBorderColorGrey,
 } from "./dropdown-menu.js";
 
 /** Initializes the dropdown menus for category and assigned contacts.
@@ -21,18 +21,18 @@ export function initDropdowns(contactsData) {
 
   const categoryDropdown = document.getElementById("dropdown-category");
   const categoryOptions = document.getElementById("category-options-container");
-  const assignedToDropdown = document.getElementById("dropdown-assigned-to");
-  const assignedToOptions = document.getElementById(
+  const assignedUsersDropdown = document.getElementById("dropdown-assigned-to");
+  const assignedUsersOptions = document.getElementById(
     "assigned-to-options-container"
   );
 
   setupCategoryDropdown();
-  setupAssignedToDropdown();
+  setupAssignedUsersDropdown();
   setupDocumentClickHandler(
     categoryDropdown,
     categoryOptions,
-    assignedToDropdown,
-    assignedToOptions
+    assignedUsersDropdown,
+    assignedUsersOptions
   );
   resetDropdownState();
 }
@@ -54,7 +54,7 @@ function setupCategoryDropdown() {
 
 /** Clears the selected assigned contacts in the dropdown.
  */
-function setupAssignedToDropdown() {
+function setupAssignedUsersDropdown() {
   document
     .getElementById("dropdown-assigned-to")
     ?.addEventListener("click", toggleAssignedToDropdown);
@@ -67,10 +67,10 @@ function setupAssignedToDropdown() {
         toggleSelectContacts(contactOption, name, initials, avatarColor);
 
         const invalidArea = document.getElementById("dropdown-assigned-to");
-        const assignedToError = document.getElementById("assigned-to-error");
+        const assignedUsersError = document.getElementById("assigned-to-error");
         if (invalidArea.classList.contains("invalid")) {
           invalidArea.classList.remove("invalid");
-          assignedToError?.classList.remove("d-flex");
+          assignedUsersError?.classList.remove("d-flex");
         }
       }
     });
@@ -94,14 +94,14 @@ function handleOutsideClick(dropdown, options, closeFunction) {
 /** Sets up a document click handler to close dropdowns when clicking outside.
  * @param {HTMLElement} categoryDropdown - The category dropdown element.
  * @param {HTMLElement} categoryOptions - The category options container element.
- * @param {HTMLElement} assignedToDropdown - The assigned to dropdown element.
- * @param {HTMLElement} assignedToOptions - The assigned to options container element.
+ * @param {HTMLElement} assignedUsersDropdown - The assigned users dropdown element.
+ * @param {HTMLElement} assignedUsersOptions - The assigned users options container element.
  */
 function setupDocumentClickHandler(
   categoryDropdown,
   categoryOptions,
-  assignedToDropdown,
-  assignedToOptions
+  assignedUsersDropdown,
+  assignedUsersOptions
 ) {
   document.addEventListener("click", (event) => {
     if (categoryDropdown && categoryOptions) {
@@ -112,10 +112,10 @@ function setupDocumentClickHandler(
       )(event);
     }
 
-    if (assignedToDropdown && assignedToOptions) {
+    if (assignedUsersDropdown && assignedUsersOptions) {
       handleOutsideClick(
-        assignedToDropdown,
-        assignedToOptions,
+        assignedUsersDropdown,
+        assignedUsersOptions,
         closeAssignedToDropdown
       )(event);
     }
@@ -128,7 +128,9 @@ export function closeCategoryDropdown() {
   const wrapper = document.getElementById("category-options-wrapper");
   const container = document.getElementById("category-options-container");
   const dropdownIconTwo = document.getElementById("dropdown-icon-two");
-  const dropdownIconContainerTwo = document.getElementById("dropdown-icon-container-two");
+  const dropdownIconContainerTwo = document.getElementById(
+    "dropdown-icon-container-two"
+  );
   const input = document.getElementById("dropdown-category");
 
   if (!wrapper || !container) return;
@@ -145,13 +147,15 @@ export function closeCategoryDropdown() {
   }
 }
 
-/** Closes the assigned to dropdown and resets its state.
+/** Closes the assigned users dropdown and resets its state.
  */
 export function closeAssignedToDropdown() {
   const wrapper = document.getElementById("assigned-to-options-wrapper");
   const container = document.getElementById("assigned-to-options-container");
   const dropdownIconOne = document.getElementById("dropdown-icon-one");
-  const dropdownIconContainerOne = document.getElementById("dropdown-icon-container-one");
+  const dropdownIconContainerOne = document.getElementById(
+    "dropdown-icon-container-one"
+  );
 
   if (!wrapper || !container) return;
 
@@ -219,17 +223,17 @@ export function setCategoryFromTaskForCard(categoryName) {
 }
 
 /** Sets the assigned contacts based on the task object for the card/edit overlay.
- * @param {Array} assignedTo - The array of assigned contacts.
+ * @param {Array} assignedUsers - The array of assigned contacts.
  */
-export function setAssignedContactsFromTaskForCard(assignedTo) {
-  if (!Array.isArray(assignedTo)) {
-    console.warn("[Dropdown-Card] assignedTo is no Array!", assignedTo);
+export function setAssignedContactsFromTaskForCard(assignedUsers) {
+  if (!Array.isArray(assignedUsers)) {
+    console.warn("[Dropdown-Card] assignedUsers is no Array!", assignedUsers);
     return;
   }
 
   selectedContacts.length = 0;
 
-  assignedTo.forEach((sel) => {
+  assignedUsers.forEach((sel) => {
     if (typeof sel === "string") {
       processStringContact(sel);
     } else {

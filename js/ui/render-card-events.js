@@ -11,6 +11,7 @@ import {
 } from "../events/dropdown-menu-auxiliary-function.js";
 import { CWDATA } from "../data/task-to-firbase.js";
 import { editedTaskData } from "./render-card.js";
+import { addedSubtasks } from "../events/subtask-handler.js";
 
 export let detailOverlayElement = null;
 export let editOverlayElement = null;
@@ -181,10 +182,24 @@ export async function registerTaskCardDetailOverlay(
           ".close-modal-btn, .close-modal-btn-svg"
         );
         if (closeBtn) {
-          closeBtn.onclick = () => {
+          closeBtn.onclick = async () => {
+            await handleDetailOverlayClose(taskId, boardData);
             closeSpecificOverlay("overlay-task-detail");
             if (container) {
               container.innerHTML = "";
+            }
+          };
+        }
+        // Outer click event (click outside content)
+        if (detailOverlayElement) {
+          const overlayBg = detailOverlayElement;
+          overlayBg.onclick = async (e) => {
+            if (e.target === overlayBg) {
+              await handleDetailOverlayClose(taskId, boardData);
+              closeSpecificOverlay("overlay-task-detail");
+              if (container) {
+                container.innerHTML = "";
+              }
             }
           };
         }
@@ -215,6 +230,71 @@ export async function registerTaskCardDetailOverlay(
             }
           });
         }
+      }
+      // Hilfsfunktion: Daten aus Overlay sammeln und an CWDATA übergeben
+      async function handleDetailOverlayClose(taskId, boardData) {
+        const task = boardData.tasks[taskId];
+        const container = detailOverlayElement.querySelector("#task-container");
+        // Versuche, aktuelle Werte aus dem Overlay zu lesen
+        let title =
+          container?.querySelector(".task-title")?.textContent?.trim() ||
+          task.title;
+        let description =
+          container?.querySelector(".task-description")?.textContent?.trim() ||
+          task.description;
+        let deadline =
+          container?.querySelector(".task-deadline")?.textContent?.trim() ||
+          task.deadline;
+        let type =
+          container?.querySelector(".task-type")?.textContent?.trim() ||
+          task.type;
+        let priority =
+          container
+            ?.querySelector(".priority-icon.active")
+            ?.getAttribute("data-priority") || task.priority;
+        // assignedUsers aus den Initialen-Kreisen extrahieren
+        let assignedUsers = Array.from(
+          container?.querySelectorAll(".assigned-initials-circle") || []
+        )
+          .map((el) => el.getAttribute("data-contact-id"))
+          .filter(Boolean);
+        if (!assignedUsers.length) assignedUsers = task.assignedUsers || [];
+        // Subtasks und checkedSubtasks
+        let totalSubtasks = Array.from(
+          container?.querySelectorAll(".subtask-text") || []
+        ).map((el) => el.textContent.trim());
+        if (!totalSubtasks.length && Array.isArray(task.totalSubtasks))
+          totalSubtasks = task.totalSubtasks;
+        let checkedSubtasks = Array.from(
+          container?.querySelectorAll(".subtask-item")
+        ).map((el) => el.classList.contains("completed"));
+        if (!checkedSubtasks.length && Array.isArray(task.checkedSubtasks))
+          checkedSubtasks = task.checkedSubtasks;
+        let subtasksCompleted = String(checkedSubtasks.filter(Boolean).length);
+        // Zeitstempel
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, "0");
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const year = now.getFullYear();
+        const updatedAt = `${day}.${month}.${year}`;
+        // Objektstruktur
+        const editTaskObjekt = {
+          assignedUsers,
+          boardID: task.boardID || "board-1",
+          checkedSubtasks,
+          columnID: task.columnID || "inProgress",
+          createdAt: task.createdAt || updatedAt,
+          deadline,
+          description,
+          priority,
+          subtasksCompleted,
+          title,
+          totalSubtasks,
+          type,
+          updatedAt,
+        };
+        const objForCWDATA = { [taskId]: editTaskObjekt };
+        await CWDATA(objForCWDATA, boardData);
       }
       function renderEditOverlay(taskToEditId) {
         closeSpecificOverlay("overlay-task-detail");
@@ -264,12 +344,12 @@ export async function registerTaskCardDetailOverlay(
                 typeof st === "string" ? { text: st, completed: false } : st
               );
             } else if (
-              Array.isArray(taskToEdit.totalSubtask) &&
+              Array.isArray(taskToEdit.totalSubtasks) &&
               Array.isArray(taskToEdit.checkedSubtasks) &&
-              taskToEdit.totalSubtask.length ===
+              taskToEdit.totalSubtasks.length ===
                 taskToEdit.checkedSubtasks.length
             ) {
-              subtasks = taskToEdit.totalSubtask.map((text, i) => ({
+              subtasks = taskToEdit.totalSubtasks.map((text, i) => ({
                 text,
                 completed: !!taskToEdit.checkedSubtasks[i],
               }));
@@ -347,25 +427,50 @@ export async function registerTaskCardDetailOverlay(
                   .filter(Boolean);
               }
               console.log("[DEBUG] assignedUsers:", assignedUsers);
-              // Subtasks aus .subtask-item-content > .subtask-text auslesen
-              const subtaskItems = Array.from(
-                taskEditForm.querySelectorAll(".subtask-item-content")
+              // Subtasks und Checked-Status direkt aus dem DOM des Edit-Formulars auslesen
+              const subtaskInputs =
+                taskEditForm.querySelectorAll(".subtask-input");
+              let totalSubtasks = Array.from(subtaskInputs)
+                .map((input) => input.value.trim())
+                .filter((text) => text !== "");
+              let checkedSubtasks = Array.from(subtaskInputs).map(
+                (input) => input.checked
               );
-              let totalSubtask = {};
-              subtaskItems.forEach((item, i) => {
-                const textSpan = item.querySelector(".subtask-text");
-                totalSubtask[i] = textSpan ? textSpan.textContent.trim() : "";
-              });
-              // checkedSubtasks wie gehabt aus <li>
-              const subtaskLis = Array.from(
-                taskEditForm.querySelectorAll("#subtasks-list li")
-              );
-              let checkedSubtasks = subtaskLis.map((li) =>
-                li.classList.contains("completed")
-              );
-              console.log("[DEBUG] totalSubtask:", totalSubtask);
+              // Wenn keine Subtasks im Input, dann versuche aus .subtask-text oder .subtask-item zu lesen
+              if (totalSubtasks.length === 0) {
+                const subtaskTextNodes =
+                  taskEditForm.querySelectorAll(".subtask-text");
+                if (subtaskTextNodes.length > 0) {
+                  totalSubtasks = Array.from(subtaskTextNodes)
+                    .map((node) => node.textContent.trim())
+                    .filter((text) => text !== "");
+                } else {
+                  const subtaskItemNodes =
+                    taskEditForm.querySelectorAll(".subtask-item");
+                  totalSubtasks = Array.from(subtaskItemNodes)
+                    .map((node) => node.textContent.trim())
+                    .filter((text) => text !== "");
+                }
+                // checkedSubtasks ggf. aus .subtask-item.completed
+                if (checkedSubtasks.length === 0) {
+                  checkedSubtasks = Array.from(
+                    taskEditForm.querySelectorAll(".subtask-item")
+                  ).map((node) => node.classList.contains("completed"));
+                }
+                // Wenn immer noch leer, dann Werte aus dem Task-Objekt verwenden
+                if (totalSubtasks.length === 0) {
+                  totalSubtasks = Array.isArray(taskToEdit.totalSubtasks)
+                    ? [...taskToEdit.totalSubtasks]
+                    : [];
+                  checkedSubtasks = Array.isArray(taskToEdit.checkedSubtasks)
+                    ? [...taskToEdit.checkedSubtasks]
+                    : [];
+                }
+              }
+              console.log("[DEBUG] totalSubtasks:", totalSubtasks);
               console.log("[DEBUG] checkedSubtasks:", checkedSubtasks);
               const subtasksCompleted = checkedSubtasks.filter(Boolean).length;
+              console.log("[DEBUG] completedSubtasks:", subtasksCompleted);
               // Zeitstempel
               const now = new Date();
               const day = String(now.getDate()).padStart(2, "0");
@@ -390,7 +495,7 @@ export async function registerTaskCardDetailOverlay(
                 priority,
                 subtasksCompleted: subtasksCompleted,
                 title,
-                totalSubtask,
+                totalSubtasks,
                 type,
                 updatedAt,
               };

@@ -4,14 +4,14 @@ import { isContactSelected } from "../events/dropdown-menu.js";
  * Adds event listeners for drag start, drag end, drag over, drag leave, and drop events.
  */
 export function initDragAndDrop(container = document) {
-    const taskCards = container.querySelectorAll(".task-card");
-    taskCards.forEach((card) => {
-        card.addEventListener("dragstart", handleDragStart);
-        card.addEventListener("dragend", handleDragEnd);
-        card.addEventListener("dragover", handleDragOver);
-        card.addEventListener("dragleave", handleDragLeave);
-        card.addEventListener("drop", handleDrop);
-    });
+  const taskCards = container.querySelectorAll(".task-card");
+  taskCards.forEach((card) => {
+    card.addEventListener("dragstart", handleDragStart);
+    card.addEventListener("dragend", handleDragEnd);
+    card.addEventListener("dragover", handleDragOver);
+    card.addEventListener("dragleave", handleDragLeave);
+    card.addEventListener("drop", handleDrop);
+  });
 }
 
 /** Handles the drag start event.
@@ -19,15 +19,15 @@ export function initDragAndDrop(container = document) {
  * @param {DragEvent} event
  */
 export function initDatePicker(container = document) {
-    const dateInput = container.querySelector("#datepicker");
-    if (!dateInput) return;
-    // Beispiel: Einfaches Datepicker-Polyfill, kann durch ein echtes Datepicker-Plugin ersetzt werden
-    dateInput.addEventListener("focus", () => {
-        dateInput.type = "date";
-    });
-    dateInput.addEventListener("blur", () => {
-        dateInput.type = "text";
-    });
+  const dateInput = container.querySelector("#datepicker");
+  if (!dateInput) return;
+  // Beispiel: Einfaches Datepicker-Polyfill, kann durch ein echtes Datepicker-Plugin ersetzt werden
+  dateInput.addEventListener("focus", () => {
+    dateInput.type = "date";
+  });
+  dateInput.addEventListener("blur", () => {
+    dateInput.type = "text";
+  });
 }
 
 /** Handles the drag start event.
@@ -35,7 +35,7 @@ export function initDatePicker(container = document) {
  * @param {DragEvent} event
  */
 export function renderTitleInput(task) {
-    return `
+  return `
         <div class="label-container">
             <label for="title" class="required font-size-20">Title</label>
             <input
@@ -56,7 +56,7 @@ export function renderTitleInput(task) {
  * @param {DragEvent} event
  */
 export function renderDescriptionInput(task) {
-    return `
+  return `
         <div class="label-container">
             <label for="task-description" class="font-size-20">Description</label>
             <div class="textarea-wrapper">
@@ -81,21 +81,21 @@ export function renderDescriptionInput(task) {
  * @param {DragEvent} event
  */
 export function renderDueDateInput(task) {
-    let dateValue = "";
-    if (task?.dueDate) {
-        dateValue = task.dueDate;
-    } else if (task?.deadline) {
-        let d = new Date(task.deadline);
-        if (!isNaN(d)) {
-            let day = String(d.getDate()).padStart(2, "0");
-            let month = String(d.getMonth() + 1).padStart(2, "0");
-            let year = d.getFullYear();
-            dateValue = `${day}.${month}.${year}`;
-        } else {
-            dateValue = task.deadline;
-        }
+  let dateValue = "";
+  if (task?.dueDate) {
+    dateValue = task.dueDate;
+  } else if (task?.deadline) {
+    let d = new Date(task.deadline);
+    if (!isNaN(d)) {
+      let day = String(d.getDate()).padStart(2, "0");
+      let month = String(d.getMonth() + 1).padStart(2, "0");
+      let year = d.getFullYear();
+      dateValue = `${day}.${month}.${year}`;
+    } else {
+      dateValue = task.deadline;
     }
-    return `
+  }
+  return `
         <div class="label-container">
             <label for="datepicker" class="required font-size-20">Due Date</label>
             <div class="input-inline">
@@ -123,7 +123,7 @@ export function renderDueDateInput(task) {
  * @param {DragEvent} event
  */
 export function renderLeftFormFields(task) {
-    return `
+  return `
         <div class="left-form" id="left-form-add-task">
             ${renderTitleInput(task)}
             ${renderDescriptionInput(task)}
@@ -136,17 +136,20 @@ export function renderLeftFormFields(task) {
  * @param {DragEvent} event
  */
 export function renderPrioritySection(task) {
-    return `
+  return `
         <div class="label-container">
             <fieldset aria-labelledby="priority-legend" style="border: none">
                 <legend id="priority-legend" class="font-size-20">Priority</legend>
                 <div class="priority-button-container" role="group">
-                    <button type="button" class="priority-btn urgent-btn${task?.priority === "urgent" ? " active" : ""
-        }" data-priority="urgent" data-event-handle="true">Urgent <img src="../assets/icons/property/urgent.svg" alt="Urgent Icon" /></button>
-                    <button type="button" class="priority-btn medium-btn${task?.priority === "medium" ? " active" : ""
-        }" data-priority="medium" data-event-handle="true">Medium <img src="../assets/icons/property/medium.svg" alt="Medium Icon" /></button>
-                    <button type="button" class="priority-btn low-btn${task?.priority === "low" ? " active" : ""
-        }" data-priority="low" data-event-handle="true">Low <img src="../assets/icons/property/low.svg" alt="Low Icon" /></button>
+                    <button type="button" class="priority-btn urgent-btn${
+                      task?.priority === "urgent" ? " active" : ""
+                    }" data-priority="urgent" data-event-handle="true">Urgent <img src="../assets/icons/property/urgent.svg" alt="Urgent Icon" /></button>
+                    <button type="button" class="priority-btn medium-btn${
+                      task?.priority === "medium" ? " active" : ""
+                    }" data-priority="medium" data-event-handle="true">Medium <img src="../assets/icons/property/medium.svg" alt="Medium Icon" /></button>
+                    <button type="button" class="priority-btn low-btn${
+                      task?.priority === "low" ? " active" : ""
+                    }" data-priority="low" data-event-handle="true">Low <img src="../assets/icons/property/low.svg" alt="Low Icon" /></button>
                 </div>
             </fieldset>
         </div>
@@ -157,15 +160,16 @@ export function renderPrioritySection(task) {
  * @param {DragEvent} event
  */
 export function renderAssignedToSection(task) {
-    return `
+  return `
         <div class="label-container">
             <label for="select-contacts" class="required font-size-20">Assigned to</label>
             <div class="select-wrapper input-field" id="dropdown-assigned-to" data-event-handle="true">
                 <input name="select-contacts" type="text" id="select-contacts" class="contact-input" placeholder="Select contacts to assign"
-                value="${Array.isArray(task?.assignedTo)
-            ? task.assignedTo.join(", ")
-            : ""
-        }" />
+                value="${
+                  Array.isArray(task?.assignedTo)
+                    ? task.assignedTo.join(", ")
+                    : ""
+                }" />
                 <div class="dropdown-icon-container" id="dropdown-icon-container-one">
                     <img src="../assets/icons/btn/arrow_drop_down.svg" alt="Dropdown Arrow" class="dropdown-icon" id="dropdown-icon-one" />
                 </div>
@@ -183,15 +187,16 @@ export function renderAssignedToSection(task) {
  * @param {DragEvent} event
  */
 export function renderCategorySection(task) {
-    return `
+  return `
         <div class="label-container">
             <div for="dropdown-category" class="required font-size-20">Category</div>
             <input type="hidden" id="hidden-category-input"
                 value="${task?.category || ""}" />
             <div class="select-wrapper input-field" id="dropdown-category" name="category" data-event-handle="true">
                 <div class="selected-option"
-                    id="selected-category">${task?.category ? task.category : "Select task category"
-        }</div>
+                    id="selected-category">${
+                      task?.category ? task.category : "Select task category"
+                    }</div>
                 <div class="dropdown-icon-container" id="dropdown-icon-container-two">
                     <img src="../assets/icons/btn/arrow_drop_down.svg" alt="Dropdown Arrow" class="dropdown-icon" id="dropdown-icon-two"/>
                 </div>
@@ -208,7 +213,11 @@ export function renderCategorySection(task) {
  * @param {DragEvent} event
  */
 export function renderSubtasksSection(task) {
-    return `
+  // Zeige immer die totalSubtasks an
+  let subtasksArr = Array.isArray(task?.totalSubtasks)
+    ? [...task.totalSubtasks]
+    : [];
+  return `
         <div class="label-container">
             <label for="subtask-input" class="font-size-20">Subtasks</label>
             <div class="select-wrapper">
@@ -236,10 +245,7 @@ export function renderSubtasksSection(task) {
                 </button>
             </div>
             <ul id="subtasks-list" class="subtasks-list">
-                ${Array.isArray(task?.subtasks)
-            ? task.subtasks.map((st) => `<li>${st}</li>`).join("")
-            : ""
-        }
+                ${subtasksArr.map((st) => `<li>${st}</li>`).join("")}
             </ul>
         </div>
     `;
@@ -249,7 +255,7 @@ export function renderSubtasksSection(task) {
  * @param {DragEvent} event
  */
 export function renderRightFormFields(task) {
-    return `
+  return `
         <div class="right-form" id="right-form-add-task">
             ${renderPrioritySection(task)}
             ${renderAssignedToSection(task)}
@@ -263,7 +269,7 @@ export function renderRightFormFields(task) {
  * @param {DragEvent} event
  */
 export function renderFormButtons() {
-    return `
+  return `
         <div class="form-buttons-part" id="form-buttons-part-add-task">
             <div id="sign-info-desktop" class="sign-info">This field is required</div>
             <div class="buttons-area">
@@ -273,7 +279,9 @@ export function renderFormButtons() {
                         <path fill="none" d="M0 0h24v24H0z"></path></g>
                     </svg>
                 </button>
-                ${!arguments[0] ? `
+                ${
+                  !arguments[0]
+                    ? `
                 <button type="reset" class="clear-btn" data-event-handle="true">
                     Clear
                         <svg class="x-icon" xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 24 24"
@@ -284,8 +292,8 @@ export function renderFormButtons() {
                         </svg>
                 </button>
                 `
-            : ""
-        }
+                    : ""
+                }
                 <button type="submit" id="submit-button" class="create-btn" data-event-handle="true">
                     ${arguments[0] ? "OK" : "Create Task"}
                     <img
@@ -302,7 +310,7 @@ export function renderFormButtons() {
  * @param {Object} task - The task object to edit.
  */
 export function getAddTaskFormHTML(task = null) {
-    return `
+  return `
         <div id="responsive-div-one" class="responsive-div"></div>
         <main id="add-task-main" class="content">
         <div class="size-wrapper">
@@ -325,7 +333,7 @@ export function getAddTaskFormHTML(task = null) {
  * @returns {string} The HTML string for the category options.
  */
 export function getCategoryOptions() {
-    return `
+  return `
         <div class="option" data-category="Technical Task">Technical Task</div>
         <div class="option" data-category="User Story">User Story</div>
         <div class="option" data-category="Meeting">Meeting</div>
@@ -340,8 +348,8 @@ export function getCategoryOptions() {
  * @returns {string} The HTML string for the contact option.
  */
 export function renderAssignedToContacts(i, name, initials, avatarColor) {
-    const isSelected = isContactSelected(name, initials, avatarColor);
-    return `
+  const isSelected = isContactSelected(name, initials, avatarColor);
+  return `
         <div class="contact-option ${isSelected ? "assigned" : ""}"
           data-name="${name}" data-initials="${initials}" data-avatar-color="${avatarColor}">
             <div class="contact-checkbox">
@@ -349,8 +357,9 @@ export function renderAssignedToContacts(i, name, initials, avatarColor) {
                 <div class="assigned-initials-circle"style="background-color: var(${avatarColor});">${initials}</div>
                 <div>${name}</div>
             </div>
-            <img src="../assets/icons/btn/${isSelected ? "checkbox-filled-white" : "checkbox-empty-black"
-        }.svg"
+            <img src="../assets/icons/btn/${
+              isSelected ? "checkbox-filled-white" : "checkbox-empty-black"
+            }.svg"
               alt="checkbox ${isSelected ? "filled" : "empty"}"
               class="checkbox-icon ${isSelected ? "checked" : ""}">
         </div>
