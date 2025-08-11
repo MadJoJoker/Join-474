@@ -169,6 +169,10 @@
         width: 100%;
         justify-content: center;
     }
+
+    .error-message {
+        top: 70px;
+    }
 }
 
 @media (max-width: 768px) {

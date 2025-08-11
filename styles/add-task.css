@@ -50,7 +50,7 @@
 
 .required::after {
   content: "*";
-  color: var(--peachyPink);
+  color: var(--redBorder);
 }
 
 .input-inline {
@@ -107,7 +107,7 @@
   }
 
   &:focus.invalid {
-    border-color: var(--peachyPink);
+    border-color: var(--redBorder);
   }
 }
 
@@ -235,12 +235,12 @@
   }
 
   &.invalid {
-    border-color: var(--peachyPink);
+    border-color: var(--redBorder);
   }
 }
 
 .invalid {
-  border: 1px solid var(--peachyPink);
+  border: 1px solid var(--redBorder);
   z-index: 1001;
 }
 
@@ -277,7 +277,7 @@
 
   &::before {
     content: "*";
-    color: var(--peachyPink);
+    color: var(--redBorder);
   }
 }
 
@@ -299,7 +299,7 @@
 
 .no-results {
   font-size: 20px;
-  color: var(--peachyPink);
+  color: var(--redBorder);
   padding: 16px 21px;
   text-align: flex-start;
   background-color: var(--white);
@@ -336,7 +336,7 @@
 }
 
 .error-message {
-  color: var(--peachyPink);
+  color: var(--redBorder);
   font-size: 16px;
   margin-top: 4px;
   display: none;
