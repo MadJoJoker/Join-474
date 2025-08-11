@@ -284,39 +284,6 @@ export async function showTaskSuccessMsg() {
     msg.classList.add("hidden");
 }
 
-/** * Creates responsive divs if they don't already exist.
- */
-export function createResponsiveDivs(container, existingOne, existingTwo) {
-    if (!existingOne) {
-        const newDiv = createResponsiveDiv("responsive-div-one");
-        container?.prepend(newDiv);
-    }
-    if (!existingTwo) {
-        const newDiv = createResponsiveDiv("responsive-div-two");
-        container?.appendChild(newDiv);
-    }
-}
-
-/** * Removes the responsive divs if they exist.
- * @param {HTMLElement} divOne - The first responsive div to remove.
- * @param {HTMLElement} divTwo - The second responsive div to remove.
- */
-export function removeResponsiveDivs(divOne, divTwo) {
-    divOne?.remove();
-    divTwo?.remove();
-}
-
-/** * Creates a responsive div with the specified ID.
- * @param {string} id - The ID for the new div.
- * @returns {HTMLElement} - The created div element.
- */
-export function createResponsiveDiv(id) {
-    const div = document.createElement("div");
-    div.id = id;
-    div.className = "responsive-div";
-    return div;
-}
-
 /** * Handles the visibility of the sign info message based on the screen size.
  * If the screen width is less than or equal to 768px, it shows the mobile version of the sign info.
  * Otherwise, it shows the desktop version.

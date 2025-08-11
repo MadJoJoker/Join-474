@@ -344,10 +344,6 @@
   top: 74px;
 }
 
-.error.d-flex {
-  display: flex !important;
-}
-
 .d-flex {
   display: flex;
 }
