@@ -80,6 +80,13 @@
   border-radius: 8px;
 }
 
+.right-form {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 48px 48px;
+    width: 100%;
+}
+
 .input-field {
   height: 48px;
   width: 100%;

@@ -20,13 +20,6 @@
     }
 }
 
-.right-form {
-    display: flex;
-    flex-direction: column;
-    padding: 0 0 48px 48px;
-    width: 100%;
-}
-
 .dropdown-icon-container {
     position: absolute;
     right: 21px;
