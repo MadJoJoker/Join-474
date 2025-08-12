@@ -267,16 +267,24 @@ export function toggleSubtaskInputIcons(showClearAdd) {
 
 /** * Shows the subtask icons and focuses the input field.
  * Hides the add subtask button and sets the focus on the subtask input field.
+ * @param {HTMLElement} addSubtaskBtn - The add subtask button element.
+ * @param {HTMLElement} subtaskIcons - The container holding the subtask icons.
+ * @param {HTMLElement} subtaskInputField - The input field for the subtask.
  */
 function showSubtaskIcons(addSubtaskBtn, subtaskIcons, subtaskInputField) {
   addSubtaskBtn.style.opacity = "0";
   addSubtaskBtn.style.pointerEvents = "none";
   subtaskIcons.style.opacity = "1";
   subtaskIcons.style.pointerEvents = "auto";
-  subtaskIcons.style.width = "51px";
+  subtaskIcons.style.width = "61px";
+  subtaskIcons.style.right = "16px";
   subtaskInputField.focus();
 }
 
+/** * Hides the subtask icons and shows the add subtask button.
+ * @param {HTMLElement} addSubtaskBtn - The add subtask button element.
+ * @param {HTMLElement} subtaskIcons - The container holding the subtask icons.
+ */
 function hideSubtaskIcons(addSubtaskBtn, subtaskIcons) {
   addSubtaskBtn.style.opacity = "1";
   addSubtaskBtn.style.pointerEvents = "auto";

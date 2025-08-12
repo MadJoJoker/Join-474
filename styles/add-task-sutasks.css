@@ -142,6 +142,7 @@
 }
 
 .subtask-action-btn {
+    display: flex;
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -205,11 +206,29 @@
 
 .subtask-separator {
     position: absolute;
-    right: 25px;
+    right: 30px;
     top: 50%;
     transform: translateY(-50%);
     width: 1px;
     height: 1.2em;
     background-color: var(--borderGrey);
     vertical-align: middle;
+}
+
+.left-icon-subtask {
+  position: absolute;
+  right: 46px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.right-icon-subtask {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  cursor: pointer;
 }

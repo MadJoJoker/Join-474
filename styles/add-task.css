@@ -80,13 +80,6 @@
   border-radius: 8px;
 }
 
-.right-form {
-  display: flex;
-  flex-direction: column;
-  padding: 0 0 48px 48px;
-  width: 100%;
-}
-
 .input-field {
   height: 48px;
   width: 100%;
@@ -332,24 +325,6 @@
 
 .bg-color-grey {
   background-color: var(--lightGrey);
-}
-
-.left-icon-subtask {
-  position: absolute;
-  right: 46px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  cursor: pointer;
-}
-
-.right-icon-subtask {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  cursor: pointer;
 }
 
 .size-wrapper {
