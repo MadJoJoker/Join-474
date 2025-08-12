@@ -194,7 +194,6 @@ export function closeSpecificOverlay(overlayId) {
   manageBodyScroll(false);
   clearCurrentOverlay(overlayId);
 
-  // Remove dynamically added overlay CSS when closing
   if (overlayId === "overlay-task-detail-edit") {
     removeOverlayCSS("../styles/overlay-task-detail-edit.css");
   } else if (overlayId === "overlay-task-detail") {
@@ -202,11 +201,14 @@ export function closeSpecificOverlay(overlayId) {
   }
 }
 
-// Removes the overlay CSS from <head> if present
 function removeOverlayCSS(href) {
   const links = [...document.head.querySelectorAll('link[rel="stylesheet"]')];
   for (const link of links) {
-    if (link.href.includes(href)) {
+    if (
+      link.href.endsWith(href) ||
+      link.href.includes(href) ||
+      link.href.split("/").pop() === href.split("/").pop()
+    ) {
       link.parentNode.removeChild(link);
     }
   }
