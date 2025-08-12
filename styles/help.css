@@ -7,6 +7,10 @@ html {
     font-family: 'Inter', sans-serif;
 }
 
+#sidebar {
+    background-color: var(--dark);
+}
+
 /* === Layout Structure === */
 .app-container {
     display: flex;

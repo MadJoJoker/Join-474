@@ -1,15 +1,19 @@
-// Contact logic (CRUD operations & helper)
-import { createContact, deleteContact, updateContact, getInitials } from './contact-actions.js';
-// UI overlays & messages
-import { openOverlay, closeOverlay, showContactCreatedMessage } from '../ui/contacts-overlays.js';
-// Shared application state (current/active contact)
-import { currentlyEditingContact, setCurrentlyEditingContact, setActiveContactId, getContactById } from '../data/contacts-state.js';
-// Contact list and detail rendering
+// Contact deletion (other CRUD live in helpers)
+import { deleteContact } from './contact-actions.js';
+// Overlay controls
+import { openOverlay, closeOverlay } from '../ui/contacts-overlays.js';
+// App state for selected/active contact
+import { currentlyEditingContact, setCurrentlyEditingContact, setActiveContactId } from '../data/contacts-state.js';
+// Rerender contact list
 import { renderContacts } from '../ui/render-contacts.js';
-import { createContactDetailsHTML } from '../templates/contacts-templates.js';
+// Submit handlers (create & edit flows)
+import { handleNewContactSubmit, handleEditContactSave } from './contacts-submit-helpers.js';
+// Validation utilities (clear errors, reset live-validation flags)
+import { clearEditContactErrors, resetNewLiveValidationFlag, resetEditLiveValidationFlag } from './contacts-validation.js';
 
 /**
- * Initializes all event listeners for the contact management page.
+ * Bootstraps all event listeners used on the contacts page.
+ * Wires overlay open/close, global buttons, edit form, list navigation, and mobile dropdown.
  */
 export function initContactEventListeners() {
     setupNewContactOverlay();
@@ -21,7 +25,7 @@ export function initContactEventListeners() {
 }
 
 /**
- * Sets up all logic for opening and closing the new contact overlay.
+ * Sets up handlers around the "Add New Contact" overlay lifecycle.
  */
 function setupNewContactOverlay() {
     setupOpenNewContactOverlayButton();
@@ -31,32 +35,31 @@ function setupNewContactOverlay() {
 }
 
 /**
- * Adds click listener to the "Add Contact" button.
+ * Binds the floating/primary "Add New Contact" button to open the overlay.
+ * Clears inputs and resets live-validation flags before opening.
  */
 function setupOpenNewContactOverlayButton() {
     document.querySelector('.add-new-contact-button').addEventListener('click', () => {
         clearNewContactFormInputs();
+        resetNewLiveValidationFlag();
         openOverlay('contactOverlay');
         setupCreateContactButton();
-        setupLiveValidationForNewContactForm();
     });
 }
 
 /**
- * Adds listeners for both close and cancel buttons on the new contact overlay.
+ * Attaches click handlers to all close/cancel buttons within the "Add New Contact" overlay.
  */
 function setupCloseNewContactOverlayButtons() {
     const ids = ['closeOverlayBtn', 'cancelOverlayBtn', 'closeOverlayBtnMobile'];
     ids.forEach(id => {
         const btn = document.getElementById(id);
-        if (btn) {
-            btn.addEventListener('click', () => closeOverlay('contactOverlay'));
-        }
+        if (btn) btn.addEventListener('click', () => closeOverlay('contactOverlay'));
     });
 }
 
 /**
- * Closes the overlay if the background area (outside modal) is clicked.
+ * Closes the "Add New Contact" overlay when clicking on its backdrop.
  */
 function setupOverlayClickToClose() {
     document.getElementById('contactOverlay').addEventListener('click', (event) => {
@@ -67,7 +70,8 @@ function setupOverlayClickToClose() {
 }
 
 /**
- * Autofills demo contact data on first input focus.
+ * Populates demo values into the "Add New Contact" form on first focus of any input.
+ * Useful for quick testing and demos; runs only once.
  */
 function setupDemoContactAutofill() {
     let demoContactFilled = false;
@@ -84,7 +88,8 @@ function setupDemoContactAutofill() {
 }
 
 /**
- * Sets up the click handler for the "Create contact" button.
+ * Binds the "Create contact" button click to the submit handler.
+ * Removes stale listeners first to avoid duplicates.
  */
 function setupCreateContactButton() {
     const createBtn = document.getElementById('createContactBtn');
@@ -94,153 +99,8 @@ function setupCreateContactButton() {
 }
 
 /**
- * Sets up live validation for the "Add New Contact" form inputs.
- * Validates name, email, and phone fields as the user types.
- */
-function setupLiveValidationForNewContactForm() {
-    setupLiveFieldValidation(
-        'newContactName',
-        getNewContactName,
-        'nameError',
-        validateName
-    );
-    setupLiveFieldValidation(
-        'newContactEmail',
-        getNewContactEmail,
-        'emailError',
-        validateEmail
-    );
-    setupLiveFieldValidation(
-        'newContactPhone',
-        getNewContactPhone,
-        'phoneError',
-        validatePhone
-    );
-}
-
-/**
- * Retrieves the current value of the "New Contact Name" input.
- * @returns {string}
- */
-function getNewContactName() {
-    return document.getElementById('newContactName')?.value.trim() || '';
-}
-
-/**
- * Retrieves the current value of the "New Contact Email" input.
- * @returns {string}
- */
-function getNewContactEmail() {
-    return document.getElementById('newContactEmail')?.value.trim() || '';
-}
-
-/**
- * Retrieves the current value of the "New Contact Phone" input.
- * @returns {string}
- */
-function getNewContactPhone() {
-    return document.getElementById('newContactPhone')?.value.trim() || '';
-}
-
-/**
- * Validates the name field using the global validation logic.
- * @param {string} name - The name to validate.
- * @returns {string} Error message or empty string.
- */
-function validateName(name) {
-    return validateCustomContactForm(name, '', '').name;
-}
-
-/**
- * Validates the email field using the global validation logic.
- * @param {string} email - The email to validate.
- * @returns {string} Error message or empty string.
- */
-function validateEmail(email) {
-    return validateCustomContactForm('', email, '').email;
-}
-
-/**
- * Validates the phone field using the global validation logic.
- * @param {string} phone - The phone number to validate.
- * @returns {string} Error message or empty string.
- */
-function validatePhone(phone) {
-    return validateCustomContactForm('', '', phone).phone;
-}
-
-/**
- * Sets up real-time validation for a single input field.
- * @param {string} inputId - The ID of the input field.
- * @param {() => string} getValue - A function that returns the current input value.
- * @param {string} errorId - The ID of the element to display the error message in.
- * @param {(value: string) => string} validateFn - A function that returns an error message or empty string.
- */
-function setupLiveFieldValidation(inputId, getValue, errorId, validateFn) {
-    const input = document.getElementById(inputId);
-    const errorElement = document.getElementById(errorId);
-    if (!input || !errorElement) return;
-    input.addEventListener('input', () => {
-        const value = getValue();
-        const error = validateFn(value);
-        errorElement.textContent = error || '';
-        toggleErrorClass(input, !!error);
-    });
-}
-
-/**
- * Sets up live validation for the "Edit Contact" form inputs.
- * Applies validation to name, email, and phone fields.
- */
-function setupLiveValidationForEditContactForm() {
-    const fields = [
-        { inputId: 'editNameInput', errorId: 'editNameError', getValue: getEditName, validate: validateName },
-        { inputId: 'editEmailInput', errorId: 'editEmailError', getValue: getEditEmail, validate: validateEmail },
-        { inputId: 'editPhoneInput', errorId: 'editPhoneError', getValue: getEditPhone, validate: validatePhone },
-    ];
-    fields.forEach(({ inputId, errorId, getValue, validate }) => {
-        setupLiveFieldValidation(inputId, getValue, errorId, validate);
-    });
-}
-
-/**
- * Retrieves the current value of the "Edit Contact Name" input.
- * @returns {string}
- */
-function getEditName() {
-    return document.getElementById('editNameInput')?.value.trim() || '';
-}
-
-/**
- * Retrieves the current value of the "Edit Contact Email" input.
- * @returns {string}
- */
-function getEditEmail() {
-    return document.getElementById('editEmailInput')?.value.trim() || '';
-}
-
-/**
- * Retrieves the current value of the "Edit Contact Phone" input.
- * @returns {string}
- */
-function getEditPhone() {
-    return document.getElementById('editPhoneInput')?.value.trim() || '';
-}
-
-/**
- * Reads and trims input values from the new contact form fields.
- * @returns {{ name: string, email: string, phone: string }}
- */
-function getNewContactInputValues() {
-    return {
-        name: document.getElementById('newContactName').value.trim(),
-        email: document.getElementById('newContactEmail').value.trim(),
-        phone: document.getElementById('newContactPhone').value.trim()
-    };
-}
-
-/**
- * Sets up global click listener for contact actions (edit, delete, back).
+ * Listens globally for clicks that map to back/delete/edit actions within contact cards.
+ * Back and delete actions short-circuit to prevent further processing.
  */
 function setupGlobalContactButtons() {
     document.addEventListener('click', async (event) => {
@@ -251,9 +111,9 @@ function setupGlobalContactButtons() {
 }
 
 /**
- * Handles the back button on mobile view.
- * @param {MouseEvent} event
- * @returns {boolean} True if handled.
+ * Handles the mobile "back" action in details view.
+ * @param {MouseEvent} event - The click event.
+ * @returns {boolean} True when handled.
  */
 function handleBackButton(event) {
     const backBtn = event.target.closest('[data-action="close-mobile-contact"]');
@@ -264,9 +124,9 @@ function handleBackButton(event) {
 }
 
 /**
- * Handles the delete contact button.
- * @param {MouseEvent} event
- * @returns {Promise<boolean>} True if delete action was triggered.
+ * Handles deletion of a contact when clicking a delete button within a contact item.
+ * @param {MouseEvent} event - The click event.
+ * @returns {Promise<boolean>} True when handled.
  */
 async function handleDeleteButton(event) {
     const deleteBtn = event.target.closest('.delete-button');
@@ -282,8 +142,9 @@ async function handleDeleteButton(event) {
 }
 
 /**
- * Handles the edit contact button.
- * @param {MouseEvent} event
+ * Opens the edit overlay for the clicked contact.
+ * Expects a global or imported `onEditContact(id)` to exist.
+ * @param {MouseEvent} event - The click event.
  */
 function handleEditButton(event) {
     const editBtn = event.target.closest('.edit-button');
@@ -294,7 +155,8 @@ function handleEditButton(event) {
 }
 
 /**
- * Adds event listeners to the save and delete buttons in the edit overlay.
+ * Wires up the Save & Delete actions within the edit overlay.
+ * Save uses imported submit helper; Delete is handled below in this file.
  */
 function setupEditContactForm() {
     const saveButton = document.getElementById('saveEditBtn');
@@ -304,50 +166,16 @@ function setupEditContactForm() {
 }
 
 /**
- * Reads and trims input values from the edit contact form fields.
- * @returns {{ name: string, email: string, phone: string }}
- */
-function getEditContactInputValues() {
-    return {
-        name: document.getElementById('editNameInput').value.trim(),
-        email: document.getElementById('editEmailInput').value.trim(),
-        phone: document.getElementById('editPhoneInput').value.trim()
-    };
-}
-
-/**
- * Combines edited input with the existing contact data.
- * @param {string} name
- * @param {string} email
- * @param {string} phone
- * @returns {Object} Updated contact object
- */
-function buildUpdatedContact(name, email, phone) {
-    return {
-        ...currentlyEditingContact,
-        name,
-        email,
-        phone,
-        initials: getInitials(name)
-    };
-}
-
-/**
- * Updates the contact detail card if it's currently open and visible.
- */
-function updateDetailsCardIfVisible(contact) {
-    const card = document.querySelector('.contact-details-card');
-    if (card?.classList.contains('visible')) {
-        card.innerHTML = createContactDetailsHTML(contact);
-    }
-}
-
-/**
- * Deletes the currently edited contact.
+ * Deletes the currently edited contact (relies on global edit state).
+ * Closes overlay, rerenders list, and resets mobile view.
+ * Safe-guards if state is not present.
+ * @returns {Promise<void>}
  */
 async function handleEditContactDelete() {
     if (!currentlyEditingContact) return;
-    await deleteContact(currentlyEditingContact.id);
+    const id = currentlyEditingContact.id;
+    if (!id) return;
+    await deleteContact(id);
     document.querySelector('.contact-details-card').innerHTML = '';
     setActiveContactId(null);
     setCurrentlyEditingContact(null);
@@ -357,20 +185,22 @@ async function handleEditContactDelete() {
 }
 
 /**
- * Initializes the close logic for the edit overlay (click outside or close button).
+ * Sets up edit overlay close behavior (backdrop click and explicit close buttons).
+ * Also resets the edit live-validation flag on open.
  */
 function setupEditOverlayEvents() {
     const overlay = document.getElementById('editContactOverlay');
     const closeButton = document.getElementById('closeEditOverlayBtn');
     const mobileCloseButton = document.getElementById('closeEditOverlayBtnMobile');
+    resetEditLiveValidationFlag();
     overlay.addEventListener('click', handleOverlayClickOutside);
     if (closeButton) closeButton.addEventListener('click', handleOverlayCloseClick);
     if (mobileCloseButton) mobileCloseButton.addEventListener('click', handleOverlayCloseClick);
-    setupLiveValidationForEditContactForm();
 }
 
 /**
- * Closes the overlay if the background is clicked.
+ * Closes the edit overlay when clicking the backdrop.
+ * @param {MouseEvent} event - The click event.
  */
 function handleOverlayClickOutside(event) {
     if (event.target === event.currentTarget) {
@@ -380,170 +210,16 @@ function handleOverlayClickOutside(event) {
 }
 
 /**
- * Closes the overlay when the close button is clicked.
+ * Closes the edit overlay when clicking the close button.
  */
 function handleOverlayCloseClick() {
     clearEditContactErrors();
     closeOverlay('editContactOverlay');
 }
 
-// VALIDATION
-
 /**
- * Displays validation error messages in the corresponding UI elements.
- * @param {Object} errors - An object with possible error messages
- */
-function showNewContactErrors(errors) {
-    const nameInput = document.getElementById('newContactName');
-    const emailInput = document.getElementById('newContactEmail');
-    const phoneInput = document.getElementById('newContactPhone');
-    document.getElementById('nameError').textContent = errors.name;
-    document.getElementById('emailError').textContent = errors.email;
-    document.getElementById('phoneError').textContent = errors.phone;
-    toggleErrorClass(nameInput, !!errors.name);
-    toggleErrorClass(emailInput, !!errors.email);
-    toggleErrorClass(phoneInput, !!errors.phone);
-}
-
-/**
- * Clears all validation error messages in the edit contact form.
- * This ensures that old errors are not displayed when reopening the overlay.
- */
-function clearEditContactErrors() {
-    const map = [
-        ['editNameInput', 'editNameError'],
-        ['editEmailInput', 'editEmailError'],
-        ['editPhoneInput', 'editPhoneError'],
-    ];
-    map.forEach(([inputId, errorId]) => {
-        const el = document.getElementById(errorId);
-        if (el) el.textContent = '';
-        const input = document.getElementById(inputId);
-        if (input) input.classList.remove('input-error');
-    });
-}
-
-/**
- * Displays validation error messages in the edit contact form.
- * @param {Object} errors - Error messages for each field
- */
-function showEditContactErrors(errors) {
-    const nameInput = document.getElementById('editNameInput');
-    const emailInput = document.getElementById('editEmailInput');
-    const phoneInput = document.getElementById('editPhoneInput');
-    document.getElementById('editNameError').textContent = errors.name;
-    document.getElementById('editEmailError').textContent = errors.email;
-    document.getElementById('editPhoneError').textContent = errors.phone;
-    toggleErrorClass(nameInput, !!errors.name);
-    toggleErrorClass(emailInput, !!errors.email);
-    toggleErrorClass(phoneInput, !!errors.phone);
-}
-
-/**
- * Custom validation for editing a contact.
- */
-function validateEditContact(name, email, phone) {
-    return validateCustomContactForm(name, email, phone);
-}
-
-/**
- * Custom form validation logic.
- */
-function validateCustomContactForm(name, email, phone) {
-    const errors = { name: '', email: '', phone: '' };
-    if (!name || !/^[A-Za-zÄÖÜäöüß\-]{2,}\s+[A-Za-zÄÖÜäöüß\-]{2,}$/.test(name)) {
-        errors.name = 'Please enter first and last name separated by a space, no numbers.';
-    }
-    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-        errors.email = 'Please enter a valid email address.';
-    }
-    if (!phone || !/^\+?[0-9\s\/\-]{6,}$/.test(phone)) {
-        errors.phone = 'Please enter a valid phone number (digits only, min. 6).';
-    }
-    return errors;
-}
-
-function toggleErrorClass(inputEl, hasError) {
-    if (!inputEl) return;
-    inputEl.classList.toggle('input-error', !!hasError);
-}
-
-/**
- * Handles creating a new contact from input fields.
- * Validates input, displays errors, creates contact if valid.
- */
-async function handleNewContactSubmit() {
-    const { name, email, phone } = getNewContactInputValues();
-    const errors = validateCustomContactForm(name, email, phone);
-    showNewContactErrors(errors);
-    if (hasErrors(errors)) return;
-    const newContact = await createContact({ name, email, phone });
-    closeOverlay('contactOverlay', true);
-    await renderContacts();
-    showContactCreatedMessage();
-    const contact = getContactById(newContact.id);
-    if (contact) {
-        const contactDetailsCard = document.querySelector('.contact-details-card');
-        if (contactDetailsCard) {
-            contactDetailsCard.innerHTML = createContactDetailsHTML(contact);
-            contactDetailsCard.classList.add('no-animation', 'visible');
-        }
-        setActiveContactId(contact.id);
-        if (window.innerWidth <= 768) {
-            document.body.classList.add('mobile-contact-visible');
-        }
-    }
-}
-
-/**
- * Handles saving an edited contact.
- * Validates input, updates contact, refreshes UI.
- */
-async function handleEditContactSave() {
-    const { name, email, phone } = getEditContactInputValues();
-    const errors = validateEditContact(name, email, phone);
-    showEditContactErrors(errors);
-    if (hasErrors(errors) || !currentlyEditingContact) return;
-    const updatedContact = buildUpdatedContact(name, email, phone);
-    await updateContact(updatedContact);
-    closeOverlay('editContactOverlay', true);
-    await renderContacts();
-    const latestContact = getContactById(updatedContact.id) || updatedContact;
-    updateDetailsCardIfVisible(latestContact);
-    setCurrentlyEditingContact(null);
-}
-
-/**
- * Checks if any error messages are present.
- * @param {Object} errors - An object with error messages
- * @returns {boolean} - True if there are any errors, otherwise false
- */
-function hasErrors(errors) {
-    return errors.name || errors.email || errors.phone;
-}
-
-/**
- * Clears all input fields in the new contact form.
- */
-function clearNewContactFormInputs() {
-    ['newContactName', 'newContactEmail', 'newContactPhone'].forEach(inputId => {
-        const input = document.getElementById(inputId);
-        if (!input) return;
-        input.value = '';
-        input.classList.remove('input-error');
-        const errorDiv = document.getElementById(
-            inputId.replace('newContact', '').toLowerCase() + 'Error'
-        );
-        if (errorDiv) errorDiv.textContent = '';
-    });
-}
-
-/**
- * Sets up click navigation for the contact list.
- * 
- * - Detects clicks on contact list items.
- * - Ignores clicks on edit/delete buttons inside a contact item.
- * - Triggers the contact detail view for the clicked contact.
+ * Enables clicking on a contact row to open its details,
+ * while ignoring clicks on nested edit/delete buttons within the row.
  */
 function setupContactListClickNavigation() {
     document.addEventListener('click', (event) => {
@@ -553,15 +229,12 @@ function setupContactListClickNavigation() {
         if (isEditOrDelete) return;
         const contactId = contactEl.dataset.id;
         if (!contactId) return;
-        onContactClickById(contactId);
+        onContactClickById(contactId); // defined elsewhere in your app
     });
 }
 
 /**
- * Sets up toggle behavior for the mobile dropdown menu.
- * 
- * - Toggles the visibility of the mobile dropdown when the toggle button is clicked.
- * - Hides the dropdown menu when clicking outside of it.
+ * Toggles the floating mobile dropdown menu and closes it when clicking outside.
  */
 function setupMobileDropdownToggle() {
     document.addEventListener('click', (element) => {
@@ -575,5 +248,21 @@ function setupMobileDropdownToggle() {
                 dropdown?.classList.add('mobile-dropdown-menu-hidden');
             }
         }
+    });
+}
+
+/**
+ * Clears the "Add New Contact" form inputs and related error UI.
+ */
+function clearNewContactFormInputs() {
+    ['newContactName', 'newContactEmail', 'newContactPhone'].forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        input.value = '';
+        input.classList.remove('input-error');
+        const errorDiv = document.getElementById(
+            inputId.replace('newContact', '').toLowerCase() + 'Error'
+        );
+        if (errorDiv) errorDiv.textContent = '';
     });
 }
