@@ -179,13 +179,37 @@
       2px 2px 6px rgba(0, 0, 0, 0.05);
   }
 
+  &[data-priority="urgent"] {
+    color: var(--black);
+
+    svg {
+      color: var(--urgent);
+    }
+  }
+
+  &[data-priority="medium"] {
+    color: var(--black);
+
+    svg {
+      color: var(--middle);
+    }
+  }
+
+  &[data-priority="low"] {
+    color: var(--black);
+
+    svg {
+      color: var(--low);
+    }
+  }
+
   &.active {
     &[data-priority="urgent"] {
       color: var(--white);
       background-color: var(--urgent);
 
-      img {
-        filter: brightness(0) invert(1);
+      svg {
+        color: var(--white);
       }
     }
 
@@ -193,8 +217,8 @@
       color: var(--white);
       background-color: var(--middle);
 
-      img {
-        filter: brightness(0) invert(1);
+      svg {
+        color: var(--white);
       }
     }
 
@@ -202,8 +226,8 @@
       color: var(--white);
       background-color: var(--low);
 
-      img {
-        filter: brightness(0) invert(1);
+      svg {
+        color: var(--white);
       }
     }
   }
