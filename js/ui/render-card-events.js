@@ -17,7 +17,7 @@ export let detailOverlayElement = null;
 export let editOverlayElement = null;
 
 /**
- * Loads the detail overlay HTML into the DOM if not already loaded.
+ * @param {string} overlayId - The ID of the overlay to load.
  * @returns {Promise<void>} Resolves when the overlay is loaded.
  */
 async function loadDetailOverlayHtmlOnce() {
@@ -40,7 +40,7 @@ async function loadDetailOverlayHtmlOnce() {
 }
 
 /**
- * Loads the edit overlay HTML into the DOM if not already loaded.
+ * @param {string} overlayId - The ID of the overlay to load.
  * @returns {Promise<void>} Resolves when the overlay is loaded.
  */
 async function loadEditOverlayHtmlOnce() {
@@ -59,15 +59,12 @@ async function loadEditOverlayHtmlOnce() {
       overlayContainer.appendChild(editOverlayElement);
       initOverlayListeners("overlay-task-detail-edit");
     }
-  } catch (error) {
-    console.error("Failed to load task-details-edit-overlay.html:", error);
-  }
+  } catch (error) {}
 }
 
 /**
- * Registers click and dropdown event listeners for all task cards, and manages overlays.
- * @param {object} boardData - The complete board data object (tasks, contacts, etc.).
- * @param {function} updateBoardFunction - Callback to update the board after changes.
+ * @param {object} boardData - The board data object containing tasks, contacts, etc.
+ * @param {function} updateBoardFunction - Callback function to update the board after changes.
  * @returns {Promise<void>} Resolves when listeners are registered.
  */
 export async function registerTaskCardDetailOverlay(
@@ -78,6 +75,7 @@ export async function registerTaskCardDetailOverlay(
   await loadEditOverlayHtmlOnce();
   const cards = document.querySelectorAll(".task-card");
   cards.forEach((card) => {
+    // Check if the card already has a click listener and remove it
     const oldClickListener = card.getAttribute("data-has-click-listener");
     if (oldClickListener) {
       card.removeEventListener("click", card._currentClickListener);
@@ -86,6 +84,7 @@ export async function registerTaskCardDetailOverlay(
     const dropdownMenu = card.querySelector(".dropdown-menu-board-site");
     if (dropdownBtn && dropdownMenu) {
       dropdownBtn.addEventListener("click", function (e) {
+        // Mobile: Toggle dropdown menu and close others
         if (window.innerWidth <= 768) {
           e.stopPropagation();
           dropdownMenu.classList.toggle("show");
@@ -94,6 +93,7 @@ export async function registerTaskCardDetailOverlay(
             .forEach((menu) => {
               if (menu !== dropdownMenu) menu.classList.remove("show");
             });
+          // Close dropdown when clicking outside
           const closeDropdown = (ev) => {
             if (
               !dropdownMenu.contains(ev.target) &&
@@ -174,10 +174,12 @@ export async function registerTaskCardDetailOverlay(
         openSpecificOverlay("overlay-task-detail");
         const task = boardData.tasks[taskId];
         const container = detailOverlayElement.querySelector("#task-container");
+        // Render the task overlay content
         if (container) {
           const html = getTaskOverlay(task, taskId, boardData.contacts);
           container.innerHTML = html;
         }
+        // Add close button event listener for overlay
         const closeBtn = detailOverlayElement.querySelector(
           ".close-modal-btn, .close-modal-btn-svg"
         );
@@ -190,7 +192,7 @@ export async function registerTaskCardDetailOverlay(
             }
           };
         }
-        // Outer click event (click outside content)
+        // Add event listener for clicking outside the overlay content
         if (detailOverlayElement) {
           const overlayBg = detailOverlayElement;
           overlayBg.onclick = async (e) => {
@@ -203,6 +205,7 @@ export async function registerTaskCardDetailOverlay(
             }
           };
         }
+        // Add event listener for edit button
         const editButton = detailOverlayElement.querySelector(".edit-task-btn");
         if (editButton) {
           editButton.dataset.taskId = taskId;
@@ -212,6 +215,7 @@ export async function registerTaskCardDetailOverlay(
             renderEditOverlay(taskId);
           });
         }
+        // Add event listener for delete button
         const deleteButton =
           detailOverlayElement.querySelector(".delete-task-btn");
         if (deleteButton) {
@@ -221,21 +225,26 @@ export async function registerTaskCardDetailOverlay(
             event.stopPropagation();
             const deleteId = event.currentTarget.dataset.taskId;
             if (boardData.tasks[deleteId]) {
+              await CWDATA({ [deleteId]: null }, boardData);
+              // Remove the task from local data
               delete boardData.tasks[deleteId];
-              await CWDATA({}, boardData);
-              closeSpecificOverlay("overlay-task-detail");
-              if (updateBoardFunction) {
-                await updateBoardFunction();
+              if (window.firebaseData && window.firebaseData.tasks) {
+                delete window.firebaseData.tasks[deleteId];
               }
+              closeSpecificOverlay("overlay-task-detail");
+              window.location.href = "board-site.html";
             }
           });
         }
       }
-      // Hilfsfunktion: Daten aus Overlay sammeln und an CWDATA übergeben
+      /**
+       * @param {string} taskId - The ID of the task to close the overlay for.
+       * @param {object} boardData - The board data object.
+       */
       async function handleDetailOverlayClose(taskId, boardData) {
         const task = boardData.tasks[taskId];
         const container = detailOverlayElement.querySelector("#task-container");
-        // Versuche, aktuelle Werte aus dem Overlay zu lesen
+        // Try to read current values from the overlay
         let title =
           container?.querySelector(".task-title")?.textContent?.trim() ||
           task.title;
@@ -252,14 +261,14 @@ export async function registerTaskCardDetailOverlay(
           container
             ?.querySelector(".priority-icon.active")
             ?.getAttribute("data-priority") || task.priority;
-        // assignedUsers aus den Initialen-Kreisen extrahieren
+        // Extract assignedUsers from the initials circles
         let assignedUsers = Array.from(
           container?.querySelectorAll(".assigned-initials-circle") || []
         )
           .map((el) => el.getAttribute("data-contact-id"))
           .filter(Boolean);
         if (!assignedUsers.length) assignedUsers = task.assignedUsers || [];
-        // Subtasks und checkedSubtasks
+        // Subtasks and checkedSubtasks
         let totalSubtasks = Array.from(
           container?.querySelectorAll(".subtask-text") || []
         ).map((el) => el.textContent.trim());
@@ -271,13 +280,13 @@ export async function registerTaskCardDetailOverlay(
         if (!checkedSubtasks.length && Array.isArray(task.checkedSubtasks))
           checkedSubtasks = task.checkedSubtasks;
         let subtasksCompleted = String(checkedSubtasks.filter(Boolean).length);
-        // Zeitstempel
+        // Timestamp
         const now = new Date();
         const day = String(now.getDate()).padStart(2, "0");
         const month = String(now.getMonth() + 1).padStart(2, "0");
         const year = now.getFullYear();
         const updatedAt = `${day}.${month}.${year}`;
-        // Objektstruktur
+        // Object structure
         const editTaskObjekt = {
           assignedUsers,
           boardID: task.boardID || "board-1",
@@ -300,9 +309,7 @@ export async function registerTaskCardDetailOverlay(
         closeSpecificOverlay("overlay-task-detail");
         openSpecificOverlay("overlay-task-detail-edit");
         if (!editOverlayElement) {
-          console.error(
-            "Edit overlay element not initialized. Cannot open edit overlay."
-          );
+          // Edit overlay element not initialized. Cannot open edit overlay.
           return;
         }
         const taskToEdit = boardData.tasks[taskToEditId];
@@ -406,7 +413,7 @@ export async function registerTaskCardDetailOverlay(
               console.log("[DEBUG] Priority:", priority);
 
               let assignedUsers = [];
-              // Namen aus den ausgewählten Kontaktoptionen extrahieren und mit fetchData.contacts abgleichen
+              // Extract names from selected contact options and match with fetchData.contacts
               const assignedOptions = taskEditForm.querySelectorAll(
                 ".contact-option.assigned"
               );
@@ -427,7 +434,7 @@ export async function registerTaskCardDetailOverlay(
                   .filter(Boolean);
               }
               console.log("[DEBUG] assignedUsers:", assignedUsers);
-              // Subtasks und Checked-Status direkt aus dem DOM des Edit-Formulars auslesen
+              // Read subtasks and checked status directly from the DOM of the edit form
               const subtaskInputs =
                 taskEditForm.querySelectorAll(".subtask-input");
               let totalSubtasks = Array.from(subtaskInputs)
@@ -436,7 +443,7 @@ export async function registerTaskCardDetailOverlay(
               let checkedSubtasks = Array.from(subtaskInputs).map(
                 (input) => input.checked
               );
-              // Wenn keine Subtasks im Input, dann versuche aus .subtask-text oder .subtask-item zu lesen
+              // If there are no subtasks in the input, try to read from .subtask-text or .subtask-item
               if (totalSubtasks.length === 0) {
                 const subtaskTextNodes =
                   taskEditForm.querySelectorAll(".subtask-text");
@@ -453,11 +460,12 @@ export async function registerTaskCardDetailOverlay(
                 }
                 // checkedSubtasks ggf. aus .subtask-item.completed
                 if (checkedSubtasks.length === 0) {
+                  // If still empty, read checkedSubtasks from .subtask-item.completed
                   checkedSubtasks = Array.from(
                     taskEditForm.querySelectorAll(".subtask-item")
                   ).map((node) => node.classList.contains("completed"));
                 }
-                // Wenn immer noch leer, dann Werte aus dem Task-Objekt verwenden
+                // If still empty, use values from the task object
                 if (totalSubtasks.length === 0) {
                   totalSubtasks = Array.isArray(taskToEdit.totalSubtasks)
                     ? [...taskToEdit.totalSubtasks]
@@ -471,7 +479,7 @@ export async function registerTaskCardDetailOverlay(
               console.log("[DEBUG] checkedSubtasks:", checkedSubtasks);
               const subtasksCompleted = checkedSubtasks.filter(Boolean).length;
               console.log("[DEBUG] completedSubtasks:", subtasksCompleted);
-              // Zeitstempel
+              // Timestamp
               const now = new Date();
               const day = String(now.getDate()).padStart(2, "0");
               const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -481,7 +489,7 @@ export async function registerTaskCardDetailOverlay(
               // Task-ID
               let currentTaskId =
                 taskEditForm.getAttribute("data-task-id") || taskToEditId;
-              // Objekt exakt wie im Add-Task-Overlay
+              // Object exactly as in Add-Task-Overlay
               const editTaskObjekt = {
                 assignedUsers: Array.isArray(assignedUsers)
                   ? assignedUsers
