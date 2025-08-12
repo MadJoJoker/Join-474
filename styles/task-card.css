@@ -73,7 +73,7 @@
   margin-left: clamp(3px, 0.5vw, 7px);
 }
 .task-card {
-  padding: 5px;
+  padding: 8px;
   background-color: #fff;
   border-radius: 16px;
   margin-bottom: clamp(8px, 2vw, 15px);
@@ -83,7 +83,6 @@
   flex-direction: column;
   justify-content: space-between;
   min-width: clamp(100px, 15vw, 150px);
-  max-width: clamp(100px, 15vw, 200px);
 }
 
 .task-card:hover {

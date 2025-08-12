@@ -1,4 +1,12 @@
+@media (max-width:1150px) {
+  #board-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+  }
+}
 @media (max-width: 992px) {
+
   .form-fill-part {
     flex-direction: column;
     gap: 20px;

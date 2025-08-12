@@ -44,3 +44,14 @@
 #sign-info-desktop{
   display: none;
 }
+@media (max-width: 600px) {
+  #modal-content-task-detail-edit {
+    padding: 16px 4px 12px 4px;
+    max-width: 450px;
+    border-radius: 12px;
+    margin: 15px;
+  }
+  .titleText {
+    font-size: 1.3rem;
+  }
+}

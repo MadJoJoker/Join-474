@@ -1,4 +1,3 @@
-/* Hide native checkbox for custom SVG styling in task details overlay */
 .subtask-checkbox {
   position: absolute;
   opacity: 0;
@@ -163,6 +162,7 @@
     padding: 16px 4px 12px 4px;
     max-width: 450px;
     border-radius: 12px;
+    margin: 15px;
   }
   .titleText {
     font-size: 1.3rem;
