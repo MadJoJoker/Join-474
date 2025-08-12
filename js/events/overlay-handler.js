@@ -255,6 +255,48 @@ export function initOverlayListeners(overlayId) {
   attachBackgroundClickListener(overlay, overlayId);
   if (modalContent) attachModalContentStopper(modalContent);
   attachEscapeKeyListener(overlay, overlayId);
+
+  // Subtask-Checkboxen: Direktes Update und DEBUG-Logs
+  if (overlayId === "overlay-task-detail") {
+    try {
+      // Importiere CWDATA und allData dynamisch, falls nicht global
+      import("../data/task-to-firbase.js").then(({ CWDATA, allData }) => {
+        const checkboxes = overlay.querySelectorAll(".subtask-checkbox");
+        console.debug(
+          "[DEBUG] Subtask-Checkboxen gefunden:",
+          checkboxes.length
+        );
+        checkboxes.forEach((checkbox) => {
+          checkbox.addEventListener("change", function () {
+            const taskId = this.dataset.taskId;
+            const subtaskIndex = Number(this.dataset.subtaskIndex);
+            console.debug(
+              `[DEBUG] Checkbox geändert: taskId=${taskId}, subtaskIndex=${subtaskIndex}, checked=${this.checked}`
+            );
+            const task = allData.tasks[taskId];
+            if (task) {
+              task.checkedSubtasks[subtaskIndex] = this.checked;
+              console.debug(
+                "[DEBUG] Task-Objekt vor Update:",
+                JSON.parse(JSON.stringify(task))
+              );
+              CWDATA({ [taskId]: task }, allData);
+              console.debug("[DEBUG] CWDATA aufgerufen mit:", {
+                [taskId]: task,
+              });
+            } else {
+              console.warn(`[DEBUG] Task mit ID ${taskId} nicht gefunden!`);
+            }
+          });
+        });
+      });
+    } catch (err) {
+      console.error(
+        "[DEBUG] Fehler beim Hinzufügen der Subtask-Checkbox-Listener:",
+        err
+      );
+    }
+  }
 }
 
 /** * Loads and initializes the add-task overlay.

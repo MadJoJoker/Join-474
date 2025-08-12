@@ -39,7 +39,10 @@ export function extractTaskFormData(form, contactsObj, taskToEdit) {
   let totalSubtasks = Array.from(subtaskInputs)
     .map((input) => input.value.trim())
     .filter((text) => text !== "");
-  let checkedSubtasks = Array.from(subtaskInputs).map((input) => input.checked);
+  // checkedSubtasks: aus .subtask-text die completed-Klasse auslesen
+  let checkedSubtasks = Array.from(form.querySelectorAll(".subtask-text")).map(
+    (node) => node.classList.contains("completed")
+  );
   if (totalSubtasks.length === 0) {
     const subtaskTextNodes = form.querySelectorAll(".subtask-text");
     if (subtaskTextNodes.length > 0) {
@@ -52,11 +55,7 @@ export function extractTaskFormData(form, contactsObj, taskToEdit) {
         .map((node) => node.textContent.trim())
         .filter((text) => text !== "");
     }
-    if (checkedSubtasks.length === 0) {
-      checkedSubtasks = Array.from(form.querySelectorAll(".subtask-item")).map(
-        (node) => node.classList.contains("completed")
-      );
-    }
+    // checkedSubtasks ist bereits oben korrekt ausgelesen
     if (totalSubtasks.length === 0) {
       totalSubtasks = Array.isArray(taskToEdit.totalSubtasks)
         ? [...taskToEdit.totalSubtasks]
