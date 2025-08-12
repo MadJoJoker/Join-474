@@ -130,7 +130,7 @@ export async function registerTaskCardDetailOverlay(
           if (currentIdx > 0) {
             const newColumnID = columnOrder[currentIdx - 1].key;
             task.columnID = newColumnID;
-            await CWDATA(task, boardData);
+            await CWDATA({ [taskId]: task }, boardData);
             window.location.href = "board-site.html";
           }
         });
@@ -148,7 +148,7 @@ export async function registerTaskCardDetailOverlay(
           if (currentIdx < columnOrder.length - 1) {
             const newColumnID = columnOrder[currentIdx + 1].key;
             task.columnID = newColumnID;
-            await CWDATA(task, boardData);
+            await CWDATA({ [taskId]: task }, boardData);
             window.location.href = "board-site.html";
           }
         });
