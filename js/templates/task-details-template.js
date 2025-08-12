@@ -1,4 +1,3 @@
-// Global event handler for task delete buttons
 import { CWDATA, allData } from "../data/task-to-firbase.js";
 document.addEventListener("click", function (e) {
   const btn = e.target.closest(".delete-task-btn");
@@ -7,7 +6,6 @@ document.addEventListener("click", function (e) {
     CWDATA({ [taskId]: null }, allData);
   }
 });
-// ...existing code...
 import { renderAssignedToContacts } from "../templates/add-task-template.js";
 import { firebaseData } from "../../main.js";
 
@@ -324,14 +322,12 @@ function renderSubtasks(task) {
 function getTaskSubtasksSection(task) {
   const subtasksHtml = renderSubtasks(task);
   if (subtasksHtml === "") return "";
-  // Checkbox-Icon-Toggle für Subtasks im Overlay
   setTimeout(() => {
     document.querySelectorAll(".subtask-label").forEach((label) => {
       const checkbox = label.querySelector(".subtask-checkbox");
       const icon = label.querySelector(".checkbox-icon");
       if (!checkbox || !icon) return;
       label.addEventListener("click", function (e) {
-        // Nur toggeln, wenn nicht auf das Label-Text-Span geklickt wurde (sonst Doppelklick)
         if (e.target.tagName === "SPAN") return;
         setTimeout(() => {
           if (checkbox.checked) {

@@ -11,6 +11,12 @@ import {
  * @returns {boolean} True if the data is valid, otherwise false.
  */
 function validateTaskCardInput(boardData, taskID) {
+  /**
+   * Validates the input for a task card.
+   * @param {object} boardData - The complete board data object.
+   * @param {string} taskID - The ID of the task.
+   * @returns {boolean} True if the data is valid, otherwise false.
+   */
   if (!boardData || !taskID || !boardData.tasks || !boardData.contacts) {
     return false;
   }
@@ -26,6 +32,11 @@ function validateTaskCardInput(boardData, taskID) {
  * @returns {{title: string, description: string, type: string, priority: string}} The extracted details.
  */
 function getTaskDetails(task) {
+  /**
+   * Extracts details from a task object.
+   * @param {object} task - The task object.
+   * @returns {{title: string, description: string, type: string, priority: string}} The extracted details.
+   */
   const title = task.title || "Kein Titel";
   const description = (task.description || "").trim();
   const type = task.type || "Unbekannt";
@@ -38,6 +49,11 @@ function getTaskDetails(task) {
  * @returns {string} The corresponding CSS class.
  */
 function getCategoryClass(type) {
+  /**
+   * Returns the CSS class for a given task type.
+   * @param {string} type - The type of the task (e.g., 'User Story').
+   * @returns {string} The corresponding CSS class.
+   */
   if (type === "User Story") return "category-user-story";
   if (type === "Technical Task") return "category-technical-task";
   if (type === "Meeting") return "category-meeting";
@@ -49,6 +65,11 @@ function getCategoryClass(type) {
  * @returns {{done: number, total: number, percent: number, subText: string}} The progress of the subtasks.
  */
 function calculateSubtaskProgress(task) {
+  /**
+   * Calculates the progress of subtasks for a task.
+   * @param {object} task - The task object.
+   * @returns {{done: number, total: number, percent: number, subText: string}} The progress of the subtasks.
+   */
   let subtasksArray = [];
   // ...existing code...
   if (Array.isArray(task.subtasks) && task.subtasks.length > 0) {
@@ -76,6 +97,12 @@ function calculateSubtaskProgress(task) {
  * @returns {string} The HTML string of the avatars.
  */
 function generateAssignedAvatarsHtml(assignedUserIDs, contacts) {
+  /**
+   * Generates the HTML for assigned user avatars.
+   * @param {string[]} assignedUserIDs - IDs of the assigned users.
+   * @param {object} contacts - The contacts object.
+   * @returns {string} The HTML string of the avatars.
+   */
   let avatarsHtml = "";
   const users = Array.isArray(assignedUserIDs) ? assignedUserIDs : [];
   const displayCount = 3;
@@ -97,6 +124,11 @@ function generateAssignedAvatarsHtml(assignedUserIDs, contacts) {
  * @returns {string} The HTML string of the avatar.
  */
 function renderContactAvatar(contact) {
+  /**
+   * Renders the avatar HTML for a contact.
+   * @param {object} contact - The contact object.
+   * @returns {string} The HTML string of the avatar.
+   */
   if (!contact) {
     return `<div class="assigned-initials-circle" style="background-color: var(--grey);" title="Unknown">?</div>`;
   }
@@ -112,6 +144,11 @@ function renderContactAvatar(contact) {
  * @returns {{icon: string, prioText: string}} Icon path and priority text.
  */
 function getPriorityIconAndText(prio) {
+  /**
+   * Returns the icon path and text for a given priority.
+   * @param {string} prio - The priority ('low', 'medium', 'urgent').
+   * @returns {{icon: string, prioText: string}} Icon path and priority text.
+   */
   if (prio === "low")
     return { icon: `../assets/icons/property/low.svg`, prioText: "Low" };
   if (prio === "medium")
@@ -165,7 +202,16 @@ function buildTaskCardHtmlContent(
                 <div class="d-flex justify-content flex-direction">
     <a href="#" class="move-task-up" data-task-id="${taskID}">↑ Up</a>
     <a href="#" class="move-task-down" data-task-id="${taskID}">↓ Down</a>
-    <a href="/index.html">Home <img src="../assets/icons/logo/joinLogo.svg" alt="joinLogo" width="20" height="15"></a>
+  function buildTaskCardHtmlContent(
+    /**
+     * Builds the HTML content for a task card.
+     * @param {string} taskID - The ID of the task.
+     * @param {object} taskDetails - The task details.
+     * @param {object} subtaskProgress - The subtask progress.
+     * @param {string} avatarsHtml - The avatars of the assigned users.
+     * @param {object} priorityInfo - Priority information.
+     * @returns {string} The HTML string of the task card.
+     */
 </div>
   </div>
 </div></div>
@@ -200,6 +246,12 @@ function buildTaskCardHtmlContent(
  * @returns {string} The HTML string of the task card.
  */
 export function createSimpleTaskCard(boardData, taskID) {
+  /**
+   * Creates a simple task card HTML string.
+   * @param {object} boardData - The complete board data object (tasks, contacts, etc.).
+   * @param {string} taskID - The ID of the task to be rendered.
+   * @returns {string} The HTML string of the task card.
+   */
   if (!validateTaskCardInput(boardData, taskID)) return "";
   const task = boardData.tasks[taskID];
   const contacts = boardData.contacts;
@@ -224,89 +276,32 @@ document.addEventListener("click", function (e) {
     e.preventDefault();
     const taskId = (upBtn || downBtn).getAttribute("data-task-id");
     const boardData = window.firebaseData;
-    console.debug("[DEBUG] boardData snapshot:", JSON.stringify(boardData));
-    console.log(
-      "[Move Task] Clicked:",
-      upBtn ? "Up" : "Down",
-      "TaskID:",
-      taskId
-    );
     if (!boardData || !boardData.tasks || !boardData.tasks[taskId]) {
-      // [Move Task] Invalid boardData or task
       return;
     }
-    // Hole die Task direkt aus dem Board
     const originalTask = boardData.tasks[taskId];
-    console.debug(
-      "[DEBUG] Original Task Objekt:",
-      JSON.stringify(originalTask)
-    );
     const currentIndex = columnOrder.indexOf(originalTask.columnID);
     let newIndex = currentIndex;
-    console.log(
-      "[Move Task] Current column:",
-      originalTask.columnID,
-      "Index:",
-      currentIndex
-    );
     if (upBtn && currentIndex > 0) {
       newIndex = currentIndex - 1;
-      console.log(
-        "[Move Task] Move Up: New Index:",
-        newIndex,
-        "New Column:",
-        columnOrder[newIndex]
-      );
     }
     if (downBtn && currentIndex < columnOrder.length - 1) {
       newIndex = currentIndex + 1;
-      console.log(
-        "[Move Task] Move Down: New Index:",
-        newIndex,
-        "New Column:",
-        columnOrder[newIndex]
-      );
     }
     if (newIndex !== currentIndex) {
-      // Ändere die columnID direkt im bestehenden Objekt
       boardData.tasks[taskId].columnID = columnOrder[newIndex];
-      console.debug(
-        "[DEBUG] Updated Task Objekt:",
-        JSON.stringify(boardData.tasks[taskId])
-      );
-      console.log(
-        "[Move Task] Updating Task:",
-        taskId,
-        "New columnID:",
-        boardData.tasks[taskId].columnID
-      );
       if (window.CWDATA && window.firebaseData) {
-        // [CHECK] Datenübergabe an CWDATA
-        console.debug(
-          "[DEBUG] Übergabe an CWDATA:",
-          { [taskId]: boardData.tasks[taskId] },
-          window.firebaseData
-        );
         window.CWDATA(
           { [taskId]: boardData.tasks[taskId] },
           window.firebaseData
         );
-        console.log(
-          "[Move Task] CWDATA called for:",
-          taskId,
-          "updatedTask:",
-          boardData.tasks[taskId]
-        );
       }
       if (window.board && typeof window.board.site === "function") {
         window.board.site();
-        console.log("[Move Task] window.board.site() called");
       } else if (typeof window.boardSiteHtml === "function") {
         window.boardSiteHtml();
-        console.log("[Move Task] window.boardSiteHtml() called");
       }
     } else {
-      console.log("[Move Task] No column change for:", taskId);
     }
   }
 });

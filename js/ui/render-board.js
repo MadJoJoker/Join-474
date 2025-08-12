@@ -196,7 +196,6 @@ function updateLocalTaskColumn(taskId, firebaseColumnId) {
  * @returns {Promise<void>} Resolves when the update is complete.
  */
 async function triggerFirebaseUpdate(taskId, firebaseColumnId) {
-  // Firebase update currently commented out or not implemented
 }
 
 /**

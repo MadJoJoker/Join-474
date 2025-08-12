@@ -1,6 +1,6 @@
 /**
- * Gibt das aktuelle Datum im Format TT.MM.JJJJ zurück.
- * @returns {string} Das formatierte Datum.
+ * Returns the current date in DD.MM.YYYY format.
+ * @returns {string} The formatted date.
  */
 export function getFormattedDate() {
   const now = new Date();

@@ -31,7 +31,7 @@ export async function loadOverlayHtmlOnce(templatePath, overlayId, afterLoad) {
 }
 let currentOverlay = null;
 
-/** * Retrieves an element by its ID and ensures it exists.
+/** Retrieves an element by its ID and ensures it exists.
  * @param {string} id - The ID of the element to retrieve.
  * @returns {HTMLElement|null} The element if found, otherwise null.
  */
@@ -42,8 +42,9 @@ function getValidatedElementById(id) {
   return element;
 }
 
-/** * Retrieves an element by its ID and ensures it exists.
- * @param {string} id - The ID of the element to retrieve.
+/** Retrieves an element by selector from a parent and ensures it exists.
+ * @param {HTMLElement} parent - The parent element to search within.
+ * @param {string} selector - The selector to use for querying the element.
  * @returns {HTMLElement|null} The element if found, otherwise null.
  */
 function getValidatedQuerySelector(parent, selector) {
@@ -54,7 +55,7 @@ function getValidatedQuerySelector(parent, selector) {
   return element;
 }
 
-/** * Sets the visibility of the overlay.
+/** Sets the visibility of the overlay.
  * Adds or removes the 'overlay-hidden' class based on the visibility state.
  * @param {HTMLElement} overlay - The overlay element to modify.
  * @param {boolean} isVisible - Whether the overlay should be visible.
@@ -67,7 +68,7 @@ function setOverlayVisibility(overlay, isVisible) {
   }
 }
 
-/** * Manages the body scroll behavior.
+/** Manages the body scroll behavior.
  * Disables or enables scrolling based on the provided flag.
  * @param {boolean} disableScroll - Whether to disable scrolling.
  */
@@ -75,14 +76,14 @@ function manageBodyScroll(disableScroll) {
   document.body.style.overflow = disableScroll ? "hidden" : "";
 }
 
-/** * Updates the current overlay reference.
+/** Updates the current overlay reference.
  * @param {HTMLElement} overlay - The overlay element to set as current.
  */
 function updateCurrentOverlay(overlay) {
   currentOverlay = overlay;
 }
 
-/** * Clears the current overlay reference if it matches the provided ID.
+/** Clears the current overlay reference if it matches the provided ID.
  * @param {string} overlayId - The ID of the overlay to clear.
  */
 function clearCurrentOverlay(overlayId) {
@@ -91,7 +92,7 @@ function clearCurrentOverlay(overlayId) {
   }
 }
 
-/** * Closes any existing overlay if it is different from the new one.
+/** Closes any existing overlay if it is different from the new one.
  * @param {string} newOverlayId - The ID of the new overlay to open.
  */
 function closeExistingOverlay(newOverlayId) {
@@ -100,7 +101,7 @@ function closeExistingOverlay(newOverlayId) {
   }
 }
 
-/** * Attaches a click event listener to the close button of the overlay.
+/** Attaches a click event listener to the close button of the overlay.
  * Closes the overlay when the button is clicked.
  * @param {HTMLElement} button - The close button element.
  * @param {string} overlayId - The ID of the overlay to close.
@@ -111,7 +112,7 @@ function attachCloseButtonListener(button, overlayId) {
   }
 }
 
-/** * Attaches a click event listener to the overlay background.
+/** Attaches a click event listener to the overlay background.
  * Closes the overlay when the background is clicked.
  * @param {HTMLElement} overlay - The overlay element.
  * @param {string} overlayId - The ID of the overlay to close.
@@ -124,7 +125,7 @@ function attachBackgroundClickListener(overlay, overlayId) {
   });
 }
 
-/** * Attaches a click event listener to the modal content to stop propagation.
+/** Attaches a click event listener to the modal content to stop propagation.
  * Prevents clicks inside the modal from closing the overlay.
  * @param {HTMLElement} modalContent - The modal content element.
  */
@@ -134,8 +135,9 @@ function attachModalContentStopper(modalContent) {
   }
 }
 
-/** * Initializes the overlay by setting up event listeners and visibility.
- * @param {string} overlayId - The ID of the overlay to initialize.
+/** Attaches a keydown event listener for Escape to close the overlay.
+ * @param {HTMLElement} overlay - The overlay element.
+ * @param {string} overlayId - The ID of the overlay to close.
  */
 function attachEscapeKeyListener(overlay, overlayId) {
   document.addEventListener("keydown", (event) => {
@@ -168,8 +170,9 @@ export function openSpecificOverlay(overlayId) {
   updateCurrentOverlay(overlay);
 }
 
-// Ensures that the overlay CSS is included in the <head>.
-// @param {string} href - The path to the CSS file (relative to the main HTML document)
+/** Ensures that the overlay CSS is included in the <head>.
+ * @param {string} href - The path to the CSS file (relative to the main HTML document)
+ */
 function ensureOverlayCSS(href) {
   if (
     ![...document.head.querySelectorAll('link[rel="stylesheet"]')].some((l) =>
@@ -183,9 +186,12 @@ function ensureOverlayCSS(href) {
   }
 }
 
-/** * Closes a specific overlay by its ID.
+/** Closes a specific overlay by its ID.
  * Sets the overlay visibility to hidden and clears the current overlay reference.
  * @param {string} overlayId - The ID of the overlay to close.
+ */
+/** Removes the overlay CSS from the <head>.
+ * @param {string} href - The path to the CSS file (relative to the main HTML document)
  */
 export function closeSpecificOverlay(overlayId) {
   const overlay = getValidatedElementById(overlayId);
@@ -214,7 +220,7 @@ function removeOverlayCSS(href) {
   }
 }
 
-/** * Initializes event listeners for the overlay.
+/** Initializes event listeners for the overlay.
  * Attaches listeners to the close button, background click, and modal content.
  * @param {string} overlayId - The ID of the overlay to initialize.
  */
@@ -256,50 +262,31 @@ export function initOverlayListeners(overlayId) {
   if (modalContent) attachModalContentStopper(modalContent);
   attachEscapeKeyListener(overlay, overlayId);
 
-  // Subtask-Checkboxen: Direktes Update und DEBUG-Logs
   if (overlayId === "overlay-task-detail") {
     try {
-      // Importiere CWDATA und allData dynamisch, falls nicht global
       import("../data/task-to-firbase.js").then(({ CWDATA, allData }) => {
         const checkboxes = overlay.querySelectorAll(".subtask-checkbox");
-        console.debug(
-          "[DEBUG] Subtask-Checkboxen gefunden:",
-          checkboxes.length
-        );
         checkboxes.forEach((checkbox) => {
           checkbox.addEventListener("change", function () {
             const taskId = this.dataset.taskId;
             const subtaskIndex = Number(this.dataset.subtaskIndex);
-            console.debug(
-              `[DEBUG] Checkbox geändert: taskId=${taskId}, subtaskIndex=${subtaskIndex}, checked=${this.checked}`
-            );
             const task = allData.tasks[taskId];
             if (task) {
               task.checkedSubtasks[subtaskIndex] = this.checked;
-              console.debug(
-                "[DEBUG] Task-Objekt vor Update:",
-                JSON.parse(JSON.stringify(task))
-              );
               CWDATA({ [taskId]: task }, allData);
-              console.debug("[DEBUG] CWDATA aufgerufen mit:", {
-                [taskId]: task,
-              });
             } else {
-              console.warn(`[DEBUG] Task mit ID ${taskId} nicht gefunden!`);
+              console.error(`Task with ID ${taskId} not found!`);
             }
           });
         });
       });
     } catch (err) {
-      console.error(
-        "[DEBUG] Fehler beim Hinzufügen der Subtask-Checkbox-Listener:",
-        err
-      );
+      console.error("Error adding subtask-checkbox listeners:", err);
     }
   }
 }
 
-/** * Loads and initializes the add-task overlay.
+/** Loads and initializes the add-task overlay.
  */
 export function redirectOnSmallScreen() {
   if (window.matchMedia("(max-width: 768px)").matches) {

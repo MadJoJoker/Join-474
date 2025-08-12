@@ -3,7 +3,7 @@
  * @param {HTMLFormElement} form - The form element.
  * @param {object} contactsObj - The contacts object.
  * @param {object} taskToEdit - The original task object.
- * @returns {object} Extracted task data.
+ * @returns {object} The extracted task data.
  */
 export function extractTaskFormData(form, contactsObj, taskToEdit) {
   const title = form.querySelector("[name='title']")?.value || "";

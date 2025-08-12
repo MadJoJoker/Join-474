@@ -1,3 +1,7 @@
+/**
+ * Toggles the state of a checkbox and updates its SVG icon.
+ * @param {HTMLElement} checkboxElem - The checkbox element or its container.
+ */
 export function toggleCheckbox(checkboxElem) {
   let cb, svg;
   if (checkboxElem.tagName === "INPUT" && checkboxElem.type === "checkbox") {
@@ -21,6 +25,10 @@ export function toggleCheckbox(checkboxElem) {
   }
 }
 
+/**
+ * Initializes checkbox toggles for task details overlays.
+ * @param {string} [overlaySelector="#overlay-task-detail, #overlay-task-detail-edit"] - The selector for the overlay(s) containing checkboxes.
+ */
 export function initTaskDetailsCheckboxToggles(
   overlaySelector = "#overlay-task-detail, #overlay-task-detail-edit"
 ) {

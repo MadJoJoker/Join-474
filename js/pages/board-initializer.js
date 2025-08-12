@@ -1,7 +1,7 @@
 import {
   openSpecificOverlay,
   initOverlayListeners,
-  redirectOnSmallScreen
+  redirectOnSmallScreen,
 } from "../../js/events/overlay-handler.js";
 import { clearForm } from "./add-task.js";
 import { initAddTaskForm } from "./add-task-auxiliary-functions.js";
@@ -15,6 +15,7 @@ let isOverlayLoaded = false;
 /**
  * Loads the add-task overlay and initializes it.
  * If the overlay is already loaded, it clears the form and opens the overlay.
+ * @returns {Promise<void>} Resolves when the overlay is loaded and initialized.
  */
 export async function loadAndInitAddTaskOverlay() {
   if (isOverlayLoaded) {
@@ -94,11 +95,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (searchInput) {
     searchInput.addEventListener("input", async (event) => {
       if (event.target.value.trim() === "") {
-        // If search is cleared, reload and render the full board
-        const { loadAndRenderBoard } = await import("../ui/render-board.js");
-        await loadAndRenderBoard();
-        // Hide info text if visible
-        hideFindTaskInfoNoFoundMsg();
+        try {
+          const { loadAndRenderBoard } = await import("../ui/render-board.js");
+          await loadAndRenderBoard();
+          hideFindTaskInfoNoFoundMsg();
+        } catch (error) {
+          console.error("Error loading and rendering board:", error);
+        }
       } else {
         filterTaskCardsByTitle();
       }
@@ -108,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /**
  * Shows a find-task-info-no-found message and keeps it visible until tasks are found or search is cleared.
+ * @returns {void}
  */
 export function showFindTaskInfoNoFoundMsg() {
   const noFoundMsg = document.getElementById("find-task-info-no-found-Msg");
@@ -118,6 +122,7 @@ export function showFindTaskInfoNoFoundMsg() {
 
 /**
  * Hides the find-task-info-no-found message immediately.
+ * @returns {void}
  */
 export function hideFindTaskInfoNoFoundMsg() {
   const noFoundMsg = document.getElementById("find-task-info-no-found-Msg");
@@ -126,5 +131,5 @@ export function hideFindTaskInfoNoFoundMsg() {
   noFoundMsg.classList.add("slide-out");
   setTimeout(() => {
     noFoundMsg.classList.add("hidden");
-  }, 400); // hide after animation
+  }, 400);
 }

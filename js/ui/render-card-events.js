@@ -21,7 +21,7 @@ export let detailOverlayElement = null;
 export let editOverlayElement = null;
 
 /**
- * @param {string} overlayId - The ID of the overlay to load.
+ * Loads the detail overlay HTML once and assigns it to detailOverlayElement.
  * @returns {Promise<void>} Resolves when the overlay is loaded.
  */
 async function loadDetailOverlayHtmlOnce() {
@@ -33,7 +33,7 @@ async function loadDetailOverlayHtmlOnce() {
 }
 
 /**
- * @param {string} overlayId - The ID of the overlay to load.
+ * Loads the edit overlay HTML once and assigns it to editOverlayElement.
  * @returns {Promise<void>} Resolves when the overlay is loaded.
  */
 async function loadEditOverlayHtmlOnce() {
@@ -45,6 +45,7 @@ async function loadEditOverlayHtmlOnce() {
 }
 
 /**
+ * Registers event listeners for task card detail overlays.
  * @param {object} boardData - The board data object containing tasks, contacts, etc.
  * @param {function} updateBoardFunction - Callback function to update the board after changes.
  * @returns {Promise<void>} Resolves when listeners are registered.
@@ -157,7 +158,6 @@ export async function registerTaskCardDetailOverlay(
           const html = getTaskOverlay(task, taskId, boardData.contacts);
           container.innerHTML = html;
 
-          // Event Delegation für Subtask-Checkboxen inkl. DEBUG
           container.addEventListener("change", function (e) {
             if (e.target && e.target.classList.contains("subtask-checkbox")) {
               const subtaskIndex = Number(e.target.dataset.subtaskIndex);
@@ -167,7 +167,6 @@ export async function registerTaskCardDetailOverlay(
               );
               if (task && Array.isArray(task.checkedSubtasks)) {
                 task.checkedSubtasks[subtaskIndex] = checked;
-                // subtasksCompleted aktualisieren
                 const completedCount =
                   task.checkedSubtasks.filter(Boolean).length;
                 task.subtasksCompleted = completedCount;
@@ -218,8 +217,10 @@ export async function registerTaskCardDetailOverlay(
         }
       }
       /**
+       * Handles closing the detail overlay and saving changes to the task.
        * @param {string} taskId - The ID of the task to close the overlay for.
        * @param {object} boardData - The board data object.
+       * @returns {Promise<void>} Resolves when the task is updated.
        */
       async function handleDetailOverlayClose(taskId, boardData) {
         const task = boardData.tasks[taskId];

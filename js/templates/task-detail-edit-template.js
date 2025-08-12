@@ -49,40 +49,40 @@ export async function openTaskDetailEditOverlay(task) {
     try {
       initPriorityButtonLogic(container);
     } catch (e) {
-      console.error("[DEBUG] Error initializing priority button logic:", e);
+      console.error("Error initializing priority button logic:", e);
     }
   } else {
-    console.warn("[DEBUG] initPriorityButtonLogic is not defined!");
+    console.error("initPriorityButtonLogic is not defined!");
   }
 
   if (typeof initAssignedToDropdownLogic === "function") {
     try {
       initAssignedToDropdownLogic(container);
     } catch (e) {
-      console.error("[DEBUG] Error initializing assignedTo dropdown:", e);
+      console.error("Error initializing assignedTo dropdown:", e);
     }
   } else {
-    console.warn("[DEBUG] initAssignedToDropdownLogic is not defined!");
+    console.error("initAssignedToDropdownLogic is not defined!");
   }
 
   if (typeof initDatePicker === "function") {
     try {
       initDatePicker(container);
     } catch (e) {
-      console.error("[DEBUG] Error initializing date picker:", e);
+      console.error("Error initializing date picker:", e);
     }
   } else {
-    console.warn("[DEBUG] initDatePicker is not defined!");
+    console.error("initDatePicker is not defined!");
   }
 
   if (typeof initSubtaskManagementLogic === "function") {
     try {
       initSubtaskManagementLogic(container);
     } catch (e) {
-      console.error("[DEBUG] Error initializing subtask management:", e);
+      console.error("Error initializing subtask management:", e);
     }
   } else {
-    console.warn("[DEBUG] initSubtaskManagementLogic is not defined!");
+    console.error("initSubtaskManagementLogic is not defined!");
   }
 
   if (
@@ -110,24 +110,21 @@ export async function openTaskDetailEditOverlay(task) {
 }
 
 /**
- * Speichert die Änderungen eines Tasks und übergibt sie an die Datenbank.
- * @param {string} taskId - Die ID des zu bearbeitenden Tasks.
+ * Saves the changes of a task and passes them to the database.
+ * @param {string} taskId - The ID of the task to be edited.
+ * @returns {Promise<void>} Resolves when the task is saved.
  */
 export async function saveEditedTask(taskId) {
   const form = document.querySelector("#add-task-form");
   if (!form) {
-    console.error("[DEBUG] Edit-Formular nicht gefunden!");
+    console.error("Edit form not found!");
     return;
   }
 
-  // Titel
   const title = form.querySelector("[name='title']")?.value || "";
-  // Beschreibung
   const description = form.querySelector("[name='description']")?.value || "";
-  // Deadline
   const deadline = form.querySelector("[name='deadline']")?.value || "";
 
-  // Kategorie (type)
   let type = "";
   const categoryDropdown = document.getElementById("dropdown-category");
   if (categoryDropdown) {
@@ -137,24 +134,19 @@ export async function saveEditedTask(taskId) {
     type = selected ? selected.textContent.trim() : "";
   }
 
-  // Priority
   let priority = "";
   const priorityInput = form.querySelector("[name='priority']:checked");
   if (priorityInput) {
     priority = priorityInput.value;
   } else {
-    // Fallback falls als Button umgesetzt
     const prioBtn = form.querySelector(".priority-btn.selected");
     priority = prioBtn ? prioBtn.getAttribute("data-priority") : "";
   }
 
-  // Subtasks
   const subtaskInputs = form.querySelectorAll(".subtask-input");
   let totalSubtasks = Array.from(subtaskInputs).map((input) => input.value);
   let checkedSubtasks = Array.from(subtaskInputs).map((input) => input.checked);
-  // Wenn keine Subtasks im Formular, dann Werte aus dem Task-Objekt verwenden
   if (totalSubtasks.length === 0 || totalSubtasks.every((v) => v === "")) {
-    // Hole das ursprüngliche Task-Objekt aus dem globalen State oder DOM
     const task = window.firebaseData?.tasks?.[taskId];
     if (task) {
       totalSubtasks = Array.isArray(task.totalSubtasks)
@@ -167,7 +159,6 @@ export async function saveEditedTask(taskId) {
   }
   const subtasksCompleted = checkedSubtasks.filter(Boolean).length;
 
-  // Assigned Users (IDs aus Kontakten)
   let assignedUsers = [];
   const assignedCheckboxes = form.querySelectorAll(
     ".assigned-contact-checkbox:checked"
@@ -184,14 +175,12 @@ export async function saveEditedTask(taskId) {
       .filter(Boolean);
   }
 
-  // Zeitstempel
   const now = new Date();
   const day = String(now.getDate()).padStart(2, "0");
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const year = now.getFullYear();
   const formattedDate = `${day}.${month}.${year}`;
 
-  // Task-Objekt wie bei createTaskObject
   const editTaskObjekt = {
     assignedUsers,
     boardID: "board-1",
@@ -208,18 +197,13 @@ export async function saveEditedTask(taskId) {
     updatedAt: formattedDate,
   };
 
-  // Objekt mit ID für CWDATA vorbereiten
   const objForCWDATA = {
     [taskId]: editTaskObjekt,
   };
 
-  console.log("[DEBUG] Übergabe an CWDATA:", objForCWDATA, window.firebaseData);
-
-  // Übergabe an CWDATA mit fetchData
   await CWDATA(objForCWDATA, window.firebaseData);
 }
 
-// Event-Listener für Speichern-Button
 document.addEventListener("click", function (e) {
   if (e.target.classList.contains("save-edit-task-btn")) {
     const taskId = e.target.getAttribute("data-task-id");

@@ -1,7 +1,7 @@
 /**
  * Extracts subtasks from a task object, handling all mapping and fallbacks.
  * @param {object} task - The task object to extract subtasks from.
- * @returns {Array<{text: string, completed: boolean}>}
+ * @returns {Array<{text: string, completed: boolean}>} The extracted subtasks.
  */
 export function extractSubtasksFromTask(task) {
   let subtasks = [];
