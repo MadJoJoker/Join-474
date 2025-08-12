@@ -1,3 +1,34 @@
+/**
+ * Loads overlay HTML from a template file, inserts it into the overlay container, and initializes listeners.
+ * @param {string} templatePath - Path to the HTML template file.
+ * @param {string} overlayId - The ID to assign to the loaded overlay element.
+ * @param {function} [afterLoad] - Optional callback after loading and inserting the overlay.
+ * @returns {Promise<HTMLElement|null>} - The loaded overlay element or null.
+ */
+export async function loadOverlayHtmlOnce(templatePath, overlayId, afterLoad) {
+  const overlayContainer = document.getElementById("overlay-container");
+  if (!overlayContainer) return null;
+  let existing = document.getElementById(overlayId);
+  if (existing) return existing;
+  try {
+    const response = await fetch(templatePath);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const html = await response.text();
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    const overlayElement = tempDiv.firstElementChild;
+    if (overlayElement) {
+      overlayElement.id = overlayId;
+      overlayContainer.appendChild(overlayElement);
+      initOverlayListeners(overlayId);
+      if (afterLoad) afterLoad(overlayElement);
+      return overlayElement;
+    }
+  } catch (error) {
+    console.error("Failed to load overlay HTML:", error);
+  }
+  return null;
+}
 let currentOverlay = null;
 
 /** * Retrieves an element by its ID and ensures it exists.
