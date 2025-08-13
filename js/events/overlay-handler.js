@@ -108,7 +108,16 @@ function closeExistingOverlay(newOverlayId) {
  */
 function attachCloseButtonListener(button, overlayId) {
   if (button) {
-    button.addEventListener("click", () => closeSpecificOverlay(overlayId));
+    button.addEventListener("click", async () => {
+      closeSpecificOverlay(overlayId);
+      if (
+        overlayId === "overlay-task-detail" ||
+        overlayId === "overlay-task-detail-edit"
+      ) {
+        const { refreshBoardSite } = await import("../ui/render-board.js");
+        await refreshBoardSite();
+      }
+    });
   }
 }
 
@@ -118,9 +127,16 @@ function attachCloseButtonListener(button, overlayId) {
  * @param {string} overlayId - The ID of the overlay to close.
  */
 function attachBackgroundClickListener(overlay, overlayId) {
-  overlay.addEventListener("click", (event) => {
+  overlay.addEventListener("click", async (event) => {
     if (event.target === overlay) {
       closeSpecificOverlay(overlayId);
+      if (
+        overlayId === "overlay-task-detail" ||
+        overlayId === "overlay-task-detail-edit"
+      ) {
+        const { refreshBoardSite } = await import("../ui/render-board.js");
+        await refreshBoardSite();
+      }
     }
   });
 }
@@ -192,7 +208,6 @@ export async function openSpecificOverlay(overlayId) {
   closeExistingOverlay(overlayId);
   const overlay = getValidatedElementById(overlayId);
   if (!overlay) return;
-  // Dynamically load the appropriate CSS for the overlay
   if (overlayId === "overlay-task-detail-edit") {
     await ensureOverlayCSS("../styles/overlay-task-detail-edit.css");
   } else if (overlayId === "overlay-task-detail") {
@@ -210,10 +225,8 @@ export function closeSpecificOverlay(overlayId) {
   clearCurrentOverlay(overlayId);
   if (overlayId === "overlay-task-detail-edit") {
     removeOverlayCSS("../styles/overlay-task-detail-edit.css");
-    window.location.reload();
   } else if (overlayId === "overlay-task-detail") {
     removeOverlayCSS("../styles/overlay-task-details.css");
-    window.location.reload();
   }
 }
 function removeOverlayCSS(href) {

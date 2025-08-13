@@ -1,3 +1,9 @@
+/**
+ * Refreshes the board site by reloading and rendering all tasks.
+ */
+export async function refreshBoardSite() {
+  await loadAndRenderBoard();
+}
 import { loadFirebaseData } from "../../main.js";
 import { initDragAndDrop } from "../events/drag-and-drop.js";
 import { createSimpleTaskCard } from "./render-card.js";

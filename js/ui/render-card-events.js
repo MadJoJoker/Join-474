@@ -12,6 +12,7 @@ import {
 } from "../events/dropdown-menu-auxiliary-function.js";
 import { CWDATA } from "../data/task-to-firbase.js";
 import { editedTaskData, calculateSubtaskProgress } from "./render-card.js";
+import { refreshBoardSite } from "./render-board.js";
 import { addedSubtasks } from "../events/subtask-handler.js";
 import { extractSubtasksFromTask } from "../utils/subtask-utils.js";
 import { extractTaskFormData } from "../utils/form-utils.js";
@@ -199,6 +200,10 @@ export async function registerTaskCardDetailOverlay(
           editButton.onclick = null;
           editButton.addEventListener("click", async (event) => {
             event.stopPropagation();
+            closeSpecificOverlay("overlay-task-detail");
+            if (typeof refreshBoardSite === "function") {
+              await refreshBoardSite();
+            }
             renderEditOverlay(taskId);
           });
         }
