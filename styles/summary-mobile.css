@@ -53,10 +53,10 @@
     right: 0;
     width: 100%;
     z-index: 990;
-    animation: showBackground 1.4s ease-in-out forwards;
+    animation: showBackground 2.4s ease-in-out forwards;
 
     > p {
-      animation: hideText 1.4s ease-in-out forwards;
+      animation: hideText 2.4s ease-in-out forwards;
     }
 
     > p:first-of-type {

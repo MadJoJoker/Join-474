@@ -46,7 +46,7 @@
 
             <form onsubmit="event.preventDefault()">
               <div class="login-inputs s-up-margins">
-                <div class="input-frame reduced-margin overlay-anchor required" onclick="fillSignup(), clearRedAlerts()">
+                <div class="input-frame reduced-margin overlay-anchor required" onclick="clearRedAlerts()">
                   <input id="new-name" type="text" placeholder="Name" autocomplete="off">
                   <span class="icon-container eye">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -78,8 +78,7 @@
                       fill="var(--sidebarNoticeGrey)"/>
                     </svg>
                   </span>
-                  <div id="alert" class="red-alert small-gap d-none">
-                    Your passwords don't match. Please try again.
+                  <div id="alert-pw1" class="red-alert small-gap d-none">
                   </div>
                 </div>
                 <div class="input-frame reduced-margin overlay-anchor password-frame">
@@ -90,6 +89,9 @@
                       fill="var(--sidebarNoticeGrey)"/>
                     </svg>
                   </span>
+                  <div id="alert-pw2" class="red-alert small-gap d-none">
+                    Your passwords don't match. Please try again.
+                  </div>
                 </div>
               </div>
                       

@@ -124,7 +124,7 @@
   }
 }
 
-
+/* Chrome, Safari */
 .scrollable {
   overflow-y: auto;
   max-height: 100vh;
@@ -147,11 +147,35 @@
   background: #42526E;
 }
 
+/* Firefox */
 @-moz-document url-prefix() {
   .scrollable
-  /* .app-container  */
   {
     scrollbar-color: #29ABE2 #E7E7E7;
     scrollbar-width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Firefox */
+  .scrollable:not(.contacts-sidebar) {
+    scrollbar-width: none; 
+  }
+
+/* Chrome, Safari */
+  .scrollable:not(.contacts-sidebar)::-webkit-scrollbar {
+    display: none; 
+  }
+
+
+  .scrollable {
+    /* Firefox */
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+  
+  .scrollable::-webkit-scrollbar {
+    /* Chrome, Safari */ 
+    display: none;
   }
 }
