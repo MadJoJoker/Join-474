@@ -210,8 +210,10 @@ export function closeSpecificOverlay(overlayId) {
   clearCurrentOverlay(overlayId);
   if (overlayId === "overlay-task-detail-edit") {
     removeOverlayCSS("../styles/overlay-task-detail-edit.css");
+    window.location.reload();
   } else if (overlayId === "overlay-task-detail") {
     removeOverlayCSS("../styles/overlay-task-details.css");
+    window.location.reload();
   }
 }
 function removeOverlayCSS(href) {

@@ -64,14 +64,13 @@ function getCategoryClass(type) {
  * @param {object} task - The task object.
  * @returns {{done: number, total: number, percent: number, subText: string}} The progress of the subtasks.
  */
-function calculateSubtaskProgress(task) {
+export function calculateSubtaskProgress(task) {
   /**
    * Calculates the progress of subtasks for a task.
    * @param {object} task - The task object.
    * @returns {{done: number, total: number, percent: number, subText: string}} The progress of the subtasks.
    */
   let subtasksArray = [];
-  // ...existing code...
   if (Array.isArray(task.subtasks) && task.subtasks.length > 0) {
     subtasksArray = task.subtasks;
   } else if (

@@ -11,7 +11,7 @@ import {
   setAssignedContactsFromTaskForCard,
 } from "../events/dropdown-menu-auxiliary-function.js";
 import { CWDATA } from "../data/task-to-firbase.js";
-import { editedTaskData } from "./render-card.js";
+import { editedTaskData, calculateSubtaskProgress } from "./render-card.js";
 import { addedSubtasks } from "../events/subtask-handler.js";
 import { extractSubtasksFromTask } from "../utils/subtask-utils.js";
 import { extractTaskFormData } from "../utils/form-utils.js";
@@ -178,6 +178,12 @@ export async function registerTaskCardDetailOverlay(
                 console.debug("[DEBUG] Delegation: CWDATA aufgerufen mit:", {
                   [taskId]: task,
                 });
+                const progress = calculateSubtaskProgress(task);
+                const progressBar =
+                  container.querySelector(".progress-bar-fill");
+                if (progressBar) {
+                  progressBar.style.width = `${progress.percent}%`;
+                }
               } else {
                 console.warn(
                   `[DEBUG] Delegation: Task oder checkedSubtasks nicht gefunden!`
