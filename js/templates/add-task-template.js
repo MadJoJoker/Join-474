@@ -14,19 +14,37 @@ export function initDragAndDrop(container = document) {
   });
 }
 
-/** Handles the drag start event.
- * Sets the current dragged element and adds a class for styling.
- * @param {DragEvent} event
+/** Initializes the date picker functionality for a date input field.
+ * @param {HTMLElement} container - The container element to search within.
  */
 export function initDatePicker(container = document) {
-  const dateInput = container.querySelector("#datepicker");
-  if (!dateInput) return;
-  // Beispiel: Einfaches Datepicker-Polyfill, kann durch ein echtes Datepicker-Plugin ersetzt werden
-  dateInput.addEventListener("focus", () => {
-    dateInput.type = "date";
+  const visibleInput = container.querySelector("#datepicker");
+  if (!visibleInput) return;
+
+  const hiddenInput = document.createElement("input");
+  hiddenInput.type = "date";
+  hiddenInput.style.position = "absolute";
+  hiddenInput.style.opacity = "0";
+  hiddenInput.style.pointerEvents = "none";
+  hiddenInput.style.height = `${visibleInput.offsetHeight}px`;
+  hiddenInput.style.width = `${visibleInput.offsetWidth}px`;
+  hiddenInput.style.top = `${visibleInput.offsetTop}px`;
+  hiddenInput.style.left = `${visibleInput.offsetLeft}px`;
+  hiddenInput.min = new Date().toISOString().split("T")[0];
+
+  visibleInput.parentNode.style.position = "relative";
+  visibleInput.parentNode.appendChild(hiddenInput);
+
+  visibleInput.addEventListener("focus", () => {
+    hiddenInput.showPicker();
   });
-  dateInput.addEventListener("blur", () => {
-    dateInput.type = "text";
+
+  hiddenInput.addEventListener("change", () => {
+    if (hiddenInput.value) {
+      const [year, month, day] = hiddenInput.value.split("-");
+      visibleInput.value = `${day.padStart(2, "0")}.${month.padStart(2, "0")}.${year}`;
+    }
+    visibleInput.blur();
   });
 }
 
@@ -142,7 +160,7 @@ export function renderPrioritySection(task) {
             <fieldset aria-labelledby="priority-legend" style="border: none">
                 <legend id="priority-legend" class="font-size-20">Priority</legend>
                 <div class="priority-button-container" role="group">
-                    <button type="button" class="priority-btn urgent-btn${
+                    <button type="button" id="urgent-btn" class="priority-btn urgent-btn${
                       task?.priority === "urgent" ? " active" : ""
                     }" data-priority="urgent" data-event-handle="true">Urgent 
                         <svg width="21" height="16" viewBox="0 0 21 16" fill="none" title="Urgent Priority Icon" xmlns="http://www.w3.org/2000/svg">
@@ -153,7 +171,7 @@ export function renderPrioritySection(task) {
                             fill="currentColor"/></g><defs><clipPath id="clip0_353647_4534"><rect width="20" height="14.5098" fill="white" transform="translate(0.748535 0.745117)"/></clipPath></defs>
                         </svg>
                     </button>
-                    <button type="button" class="priority-btn medium-btn${
+                    <button type="button" id="medium-btn" class="priority-btn medium-btn${
                       task?.priority === "medium" ? " active" : ""
                     }" data-priority="medium" data-event-handle="true">Medium 
                         <svg width="18" height="8" viewBox="0 0 18 8" fill="none" title="Medium Priority Icon" xmlns="http://www.w3.org/2000/svg">
@@ -163,7 +181,7 @@ export function renderPrioritySection(task) {
                             fill="currentColor"/>
                         </svg>
                     </button>
-                    <button type="button" class="priority-btn low-btn${
+                    <button type="button" id="low-btn" class="priority-btn low-btn${
                       task?.priority === "low" ? " active" : ""
                     }" data-priority="low" data-event-handle="true">Low 
                         <svg width="21" height="16" viewBox="0 0 21 16" fill="none" title="Low Priority Icon" xmlns="http://www.w3.org/2000/svg">
@@ -295,7 +313,7 @@ export function renderFormButtons() {
   return `
         <div class="form-buttons-part" id="form-buttons-part-add-task">
             <div id="sign-info-desktop" class="sign-info">This field is required</div>
-            <div class="buttons-area">
+            <div class="buttons-area" id="buttons-area-add-task">
                 <button type="button" class="create-btn" id="add-task-autofill-btn" data-event-handle="true">
                     Autofill
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--white)" stroke="var(--white)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M3 18h7v1H2V2h17v7h-1V3H3zm15.917 0h-4.834l-1.756 4h-1.093l4.808-10.951h.916L21.766 22h-1.093zm-.439-1L16.5 12.494 14.522 17z"></path>

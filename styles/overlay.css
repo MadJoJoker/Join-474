@@ -195,9 +195,6 @@ html body #overlay-task-detail-edit .checkbox-icon.checked {
   font-size: 16px;
 }
 
-.assigned {
-  margin-bottom: 6px;
-}
 .assigned-list {
   display: flex;
   flex-wrap: wrap;
