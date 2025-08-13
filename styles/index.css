@@ -51,7 +51,7 @@ body {
   width: 100%;
   height: 100vh;
   background-color: rgba(255, 255, 255, 1);
-  animation: showBackground 1s ease-in forwards;
+  animation: showBackground 1.5s ease-in-out forwards;
 }
 
 .floating-logo {
@@ -63,7 +63,7 @@ body {
   margin: auto;
 
   &.animate {
-    animation: moveToCorner 1s ease forwards;
+    animation: moveToCorner 1.5s ease forwards;
   }
 }
 
@@ -75,7 +75,7 @@ body {
   0% {
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1.7);
+    transform: translate(-50%, -50%) scale(3);
     z-index: 10;
   }
 
@@ -92,7 +92,6 @@ body {
     background-color: rgba(255, 255, 255, 1);
     z-index: 5;
   }
-
   100% {
     z-index: 1;
     background-color: rgba(255, 255, 255, 0);
@@ -338,7 +337,7 @@ body {
 
 .red-alert {
   position: absolute;
-  top: 56px;
+  top: 52px;
   left: 0px;
   color: var(--redBorder);
   letter-spacing: 0.25px;

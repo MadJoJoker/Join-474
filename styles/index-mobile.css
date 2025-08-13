@@ -29,7 +29,7 @@
 
 @media (max-width: 768px) {
   body {
-    align-items: flex-start;  
+    align-items: flex-start;
   }
 
   .floating-logo {
@@ -41,7 +41,7 @@
     0% {
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(1.7);
+      transform: translate(-50%, -50%) scale(3);
       z-index: 10;
     }
     100% {
@@ -53,7 +53,7 @@
   }
 
   .dark-fill {
-    animation: changeColor 1s ease forwards;
+    animation: changeColor 1.5s ease forwards;
   }
 
   @keyframes changeColor {
@@ -69,6 +69,9 @@
     0% {
       background-color: var(--dark);
       z-index: 5;
+    }
+    20% {
+      background-color: var(--dark);
     }
     100% {
       background-color: rgba(255, 255, 255, 0);
@@ -202,7 +205,7 @@
     0% {
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(1.7);
+      transform: translate(-50%, -50%) scale(3);
       z-index: 10;
     }
     100% {
