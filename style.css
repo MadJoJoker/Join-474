@@ -158,14 +158,14 @@
 
 @media (max-width: 768px) {
   /* Firefox */
-  .scrollable:not(.contacts-sidebar) {
+  /* .scrollable:not(.contacts-sidebar) {
     scrollbar-width: none; 
-  }
+  } */
 
 /* Chrome, Safari */
-  .scrollable:not(.contacts-sidebar)::-webkit-scrollbar {
+  /* .scrollable:not(.contacts-sidebar)::-webkit-scrollbar {
     display: none; 
-  }
+  } */
 
 
   .scrollable {
