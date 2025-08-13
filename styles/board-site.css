@@ -250,29 +250,10 @@ body {
   align-items: flex-start;
   max-width: 1440px;
   scrollbar-width: thin;
-  scrollbar-color: var(--dark) var(--lightBlue) ;
+  scrollbar-color: var(--lightBlue) var(--dark);
 }
 
-#board-content-wrapper::-webkit-scrollbar {
-  width: 12px;
-  background: var(--dark);
-  opacity: 1;
-  transition: opacity 0.5s;
-}
 
-#board-content-wrapper::-webkit-scrollbar-thumb {
-  background: var(--dark);
-  border-radius: 6px;
-}
-
-#board-content-wrapper::-webkit-scrollbar-thumb:hover {
-  background: var(--darkHover);
-}
-
-#board-content-wrapper.hide-scrollbar::-webkit-scrollbar {
-  opacity: 0;
-  pointer-events: none;
-}
 
 .column-wrapper {
   display: flex;
