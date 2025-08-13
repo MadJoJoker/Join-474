@@ -22,7 +22,7 @@
 }
 
 @media (min-width: 1921px) {
-    #modal-content{
+    #modal-content {
         min-width: unset;
         min-height: unset;
         width: 1920px;
@@ -90,7 +90,7 @@
         left: 10%;
         right: 10%;
         padding-top: 20px;
-       
+
     }
 
     .form-fill-part {
@@ -101,6 +101,7 @@
     .left-form {
         padding: 0 0 0 0;
         gap: 0;
+        max-width: unset;
     }
 
     .border {
@@ -114,6 +115,8 @@
 
     .right-form {
         padding: 0 0 0 0;
+        gap: 0;
+        max-width: unset;
     }
 
     #priority-legend {
@@ -176,6 +179,10 @@
 }
 
 @media (max-width: 768px) {
+    .content {
+        padding: 0 0 0 0;
+    }
+
     .font-size-20 {
         font-size: 16px;
     }
@@ -191,7 +198,7 @@
     }
 
     .input-field-subtask {
-    font-size: 16px !important;
+        font-size: 16px !important;
     }
 
     .priority-button-container {
@@ -260,6 +267,10 @@
     .autofill-mobile-btn {
         margin-bottom: 8px;
         font-size: 16px !important;
+    }
+
+    .subtask-list::before {
+        margin-left: 8px !important;
     }
 }
 

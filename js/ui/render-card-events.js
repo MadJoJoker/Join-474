@@ -306,6 +306,13 @@ export async function registerTaskCardDetailOverlay(
               `.priority-btn[data-priority="${prio}"]`
             );
             if (prioBtn) mod.setPriority(prioBtn, prio);
+
+            mod.setButtonIconsMobile();
+
+            if (!window._hasSetButtonIconsMobileListener) {
+              window.addEventListener("resize", mod.setButtonIconsMobile);
+              window._hasSetButtonIconsMobileListener = true;
+            }
           });
           import("../events/dropdown-menu-auxiliary-function.js").then(
             async (mod) => {

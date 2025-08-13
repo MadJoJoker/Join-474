@@ -10,40 +10,87 @@
   position: relative;
   font-family: "Inter", Arial, sans-serif;
 }
+
 .content-overlay-task-edit {
   max-width: 450px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
 }
-#form-fill-part{
-  display: block;
+
+#form-fill-part {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  width: 100%;
+  margin-bottom: unset;
 }
-#border-add-task{
+
+#border-add-task {
   display: none;
 }
-#left-form-add-task{
-  padding:0;
-}
-#right-form-add-task{
-    padding:0;
-    max-height: 80%;
 
+#left-form-add-task {
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
 }
-#add-task-main{
+
+#right-form-add-task {
+  padding: 0;
+  max-height: 80%;
+  width: 100%;
+  max-width: 100%;
+}
+
+#add-task-main {
   padding: 5px;
 }
-#form-buttons-part-add-task{
-  position: relative;
-    bottom: 2%;
 
-
-
+#form-buttons-part-add-task {
+  position: static;
+  bottom: 2%;
 }
-#sign-info-desktop{
+
+#sign-info-desktop {
   display: none;
 }
+
+#add-task-autofill-btn{
+  display: none;
+}
+
+#buttons-area-add-task{
+  width: 100%;
+}
+
+#submit-button{
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  #urgent-btn {
+    width: 88px;
+    font-size: 16px;
+    gap: 4px;
+    padding: 16px 0px;
+  }
+
+  #medium-btn {
+    width: 88px;
+    font-size: 16px;
+    gap: 4px;
+    padding: 16px 0px;
+  }
+
+  #low-btn {
+    width: 88px;
+    font-size: 16px;
+    gap: 4px;
+    padding: 16px 0px;
+  }
+}
+
 @media (max-width: 600px) {
   #modal-content-task-detail-edit {
     padding: 16px 4px 12px 4px;
@@ -51,7 +98,22 @@
     border-radius: 12px;
     margin: 15px;
   }
+
   .titleText {
     font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 350px) {
+  #urgent-btn {
+    width: 60px;
+  }
+
+  #medium-btn {
+    width: 60px;
+  }
+
+  #low-btn {
+    width: 60px;
   }
 }
