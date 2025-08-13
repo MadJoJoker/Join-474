@@ -149,6 +149,10 @@ a {
     display: none;
 }
 
+.dropdown-help {
+    display: none;
+}
+
 /*
  * Responsive Styles for Screens up to 1024px Wide
  * Adjustments for header layout, element visibility, and dropdown positioning on larger tablets.
@@ -189,6 +193,10 @@ a {
         height: 40px;
         width: auto;
     }
+
+    .dropdown-help {
+    display: block;
+}
 }
 
 /*
