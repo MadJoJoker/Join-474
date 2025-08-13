@@ -1,4 +1,5 @@
 // DEMO MODE FUNCTIONS
+// desactivated except for: directLogin();
 /**
  * demo function for "handleLogin". If inputs are empty, call autofill and add demo-user's data to "fetchedData".
  * @param {string} mail - string from email input

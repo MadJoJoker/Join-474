@@ -67,7 +67,7 @@ function validateNamePattern(name) {
   const nameRegex = /^\p{L}{2,}(?:[- ]\p{L}{2,})+$/u
   const valid = nameRegex.test(name);
   if(!valid) {
-    blameInvalidInput('no-name', 'new-name', 'Enter complete first and last name');
+    blameInvalidInput('no-name', 'new-name', 'First and last name required');
     return false;
   }
   return true;
@@ -95,10 +95,9 @@ function validateEmailPattern(email) {
 function passwordLength() {
   const pw = document.getElementById('password-first').value;
   if (pw.length < 8) {
-    blameInvalidInput('alert', 'password-first', 'Minimal Password length: 8 signs.');
+    blameInvalidInput('alert-pw1', 'password-first', 'Minimal length: 8 signs.');
     return false;
   }
-  document.getElementById('alert').innerText ="Your passwords don't match. Please try again.";
   validateRegistrationPasswords();
   return validateRegistrationPasswords();
 }
@@ -109,13 +108,13 @@ function passwordLength() {
  * @returns boolean
  */
 function validateRegistrationPasswords() {
-  document.getElementById('alert').innerText ="Your passwords don't match. Please try again.";
+  document.getElementById('alert-pw2').innerText ="Your passwords don't match. Please try again.";
   const pw1 = document.getElementById('password-first').value;
   const pw2 = document.getElementById('password-second').value;
   const valid = pw1 != "" && pw1 == pw2;
   const containersHtml = document.querySelectorAll('.password-frame');
   containersHtml.forEach(container => {
-    validateAndMark(container, valid, 'alert');
+    validateAndMark(container, valid, 'alert-pw2');
   });
   return valid;
 }

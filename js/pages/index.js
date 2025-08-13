@@ -1,4 +1,9 @@
 /**
+ * clear sessionStorage
+ */
+sessionStorage.clear();
+
+/**
  * 2nd onload-function: handles start animation, remove overlay when finished.
  * prevents false positioning when page is reloaded
  */
@@ -20,7 +25,7 @@ function handleLogin(){
   clearRedAlerts();
   const userEmail = document.getElementById('login-email').value.trim();
   const userPw = document.getElementById('login-password').value.trim();
-  simulateUser(userEmail, userPw);
+  // simulateUser(userEmail, userPw);
   if (!userEmail) return blameEmptyInput('login-email', 'alert-login');
   if (!userPw) return blameEmptyInput('login-password', 'alert');
   validateLogin(userEmail, userPw);
