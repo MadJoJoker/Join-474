@@ -58,9 +58,13 @@ function filterAndDisplayTaskCards(allTaskCards, loadedData, searchTerm) {
   allTaskCards.forEach((cardElement) => {
     const taskId = cardElement.id;
     const taskData = loadedData.tasks[taskId];
-    if (taskData && taskData.title) {
-      const taskTitle = taskData.title.toLowerCase();
-      if (taskTitle.includes(searchTerm)) {
+    if (taskData && (taskData.title || taskData.description)) {
+      const taskTitle = (taskData.title || "").toLowerCase();
+      const taskDescription = (taskData.description || "").toLowerCase();
+      if (
+        taskTitle.includes(searchTerm) ||
+        taskDescription.includes(searchTerm)
+      ) {
         cardElement.style.display = "";
         found++;
       } else {
