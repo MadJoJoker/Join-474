@@ -54,8 +54,11 @@
     height: auto;
   }
 
+  .contacts-main {
+    padding-bottom: 64px; 
+  }
+
   .sidebar-container {
-    position: fixed;
     top: auto;
     bottom: 0;
     left: 0;
@@ -158,24 +161,21 @@
 
 @media (max-width: 768px) {
   /* Firefox */
-  /* .scrollable:not(.contacts-sidebar) {
+  .scrollable:not(.contacts-sidebar) {
     scrollbar-width: none; 
-  } */
+  }
 
 /* Chrome, Safari */
-  /* .scrollable:not(.contacts-sidebar)::-webkit-scrollbar {
+  .scrollable:not(.contacts-sidebar)::-webkit-scrollbar {
     display: none; 
-  } */
+  }
 
-
-  .scrollable {
-    /* Firefox */
+  /* .scrollable {
     overflow-y: scroll;
     scrollbar-width: none;
   }
   
   .scrollable::-webkit-scrollbar {
-    /* Chrome, Safari */ 
     display: none;
-  }
+  } */
 }
