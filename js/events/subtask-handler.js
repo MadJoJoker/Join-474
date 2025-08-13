@@ -22,6 +22,17 @@ export function initSubtaskManagementLogic(container = document) {
   }
   if (subtasksList) {
     subtasksList.onclick = handleSubtaskListClick;
+    subtasksList.addEventListener("click", function (e) {
+      if (e.target.classList.contains("subtask-text")) {
+        const listItem = e.target.closest(".subtask-list");
+        if (!listItem) return;
+        const index = parseInt(listItem.dataset.index);
+        if (typeof addedSubtasks[index] !== "undefined") {
+          addedSubtasks[index].completed = !addedSubtasks[index].completed;
+          renderSubtasks();
+        }
+      }
+    });
   }
 
   renderSubtasks();
