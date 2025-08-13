@@ -1,11 +1,19 @@
-@media (max-width:1150px) {
+@media (max-width: 1150px) {
   #board-content-wrapper {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     justify-items: center;
   }
 }
+@media (max-width: 1025px) {
+  .dropdown-menu-board-site-btn {
+    display: flex;
+  }
+}
 @media (max-width: 992px) {
+  .dropdown-menu-board-site-btn {
+    display: flex;
+  }
 
   .form-fill-part {
     flex-direction: column;
@@ -39,9 +47,6 @@
   }
 }
 @media (max-width: 768px) {
-  .dropdown-menu-board-site-btn {
-    display: flex;
-  }
   #board-content-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -53,6 +58,8 @@
 }
 
 @media (max-width: 600px) {
+
+
   .no-tasks-placeholder {
     min-width: 70%;
   }
@@ -71,7 +78,6 @@
   }
   .column-wrapper {
     min-width: 70%;
-    align-items: center !important;
   }
   .frame-192 {
     flex-direction: column;
@@ -117,206 +123,206 @@
   }
 }
 @media (min-width: 1921px) {
-    .form-buttons-part {
-        position: relative;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
+  .form-buttons-part {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 }
 
 @media (max-width: 1140px) {
-    .priority-btn {
-        gap: 4px;
-        padding: 16px 6px;
-    }
+  .priority-btn {
+    gap: 4px;
+    padding: 16px 6px;
+  }
 
-    .priority-button-container {
-        gap: unset;
-        justify-content: space-between;
-    }
+  .priority-button-container {
+    gap: unset;
+    justify-content: space-between;
+  }
 
-    #assigned-to-options-container {
-        font-size: 16px;
-    }
+  #assigned-to-options-container {
+    font-size: 16px;
+  }
 
-    .contact-option {
-        padding: 7px 14px;
-    }
+  .contact-option {
+    padding: 7px 14px;
+  }
 }
 
 @media (max-width: 1024px) {
-    .content-container {
-        height: calc(100vh - 176px);
-        flex-direction: column;
-    }
+  .content-container {
+    height: calc(100vh - 176px);
+    flex-direction: column;
+  }
 
-    .content {
-        padding: 0 40px 0 40px;
-    }
+  .content {
+    padding: 0 40px 0 40px;
+  }
 
-    .priority-btn {
-        gap: 8px;
-        padding: 16px 10px;
-    }
+  .priority-btn {
+    gap: 8px;
+    padding: 16px 10px;
+  }
 
-    #assigned-to-options-container {
-        font-size: 20px;
-    }
+  #assigned-to-options-container {
+    font-size: 20px;
+  }
 
-    .contact-option {
-        padding: 7px 21px;
-    }
+  .contact-option {
+    padding: 7px 21px;
+  }
 
-    .content h1 {
-        position: fixed;
-        top: 122px;
-        left: 40px;
-    }
+  .content h1 {
+    position: fixed;
+    top: 122px;
+    left: 40px;
+  }
 
-    .form-fill-part {
-        flex-direction: column;
-    }
+  .form-fill-part {
+    flex-direction: column;
+  }
 
-    .left-form {
-        padding: 0 0 0 0;
-    }
+  .left-form {
+    padding: 0 0 0 0;
+  }
 
-    .border {
-        display: none;
-    }
+  .border {
+    display: none;
+  }
 
-    .form {
-        padding-top: 0;
-    }
+  .form {
+    padding-top: 0;
+  }
 
-    .right-form {
-        padding: 0 0 0 0;
-    }
+  .right-form {
+    padding: 0 0 0 0;
+  }
 
-    #priority-legend {
-        padding: 10px 0;
-    }
+  #priority-legend {
+    padding: 10px 0;
+  }
 
-    .priority-button-container {
-        gap: 16px;
-        justify-content: unset;
-    }
+  .priority-button-container {
+    gap: 16px;
+    justify-content: unset;
+  }
 
-    .form-buttons-part {
-        position: fixed;
-        bottom: 96px;
-        left: 40px;
-        right: 40px;
-    }
+  .form-buttons-part {
+    position: fixed;
+    bottom: 96px;
+    left: 40px;
+    right: 40px;
+  }
 
-    .responsive-div {
-        height: 96px;
-        width: 100%;
-        background-color: var(--lightGrey);
-    }
+  .responsive-div {
+    height: 96px;
+    width: 100%;
+    background-color: var(--lightGrey);
+  }
 
-    #responsive-div-one {
-        height: 114px;
-    }
+  #responsive-div-one {
+    height: 114px;
+  }
 
-    .priority-btn {
-        height: 41px;
-        padding: 10px 16px;
-    }
+  .priority-btn {
+    height: 41px;
+    padding: 10px 16px;
+  }
 
-    #taskSuccessMsg {
-        bottom: 50%;
-        left: 50%;
-    }
+  #taskSuccessMsg {
+    bottom: 50%;
+    left: 50%;
+  }
 }
 
 @media (max-width: 768px) {
-    .content {
-        padding: 0 16px 0 16px;
-    }
+  .content {
+    padding: 0 16px 0 16px;
+  }
 
-    .content h1 {
-        top: 102px;
-        left: 16px;
-        font-size: 47px;
-    }
+  .content h1 {
+    top: 102px;
+    left: 16px;
+    font-size: 47px;
+  }
 
-    .responsive-div {
-        height: 88px;
-    }
+  .responsive-div {
+    height: 88px;
+  }
 
-    #responsive-div-one {
-        height: 88px;
-    }
+  #responsive-div-one {
+    height: 88px;
+  }
 
-    .font-size-20 {
-        font-size: 16px;
-    }
+  .font-size-20 {
+    font-size: 16px;
+  }
 
-    .input-field {
-        height: 40px;
-        font-size: 16px;
-    }
+  .input-field {
+    height: 40px;
+    font-size: 16px;
+  }
 
-    .task-description-area {
-        height: 88px;
-        font-size: 16px;
-    }
+  .task-description-area {
+    height: 88px;
+    font-size: 16px;
+  }
 
-    .priority-button-container {
-        justify-content: space-between;
-    }
+  .priority-button-container {
+    justify-content: space-between;
+  }
 
-    .priority-btn {
-        font-size: 16px;
-    }
+  .priority-btn {
+    font-size: 16px;
+  }
 
-    .contact-input {
-        font-size: 16px;
-    }
+  .contact-input {
+    font-size: 16px;
+  }
 
-    .input-field-subtask {
-        font-size: 16px;
-    }
+  .input-field-subtask {
+    font-size: 16px;
+  }
 
-    #assigned-to-options-container {
-        font-size: 16px;
-    }
+  #assigned-to-options-container {
+    font-size: 16px;
+  }
 
-    #category-options-container {
-        font-size: 16px;
-    }
+  #category-options-container {
+    font-size: 16px;
+  }
 
-    .select-wrapper {
-        height: 48px !important;
-    }
+  .select-wrapper {
+    height: 48px !important;
+  }
 
-    .form-buttons-part {
-        left: 16px;
-        right: 16px;
-        justify-content: flex-end;
-    }
+  .form-buttons-part {
+    left: 16px;
+    right: 16px;
+    justify-content: flex-end;
+  }
 
-    #title-error {
-        top: 66px;
-    }
+  #title-error {
+    top: 66px;
+  }
 
-    #due-date-error {
-        top: 66px;
-    }
+  #due-date-error {
+    top: 66px;
+  }
 
-    #taskSuccessMsg {
-        width: 80%;
-    }
+  #taskSuccessMsg {
+    width: 80%;
+  }
 }
 
 @media (max-width: 380px) {
-    .priority-button-container {
-        gap: 0px;
-    }
+  .priority-button-container {
+    gap: 0px;
+  }
 
-    .priority-btn {
-        padding: 10px 10px;
-    }
+  .priority-btn {
+    padding: 10px 10px;
+  }
 }
