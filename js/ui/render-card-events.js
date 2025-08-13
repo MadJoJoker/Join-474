@@ -11,7 +11,7 @@ import {
   setAssignedContactsFromTaskForCard,
 } from "../events/dropdown-menu-auxiliary-function.js";
 import { CWDATA } from "../data/task-to-firbase.js";
-import { editedTaskData } from "./render-card.js";
+import { editedTaskData, calculateSubtaskProgress } from "./render-card.js";
 import { addedSubtasks } from "../events/subtask-handler.js";
 import { extractSubtasksFromTask } from "../utils/subtask-utils.js";
 import { extractTaskFormData } from "../utils/form-utils.js";
@@ -66,7 +66,7 @@ export async function registerTaskCardDetailOverlay(
     const dropdownMenu = card.querySelector(".dropdown-menu-board-site");
     if (dropdownBtn && dropdownMenu) {
       dropdownBtn.addEventListener("click", function (e) {
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 1025) {
           e.stopPropagation();
           dropdownMenu.classList.toggle("show");
           document
@@ -178,6 +178,12 @@ export async function registerTaskCardDetailOverlay(
                 console.debug("[DEBUG] Delegation: CWDATA aufgerufen mit:", {
                   [taskId]: task,
                 });
+                const progress = calculateSubtaskProgress(task);
+                const progressBar =
+                  container.querySelector(".progress-bar-fill");
+                if (progressBar) {
+                  progressBar.style.width = `${progress.percent}%`;
+                }
               } else {
                 console.warn(
                   `[DEBUG] Delegation: Task oder checkedSubtasks nicht gefunden!`
@@ -300,6 +306,13 @@ export async function registerTaskCardDetailOverlay(
               `.priority-btn[data-priority="${prio}"]`
             );
             if (prioBtn) mod.setPriority(prioBtn, prio);
+
+            mod.setButtonIconsMobile();
+
+            if (!window._hasSetButtonIconsMobileListener) {
+              window.addEventListener("resize", mod.setButtonIconsMobile);
+              window._hasSetButtonIconsMobileListener = true;
+            }
           });
           import("../events/dropdown-menu-auxiliary-function.js").then(
             async (mod) => {

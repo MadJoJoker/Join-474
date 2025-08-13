@@ -1,6 +1,6 @@
 .input-field-subtask {
     height: 48px;
-    padding: 0 21px 0 21px;
+    padding: 0 80px 0 21px;
     border: 1px solid var(--borderGrey);
     border-radius: 10px;
     font-size: 20px;
@@ -73,7 +73,6 @@
     font-size: 16px;
     display: flex;
     align-items: center;
-    padding-right: 20px;
     padding-left: 0;
     list-style-type: none;
 }
@@ -98,7 +97,7 @@
 .subtask-list .subtask-item-content {
     display: flex;
     align-items: center;
-    width: 100%;
+    width: 90%;
     height: 100%;
     justify-content: space-between;
 }
@@ -109,6 +108,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    max-width: 90%;
 }
 
 .subtask-list .subtask-actions {

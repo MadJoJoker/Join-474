@@ -23,7 +23,7 @@
     .priority-button-container>*:last-child {
         margin-right: 0;
     }
-    
+
     .priority-btn {
         width: 104px;
         font-size: 16px;
@@ -46,6 +46,7 @@
     .priority-btn {
         padding: 16px 4px;
         gap: 4px;
+        width: 92px;
     }
 }
 
@@ -83,6 +84,7 @@
     }
 
     .left-form {
+        max-width: unset;
         padding: 0 0 0 0;
     }
 
@@ -95,6 +97,7 @@
     }
 
     .right-form {
+        max-width: unset;
         padding: 0 0 0 0;
     }
 

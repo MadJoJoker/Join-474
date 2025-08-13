@@ -42,6 +42,7 @@
   padding: 0 48px 48px 0;
   gap: 8px;
   width: 100%;
+  max-width: 50%;
 }
 
 .label-container {
@@ -89,6 +90,7 @@
   flex-direction: column;
   padding: 0 0 48px 48px;
   width: 100%;
+  max-width: 50%;
 }
 
 .input-field {

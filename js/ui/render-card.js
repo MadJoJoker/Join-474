@@ -64,14 +64,13 @@ function getCategoryClass(type) {
  * @param {object} task - The task object.
  * @returns {{done: number, total: number, percent: number, subText: string}} The progress of the subtasks.
  */
-function calculateSubtaskProgress(task) {
+export function calculateSubtaskProgress(task) {
   /**
    * Calculates the progress of subtasks for a task.
    * @param {object} task - The task object.
    * @returns {{done: number, total: number, percent: number, subText: string}} The progress of the subtasks.
    */
   let subtasksArray = [];
-  // ...existing code...
   if (Array.isArray(task.subtasks) && task.subtasks.length > 0) {
     subtasksArray = task.subtasks;
   } else if (
@@ -200,18 +199,10 @@ function buildTaskCardHtmlContent(
   <div id="dropdown-menu-board-site" class="dropdown-menu-board-site">
                 <h3 class="dorpdown-headline">Move to</h3>
                 <div class="d-flex justify-content flex-direction">
-    <a href="#" class="move-task-up" data-task-id="${taskID}">↑ Up</a>
-    <a href="#" class="move-task-down" data-task-id="${taskID}">↓ Down</a>
-  function buildTaskCardHtmlContent(
-    /**
-     * Builds the HTML content for a task card.
-     * @param {string} taskID - The ID of the task.
-     * @param {object} taskDetails - The task details.
-     * @param {object} subtaskProgress - The subtask progress.
-     * @param {string} avatarsHtml - The avatars of the assigned users.
-     * @param {object} priorityInfo - Priority information.
-     * @returns {string} The HTML string of the task card.
-     */
+  <a href="#" class="move-task-up" data-task-id="${taskID}">↑ Up</a>
+  <a href="#" class="move-task-down" data-task-id="${taskID}">↓ Down</a>
+      <a href="/index.html">Home <img src="../assets/icons/logo/joinLogo.svg" alt="joinLogo" width="20" height="15"></a>
+
 </div>
   </div>
 </div></div>

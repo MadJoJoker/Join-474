@@ -155,35 +155,30 @@ function attachEscapeKeyListener(overlay, overlayId) {
  * Closes any existing overlay first, then sets the new overlay as current.
  * @param {string} overlayId - The ID of the overlay to open.
  */
-export function openSpecificOverlay(overlayId) {
-  closeExistingOverlay(overlayId);
-  const overlay = getValidatedElementById(overlayId);
-  if (!overlay) return;
-  // Dynamically load the appropriate CSS for the overlay
-  if (overlayId === "overlay-task-detail-edit") {
-    ensureOverlayCSS("../styles/overlay-task-detail-edit.css");
-  } else if (overlayId === "overlay-task-detail") {
-    ensureOverlayCSS("../styles/overlay-task-details.css");
-  }
-  setOverlayVisibility(overlay, true);
-  manageBodyScroll(true);
-  updateCurrentOverlay(overlay);
-}
+// ...existing code...
 
 /** Ensures that the overlay CSS is included in the <head>.
  * @param {string} href - The path to the CSS file (relative to the main HTML document)
  */
 function ensureOverlayCSS(href) {
-  if (
-    ![...document.head.querySelectorAll('link[rel="stylesheet"]')].some((l) =>
-      l.href.includes(href)
-    )
-  ) {
+  return new Promise((resolve) => {
+    const existing = [
+      ...document.head.querySelectorAll('link[rel="stylesheet"]'),
+    ].find((l) => l.href.includes(href));
+    if (existing) {
+      if (existing.sheet) {
+        resolve();
+      } else {
+        existing.addEventListener("load", resolve);
+      }
+      return;
+    }
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = href;
+    link.onload = resolve;
     document.head.appendChild(link);
-  }
+  });
 }
 
 /** Closes a specific overlay by its ID.
@@ -193,20 +188,34 @@ function ensureOverlayCSS(href) {
 /** Removes the overlay CSS from the <head>.
  * @param {string} href - The path to the CSS file (relative to the main HTML document)
  */
+export async function openSpecificOverlay(overlayId) {
+  closeExistingOverlay(overlayId);
+  const overlay = getValidatedElementById(overlayId);
+  if (!overlay) return;
+  // Dynamically load the appropriate CSS for the overlay
+  if (overlayId === "overlay-task-detail-edit") {
+    await ensureOverlayCSS("../styles/overlay-task-detail-edit.css");
+  } else if (overlayId === "overlay-task-detail") {
+    await ensureOverlayCSS("../styles/overlay-task-details.css");
+  }
+  setOverlayVisibility(overlay, true);
+  manageBodyScroll(true);
+  updateCurrentOverlay(overlay);
+}
 export function closeSpecificOverlay(overlayId) {
   const overlay = getValidatedElementById(overlayId);
   if (!overlay) return;
   setOverlayVisibility(overlay, false);
   manageBodyScroll(false);
   clearCurrentOverlay(overlayId);
-
   if (overlayId === "overlay-task-detail-edit") {
     removeOverlayCSS("../styles/overlay-task-detail-edit.css");
+    window.location.reload();
   } else if (overlayId === "overlay-task-detail") {
     removeOverlayCSS("../styles/overlay-task-details.css");
+    window.location.reload();
   }
 }
-
 function removeOverlayCSS(href) {
   const links = [...document.head.querySelectorAll('link[rel="stylesheet"]')];
   for (const link of links) {

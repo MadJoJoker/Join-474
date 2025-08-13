@@ -1,4 +1,3 @@
-/* Kein Hover-Effekt und kein Pointer für .contact-option.assigned im Task-Details-Overlay */
 #overlay-task-detail .contact-option.assigned,
 #overlay-task-detail-edit .contact-option.assigned {
   cursor: default !important;
@@ -9,12 +8,10 @@
 #overlay-task-detail-edit .contact-option.assigned:hover {
   background-color: var(--white);
 }
-/* Kontakt-Option assigned: Overlay-Optik wie Add-Task-Standalone */
 #overlay-task-detail-edit .contact-option.assigned {
   background-color: var(--dark) !important;
   color: var(--white) !important;
 }
-/* Checkbox-Icon in allen Overlays immer sichtbar machen (maximale Spezifität, ganz am Ende) */
 html body #overlay-task-detail .checkbox-icon.checked,
 html body #overlay-task-detail-edit .checkbox-icon.checked {
   opacity: 1 !important;
@@ -24,7 +21,6 @@ html body #overlay-task-detail-edit .checkbox-icon.checked {
   position: static !important;
 }
 
-/* Checkbox-Icon im Edit-Overlay immer sichtbar machen (maximale Spezifität, ganz am Ende) */
 html body #overlay-task-detail-edit .checkbox-icon.checked {
   opacity: 1 !important;
   visibility: visible !important;
@@ -199,9 +195,6 @@ html body #overlay-task-detail-edit .checkbox-icon.checked {
   font-size: 16px;
 }
 
-.assigned {
-  margin-bottom: 6px;
-}
 .assigned-list {
   display: flex;
   flex-wrap: wrap;
@@ -272,7 +265,6 @@ html body #overlay-task-detail-edit .checkbox-icon.checked {
   overflow-y: auto;
   scrollbar-width: none;
 
-  /* Hide scrollbars for modal-content overlays (Chrome, Safari, Opera) */
   .modal-content-task::-webkit-scrollbar,
   .modal-content::-webkit-scrollbar {
     display: none;
@@ -324,7 +316,7 @@ html body #overlay-task-detail-edit .checkbox-icon.checked {
   border-radius: clamp(12px, 2vw, 30px);
   background-color: var(--white);
   overflow: hidden;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 
 .content-overlay-task {
@@ -340,7 +332,6 @@ html body #overlay-task-detail-edit .checkbox-icon.checked {
   scrollbar-width: none;
 }
 
-/* Hide scrollbars for overlays (Chrome, Safari, Opera) */
 .content-overlay::-webkit-scrollbar,
 .content-overlay-task::-webkit-scrollbar {
   display: none;

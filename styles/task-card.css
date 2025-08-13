@@ -73,7 +73,7 @@
   margin-left: clamp(3px, 0.5vw, 7px);
 }
 .task-card {
-  padding: 5px;
+  padding: 8px;
   background-color: #fff;
   border-radius: 16px;
   margin-bottom: clamp(8px, 2vw, 15px);
@@ -83,7 +83,6 @@
   flex-direction: column;
   justify-content: space-between;
   min-width: clamp(100px, 15vw, 150px);
-  max-width: clamp(100px, 15vw, 200px);
 }
 
 .task-card:hover {
@@ -173,7 +172,7 @@
   transition: opacity 0.2s;
 }
 
-.task-card:hover .subtasks-text {
+.task-card .subtasks-text {
   opacity: 1;
 }
 
@@ -260,7 +259,9 @@
   cursor: grabbing;
   animation: tiltRight 0.3s forwards ease-in;
 }
-
+.task-column {
+  min-height: 50vh;
+}
 .task-column.drag-over {
   border: 3px dashed var(--darkBlue);
   border-radius: 30px;
@@ -277,4 +278,10 @@
 .category-meeting {
   background-color: #ffc107;
   color: #333;
+}
+@media (max-width: 600px) {
+
+.task-column {
+  min-height: 25vh;
+}
 }
