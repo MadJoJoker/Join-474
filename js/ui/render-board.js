@@ -139,6 +139,8 @@ function renderTasksByColumn(boardData) {
   if (!validateRenderBoardData(boardData)) return;
 
   tasksData = boardData.tasks;
+  window.allData = boardData;
+
   const groupedTasks = groupTasksByColumn(tasksData);
   sortGroupedTasks(groupedTasks);
 
@@ -195,8 +197,7 @@ function updateLocalTaskColumn(taskId, firebaseColumnId) {
  * @param {string} firebaseColumnId - The new Firebase column ID.
  * @returns {Promise<void>} Resolves when the update is complete.
  */
-async function triggerFirebaseUpdate(taskId, firebaseColumnId) {
-}
+async function triggerFirebaseUpdate(taskId, firebaseColumnId) {}
 
 /**
  * Updates the task's column data and triggers updates.

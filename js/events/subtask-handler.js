@@ -89,7 +89,6 @@ export function renderSubtasks() {
   if (!subtasksList) return;
 
   subtasksList.innerHTML = "";
-  // Sortiere: offene zuerst, abgehakte darunter
   const sortedSubtasks = [...addedSubtasks].sort((a, b) => {
     if (a.completed === b.completed) return 0;
     return a.completed ? 1 : -1;
