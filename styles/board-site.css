@@ -159,6 +159,8 @@ body {
 
 .menu-color {
   color: var(--darkBlue);
+  font-size: 24px;
+  font-weight: 700;
 }
 
 #content-board {
@@ -233,8 +235,6 @@ body {
   display: flex;
 }
 
-/* --- Drag-and-Drop Visualisierung --- */
-
 #board-content-wrapper {
   height: calc(80vh - 150px);
   width: 100%;
@@ -249,6 +249,29 @@ body {
   flex-grow: 1;
   align-items: flex-start;
   max-width: 1440px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dark) var(--lightBlue) ;
+}
+
+#board-content-wrapper::-webkit-scrollbar {
+  width: 12px;
+  background: var(--dark);
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+#board-content-wrapper::-webkit-scrollbar-thumb {
+  background: var(--dark);
+  border-radius: 6px;
+}
+
+#board-content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--darkHover);
+}
+
+#board-content-wrapper.hide-scrollbar::-webkit-scrollbar {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .column-wrapper {

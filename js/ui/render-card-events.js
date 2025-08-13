@@ -66,7 +66,7 @@ export async function registerTaskCardDetailOverlay(
     const dropdownMenu = card.querySelector(".dropdown-menu-board-site");
     if (dropdownBtn && dropdownMenu) {
       dropdownBtn.addEventListener("click", function (e) {
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 1025) {
           e.stopPropagation();
           dropdownMenu.classList.toggle("show");
           document
