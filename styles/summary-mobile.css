@@ -93,6 +93,8 @@
   .container.smr-margin {
     padding: 46px 0!important;
     justify-content: center;
+
+    overflow-y: hidden;
   }
 
   .summary-wrapper {
@@ -209,6 +211,11 @@
     .date-text {
       font-size: calc(18px + (100vw - 480px) * 0.01042);
     }
+  }
+
+  .hello-user {
+    justify-content: flex-start;
+    padding-top: 45vh;
   }
 }
 
