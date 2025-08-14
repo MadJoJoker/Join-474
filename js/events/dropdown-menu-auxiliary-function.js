@@ -220,6 +220,17 @@ export function setCategoryFromTaskForCard(categoryName) {
   fakeOptionElement.textContent = categoryName;
   fakeOptionElement.dataset.category = categoryName;
   setCategory(fakeOptionElement);
+  rotateCategoryDropdownIcon()
+}
+
+/** Rotates the category dropdown icon when the dropdown is opened or closed.
+ */
+function rotateCategoryDropdownIcon() {
+  const dropdownIconTwo = document.getElementById("dropdown-icon-two");
+
+  if (dropdownIconTwo) {
+    dropdownIconTwo.classList.toggle("open");
+  }
 }
 
 /** Sets the assigned contacts based on the task object for the card/edit overlay.
