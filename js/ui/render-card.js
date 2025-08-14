@@ -201,7 +201,7 @@ function buildTaskCardHtmlContent(
                 <div class="d-flex justify-content flex-direction">
   <a href="#" class="move-task-up" data-task-id="${taskID}">↑ Up</a>
   <a href="#" class="move-task-down" data-task-id="${taskID}">↓ Down</a>
-      <a href="../index.html">Home <img src="./assets/icons/logo/joinLogo.svg" alt="joinLogo" width="20" height="15"></a>
+      <a href="../index.html">Home <img src="../assets/icons/logo/joinLogo.svg" alt="joinLogo" width="20" height="15"></a>
 
 </div>
   </div>
