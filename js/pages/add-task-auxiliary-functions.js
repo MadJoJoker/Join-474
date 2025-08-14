@@ -13,7 +13,8 @@ import {
 } from "../events/priorety-handler.js";
 import {
     filterContacts,
-    toggleCategoryDropdown
+    toggleCategoryDropdown,
+    toggleAssignedToDropdown
 } from "../events/dropdown-menu.js";
 import {
     addSubtask,
