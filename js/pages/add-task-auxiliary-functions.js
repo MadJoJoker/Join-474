@@ -12,7 +12,8 @@ import {
     setButtonIconsMobile
 } from "../events/priorety-handler.js";
 import {
-    filterContacts
+    filterContacts,
+    toggleCategoryDropdown
 } from "../events/dropdown-menu.js";
 import {
     addSubtask,
@@ -76,6 +77,7 @@ export function initInputFieldListeners() {
     initDatePickerListeners();
     initCalendarIconListener();
     initAutoFillListeners();
+    initOpenCategoryOnFocusWithEnter();
 }
 
 /** * Initializes the title input field listener.
@@ -139,6 +141,22 @@ function initAutoFillListeners() {
         autofillBtn.addEventListener("click", autofillForms);
     }
 }
+
+/** * Initializes listeners for the category dropdown.
+ * It adds a focus event listener to the category input field to open the dropdown.
+ */
+function initOpenCategoryOnFocusWithEnter() {
+    const categoryInput = document.getElementById("dropdown-category");
+    if (!categoryInput) return;
+
+    categoryInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            toggleCategoryDropdown();
+        }
+    });
+}
+
 
 /** * Initializes listeners for the assigned to dropdown.
  * It adds an input event listener to the contact input field to filter contacts based on the input value.
