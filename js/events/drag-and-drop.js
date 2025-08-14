@@ -45,13 +45,10 @@ function dragEnd(event) {
     column.classList.remove("drag-over");
   });
   const taskId = event.target.id;
-  console.debug("[dragEnd] taskId:", taskId);
   const allData = window.allData;
   if (allData && allData.tasks && allData.tasks[taskId]) {
     const task = allData.tasks[taskId];
-    console.debug("[dragEnd] Original Task:", JSON.parse(JSON.stringify(task)));
     const newColumn = event.target.closest(".task-column");
-    console.debug("[dragEnd] newColumn:", newColumn);
     const updatedTaskObj = {
       assignedUsers: task.assignedUsers,
       boardID: task.boardID || "board-1",
@@ -67,21 +64,8 @@ function dragEnd(event) {
       type: task.type,
       updatedAt: task.updatedAt,
     };
-    console.debug(
-      "[dragEnd] updatedTaskObj:",
-      JSON.parse(JSON.stringify(updatedTaskObj))
-    );
     CWDATA({ [taskId]: updatedTaskObj }, allData);
-    console.debug(
-      "[dragEnd] CWDATA called with:",
-      { [taskId]: updatedTaskObj },
-      allData
-    );
   } else {
-    console.warn(
-      "[dragEnd] Task-Objekt nicht gefunden oder allData/tasks leer!",
-      { allData, taskId }
-    );
   }
 }
 
