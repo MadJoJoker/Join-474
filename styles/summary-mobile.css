@@ -6,6 +6,10 @@
     justify-content: center;
   }
 
+  .smr-margin {
+    padding: calc(46px + (100vw - 768px) * 0.08708) 0!important;
+  }
+
   .smry-body {
     display: flex;
     flex-direction: column-reverse;
@@ -29,14 +33,13 @@
 
 @media (max-width: 1024px) {
   .container.smr-margin {
-    padding: 108px calc(60px + (100vw - 768px) * 0.45703)!important;
+    overflow-x: hidden;
   }
 }
 
 @media (max-height: 1020px) {
   .smr-margin {
     height: fit-content!important;
-    padding-top: 108px!important;
   }
 }
 
@@ -66,7 +69,6 @@
     > p:last-of-type {
       font-size: calc(38.0px + (100vw - 320.0px) * 0.02232);
     }
-
   }
 
   @keyframes showBackground {
@@ -93,9 +95,9 @@
     justify-content: center;
   }
 
-    .summary-wrapper {
+  .summary-wrapper {
     width: auto;
-    }
+  }
 
   .smry-title {
     display: flex;

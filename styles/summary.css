@@ -9,23 +9,23 @@ body {
   background-color: var(--lightGrey);
 }
 
-.smr-margin {
-  width: auto;
-  height: calc(100vh - 96px);
-  justify-content: center;
-  align-items: center;
-  padding: 0!important;
+html {
+  scroll-padding-top: 96px;
+  scroll-padding-bottom: 80px;
 }
 
-@media (max-width: 1480px) {
-  .smr-margin {
-    padding-top: 108px;
-    padding-left: 96px;
-  }
+.smr-margin {
+  width: auto;
+  max-width: 1668px;
+  height: min(calc(100vh - 96px), 1700px);
+  justify-content: center;
+  align-items: center;
+  padding: 108px 96px;
+  overflow-x: hidden;
 }
 
 .summary-wrapper {
-  width: 1150px;
+  width: 1050px;
   height: 700px;
   display: flex;
   flex-direction: column;
@@ -294,5 +294,6 @@ body {
     font-size: 64px;
     letter-spacing: 1.3px;
     color: var(--lightBlue);
+    hyphens: auto;
   }
 }
