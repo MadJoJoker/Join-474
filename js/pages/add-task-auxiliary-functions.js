@@ -369,6 +369,8 @@ export function syncMaxWidth() {
     target.style.maxWidth = width + "px";
 }
 
+/** * Toggles the full assigned area visibility.
+ */
 function toggleAssignedAreaFull() {
     const areaThree = document.getElementById("assigned-to-area");
     const areaAll = document.getElementById("assigned-to-area-full");
@@ -387,6 +389,8 @@ function toggleAssignedAreaFull() {
     }
 }
 
+/** * Initializes the contact toggle listener for the assigned area.
+ */
 function initContactsToggleListener() {
     const area = document.getElementById('assigned-to-area');
     const areaFull = document.getElementById('assigned-to-area-full');
