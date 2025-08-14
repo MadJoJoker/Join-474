@@ -1,13 +1,8 @@
 /* mobile-css for index.html and signup.css */
-@media (min-width: 1920px) {
-  .frame-max-width {
-    margin-right: calc(100vw - 1920px);
-  }
-}
 
 @media (max-width: 1480px) {
   .legal-part {
-    margin-top: 162px;
+    margin-top: 96px;
   }
 }
 
@@ -113,7 +108,7 @@
 
   .dialogue-frame {
     margin-top: calc(144px + (100vw - 480px) * 0.20833);
-    margin-bottom: calc(55px + (100vw - 480px) * 0.07986);
+    margin-bottom: calc(55px + (100vw - 480px) * 0.05903);
     width: calc(444px + (100vw - 480px) * 0.54167);
     height: calc(476px + (100vw - 480px) * 0.055);
     padding: 32px 0;
@@ -192,10 +187,10 @@
   }
 
   .legal-part {
-    margin-top: 42px;
+    margin-top: 42px!important;
 
     &.lp-sgn {
-      margin-top: 0; 
+      margin-top: 0!important; 
     }
   }
 }

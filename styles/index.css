@@ -14,20 +14,25 @@ body {
 }
 
 .frame-max-width { 
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
+
+  /* border: 1px solid green; */
 }
 
 .content-wrapper-idx,
 .content-wrapper-sgn {
   height: 100vh;
   height: 100%;
-  padding: 80px 76px;
+  padding: 80px 76px 50px;
+  /* padding: 80px 64px; */
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+
+  /* border: 1px solid red; */
 }
 
 .content-wrapper-idx {
@@ -78,7 +83,6 @@ body {
     transform: translate(-50%, -50%) scale(3);
     z-index: 10;
   }
-
   100% {
     top: 80px;
     left: 76px;
@@ -310,11 +314,11 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 230px;
-  margin-top: 214px;
+  margin-top: 84px!important;
 
-  &.lp-sgn {
-    margin-top: 122px;
-  }
+  /* &.lp-sgn {
+    margin-top: 122px!important;
+  } */
 
   > a {
     padding: 8px 0;
