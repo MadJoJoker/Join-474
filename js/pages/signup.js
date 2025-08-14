@@ -1,61 +1,42 @@
 /**
- * onclick-function of "signup" button. check whether user is already registrated.
+ * onclick-function on "signup"-button
  */
-function checkUser() {
+function startValidation() {
   const nameToCheck = document.getElementById("new-name").value.trim();
   const emailToCheck = document.getElementById("new-email").value.trim();
-  const nameExists = doesValueExist(nameToCheck, 'displayName');
-  const emailExists = doesValueExist(emailToCheck, 'email');
-  if (nameExists && emailExists) {
-    blameInvalidInput('no-name', 'new-name', 'You already signed up');
-    goToPage("../index.html");
-  } else if (!nameToCheck && emailExists) {
-    blameEmptyInput("new-name", "no-name");
-  } else if (!nameExists && emailExists) {
-    blameInvalidInput('no-email', 'new-email', 'Email of registrated user');
-  } else {
-    handleEmptyInputs(nameToCheck, emailToCheck);
-  }
+  handleEmptyInputs(nameToCheck, emailToCheck);
 }
 
 /**
- * helper function for "checkUser"; checks whether name or email is already in database
- * @param {string} value - value from user input
- * @param {string} infoKey - checked key of user-informations
- * @returns boolean
+ * helper function for "startValidation"; if both input-fields are filled, pass to validation.
+ * @param {string} nameToCheck - value from user input
+ * @param {string} emailToCheck - value from user input
  */
-function doesValueExist(value, infoKey) {
-  return Object.keys(fetchedData).some(
-    key => fetchedData[key][infoKey].toLowerCase() == value.toLowerCase()
-  );
-}
-
-/**
- * helper function for "checkUser"; if both input-fields are filled, pass to validation.
- */
-function handleEmptyInputs() {
+function handleEmptyInputs(nameToCheck, emailToCheck) {
   const nameValid = blameEmptyInput("new-name", "no-name");
   const emailValid = blameEmptyInput("new-email", "no-email");
+  document.getElementById('no-email').innerText ="Please enter your email address";
   if (nameValid && emailValid) {
-    validateInputs();
+    validateInputs(nameToCheck, emailToCheck);
   }
 }
 
 /**
- * main function for signup-validation; progressive validation by calling helper functions.
+ * helper function for "handleEmptyInputs"; signup-validation:
+ * progressive validation by calling helper functions.
+ * @param {string} newName - value from user input
+ * @param {string} newEmail - value from user input
  */
-function validateInputs() {
-  const newName = document.getElementById("new-name").value.trim();
+function validateInputs(newName, newEmail) {
   if(!newName) return;
   const validName = validateNamePattern(newName);
   if(!validName) return;
-  const newEmail = document.getElementById("new-email").value.trim();
   if (!newEmail) return;
   const validEmail = validateEmailPattern(newEmail);
   if (!validEmail) return;
   const passwordsMatch = passwordLength();
   if (!passwordsMatch) return;
-  checkRequiredFields(validEmail);
+  checkUserData(newName, newEmail);
 }
 
 /**
@@ -103,7 +84,7 @@ function passwordLength() {
 }
 
 /**
- * helper function for "validateInputs"/"passwordLength". check whether passwords are identical.
+ * helper function for "passwordLength". check whether passwords are identical.
  * if not: show red alerts.
  * @returns boolean
  */
@@ -120,12 +101,44 @@ function validateRegistrationPasswords() {
 }
 
 /**
- * helper function for "validateInputs". if form is filled, check "Policy"-checkbox
- * @param {*} validEmail 
+ * helper function for "validateInputs"; when form is correctly filled,
+ * check whether user is already registrated.
+ * @param {string} nameToCheck - check name in data
+ * @param {string} emailToCheck - check email in data
  */
-function checkRequiredFields(validEmail) {
-  const newName = document.getElementById("new-name").value.trim();
-  if(newName && validEmail) {
+function checkUserData(nameToCheck, emailToCheck) {
+  const nameExists = doesValueExist(nameToCheck, 'displayName');
+  const emailExists = doesValueExist(emailToCheck, 'email');
+  if (nameExists && emailExists) {
+    blameInvalidInput('no-name', 'new-name', 'You already signed up');
+    goToPage("../index.html");
+  } else if (!nameToCheck && emailExists) {
+    blameEmptyInput("new-name", "no-name");
+  } else if (!nameExists && emailExists) {
+    blameInvalidInput('no-email', 'new-email', 'Email of registrated user');
+  } else {
+    checkRequiredFields(emailExists);
+  }
+}
+
+/**
+ * helper function for "checkUserData"; checks whether name or email is already in database
+ * @param {string} value - value from user input
+ * @param {string} infoKey - checked key of user-informations
+ * @returns boolean
+ */
+function doesValueExist(value, infoKey) {
+  return Object.keys(fetchedData).some(
+    key => fetchedData[key][infoKey].toLowerCase() == value.toLowerCase()
+  );
+}
+
+/**
+ * helper function for "validateInputs". if form is filled, check "Policy"-checkbox
+ * @param {string} validEmail - checked email
+ */
+function checkRequiredFields(storedEmail) {
+  if(!storedEmail) {
     checkboxChecked();
   } else return;
 }
@@ -152,7 +165,7 @@ function toggleCheckbox() {
 }
 
 /**
- * popup-message after siccessfil sign up
+ * popup-message after successful sign up
  */
 function confirmSignup() {
   const text = "You signed up successfully";
@@ -194,5 +207,3 @@ function closeOverlay() {
   overlay.classList.add('d-none');
   document.querySelector('.blue-box').style.opacity = 0;
 }
-
-// goToPage(link) is in: commons-index-signup.js
