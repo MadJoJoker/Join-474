@@ -114,8 +114,7 @@ function attachCloseButtonListener(button, overlayId) {
         overlayId === "overlay-task-detail" ||
         overlayId === "overlay-task-detail-edit"
       ) {
-        const { refreshBoardSite } = await import("../ui/render-board.js");
-        await refreshBoardSite();
+        window.location.href = "board-site.html";
       }
     });
   }
@@ -134,8 +133,7 @@ function attachBackgroundClickListener(overlay, overlayId) {
         overlayId === "overlay-task-detail" ||
         overlayId === "overlay-task-detail-edit"
       ) {
-        const { refreshBoardSite } = await import("../ui/render-board.js");
-        await refreshBoardSite();
+        window.location.href = "board-site.html";
       }
     }
   });
