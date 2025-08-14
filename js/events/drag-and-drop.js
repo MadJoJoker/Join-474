@@ -30,7 +30,9 @@ function dragStart(event) {
   currentDraggedElement = event.target;
   event.dataTransfer.setData("text/plain", currentDraggedElement.id);
   setTimeout(() => {
-    currentDraggedElement.classList.add("is-dragging");
+    if (currentDraggedElement && currentDraggedElement.classList) {
+      currentDraggedElement.classList.add("is-dragging");
+    }
   }, 0);
 }
 
@@ -39,10 +41,14 @@ function dragStart(event) {
  * @param {DragEvent} event
  */
 function dragEnd(event) {
-  event.target.classList.remove("is-dragging");
+  if (event.target && event.target.classList) {
+    event.target.classList.remove("is-dragging");
+  }
   currentDraggedElement = null;
   document.querySelectorAll(".task-column").forEach((column) => {
-    column.classList.remove("drag-over");
+    if (column && column.classList) {
+      column.classList.remove("drag-over");
+    }
   });
   const taskId = event.target.id;
   const allData = window.allData;
