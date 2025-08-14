@@ -319,27 +319,43 @@ function renderFilteredContacts(container, filteredContacts) {
   });
 }
 
-/** * Displays the selected contacts in the assigned area.
+/** * Displays the selected contacts in the assigned to area.
  * Creates circles for each selected contact and appends them to the assigned area.
  */
 function displaySelectedContacts() {
   const assignedToArea = document.getElementById("assigned-to-area");
+  const assignedToAreaFull = document.getElementById("assigned-to-area-full");
   if (!assignedToArea) return;
 
-  assignedToArea.innerHTML = '';
-
-  const mainContainer = document.createElement('div');
-  mainContainer.className = 'assigned-main-container';
-  selectedContacts.forEach(contact => {
-    renderContactCircle(contact, mainContainer);
-  });
-
-  assignedToArea.appendChild(mainContainer);
+  clearAndRender(assignedToArea, selectedContacts.slice(0, 3), true);
+  if (assignedToAreaFull) {
+    clearAndRender(assignedToAreaFull, selectedContacts, false);
+  }
 }
 
-/** * Renders a contact circle in the assigned area.
- * @param {Object} contact - The contact object containing name, initials, and avatarColor.
- * @param {HTMLElement} container - The container to append the contact circle to.
+/** * Clears and renders the contact circles in the assigned to area.
+ * @param {HTMLElement} container - The container to render the contacts into.
+ * @param {Array} contacts - The array of contacts to render.
+ * @param {boolean} withExtra - Whether to show the extra count circle.
+ */
+function clearAndRender(container, contacts, withExtra) {
+  container.innerHTML = '';
+  const mainContainer = document.createElement('div');
+  mainContainer.className = 'assigned-main-container';
+
+  contacts.forEach(contact => renderContactCircle(contact, mainContainer));
+
+  if (withExtra) {
+    const extraCount = selectedContacts.length - contacts.length;
+    if (extraCount > 0) renderExtraCircle(extraCount, mainContainer);
+  }
+
+  container.appendChild(mainContainer);
+}
+
+/** * Renders a contact circle in the assigned to area.
+ * @param {Object} contact - The contact object to render.
+ * @param {HTMLElement} container - The container to render the contact into.
  */
 function renderContactCircle(contact, container) {
   const initialsDiv = document.createElement('div');
@@ -348,6 +364,20 @@ function renderContactCircle(contact, container) {
   initialsDiv.textContent = contact.initials;
   initialsDiv.style.flex = '0 0 auto';
   container.appendChild(initialsDiv);
+}
+
+/** * Renders an extra count circle in the assigned to area.
+ * @param {number} extraCount - The number of extra contacts.
+ * @param {HTMLElement} container - The container to render the extra circle into.
+ */
+function renderExtraCircle(extraCount, container) {
+  const extraDiv = document.createElement('div');
+  extraDiv.className = 'assigned-initials-circle';
+  extraDiv.style.backgroundColor = 'var(--sidebarGrey)';
+  extraDiv.textContent = `… +${extraCount}`;
+  extraDiv.style.fontSize = '0.8rem';
+  extraDiv.style.flex = '0 0 auto';
+  container.appendChild(extraDiv);
 }
 
 /** * Removes a contact from the selected contacts.

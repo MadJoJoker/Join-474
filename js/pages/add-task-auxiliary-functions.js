@@ -14,7 +14,8 @@ import {
 import {
     filterContacts,
     toggleCategoryDropdown,
-    toggleAssignedToDropdown
+    toggleAssignedToDropdown,
+    selectedContacts
 } from "../events/dropdown-menu.js";
 import {
     addSubtask,
@@ -79,6 +80,7 @@ export function initInputFieldListeners() {
     initCalendarIconListener();
     initAutoFillListeners();
     initOpenCategoryOnFocusWithEnter();
+    initContactsToggleListener();
 }
 
 /** * Initializes the title input field listener.
@@ -365,4 +367,32 @@ export function syncMaxWidth() {
     const width = source.getBoundingClientRect().width;
 
     target.style.maxWidth = width + "px";
+}
+
+function toggleAssignedAreaFull() {
+    const areaThree = document.getElementById("assigned-to-area");
+    const areaAll = document.getElementById("assigned-to-area-full");
+    const areaAllGrid = document.getElementsByClassName("assigned-main-container");
+
+    if (areaThree && areaAll) {
+        if (areaAll.classList.contains("d-none")) {
+            Array.from(areaAllGrid).forEach((grid) => grid.classList.add("d-grid"));
+            areaAll.classList.remove("d-none");
+            areaThree.classList.add("d-none");
+        } else {
+            areaThree.classList.remove("d-none");
+            areaAll.classList.add("d-none");
+            Array.from(areaAllGrid).forEach((grid) => grid.classList.remove("d-grid"));
+        }
+    }
+}
+
+function initContactsToggleListener() {
+    const area = document.getElementById('assigned-to-area');
+    const areaFull = document.getElementById('assigned-to-area-full');
+
+    if (area || areaFull) {
+        area.addEventListener('click', toggleAssignedAreaFull);
+        areaFull.addEventListener('click', toggleAssignedAreaFull);
+    }
 }

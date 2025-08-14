@@ -219,6 +219,7 @@ export function renderAssignedToSection(task) {
                 <div class="assigned-to-options-container" id="assigned-to-options-container"></div>
             </div>
             <div id="assigned-to-area" class="initials-container" style=" border:none"></div>
+            <div id="assigned-to-area-full" class="initials-container d-none" style=" border:none"></div>
             <div id="assigned-to-error" class="error-message">This field is required</div>
         </div>
     `;
@@ -375,9 +376,9 @@ export function getAddTaskFormHTML(task = null) {
  */
 export function getCategoryOptions() {
   return `
-        <div class="option" data-category="Technical Task">Technical Task</div>
-        <div class="option" data-category="User Story">User Story</div>
-        <div class="option" data-category="Meeting">Meeting</div>
+        <div tabindex="0" class="option" data-category="Technical Task">Technical Task</div>
+        <div tabindex="0" class="option" data-category="User Story">User Story</div>
+        <div tabindex="0" class="option" data-category="Meeting">Meeting</div>
     `;
 }
 
@@ -391,7 +392,7 @@ export function getCategoryOptions() {
 export function renderAssignedToContacts(i, name, initials, avatarColor) {
   const isSelected = isContactSelected(name, initials, avatarColor);
   return `
-        <div class="contact-option ${isSelected ? "assigned" : ""}"
+        <div tabindex="0" class="contact-option ${isSelected ? "assigned" : ""}"
           data-name="${name}" data-initials="${initials}" data-avatar-color="${avatarColor}">
             <div class="contact-checkbox">
                 <div class="initials-container">

@@ -209,6 +209,12 @@
     }
 }
 
+.d-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+    gap: 0;
+}
+
 .selected-option {
     background-color: var(--white);
 }
