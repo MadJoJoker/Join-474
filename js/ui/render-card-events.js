@@ -163,22 +163,12 @@ export async function registerTaskCardDetailOverlay(
             if (e.target && e.target.classList.contains("subtask-checkbox")) {
               const subtaskIndex = Number(e.target.dataset.subtaskIndex);
               const checked = e.target.checked;
-              console.debug(
-                `[DEBUG] Delegation: Checkbox geändert: taskId=${taskId}, subtaskIndex=${subtaskIndex}, checked=${checked}`
-              );
               if (task && Array.isArray(task.checkedSubtasks)) {
                 task.checkedSubtasks[subtaskIndex] = checked;
                 const completedCount =
                   task.checkedSubtasks.filter(Boolean).length;
                 task.subtasksCompleted = completedCount;
-                console.debug(
-                  `[DEBUG] Delegation: Task-Objekt vor Update:`,
-                  JSON.parse(JSON.stringify(task))
-                );
                 CWDATA({ [taskId]: task }, boardData);
-                console.debug("[DEBUG] Delegation: CWDATA aufgerufen mit:", {
-                  [taskId]: task,
-                });
                 const progress = calculateSubtaskProgress(task);
                 const progressBar =
                   container.querySelector(".progress-bar-fill");
@@ -186,9 +176,6 @@ export async function registerTaskCardDetailOverlay(
                   progressBar.style.width = `${progress.percent}%`;
                 }
               } else {
-                console.warn(
-                  `[DEBUG] Delegation: Task oder checkedSubtasks nicht gefunden!`
-                );
               }
             }
           });
