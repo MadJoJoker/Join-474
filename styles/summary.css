@@ -7,11 +7,16 @@
 body {
   font-family: "Inter", sans-serif;
   background-color: var(--lightGrey);
+
 }
 
-html {
+/* html {
   scroll-padding-top: 96px;
   scroll-padding-bottom: 80px;
+} */
+
+.main-content {
+  overflow-y: hidden;
 }
 
 .smr-margin {

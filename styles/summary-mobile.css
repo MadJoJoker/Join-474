@@ -93,8 +93,7 @@
   .container.smr-margin {
     padding: 46px 0!important;
     justify-content: center;
-
-    overflow-y: hidden;
+    height: calc(100vh - 176px);
   }
 
   .summary-wrapper {
