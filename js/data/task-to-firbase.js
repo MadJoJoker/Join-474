@@ -5,20 +5,15 @@ export let allData = {};
 /**
  * Receives a dynamically created object and prepares it for Firebase processing.
  * @param {Object} receivedObject - The object passed from add-task.js.
- * This was formerly 'rawNewObject'.
  */
 export async function CWDATA(receivedObject, fetchData) {
-  // <= CWDATA receives the object as a parameter
-
   allData = fetchData;
-
   const convertedObjectWithId = await processRawObject(receivedObject);
 }
 
 /**
  * main function to proceed rawObject and send it to Firebase
  * @param {object} input - raw object
- *
  * @returns object (only for console.log while working)
  */
 async function processRawObject(input) {

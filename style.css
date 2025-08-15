@@ -159,16 +159,20 @@
 }
 
 @media (max-width: 2400px) {
-
-  /* Firefox */
-  *,
   .scrollable:not(.contacts-sidebar) {
-    scrollbar-width: none; 
+    scrollbar-width: none;
+  }
+  .scrollable:not(.contacts-sidebar)::-webkit-scrollbar {
+    display: none;
   }
 
-/* Chrome, Safari */
-  ::-webkit-scrollbar,
-  .scrollable:not(.contacts-sidebar)::-webkit-scrollbar {
-    display: none; 
+  .subtasks-style {
+    scrollbar-width: auto;
+  }
+
+  .scrollable,
+  .subtasks-style {
+    overflow: auto;
   }
 }
+  
