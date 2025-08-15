@@ -1,10 +1,10 @@
-/**
- * clear sessionStorage
- */
+let fetchedUser = null;
+let secondChance = true;
+
 sessionStorage.clear();
 
 /**
- * 2nd onload-function: handles start animation, remove overlay when finished.
+ * onload-function: handles start animation, remove overlay when finished.
  * prevents false positioning when page is reloaded
  */
 function removeOverlay() {
@@ -18,8 +18,7 @@ function removeOverlay() {
 }
 
 /**
- * onlick-function of "Login"-button. check input fields for content
- * for demo-mode: call demo-functin "simulateUser"
+ * onlick-function of "Login"-button. check whether input fields are filled.
  */
 function handleLogin(){
   clearRedAlerts();
@@ -27,45 +26,88 @@ function handleLogin(){
   const userPw = document.getElementById('login-password').value.trim();
   if (!userEmail) return blameEmptyInput('login-email', 'alert-login');
   if (!userPw) return blameEmptyInput('login-password', 'alert');
-  validateLogin(userEmail, userPw);
+  checkUserInFirebase('email', userEmail, userPw);
 }
 
 /**
- * helper function for "handleLogin"; validation of login inputs (filled / empty)
+ * check in database whether a user-dataset contains the email corresponding to the login-input.
+ * @param {string} key - Database key to check against
+ * @param {string} emailInput 
+ * @param {string} passwordInput 
+ */
+async function checkUserInFirebase(key, emailInput, passwordInput) {
+  const data = await checkLogin(key, emailInput);
+  fetchedUser = data;
+  console.log("to check: ", emailInput, passwordInput);  validateLogin(passwordInput);
+}
+
+/**
+ * helper function for "checkUserInFirebase"; check wether login is valid.
  * @param {string} userEmail
  * @param {string} userPw 
  */
-function validateLogin(userEmail, userPw) {
-  let validEmail = validateEmail(userEmail);
-  let validPw = validatePassword(userPw);
-  if(!validEmail && !validPw) {
+function validateLogin(userPw) {
+  const validEmail = checkEmail();
+  if (!validEmail) return;
+  const validPw = validatePassword(userPw);
+  if (!validPw) return;
+  setSessionStorage();
+  window.location.href = 'html/summary.html';
+}
+
+/**
+ * helper function for "validateLogin"; if email is not found in database, 
+ * "fetchedUser" is empty and email check false.
+ * @returns boolean
+ */
+function checkEmail() {
+  if (Object.keys(fetchedUser).length == 0) {
+    tryAgain();
+  } else return true;
+}
+
+/**
+ * helper function for "validateLogin"; if email is correct, 
+ * compare password from input to password in "fetchedUser".
+ * @param {string} userPw - user password from login input.
+ * @returns boolean
+ */
+function validatePassword(userPw) {
+  const userDetails = Object.values(fetchedUser)[0];
+  let foundPassword = userDetails.password == userPw;
+  if (!foundPassword) {
+    tryAgain();
+  } else return true;
+}
+
+/**
+ * helper function for "validatePasswor"; if user made a typo, he gets a second chance
+ * to write the password correctly. If password is still false: -> sign up.
+ * @returns boolean
+ */
+function tryAgain() {
+  if(secondChance == true) {
+    loginAlert();
+    secondChance = false;
+    return false;
+  } else {
     blameInvalidInput('alert-login', 'login-email', 'Unkown user. Please sign up');
     goToPage('html/sign-up.html');
-  } else if(validEmail && validPw) {
-    window.location.href = 'html/summary.html';
-  } else {
-    loginAlert();
   }
 }
 
 /**
- * helper function for "validateLogin"; process e-mail string by comparing it to "users"-data in "fetchedData".
- * @param {string} userEmail 
- * @returns boolean
+ * helper function for "validateLogin"; get user name from "fetchedUser", set name to sessionStorage.
  */
-function validateEmail(userEmail) {
-    const foundMail = Object.keys(fetchedData).find(
-      key => fetchedData[key].email.toLowerCase() == userEmail.toLowerCase()
-    );
-    if(!foundMail) return false;
-    const displayName = fetchedData[foundMail].displayName;
-    initialsForHeader(displayName);
-    sessionStorage.setItem('currentUser', displayName);
-    return true;
+function setSessionStorage() {
+  const userDetails = Object.values(fetchedUser)[0];
+  const displayName = userDetails.displayName;
+  sessionStorage.setItem('currentUser', displayName);
+  initialsForHeader(displayName);
 }
 
 /**
- * helper function for "validateEmail"; set initials for "header" to sessionStorage.
+ * helper function for "setSessionStorage"; set initials for "header", to sessionstorStorage.
  * @param {string} displayName - user name corresponding to email-adress
  */
 function initialsForHeader(displayName) {
@@ -84,16 +126,6 @@ function getInitials(fullName) {
   const first = names[0][0]?.toUpperCase();
   const last = names.length > 1 ? names[names.length - 1][0]?.toUpperCase() : '';
   return first + last;
-}
-
-/**
-* helper function for "validateLogin"; process password string by comparing it to "users"-data in "fetchedData".
- * @param {string} userPw 
- * @returns boolean
- */
-function validatePassword(userPw) {
-  const foundPassword = Object.keys(fetchedData).find(key => fetchedData[key].password == userPw);
-  return !foundPassword ? false : true;
 }
 
 /**
