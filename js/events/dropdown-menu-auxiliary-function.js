@@ -13,70 +13,89 @@ import {
   setBorderColorGrey,
 } from "./dropdown-menu.js";
 
-/** Initializes the dropdown menus for category and assigned contacts.
+/**
+ * Object containing all relevant dropdown DOM elements for category and assigned users.
+ * Use functions to always get the current DOM reference.
+ */
+const dropdownElements = {
+  category: {
+    dropdown: () => document.getElementById("dropdown-category"),
+    options: () => document.getElementById("category-options-container"),
+    wrapper: () => document.getElementById("category-options-wrapper"),
+    icon: () => document.getElementById("dropdown-icon-two"),
+    iconContainer: () => document.getElementById("dropdown-icon-container-two"),
+    input: () => document.getElementById("dropdown-category"),
+  },
+  assignedTo: {
+    dropdown: () => document.getElementById("dropdown-assigned-to"),
+    options: () => document.getElementById("assigned-to-options-container"),
+    wrapper: () => document.getElementById("assigned-to-options-wrapper"),
+    icon: () => document.getElementById("dropdown-icon-one"),
+    iconContainer: () => document.getElementById("dropdown-icon-container-one"),
+  }
+};
+
+/**
+ * Removes a specific class from a list of elements.
+ * @param {HTMLElement[]} elements - The elements to remove the class from.
+ * @param {string} className - The class name to remove.
+ */
+function removeClasses(elements, className) {
+  elements.forEach(el => el?.classList.remove(className));
+}
+
+/**
+ * Initializes the dropdown menus for category and assigned contacts.
  * Sets up event listeners and populates the dropdowns with contacts.
  */
 export function initDropdowns(contactsData) {
   setSortedContacts(contactsData);
-
-  const categoryDropdown = document.getElementById("dropdown-category");
-  const categoryOptions = document.getElementById("category-options-container");
-  const assignedUsersDropdown = document.getElementById("dropdown-assigned-to");
-  const assignedUsersOptions = document.getElementById(
-    "assigned-to-options-container"
-  );
-
   setupCategoryDropdown();
   setupAssignedUsersDropdown();
   setupDocumentClickHandler(
-    categoryDropdown,
-    categoryOptions,
-    assignedUsersDropdown,
-    assignedUsersOptions
+    dropdownElements.category.dropdown(),
+    dropdownElements.category.options(),
+    dropdownElements.assignedTo.dropdown(),
+    dropdownElements.assignedTo.options()
   );
   resetDropdownState();
 }
 
-/** Clears the selected assigned contacts in the dropdown.
+/**
+ * Sets up the category dropdown event listeners.
  */
 function setupCategoryDropdown() {
-  document
-    .getElementById("dropdown-category")
-    ?.addEventListener("click", toggleCategoryDropdown);
-  document
-    .getElementById("category-options-container")
-    ?.addEventListener("click", (event) => {
-      if (event.target.classList.contains("option")) {
-        setCategory(event.target);
-      }
-    });
+  dropdownElements.category.dropdown()?.addEventListener("click", toggleCategoryDropdown);
+  dropdownElements.category.options()?.addEventListener("click", (event) => {
+    if (event.target.classList.contains("option")) {
+      setCategory(event.target);
+    }
+  });
 }
 
-/** Clears the selected assigned contacts in the dropdown.
+/**
+ * Sets up the assigned users dropdown event listeners.
  */
 function setupAssignedUsersDropdown() {
-  document
-    .getElementById("dropdown-assigned-to")
-    ?.addEventListener("click", toggleAssignedToDropdown);
-  document
-    .getElementById("assigned-to-options-container")
-    ?.addEventListener("click", (event) => {
-      const contactOption = event.target.closest(".contact-option");
-      if (contactOption) {
-        const { name, initials, avatarColor } = contactOption.dataset;
-        toggleSelectContacts(contactOption, name, initials, avatarColor);
+  dropdownElements.assignedTo.dropdown()?.addEventListener("click", toggleAssignedToDropdown);
+  dropdownElements.assignedTo.options()?.addEventListener("click", (event) => {
+    const contactOption = event.target.closest(".contact-option");
+    if (contactOption) {
+      const { name, initials, avatarColor } = contactOption.dataset;
+      toggleSelectContacts(contactOption, name, initials, avatarColor);
 
-        const invalidArea = document.getElementById("dropdown-assigned-to");
-        const assignedUsersError = document.getElementById("assigned-to-error");
-        if (invalidArea.classList.contains("invalid")) {
-          invalidArea.classList.remove("invalid");
-          assignedUsersError?.classList.remove("d-flex");
-        }
+      const invalidArea = dropdownElements.assignedTo.dropdown();
+      const assignedUsersError = document.getElementById("assigned-to-error");
+      if (invalidArea.classList.contains("invalid")) {
+        invalidArea.classList.remove("invalid");
+        assignedUsersError?.classList.remove("d-flex");
       }
-    });
+    }
+  });
 }
 
-/** Handles clicks outside the dropdown to close it.
+/**
+ * Handles clicks outside the dropdown to close it.
  * @param {HTMLElement} dropdown - The dropdown element to check.
  * @param {HTMLElement} options - The options container element.
  * @param {Function} closeFunction - The function to call to close the dropdown.
@@ -91,7 +110,8 @@ function handleOutsideClick(dropdown, options, closeFunction) {
   };
 }
 
-/** Sets up a document click handler to close dropdowns when clicking outside.
+/**
+ * Sets up a document click handler to close dropdowns when clicking outside.
  * @param {HTMLElement} categoryDropdown - The category dropdown element.
  * @param {HTMLElement} categoryOptions - The category options container element.
  * @param {HTMLElement} assignedUsersDropdown - The assigned users dropdown element.
@@ -122,56 +142,51 @@ function setupDocumentClickHandler(
   });
 }
 
-/** Closes the category dropdown and resets its state.
+/**
+ * Closes the category dropdown and resets its state.
  */
 export function closeCategoryDropdown() {
-  const wrapper = document.getElementById("category-options-wrapper");
-  const container = document.getElementById("category-options-container");
-  const dropdownIconTwo = document.getElementById("dropdown-icon-two");
-  const dropdownIconContainerTwo = document.getElementById(
-    "dropdown-icon-container-two"
-  );
-  const input = document.getElementById("dropdown-category");
-
-  if (!wrapper || !container) return;
-
-  if (wrapper.classList.contains("open")) {
-    input.classList.remove("border-light-blue");
-    wrapper.classList.remove("open");
-    dropdownIconTwo?.classList.remove("open");
-    dropdownIconContainerTwo?.classList.remove("active");
-
+  const { wrapper, options, icon, iconContainer, input } = dropdownElements.category;
+  const w = wrapper();
+  const c = options();
+  const i = icon();
+  const ic = iconContainer();
+  const inp = input();
+  if (!w || !c) return;
+  if (w.classList.contains("open")) {
+    inp.classList.remove("border-light-blue");
+    w.classList.remove("open");
+    i?.classList.remove("open");
+    ic?.classList.remove("active");
     setTimeout(() => {
-      container.innerHTML = "";
+      c.innerHTML = "";
     }, 300);
   }
 }
 
-/** Closes the assigned users dropdown and resets its state.
+/**
+ * Closes the assigned users dropdown and resets its state.
  */
 export function closeAssignedToDropdown() {
-  const wrapper = document.getElementById("assigned-to-options-wrapper");
-  const container = document.getElementById("assigned-to-options-container");
-  const dropdownIconOne = document.getElementById("dropdown-icon-one");
-  const dropdownIconContainerOne = document.getElementById(
-    "dropdown-icon-container-one"
-  );
-
-  if (!wrapper || !container) return;
-
-  if (wrapper.classList.contains("open-assigned-to")) {
+  const { wrapper, options, icon, iconContainer } = dropdownElements.assignedTo;
+  const w = wrapper();
+  const c = options();
+  const i = icon();
+  const ic = iconContainer();
+  if (!w || !c) return;
+  if (w.classList.contains("open-assigned-to")) {
     setBorderColorGrey("dropdown-assigned-to");
-    wrapper.classList.remove("open-assigned-to");
-    dropdownIconOne?.classList.remove("open");
-    dropdownIconContainerOne?.classList.remove("active");
-
+    w.classList.remove("open-assigned-to");
+    i?.classList.remove("open");
+    ic?.classList.remove("active");
     setTimeout(() => {
-      container.innerHTML = "";
+      c.innerHTML = "";
     }, 300);
   }
 }
 
-/** Clears the selected assigned contacts in the dropdown.
+/**
+ * List of IDs for fields that can be invalid in the form.
  */
 const INVALID_FIELDS_IDS = [
   "title",
@@ -180,7 +195,8 @@ const INVALID_FIELDS_IDS = [
   "dropdown-assigned-to",
 ];
 
-/** Clears the invalid fields by removing the "invalid" class and hiding error messages.
+/**
+ * List of IDs for error fields in the form.
  */
 const ERROR_FIELDS_IDS = [
   "title-error",
@@ -190,25 +206,14 @@ const ERROR_FIELDS_IDS = [
 ];
 
 export function clearInvalidFields() {
-  const invalidFields = INVALID_FIELDS_IDS.map((id) =>
-    document.getElementById(id)
-  );
+  const invalidFields = INVALID_FIELDS_IDS.map((id) => document.getElementById(id));
   const errorFields = ERROR_FIELDS_IDS.map((id) => document.getElementById(id));
-
-  invalidFields.forEach((field) => {
-    if (field) {
-      field.classList.remove("invalid");
-    }
-  });
-
-  errorFields.forEach((error) => {
-    if (error) {
-      error.classList.remove("d-flex");
-    }
-  });
+  removeClasses(invalidFields, "invalid");
+  removeClasses(errorFields, "d-flex");
 }
 
-/** Sets the category based on the task object for the card/edit overlay.
+/**
+ * Sets the category based on the task object for the card/edit overlay.
  * @param {string} categoryName - The name of the category to set.
  */
 export function setCategoryFromTaskForCard(categoryName) {
@@ -223,7 +228,8 @@ export function setCategoryFromTaskForCard(categoryName) {
   rotateCategoryDropdownIcon()
 }
 
-/** Rotates the category dropdown icon when the dropdown is opened or closed.
+/**
+ * Rotates the category dropdown icon when the dropdown is opened or closed.
  */
 function rotateCategoryDropdownIcon() {
   const dropdownIconTwo = document.getElementById("dropdown-icon-two");
@@ -233,7 +239,8 @@ function rotateCategoryDropdownIcon() {
   }
 }
 
-/** Sets the assigned contacts based on the task object for the card/edit overlay.
+/**
+ * Sets the assigned contacts based on the task object for the card/edit overlay.
  * @param {Array} assignedUsers - The array of assigned contacts.
  */
 export function setAssignedContactsFromTaskForCard(assignedUsers) {
@@ -255,7 +262,8 @@ export function setAssignedContactsFromTaskForCard(assignedUsers) {
   getAssignedToOptions();
 }
 
-/** Finds a contact by its ID from the current contacts or Firebase data.
+/**
+ * Finds a contact by its ID from the current contacts or Firebase data.
  * @param {string} idVal - The ID of the contact to find.
  */
 function findContactById(idVal) {
@@ -269,7 +277,8 @@ function findContactById(idVal) {
   );
 }
 
-/** Gets a contact from Firebase data by its ID.
+/**
+ * Gets a contact from Firebase data by its ID.
  * @param {string} idVal - The ID of the contact to retrieve.
  */
 function getFirebaseContact(idVal) {
@@ -283,7 +292,8 @@ function getFirebaseContact(idVal) {
   return null;
 }
 
-/** Finds a contact by its name from the current contacts or Firebase data.
+/**
+ * Finds a contact by its name from the current contacts or Firebase data.
  * @param {string} name - The name of the contact to find.
  */
 function findContactByName(name) {
@@ -299,7 +309,8 @@ function findContactByName(name) {
   return found || null;
 }
 
-/** Processes a string contact by finding it in the current contacts or Firebase data.
+/**
+ * Processes a string contact by finding it in the current contacts or Firebase data.
  * @param {string} sel - The ID of the contact to process.
  */
 function processStringContact(sel) {
@@ -313,36 +324,41 @@ function processStringContact(sel) {
   }
 }
 
-/** Processes an object contact by checking its ID or name and finding it in the current contacts or Firebase data.
+/**
+ * Extracts the contact ID from a contact object.
+ * @param {Object} contact - The contact object to extract the ID from.
+ * @returns {string|null} The extracted contact ID or null if not found.
+ */
+function extractContactId(contact) {
+  return contact.id || contact.contactId || contact.contactID || contact.uid || contact.firebaseId;
+}
+
+function findContactByObject(contact) {
+  const idVal = extractContactId(contact);
+  if (idVal) {
+    return findContactById(idVal) || getFirebaseContact(idVal);
+  } else if (contact.name) {
+    return findContactByName(contact.name);
+  }
+  return null;
+}
+
+/**
+ * Processes an object contact by checking its ID or name and finding it in the current contacts or Firebase data.
  * @param {Object} sel - The contact object to process.
  */
 function processObjectContact(sel) {
-  const idVal =
-    sel.id || sel.contactId || sel.contactID || sel.uid || sel.firebaseId;
-
-  if (idVal) {
-    let found = findContactById(idVal) || getFirebaseContact(idVal);
-    if (found) {
-      selectedContacts.push(found);
-    } else {
-      selectedContacts.push(sel);
-      console.warn(
-        "[Dropdown-Card] Kontakt nicht gefunden (Objekt mit ID, nehme sel):",
-        sel
-      );
-    }
-  } else if (sel.name) {
-    const found = findContactByName(sel.name);
-    if (found) {
-      selectedContacts.push(found);
-    } else {
-      selectedContacts.push(sel);
-      console.warn(
-        "[Dropdown-Card] Kontakt nicht gefunden (Objekt mit Name, nehme sel):",
-        sel
-      );
-    }
+  const found = findContactByObject(sel);
+  if (found) {
+    selectedContacts.push(found);
   } else {
-    console.warn("[Dropdown-Card] Unbekanntes Kontaktformat:", sel);
+    selectedContacts.push(sel);
+    if (extractContactId(sel)) {
+      console.warn("[Dropdown-Card] Contact not found (object with ID, using sel):", sel);
+    } else if (sel.name) {
+      console.warn("[Dropdown-Card] Contact not found (object with name, using sel):", sel);
+    } else {
+      console.warn("[Dropdown-Card] Unknown contact format:", sel);
+    }
   }
 }
