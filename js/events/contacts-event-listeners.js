@@ -229,7 +229,7 @@ function setupContactListClickNavigation() {
         if (isEditOrDelete) return;
         const contactId = contactEl.dataset.id;
         if (!contactId) return;
-        onContactClickById(contactId); // defined elsewhere in your app
+        onContactClickById(contactId);
     });
 }
 

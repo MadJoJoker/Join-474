@@ -25,7 +25,6 @@ function handleLogin(){
   clearRedAlerts();
   const userEmail = document.getElementById('login-email').value.trim();
   const userPw = document.getElementById('login-password').value.trim();
-  // simulateUser(userEmail, userPw);
   if (!userEmail) return blameEmptyInput('login-email', 'alert-login');
   if (!userPw) return blameEmptyInput('login-password', 'alert');
   validateLogin(userEmail, userPw);
