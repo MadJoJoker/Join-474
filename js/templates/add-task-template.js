@@ -234,7 +234,7 @@ export function renderCategorySection(task) {
             <div for="dropdown-category" class="required font-size-20">Category</div>
             <input type="hidden" id="hidden-category-input"
                 value="${task?.category || ""}" />
-            <div tabindex="0" class="select-wrapper input-field" id="dropdown-category" name="category" data-event-handle="true">
+            <div tabindex="0" class="select-wrapper input-field z-index-20" id="dropdown-category" name="category" data-event-handle="true">
                 <div class="selected-option"
                     id="selected-category">${
                       task?.category ? task.category : "Select task category"
@@ -262,7 +262,7 @@ export function renderSubtasksSection(task) {
   return `
         <div class="label-container">
             <label for="subtask-input" class="font-size-20">Subtasks</label>
-            <div class="select-wrapper">
+            <div class="select-wrapper z-index-10">
                 <input type="text" id="subtask-input" class="input-field-subtask" placeholder="Add new subtask" data-event-handle="true"/>
                 <div id="subtask-icons" class="input-button" style="opacity: 0;">
                     <button type="button" class="subtask-action-btn" id="subtask-clear-btn" aria-label="Clear Subtask" data-event-handle="true">

@@ -54,11 +54,18 @@
 
 .options-wrapper {
     height: 0;
-    transition: height 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
 
     &.open {
+        opacity: 1;
+        transform: translateY(0);
         height: 136px;
-        z-index: 2;
+        z-index: 19;
+        position: absolute;
+        top: 80px;
+        width: 100%;
 
         #category-options-container {
             opacity: 1;
@@ -66,9 +73,14 @@
     }
 
     &.open-assigned-to {
-        z-index: 999;
+        opacity: 1;
+        transform: translateY(0);
+        z-index: 29;
         height: 148px;
         margin-bottom: 19px;
+        position: absolute;
+        top: 80px;
+        width: 100%;
 
         #assigned-to-options-container {
             opacity: 1;
@@ -144,7 +156,6 @@
     overflow-x: auto;
     overflow-y: auto;
     transition: width 0.5s ease;
-    max-width: 90%;
 
     &::-webkit-scrollbar {
         height: 6px;
@@ -166,7 +177,6 @@
         color: var(--white);
         border: 2px solid var(--white);
         border-radius: 50%;
-        margin-right: 8px;
 
         &:last-child {
             margin-right: 0;
@@ -209,7 +219,7 @@
     }
 }
 
-.d-grid{
+.d-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
     gap: 0;
