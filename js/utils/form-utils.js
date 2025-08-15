@@ -5,25 +5,64 @@
  * @param {object} taskToEdit - The original task object.
  * @returns {object} The extracted task data.
  */
-export function extractTaskFormData(form, contactsObj, taskToEdit) {
-  const title = form.querySelector("[name='title']")?.value || "";
-  const description =
-    form.querySelector("[name='task-description']")?.value || "";
-  const deadline = form.querySelector("[name='datepicker']")?.value || "";
-  let type = "";
+
+/**
+ * Extracts the title from the form.
+ * @param {HTMLFormElement} form - The form element.
+ * @returns {string} The extracted title.
+ */
+function extractTitle(form) {
+  return form.querySelector("[name='title']")?.value || "";
+}
+
+/**
+ * Extracts the description from the form.
+ * @param {HTMLFormElement} form - The form element.
+ * @returns {string} The extracted description.
+ */
+function extractDescription(form) {
+  return form.querySelector("[name='task-description']")?.value || "";
+}
+
+/**
+ * Extracts the deadline from the form.
+ * @param {HTMLFormElement} form - The form element.
+ * @returns {string} The extracted deadline.
+ */
+function extractDeadline(form) {
+  return form.querySelector("[name='datepicker']")?.value || "";
+}
+
+/**
+ * Extracts the type/category from the form.
+ * @param {HTMLFormElement} form - The form element.
+ * @returns {string} The extracted type/category.
+ */
+function extractType(form) {
   const selectedCategoryElem = form.querySelector("#selected-category");
-  if (selectedCategoryElem) {
-    type = selectedCategoryElem.textContent.trim();
-  }
-  let priority = "";
+  return selectedCategoryElem ? selectedCategoryElem.textContent.trim() : "";
+}
+
+/**
+ * Extracts the priority from the form.
+ * @param {HTMLFormElement} form - The form element.
+ * @returns {string} The extracted priority.
+ */
+function extractPriority(form) {
   const activePrioBtn = form.querySelector(".priority-btn.active");
-  if (activePrioBtn) {
-    priority = activePrioBtn.getAttribute("data-priority");
-  }
-  let assignedUsers = [];
+  return activePrioBtn ? activePrioBtn.getAttribute("data-priority") : "";
+}
+
+/**
+ * Extracts assigned user IDs from the form using the contacts object.
+ * @param {HTMLFormElement} form - The form element.
+ * @param {object} contactsObj - The contacts object.
+ * @returns {string[]} Array of assigned user IDs.
+ */
+function extractAssignedUsers(form, contactsObj) {
   const assignedOptions = form.querySelectorAll(".contact-option.assigned");
   if (assignedOptions && contactsObj) {
-    assignedUsers = Array.from(assignedOptions)
+    return Array.from(assignedOptions)
       .map((option) => {
         const name =
           option.getAttribute("data-name") || option.textContent.trim();
@@ -35,11 +74,20 @@ export function extractTaskFormData(form, contactsObj, taskToEdit) {
       })
       .filter(Boolean);
   }
+  return [];
+}
+
+/**
+ * Extracts subtasks and their checked status from the form.
+ * @param {HTMLFormElement} form - The form element.
+ * @param {object} taskToEdit - The original task object (for fallback values).
+ * @returns {{ totalSubtasks: string[], checkedSubtasks: boolean[] }} Subtasks and their checked status.
+ */
+function extractSubtasks(form, taskToEdit) {
   const subtaskInputs = form.querySelectorAll(".subtask-input");
   let totalSubtasks = Array.from(subtaskInputs)
     .map((input) => input.value.trim())
     .filter((text) => text !== "");
-  // checkedSubtasks: aus .subtask-text die completed-Klasse auslesen
   let checkedSubtasks = Array.from(form.querySelectorAll(".subtask-text")).map(
     (node) => node.classList.contains("completed")
   );
@@ -55,7 +103,6 @@ export function extractTaskFormData(form, contactsObj, taskToEdit) {
         .map((node) => node.textContent.trim())
         .filter((text) => text !== "");
     }
-    // checkedSubtasks ist bereits oben korrekt ausgelesen
     if (totalSubtasks.length === 0) {
       totalSubtasks = Array.isArray(taskToEdit.totalSubtasks)
         ? [...taskToEdit.totalSubtasks]
@@ -65,6 +112,24 @@ export function extractTaskFormData(form, contactsObj, taskToEdit) {
         : [];
     }
   }
+  return { totalSubtasks, checkedSubtasks };
+}
+
+/**
+ * Extracts all relevant task data from the form.
+ * @param {HTMLFormElement} form - The form element.
+ * @param {object} contactsObj - The contacts object.
+ * @param {object} taskToEdit - The original task object.
+ * @returns {object} The extracted task data.
+ */
+export function extractTaskFormData(form, contactsObj, taskToEdit) {
+  const title = extractTitle(form);
+  const description = extractDescription(form);
+  const deadline = extractDeadline(form);
+  const type = extractType(form);
+  const priority = extractPriority(form);
+  const assignedUsers = extractAssignedUsers(form, contactsObj);
+  const { totalSubtasks, checkedSubtasks } = extractSubtasks(form, taskToEdit);
   return {
     title,
     description,

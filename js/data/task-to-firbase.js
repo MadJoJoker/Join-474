@@ -23,7 +23,6 @@ export async function CWDATA(receivedObject, fetchData) {
  */
 async function processRawObject(input) {
   let { pushObjectId, rawNewObject } = checkDataStructure(input);
-  // assignedTo is no longer created, so the structure remains like object 1
   rawNewObject = arraysToObjects(rawNewObject);
   if (pushObjectId == null) pushObjectId = setNextId("task");
   const result = await sendObject(pushObjectId, rawNewObject);
@@ -74,7 +73,6 @@ function convertContacts(rawNewObject) {
  */
 function arraysToObjects(obj) {
   for (const key in obj) {
-    // Do NOT convert checkedSubtasks, keep as array of booleans
     if (
       Array.isArray(obj[key]) &&
       key !== "assignedUsers" &&
@@ -117,7 +115,6 @@ function getLastKey(category) {
  * Sends object to Firebase and updates local copy (for instant rendering without new fetch)
  * @param {string} pushObjectId
  * @param {object} rawNewObject - former raw Object
-
  * @returns final object; only for console.log purpose.
  */
 async function sendObject(pushObjectId, rawNewObject) {
