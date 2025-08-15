@@ -7,7 +7,6 @@ async function includeHeaderAndSidebar() {
   displayInitialsInHeader();
   partiallyHideSidebar();
   initDropdown();
-
   updateFaviconForTheme();
   highlightCurrentPage();
 }
@@ -60,7 +59,6 @@ function initDropdown() {
  */
 function partiallyHideSidebar() {
   const name = sessionStorage.getItem('headerInitials');
-  // console.log("name: ", name);
   if(!name && (
     window.location.pathname.endsWith("/privacy-policy.html")
     || window.location.pathname.endsWith("/legal-notice.html")
@@ -102,9 +100,6 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', upd
 const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
 
 if (isFirefox) {
-  // console.log("user agent: Firefox");
   document.body.classList.remove('scrollable');
   document.querySelector('.app-container')?.classList.add('scrollable');
-// } else {
-//   console.log("user agent: Chrome, Edge");
 }

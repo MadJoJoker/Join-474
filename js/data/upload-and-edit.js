@@ -1,5 +1,5 @@
 let currentDataContainer;
-let currentCategory = null; // remains null, if structure of currentDataContainer is flat
+let currentCategory = null;
 
 const objectFields = [
   [
@@ -23,7 +23,7 @@ async function objectBuilding(requestedCategory = "users") {
   let objectFields = chooseFieldsMap(requestedCategory);
   const [pushObjectId, entryData] = createNewObject(objectFields, requestedCategory, "demoUser");
   await sendNewObject(pushObjectId, entryData, requestedCategory);
-  confirmSignup(); // for "users" only
+  confirmSignup();
 }
 
 /**
@@ -185,11 +185,9 @@ function determineStoragePath(pushObjectId, requestedCategory) {
   if (currentCategory) {
     path = `${currentCategory}/${pushObjectId}`;
     fetchedData[currentCategory] = fetchedData[currentCategory] || {};
-    // container = fetchedData[currentCategory];
   } else {
     path = `${requestedCategory}/${pushObjectId}`;
-    fetchedData = fetchedData || {}; // for localObject, it it's the first instance to assign (s. below)
-    // container = fetchedData;
+    fetchedData = fetchedData || {};
   }
   console.log("path: ", path, "upated local data: " , fetchedData);
   return path;
@@ -199,7 +197,6 @@ function determineStoragePath(pushObjectId, requestedCategory) {
  * Update the local data object.
  */
 function updateLocalData(localObject) {
-  // fetchedData = fetchedData || {};
   Object.assign(fetchedData, localObject);
 }
 
@@ -224,24 +221,4 @@ async function saveToFirebase(path, data) {
   } catch (error) {
     console.error("Fetching data failed:", error);
   }
-}
-
-
-// RAW EDIT FUNCTION (CONTACTS);
-const editFields = [
-  {id: "editNameInput", key: "name"},
-  {id: "editEmailInput", key: "email"},
-  {id: "editPhoneInput", key: "phone"}
-];
-
-async function editObjectFromInputfields(fieldMap, objectKey) {
-  let entry = fetchedData[objectKey]; // bekommt immer ein komplettes Obj (nested)
-  console.log("original entry: ", entry);
-  loopOverInputs(fieldMap, entry);
-  entry.initials = getInitials(entry.name); // "contacts": Initialen könnten sich ändern
-  console.log("edited object", entry); // da müsste der Rücktransfer in das lokale Datenreservoir stattfinden (s. oben)
-  console.log("after editing: ", fetchedData);
-
-  let editedContactPath = `contacts/${objectKey}`; // NICHT GETESTET
-  // await saveToFirebase(editedContactPath, entry);
 }
