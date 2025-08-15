@@ -2,32 +2,17 @@ import { firebaseData } from "../../main.js";
 
 export let allData = {};
 
-// ZEILE 135 ODER 136 AUSKOMMENTIEREN, UM ÜBERTRAGUNG AN FIREBASE ZU STOPPEN
-
 /**
- * Empfängt ein dynamisch erzeugtes Objekt und bereitet es für die Firebase-Verarbeitung vor.
- * @param {Object} receivedObject - Das Objekt, das von add-task.js übergeben wurde.
- * Es ist das ehemalige 'rawNewObject'.
+ * Receives a dynamically created object and prepares it for Firebase processing.
+ * @param {Object} receivedObject - The object passed from add-task.js.
+ * This was formerly 'rawNewObject'.
  */
 export async function CWDATA(receivedObject, fetchData) {
-  // <= CWDATA empfängt das Objekt als Parameter
-  console.log(
-    "task-to-firebase.js: Objekt erfolgreich empfangen!",
-    receivedObject
-  );
-  console.log("Firebase-data empfangen: ", fetchData);
+  // <= CWDATA receives the object as a parameter
+
   allData = fetchData;
 
   const convertedObjectWithId = await processRawObject(receivedObject);
-
-  console.log(
-    "fertiges Objekt, das an Firebase geschickt wird: ",
-    convertedObjectWithId
-  );
-  console.log(
-    "firebaseData, neuer Stand; von hier Board neu renderbar ohne fetch: ",
-    allData
-  );
 }
 
 /**
@@ -38,7 +23,7 @@ export async function CWDATA(receivedObject, fetchData) {
  */
 async function processRawObject(input) {
   let { pushObjectId, rawNewObject } = checkDataStructure(input);
-  // assignedTo wird nicht mehr erzeugt, damit die Struktur wie Objekt 1 bleibt
+  // assignedTo is no longer created, so the structure remains like object 1
   rawNewObject = arraysToObjects(rawNewObject);
   if (pushObjectId == null) pushObjectId = setNextId("task");
   const result = await sendObject(pushObjectId, rawNewObject);
@@ -46,7 +31,7 @@ async function processRawObject(input) {
 }
 
 /**
- * check structure of incomming object
+ * Checks the structure of the incoming object
  * @param {object} input - expected type is nested or flat object, i.e. with or without key like "task-003"
  * @returns flat object or values of nested object, to process.
  */
@@ -67,7 +52,7 @@ function checkDataStructure(input) {
 }
 
 /**
- * replaces indications of "assignedUsers" (arr) to their contact-id by checking "contacts"
+ * Replaces entries of "assignedUsers" (array) with their contact-id by checking "contacts"
  * @param {object} rawNewObject - raw object
  * @returns array
  */
@@ -83,13 +68,13 @@ function convertContacts(rawNewObject) {
 }
 
 /**
- * converts values which are arrays to objects (mandatory for Firebase)
+ * Converts values which are arrays to objects (mandatory for Firebase)
  * @param {object} obj = raw object
  * @returns restructured object
  */
 function arraysToObjects(obj) {
   for (const key in obj) {
-    // checkedSubtasks NICHT umwandeln, sondern als Array von Booleans lassen
+    // Do NOT convert checkedSubtasks, keep as array of booleans
     if (
       Array.isArray(obj[key]) &&
       key !== "assignedUsers" &&
@@ -103,7 +88,7 @@ function arraysToObjects(obj) {
 }
 
 /**
- * for new task only: create new key (pattern: "task-009")
+ * For new task only: create new key (pattern: "task-009")
  * @param {string} category - here: "tasks"
  * @returns key (string)
  */
@@ -115,13 +100,12 @@ function setNextId(category) {
 }
 
 /**
- * helper function for "setNextId"; check last key in "tasks". If category is empty, initialize it
+ * Helper function for "setNextId"; checks last key in "tasks". If category is empty, initializes it
  * @param {string} category - here: "tasks"
  * @returns last key (string) in "tasks"
  */
 function getLastKey(category) {
   if (!allData || Object.keys(allData.tasks).length == 0) {
-    console.log("you initialized a new category: ", category);
     return `${category}-000`;
   } else {
     const itemKeys = Object.keys(allData.tasks);
@@ -130,10 +114,10 @@ function getLastKey(category) {
 }
 
 /**
- * send object to Firebase and update local copy (for instant rendering without new fetch)
+ * Sends object to Firebase and updates local copy (for instant rendering without new fetch)
  * @param {string} pushObjectId
  * @param {object} rawNewObject - former raw Object
- *
+
  * @returns final object; only for console.log purpose.
  */
 async function sendObject(pushObjectId, rawNewObject) {
@@ -149,9 +133,9 @@ async function sendObject(pushObjectId, rawNewObject) {
 }
 
 /**
- * upload function for data traffic to Firebase
+ * Upload function for data traffic to Firebase
  * @param {string} path - fragment of path (pattern: "tasks/task009")
- * @param {object} data - object containing all taks details
+ * @param {object} data - object containing all task details
  */
 async function saveToFirebase(path, data) {
   const url = `https://join-474-default-rtdb.europe-west1.firebasedatabase.app/${path}.json`;
@@ -162,7 +146,6 @@ async function saveToFirebase(path, data) {
       body: data === null ? undefined : JSON.stringify(data),
     });
     const resText = await response.text();
-    console.log("Firebase response:", response.status, resText);
     if (!response.ok) {
       throw new Error("Firebase update failed: " + response.statusText);
     }
