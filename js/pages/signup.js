@@ -1,3 +1,17 @@
+let fetchedData = null;
+
+/**
+ * onload-function: call database fetch function, store data in global variable "fetchedData"
+ */
+async function initPage() {
+  const data = await getFirebaseData("users");
+  if (!data) {
+    console.error('No data received');
+    return;
+  }
+  fetchedData = data;
+}
+
 /**
  * onclick-function on "signup"-button
  */

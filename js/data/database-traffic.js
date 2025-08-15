@@ -1,3 +1,58 @@
+/**
+ * login-fetch function for minimal data traffic. use querystring with "email" and look in database
+ * for dataset which matches email login input.
+ * @param {string} key - key in Firebase > users to check.
+ * @param {string} userEmail - input string.
+ * @returns user dataset or empty object.
+ * important: need this rule in Firebase:
+ * "users": {
+ *   ".indexOn": ["email"] 
+ * }
+ * encodeURIComponent : ensures correct unicode-encoding of string; %22 means "; mandatory for Firebase.
+ */
+async function checkLogin(key, userEmail) {
+  let baseUrl = `https://join-474-default-rtdb.europe-west1.firebasedatabase.app/users.json`;
+  let queryString = `?orderBy=%22${key}%22&equalTo=%22${encodeURIComponent(userEmail.toLowerCase())}%22`;
+  let url = baseUrl + queryString;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error('Network response not ok: ', response.statusText);
+      return null;
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Problem while fetching: ', error);
+    return false;
+  }
+}
+
+/**
+ * fetch data from Firebase, parse them to json for further use.
+ * @param {string} path - endpoint in database (empty string, if entire content is fetched)
+ * @returns fetched data, parsed to json
+ */
+
+async function getFirebaseData(path = '') {
+  const url = 'https://join-474-default-rtdb.europe-west1.firebasedatabase.app/' + path + '.json';
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error('Network response not ok: ', response.statusText);
+      return null;
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Problem while fetching: ', error);
+    return null;
+  }
+}
+
+
+// Function for collecting new user (and potentially new contact) data an store them to Firebase
+
 let currentDataContainer;
 let currentCategory = null;
 
@@ -108,6 +163,7 @@ function loopOverInputs(fieldMap, obj) {
 function specificEntries(requestedCategory, obj) {
   if(requestedCategory == "users") {
     obj.associatedContacts = "";
+    obj.email = obj.email.toLowerCase();
     return obj;
   } else if (requestedCategory == "contacts") {
     obj.initials = getInitials(obj.name);

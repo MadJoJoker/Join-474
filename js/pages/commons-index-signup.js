@@ -1,19 +1,5 @@
 // COMMON FUNCTIONS INDEX AND SIGN-UP
 
-let fetchedData = null;
-
-/**
- * onload-function: call database fetch function, store data in global variable "fetchedData"
- */
-async function initPage() {
-  const data = await getFirebaseData("users");
-  if (!data) {
-    console.error('No data received');
-    return;
-  }
-  fetchedData = data;
-}
-
 /**
  * helper function for "validateLogin", "validateNamePattern", "validateEmailPattern"
  *  display message, add red color
