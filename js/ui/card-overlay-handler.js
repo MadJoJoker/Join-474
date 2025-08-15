@@ -1,4 +1,3 @@
-// Card click and overlay rendering functions
 
 /**
  * Sets up click listener for a task card.

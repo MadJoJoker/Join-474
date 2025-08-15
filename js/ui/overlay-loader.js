@@ -1,4 +1,3 @@
-// Overlay HTML loader functions
 
 /**
  * Loads the detail overlay HTML once and returns the element.

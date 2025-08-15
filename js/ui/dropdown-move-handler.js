@@ -1,4 +1,3 @@
-// Dropdown and move-task handling functions
 
 /**
  * Sets up dropdown menu listeners for a task card.

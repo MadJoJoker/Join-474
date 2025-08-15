@@ -1,4 +1,3 @@
-// Edit overlay and form handling functions
 
 /**
  * Renders the edit overlay for a task.
