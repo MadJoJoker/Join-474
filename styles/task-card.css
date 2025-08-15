@@ -133,7 +133,7 @@
   color: #666;
   margin-bottom: clamp(6px, 2vw, 15px);
   max-height: clamp(60px, 12vw, 150px);
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
   padding-right: 4px;
 }
