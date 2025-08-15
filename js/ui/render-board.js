@@ -147,16 +147,42 @@ function renderTasksByColumn(boardData) {
   tasksData = boardData.tasks;
   window.allData = boardData;
 
-  const groupedTasks = groupTasksByColumn(tasksData);
-  sortGroupedTasks(groupedTasks);
+  const groupedTasks = groupAndSortTasks(tasksData);
+  renderAllColumns(groupedTasks, boardData);
+  setupTaskCardOverlays(boardData);
+  initDragAndDrop();
+}
 
+/**
+ * Groups tasks by column and sorts them by creation date.
+ * @param {object} tasks - The tasks object to group and sort.
+ * @returns {object} The grouped and sorted tasks object.
+ */
+function groupAndSortTasks(tasks) {
+  const grouped = groupTasksByColumn(tasks);
+  sortGroupedTasks(grouped);
+  return grouped;
+}
+
+/**
+ * Renders all columns with their respective tasks.
+ * @param {object} groupedTasks - The tasks grouped by column.
+ * @param {object} boardData - The board data object containing tasks and contacts.
+ */
+function renderAllColumns(groupedTasks, boardData) {
   VALID_COLUMNS.forEach((colID) => {
     const container = clearAndPrepareColumnContainer(colID);
     if (container) {
       renderColumnTasks(container, groupedTasks[colID], boardData);
     }
   });
+}
 
+/**
+ * Initializes the task card overlays for detail view and editing.
+ * @param {object} boardData - The board data object containing tasks and contacts.
+ */
+function setupTaskCardOverlays(boardData) {
   import("../ui/render-card.js").then((module) => {
     import("../templates/task-details-template.js").then((templateModule) => {
       if (typeof module.registerTaskCardDetailOverlay === "function") {
@@ -167,8 +193,6 @@ function renderTasksByColumn(boardData) {
       }
     });
   });
-
-  initDragAndDrop();
 }
 
 /**
