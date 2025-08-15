@@ -1,25 +1,55 @@
 export let addedSubtasks = [];
 
-/** Initializes the subtask management logic.
+/**
+ * Initializes the subtask management logic.
  * Sets up event listeners for adding, clearing, and managing subtasks.
+ * @param {HTMLElement} [container=document] - The container element for subtask controls.
  */
+
 export function initSubtaskManagementLogic(container = document) {
+  setupSubtaskInputEvents(container);
+  setupSubtaskButtonEvents(container);
+  setupSubtaskListEvents(container);
+  renderSubtasks();
+}
+
+/**
+ * Sets up event listeners for subtask input and add button.
+ * @param {HTMLElement} container - The container element for subtask controls.
+ */
+function setupSubtaskInputEvents(container) {
   const addSubtaskBtn = container.querySelector("#add-subtask-btn");
   const subtaskInput = container.querySelector("#subtask-input");
-  const subtaskClearBtn = container.querySelector("#subtask-clear-btn");
-  const subtaskAddTaskBtn = container.querySelector("#subtask-add-task-btn");
-  const subtasksList = container.querySelector("#subtasks-list");
-
   if (addSubtaskBtn && subtaskInput) {
-    addSubtaskBtn.onclick = addSubtask;
+    addSubtaskBtn.onclick = () => {
+      toggleSubtaskInputIcons(true);
+      subtaskInput.focus();
+    };
     subtaskInput.oninput = () => toggleSubtaskInputIcons(true);
   }
+}
+
+/**
+ * Sets up event listeners for subtask clear and add-task buttons.
+ * @param {HTMLElement} container - The container element for subtask controls.
+ */
+function setupSubtaskButtonEvents(container) {
+  const subtaskClearBtn = container.querySelector("#subtask-clear-btn");
+  const subtaskAddTaskBtn = container.querySelector("#subtask-add-task-btn");
   if (subtaskClearBtn) {
     subtaskClearBtn.onclick = clearSubtask;
   }
   if (subtaskAddTaskBtn) {
     subtaskAddTaskBtn.onclick = addSubtask;
   }
+}
+
+/**
+ * Sets up event listeners for the subtask list (edit, complete, delete).
+ * @param {HTMLElement} container - The container element for subtask controls.
+ */
+function setupSubtaskListEvents(container) {
+  const subtasksList = container.querySelector("#subtasks-list");
   if (subtasksList) {
     subtasksList.onclick = handleSubtaskListClick;
     subtasksList.addEventListener("click", function (e) {
@@ -34,11 +64,10 @@ export function initSubtaskManagementLogic(container = document) {
       }
     });
   }
-
-  renderSubtasks();
 }
 
-/** * Handles clicks on the subtask list.
+/**
+ * Handles clicks on the subtask list (edit and delete actions).
  * @param {Event} event - The click event.
  */
 function handleSubtaskListClick(event) {
@@ -54,7 +83,8 @@ function handleSubtaskListClick(event) {
   }
 }
 
-/** * Adds a new subtask to the list.
+/**
+ * Adds a new subtask to the list.
  * Retrieves the value from the subtask input field, validates it, and adds it to the list.
  * If the input is empty, it does nothing.
  */
@@ -71,7 +101,8 @@ export function addSubtask() {
   }
 }
 
-/** * Clears the subtask input field and hides the subtask input icons.
+/**
+ * Clears the subtask input field and hides the subtask input icons.
  * Resets the subtask input field to an empty string.
  */
 export function clearSubtask() {
@@ -82,7 +113,8 @@ export function clearSubtask() {
   toggleSubtaskInputIcons(false);
 }
 
-/** * Clears the list of added subtasks.
+/**
+ * Clears the list of added subtasks.
  * Resets the addedSubtasks array and updates the UI to reflect the cleared state.
  */
 export function clearSubtasksList() {
@@ -92,7 +124,8 @@ export function clearSubtasksList() {
   renderSubtasks();
 }
 
-/** * Renders the list of added subtasks in the UI.
+/**
+ * Renders the list of added subtasks in the UI.
  * Iterates over the addedSubtasks array and generates HTML for each subtask.
  */
 export function renderSubtasks() {
@@ -113,10 +146,13 @@ export function renderSubtasks() {
   });
 }
 
-/** * Renders a single subtask item.
+/**
+ * Renders a single subtask item.
  * Generates the HTML structure for a subtask item, including edit and delete icons.
  * @param {string} text - The text of the subtask.
  * @param {number} index - The index of the subtask in the addedSubtasks array.
+ * @param {boolean} completed - Whether the subtask is completed.
+ * @returns {string} The HTML string for the subtask item.
  */
 export function renderSubtask(text, index, completed) {
   return `
@@ -139,7 +175,8 @@ export function renderSubtask(text, index, completed) {
   `;
 }
 
-/** * Deletes a subtask from the list.
+/**
+ * Deletes a subtask from the list.
  * Removes the subtask at the specified index from the addedSubtasks array and re-renders the list.
  * @param {number} index - The index of the subtask to delete.
  */
@@ -148,7 +185,8 @@ export function deleteSubtask(index) {
   renderSubtasks();
 }
 
-/** * Toggles the subtask edit mode.
+/**
+ * Toggles the subtask edit mode.
  * @param {HTMLElement} editIcon - The edit icon element that was clicked.
  */
 export function toggleSubtaskEdit(editIcon) {
@@ -183,7 +221,8 @@ export function toggleSubtaskEdit(editIcon) {
   );
 }
 
-/** * Creates an input field for editing a subtask.
+/**
+ * Creates an input field for editing a subtask.
  * @param {string} currentText - The current text of the subtask.
  * @param {number} index - The index of the subtask.
  * @returns {HTMLInputElement} The created input element.
@@ -201,7 +240,8 @@ function createEditInput(currentText, index) {
   return editInput;
 }
 
-/** * Creates a container for the edit icons.
+/**
+ * Creates a container for the edit icons.
  * @returns {HTMLDivElement} The created container element.
  */
 function createEditIconsContainer() {
@@ -222,12 +262,14 @@ function createEditIconsContainer() {
   return editIconsContainer;
 }
 
-/** * Sets up event listeners for the edit icons.
+/**
+ * Sets up event listeners for the edit icons.
  * Adds click event listeners to the cancel and save buttons in the edit icons container.
  * @param {HTMLElement} editIconsContainer - The container holding the edit icons.
  * @param {HTMLInputElement} editInput - The input field for editing the subtask.
  * @param {HTMLElement} subtaskTextSpan - The span element displaying the subtask text.
  * @param {HTMLElement} subtaskActions - The container for the subtask action icons.
+ * @param {number} index - The index of the subtask being edited.
  */
 function setupEditIconListeners(
   editIconsContainer,
@@ -256,7 +298,8 @@ function setupEditIconListeners(
     });
 }
 
-/** * Handles the input event for subtask editing.
+/**
+ * Handles the input event for subtask editing.
  * Saves the subtask if the Enter key is pressed, or cancels the edit if the Escape key is pressed.
  * @param {KeyboardEvent} event - The keyboard event object.
  * @param {number} index - The index of the subtask being edited.
@@ -269,7 +312,8 @@ export function handleSubtaskInput(event, index) {
   }
 }
 
-/** * Saves the edited subtask text.
+/**
+ * Saves the edited subtask text.
  * Updates the subtask at the specified index with the new text.
  * @param {number} index - The index of the subtask to save.
  * @param {string} newText - The new text for the subtask.
@@ -283,9 +327,10 @@ export function saveSubtask(index, newText) {
   }
 }
 
-/** * Toggles the visibility of the subtask input icons.
+/**
+ * Toggles the visibility of the subtask input icons.
  * Shows or hides the icons based on the provided boolean value.
- * @param {boolean} showClearAdd - True, um Löschen- und Hinzufügen-Symbole anzuzeigen, false, um den Standard-Hinzufügen-Button anzuzeigen.
+ * @param {boolean} showClearAdd - True to show clear/add icons, false to show the default add button.
  */
 export function toggleSubtaskInputIcons(showClearAdd) {
   const addSubtaskBtn = document.getElementById("add-subtask-btn");
@@ -306,7 +351,8 @@ export function toggleSubtaskInputIcons(showClearAdd) {
   }
 }
 
-/** * Shows the subtask icons and focuses the input field.
+/**
+ * Shows the subtask icons and focuses the input field.
  * Hides the add subtask button and sets the focus on the subtask input field.
  * @param {HTMLElement} addSubtaskBtn - The add subtask button element.
  * @param {HTMLElement} subtaskIcons - The container holding the subtask icons.
@@ -322,7 +368,8 @@ function showSubtaskIcons(addSubtaskBtn, subtaskIcons, subtaskInputField) {
   subtaskInputField.focus();
 }
 
-/** * Hides the subtask icons and shows the add subtask button.
+/**
+ * Hides the subtask icons and shows the add subtask button.
  * @param {HTMLElement} addSubtaskBtn - The add subtask button element.
  * @param {HTMLElement} subtaskIcons - The container holding the subtask icons.
  */

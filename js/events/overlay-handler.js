@@ -244,39 +244,63 @@ function removeOverlayCSS(href) {
  * Attaches listeners to the close button, background click, and modal content.
  * @param {string} overlayId - The ID of the overlay to initialize.
  */
+/**
+ * Finds the modal content element inside the overlay.
+ * @param {HTMLElement} overlay - The overlay element to search within.
+ * @returns {HTMLElement|null} The modal content element if found, otherwise null.
+ */
+function findModalContent(overlay) {
+  return (
+    getValidatedQuerySelector(overlay, ".modal-content") ||
+    getValidatedQuerySelector(overlay, ".modal-content-task") ||
+    getValidatedQuerySelector(overlay, ".modal-content-task-edit") ||
+    getValidatedQuerySelector(overlay, "#modal-content") ||
+    getValidatedQuerySelector(overlay, "#modal-content-task") ||
+    getValidatedQuerySelector(overlay, "#modal-content-task-detail-edit") ||
+    getValidatedQuerySelector(overlay, "#modal-content-task-edit") ||
+    overlay.querySelector("div")
+  );
+}
+
+/**
+ * Adds event listeners to subtask checkboxes inside the overlay.
+ * @param {HTMLElement} overlay - The overlay element containing the checkboxes.
+ */
+function addSubtaskCheckboxListeners(overlay) {
+  import("../data/task-to-firbase.js").then(({ CWDATA, allData }) => {
+    const checkboxes = overlay.querySelectorAll(".subtask-checkbox");
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+        const taskId = this.dataset.taskId;
+        const subtaskIndex = Number(this.dataset.subtaskIndex);
+        const task = allData.tasks[taskId];
+        if (task) {
+          task.checkedSubtasks[subtaskIndex] = this.checked;
+          CWDATA({ [taskId]: task }, allData);
+        } else {
+          console.error(`Task with ID ${taskId} not found!`);
+        }
+      });
+    });
+  });
+}
+
+/**
+ * Initializes event listeners for the overlay.
+ * Attaches listeners to the close button, background click, modal content, and Escape key.
+ * Adds subtask checkbox listeners for task detail overlays.
+ * @param {string} overlayId - The ID of the overlay to initialize.
+ */
 export function initOverlayListeners(overlayId) {
   const overlay = getValidatedElementById(overlayId);
   if (!overlay) return;
 
-  let modalContent = getValidatedQuerySelector(overlay, ".modal-content");
-  if (!modalContent)
-    modalContent = getValidatedQuerySelector(overlay, ".modal-content-task");
-  if (!modalContent)
-    modalContent = getValidatedQuerySelector(
-      overlay,
-      ".modal-content-task-edit"
-    );
-  if (!modalContent)
-    modalContent = getValidatedQuerySelector(overlay, "#modal-content");
-  if (!modalContent)
-    modalContent = getValidatedQuerySelector(overlay, "#modal-content-task");
-  if (!modalContent)
-    modalContent = getValidatedQuerySelector(
-      overlay,
-      "#modal-content-task-detail-edit"
-    );
-  if (!modalContent)
-    modalContent = getValidatedQuerySelector(
-      overlay,
-      "#modal-content-task-edit"
-    );
-  if (!modalContent) {
-    modalContent = overlay.querySelector("div");
-  }
+  const modalContent = findModalContent(overlay);
   const closeModalButton = getValidatedQuerySelector(
     overlay,
     ".close-modal-btn"
   );
+
   attachCloseButtonListener(closeModalButton, overlayId);
   attachBackgroundClickListener(overlay, overlayId);
   if (modalContent) attachModalContentStopper(modalContent);
@@ -284,22 +308,7 @@ export function initOverlayListeners(overlayId) {
 
   if (overlayId === "overlay-task-detail") {
     try {
-      import("../data/task-to-firbase.js").then(({ CWDATA, allData }) => {
-        const checkboxes = overlay.querySelectorAll(".subtask-checkbox");
-        checkboxes.forEach((checkbox) => {
-          checkbox.addEventListener("change", function () {
-            const taskId = this.dataset.taskId;
-            const subtaskIndex = Number(this.dataset.subtaskIndex);
-            const task = allData.tasks[taskId];
-            if (task) {
-              task.checkedSubtasks[subtaskIndex] = this.checked;
-              CWDATA({ [taskId]: task }, allData);
-            } else {
-              console.error(`Task with ID ${taskId} not found!`);
-            }
-          });
-        });
-      });
+      addSubtaskCheckboxListeners(overlay);
     } catch (err) {
       console.error("Error adding subtask-checkbox listeners:", err);
     }
