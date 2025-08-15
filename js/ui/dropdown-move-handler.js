@@ -1,10 +1,9 @@
-
 /**
  * Sets up dropdown menu listeners for a task card.
- * @param {HTMLElement} card - The task card DOM element.
- * @param {object} boardData - The board data object.
- * @param {function} handleDropdownClick - Function to handle dropdown click events.
- * @param {function} setupMoveTaskListeners - Function to setup move task listeners.
+ * @param {HTMLElement} card The task card DOM element.
+ * @param {Object} boardData The board data object containing all tasks and columns.
+ * @param {Function} handleDropdownClick Function to handle dropdown click events.
+ * @param {Function} setupMoveTaskListeners Function to set up move task listeners.
  */
 export function setupDropdownMenuListeners(
   card,
@@ -23,9 +22,9 @@ export function setupDropdownMenuListeners(
 
 /**
  * Handles click event for dropdown menu button.
- * @param {Event} e - The click event.
- * @param {HTMLElement} dropdownMenu - The dropdown menu DOM element.
- * @param {HTMLElement} dropdownBtn - The dropdown button DOM element.
+ * @param {Event} e The click event.
+ * @param {HTMLElement} dropdownMenu The dropdown menu DOM element.
+ * @param {HTMLElement} dropdownBtn The dropdown button DOM element.
  */
 export function handleDropdownClick(e, dropdownMenu, dropdownBtn) {
   if (window.innerWidth > 1025) return;
@@ -47,9 +46,9 @@ export function handleDropdownClick(e, dropdownMenu, dropdownBtn) {
 
 /**
  * Sets up listeners for moving tasks between columns.
- * @param {HTMLElement} dropdownMenu - The dropdown menu DOM element.
- * @param {object} boardData - The board data object.
- * @param {function} handleMoveTask - Function to handle moving tasks.
+ * @param {HTMLElement} dropdownMenu The dropdown menu DOM element.
+ * @param {Object} boardData The board data object containing all tasks and columns.
+ * @param {Function} handleMoveTask Function to handle moving tasks.
  */
 export function setupMoveTaskListeners(
   dropdownMenu,
@@ -70,12 +69,12 @@ export function setupMoveTaskListeners(
 
 /**
  * Handles moving a task up or down between columns.
- * @param {Event} ev - The click event.
- * @param {object} boardData - The board data object.
- * @param {string} direction - The direction to move ('up' or 'down').
- * @param {function} CWDATA - Function to update the board data.
+ * @param {Event} ev The click event.
+ * @param {Object} boardData The board data object containing all tasks and columns.
+ * @param {string} direction The direction to move ('up' or 'down').
+ * @param {Function} CWDATA Function to update the board data.
  */
-export function handleMoveTask(ev, boardData, direction, CWDATA) {
+export async function handleMoveTask(ev, boardData, direction, CWDATA) {
   ev.preventDefault();
   ev.stopPropagation();
   const taskId = ev.currentTarget.dataset.taskId;
@@ -86,7 +85,7 @@ export function handleMoveTask(ev, boardData, direction, CWDATA) {
   let newIdx = direction === "up" ? currentIdx - 1 : currentIdx + 1;
   if (newIdx >= 0 && newIdx < columnOrder.length) {
     task.columnID = columnOrder[newIdx];
-    CWDATA({ [taskId]: task }, boardData);
+    await CWDATA({ [taskId]: task }, boardData);
     window.location.href = "board-site.html";
   }
 }
