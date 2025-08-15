@@ -1,36 +1,13 @@
-import {
-    initTask,
-    handleCreateTask,
-    clearForm,
-    startResize,
-    openPicker,
-    formatDate,
-    handleInput,
-} from "./add-task.js";
-import {
-    initPriorityButtons,
-    setButtonIconsMobile
-} from "../events/priorety-handler.js";
-import {
-    filterContacts,
-    toggleCategoryDropdown,
-    toggleAssignedToDropdown,
-    selectedContacts
-} from "../events/dropdown-menu.js";
-import {
-    addSubtask,
-    clearSubtask,
-    toggleSubtaskEdit,
-    deleteSubtask,
-    toggleSubtaskInputIcons,
-} from "../events/subtask-handler.js";
+import { initTask, handleCreateTask, clearForm, startResize, openPicker, formatDate, handleInput, } from "./add-task.js";
+import { initPriorityButtons, setButtonIconsMobile } from "../events/priorety-handler.js";
+import { filterContacts, toggleCategoryDropdown, toggleAssignedToDropdown, selectedContacts } from "../events/dropdown-menu.js";
+import { addSubtask, clearSubtask, toggleSubtaskEdit, deleteSubtask, toggleSubtaskInputIcons } from "../events/subtask-handler.js";
 import { autofillForms } from "../events/autofill-add-task.js";
 
 export let picker = null;
 
 export async function initAddTaskForm() {
     await initTask();
-
     initDatePicker();
     initPriorityButtons();
     initFormEventListeners();
@@ -223,15 +200,11 @@ function handleSubtaskKeydown(event) {
 function initSubtaskButtonListeners() {
     document.getElementById("add-subtask-btn")?.addEventListener("click", () => toggleSubtaskInputIcons(true));
 
-    const clearButtons = [
-        document.querySelector('.subtask-icons img[alt="Close"]'),
-        document.getElementById("subtask-clear-btn"),
-    ];
+    const clearButtons = [document.querySelector('.subtask-icons img[alt="Close"]'),
+    document.getElementById("subtask-clear-btn"),];
 
-    const addButtons = [
-        document.querySelector('.subtask-icons img[alt="Add"]'),
-        document.getElementById("subtask-add-task-btn"),
-    ];
+    const addButtons = [document.querySelector('.subtask-icons img[alt="Add"]'),
+    document.getElementById("subtask-add-task-btn"),];
 
     clearButtons.forEach((btn) => btn?.addEventListener("click", clearSubtask));
     addButtons.forEach((btn) => btn?.addEventListener("click", addSubtask));
@@ -322,27 +295,39 @@ export function handleSignInfoMobile() {
     }
 }
 
+/** * Creates the mobile info div for the sign info message.
+ * It returns a div element with the appropriate attributes and content.
+ */
+function createInfoDiv() {
+    const div = document.createElement("div");
+    div.id = "sign-info-mobile";
+    div.className = "sign-info";
+    div.textContent = "This field is required";
+    return div;
+}
+
+/** * Creates the autofill button for the mobile view.
+ * It returns a button element with the appropriate attributes and event listeners.
+ */
+function createAutofillButton(autofillForms) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = "Autofill";
+    btn.addEventListener("click", autofillForms);
+    btn.id = "add-task-autofill-btn-mobile";
+    btn.className = "autofill-mobile-btn";
+    return btn;
+}
+
 /** * Handles the mobile view of the sign info message.
  * If the mobile version does not exist and the desktop version does, it creates a new mobile div and button.
  * It also hides the desktop version and the autofill button.
  */
 export function handleMobileView(container, desktop, mobile, autofillBtn) {
-    if (!mobile && desktop) {
-        const newDiv = document.createElement("div");
-        newDiv.id = "sign-info-mobile";
-        newDiv.className = "sign-info";
-        newDiv.textContent = "This field is required";
-        const newButton = document.createElement("button");
-        newButton.type = "button";
-        newButton.textContent = "Autofill";
-        newButton.addEventListener("click", autofillForms);
-        newButton.id = "add-task-autofill-btn-mobile";
-        newButton.className = "autofill-mobile-btn";
-        container?.appendChild(newDiv);
-        container?.appendChild(newButton);
-        desktop.classList.add("d-none");
-        autofillBtn.classList.add("d-none");
-    }
+    if (mobile || !desktop) return;
+    container?.append(createInfoDiv(), createAutofillButton(autofillForms));
+    desktop.classList.add("d-none");
+    autofillBtn.classList.add("d-none");
 }
 
 /** * Handles the desktop view of the sign info message.

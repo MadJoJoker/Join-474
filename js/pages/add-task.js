@@ -1,27 +1,10 @@
 import { getFirebaseData } from "../data/API.js";
-import {
-  clearSubtask,
-  clearSubtasksList,
-  renderSubtasks,
-  addedSubtasks,
-} from "../events/subtask-handler.js";
+import { clearSubtask, clearSubtasksList, renderSubtasks, addedSubtasks, } from "../events/subtask-handler.js";
 import { currentPriority, setMedium } from "../events/priorety-handler.js";
-import {
-  selectedCategory,
-  selectedContacts,
-  clearAssignedTo,
-  clearCategory,
-} from "../events/dropdown-menu.js";
-import {
-  clearInvalidFields,
-  initDropdowns,
-} from "../events/dropdown-menu-auxiliary-function.js";
+import { selectedCategory, selectedContacts, clearAssignedTo, clearCategory, } from "../events/dropdown-menu.js";
+import { clearInvalidFields, initDropdowns, } from "../events/dropdown-menu-auxiliary-function.js";
 import { CWDATA } from "../data/task-to-firbase.js";
-import {
-  initAddTaskForm,
-  picker,
-  showTaskSuccessMsg,
-} from "../pages/add-task-auxiliary-functions.js";
+import { initAddTaskForm, picker, showTaskSuccessMsg } from "../pages/add-task-auxiliary-functions.js";
 
 let isResizing = false;
 let startY, startHeight, currentTextarea;

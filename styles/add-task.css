@@ -242,7 +242,7 @@
 .select-wrapper {
   position: relative;
   width: 100%;
-  z-index: 1000;
+  z-index: 30;
   display: flex;
   align-items: center;
 
@@ -250,6 +250,14 @@
     border-color: var(--lightBlue);
     outline: none;
   }
+}
+
+.z-index-20 {
+  z-index: 20;
+}
+
+.z-index-10 {
+  z-index: 10;
 }
 
 .styled-select {

@@ -1,17 +1,5 @@
 import { firebaseData } from "../../main.js";
-import {
-  currentContacts,
-  getAssignedToOptions,
-  setCategory,
-  toggleCategoryDropdown,
-  toggleSelectContacts,
-  toggleAssignedToDropdown,
-  setSortedContacts,
-  selectedCategory,
-  selectedContacts,
-  resetDropdownState,
-  setBorderColorGrey,
-} from "./dropdown-menu.js";
+import { currentContacts, getAssignedToOptions, setCategory, toggleCategoryDropdown, toggleSelectContacts, toggleAssignedToDropdown, setSortedContacts, selectedCategory, selectedContacts, resetDropdownState, setBorderColorGrey, } from "./dropdown-menu.js";
 
 /** Initializes the dropdown menus for category and assigned contacts.
  * Sets up event listeners and populates the dropdowns with contacts.
@@ -22,58 +10,43 @@ export function initDropdowns(contactsData) {
   const categoryDropdown = document.getElementById("dropdown-category");
   const categoryOptions = document.getElementById("category-options-container");
   const assignedUsersDropdown = document.getElementById("dropdown-assigned-to");
-  const assignedUsersOptions = document.getElementById(
-    "assigned-to-options-container"
-  );
+  const assignedUsersOptions = document.getElementById("assigned-to-options-container");
 
   setupCategoryDropdown();
   setupAssignedUsersDropdown();
-  setupDocumentClickHandler(
-    categoryDropdown,
-    categoryOptions,
-    assignedUsersDropdown,
-    assignedUsersOptions
-  );
+  setupDocumentClickHandler(categoryDropdown, categoryOptions, assignedUsersDropdown, assignedUsersOptions);
   resetDropdownState();
 }
 
 /** Clears the selected assigned contacts in the dropdown.
  */
 function setupCategoryDropdown() {
-  document
-    .getElementById("dropdown-category")
-    ?.addEventListener("click", toggleCategoryDropdown);
-  document
-    .getElementById("category-options-container")
-    ?.addEventListener("click", (event) => {
-      if (event.target.classList.contains("option")) {
-        setCategory(event.target);
-      }
-    });
+  document.getElementById("dropdown-category")?.addEventListener("click", toggleCategoryDropdown);
+  document.getElementById("category-options-container")?.addEventListener("click", (event) => {
+    if (event.target.classList.contains("option")) {
+      setCategory(event.target);
+    }
+  });
 }
 
 /** Clears the selected assigned contacts in the dropdown.
  */
 function setupAssignedUsersDropdown() {
-  document
-    .getElementById("dropdown-assigned-to")
-    ?.addEventListener("click", toggleAssignedToDropdown);
-  document
-    .getElementById("assigned-to-options-container")
-    ?.addEventListener("click", (event) => {
-      const contactOption = event.target.closest(".contact-option");
-      if (contactOption) {
-        const { name, initials, avatarColor } = contactOption.dataset;
-        toggleSelectContacts(contactOption, name, initials, avatarColor);
+  document.getElementById("dropdown-assigned-to")?.addEventListener("click", toggleAssignedToDropdown);
+  document.getElementById("assigned-to-options-container")?.addEventListener("click", (event) => {
+    const contactOption = event.target.closest(".contact-option");
+    if (contactOption) {
+      const { name, initials, avatarColor } = contactOption.dataset;
+      toggleSelectContacts(contactOption, name, initials, avatarColor);
 
-        const invalidArea = document.getElementById("dropdown-assigned-to");
-        const assignedUsersError = document.getElementById("assigned-to-error");
-        if (invalidArea.classList.contains("invalid")) {
-          invalidArea.classList.remove("invalid");
-          assignedUsersError?.classList.remove("d-flex");
-        }
+      const invalidArea = document.getElementById("dropdown-assigned-to");
+      const assignedUsersError = document.getElementById("assigned-to-error");
+      if (invalidArea.classList.contains("invalid")) {
+        invalidArea.classList.remove("invalid");
+        assignedUsersError?.classList.remove("d-flex");
       }
-    });
+    }
+  });
 }
 
 /** Handles clicks outside the dropdown to close it.
@@ -97,27 +70,14 @@ function handleOutsideClick(dropdown, options, closeFunction) {
  * @param {HTMLElement} assignedUsersDropdown - The assigned users dropdown element.
  * @param {HTMLElement} assignedUsersOptions - The assigned users options container element.
  */
-function setupDocumentClickHandler(
-  categoryDropdown,
-  categoryOptions,
-  assignedUsersDropdown,
-  assignedUsersOptions
-) {
+function setupDocumentClickHandler(categoryDropdown, categoryOptions, assignedUsersDropdown, assignedUsersOptions) {
   document.addEventListener("click", (event) => {
     if (categoryDropdown && categoryOptions) {
-      handleOutsideClick(
-        categoryDropdown,
-        categoryOptions,
-        closeCategoryDropdown
-      )(event);
+      handleOutsideClick(categoryDropdown, categoryOptions, closeCategoryDropdown)(event);
     }
 
     if (assignedUsersDropdown && assignedUsersOptions) {
-      handleOutsideClick(
-        assignedUsersDropdown,
-        assignedUsersOptions,
-        closeAssignedToDropdown
-      )(event);
+      handleOutsideClick(assignedUsersDropdown, assignedUsersOptions, closeAssignedToDropdown)(event);
     }
   });
 }
@@ -128,9 +88,7 @@ export function closeCategoryDropdown() {
   const wrapper = document.getElementById("category-options-wrapper");
   const container = document.getElementById("category-options-container");
   const dropdownIconTwo = document.getElementById("dropdown-icon-two");
-  const dropdownIconContainerTwo = document.getElementById(
-    "dropdown-icon-container-two"
-  );
+  const dropdownIconContainerTwo = document.getElementById("dropdown-icon-container-two");
   const input = document.getElementById("dropdown-category");
 
   if (!wrapper || !container) return;
@@ -153,9 +111,7 @@ export function closeAssignedToDropdown() {
   const wrapper = document.getElementById("assigned-to-options-wrapper");
   const container = document.getElementById("assigned-to-options-container");
   const dropdownIconOne = document.getElementById("dropdown-icon-one");
-  const dropdownIconContainerOne = document.getElementById(
-    "dropdown-icon-container-one"
-  );
+  const dropdownIconContainerOne = document.getElementById("dropdown-icon-container-one");
 
   if (!wrapper || !container) return;
 
