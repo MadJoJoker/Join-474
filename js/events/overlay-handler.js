@@ -130,9 +130,10 @@ function attachCloseButtonListener(button, overlayId) {
       closeSpecificOverlay(overlayId);
       if (
         overlayId === "overlay-task-detail" ||
-        overlayId === "overlay-task-detail-edit"
+        overlayId === "overlay-task-detail-edit" ||
+        overlayId === "overlay"
       ) {
-        window.location.href = "board-site.html";
+        await refreshBoardContentOnly();
       }
     });
   }
@@ -149,9 +150,10 @@ function attachBackgroundClickListener(overlay, overlayId) {
       closeSpecificOverlay(overlayId);
       if (
         overlayId === "overlay-task-detail" ||
-        overlayId === "overlay-task-detail-edit"
+        overlayId === "overlay-task-detail-edit" ||
+        overlayId === "overlay"
       ) {
-        window.location.href = "board-site.html";
+        await refreshBoardContentOnly();
       }
     }
   });
@@ -172,13 +174,20 @@ function attachModalContentStopper(modalContent) {
  * @param {string} overlayId - The ID of the overlay to close.
  */
 function attachEscapeKeyListener(overlay, overlayId) {
-  document.addEventListener("keydown", (event) => {
+  document.addEventListener("keydown", async (event) => {
     if (
       event.key === "Escape" &&
       overlay &&
       !overlay.classList.contains("overlay-hidden")
     ) {
       closeSpecificOverlay(overlayId);
+      if (
+        overlayId === "overlay-task-detail" ||
+        overlayId === "overlay-task-detail-edit" ||
+        overlayId === "overlay"
+      ) {
+        await refreshBoardContentOnly();
+      }
     }
   });
 }
@@ -198,6 +207,13 @@ function ensureOverlayCSS(href) {
       ...document.head.querySelectorAll('link[rel="stylesheet"]'),
     ].find((l) => l.href.includes(href));
     if (existing) {
+      // Nur Board-Content neu rendern, nicht die ganze Seite
+      if (
+        overlayId === "overlay-task-detail" ||
+        overlayId === "overlay-task-detail-edit"
+      ) {
+        refreshBoardContentOnly();
+      }
       if (existing.sheet) {
         resolve();
       } else {
@@ -350,5 +366,23 @@ function setupOverlayListeners(overlay, overlayId) {
 export function redirectOnSmallScreen() {
   if (window.matchMedia("(max-width: 768px)").matches) {
     window.location.href = "add-task.html";
+  }
+}
+
+/**
+ * Re-renders only the board content without reloading the entire page.
+ * @param {void} - No parameters required.
+ * @returns {Promise<void>} Resolves when the board content is refreshed.
+ */
+export async function refreshBoardContentOnly() {
+  try {
+    const { loadFirebaseData } = await import("../../main.js");
+    const { renderTasksByColumn } = await import("../ui/render-board.js");
+    const boardData = await loadFirebaseData();
+    if (boardData) {
+      renderTasksByColumn(boardData);
+    }
+  } catch (error) {
+    console.error("Error while re-rendering board content:", error);
   }
 }

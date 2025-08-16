@@ -142,7 +142,7 @@ function renderColumnTasks(container, tasksInColumn, boardData) {
  * Renders tasks by their column.
  * @param {object} boardData - The board data containing tasks and contacts.
  */
-function renderTasksByColumn(boardData) {
+export function renderTasksByColumn(boardData) {
   if (!validateRenderBoardData(boardData)) return;
 
   tasksData = boardData.tasks;
