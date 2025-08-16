@@ -5,20 +5,21 @@
  * @param {function} [afterLoad] - Optional callback after loading and inserting the overlay.
  * @returns {Promise<HTMLElement|null>} - The loaded overlay element or null.
  */
+/**
+ * Loads overlay HTML from a template file, inserts it into the overlay container, and initializes listeners.
+ * @param {string} templatePath - Path to the HTML template file.
+ * @param {string} overlayId - The ID to assign to the loaded overlay element.
+ * @param {function} [afterLoad] - Optional callback after loading and inserting the overlay.
+ * @returns {Promise<HTMLElement|null>} - The loaded overlay element or null.
+ */
 export async function loadOverlayHtmlOnce(templatePath, overlayId, afterLoad) {
   const overlayContainer = document.getElementById("overlay-container");
   if (!overlayContainer) return null;
   let existing = document.getElementById(overlayId);
   if (existing) return existing;
   try {
-    const response = await fetch(templatePath);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    const html = await response.text();
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = html;
-    const overlayElement = tempDiv.firstElementChild;
+    const overlayElement = await fetchAndCreateOverlay(templatePath, overlayId);
     if (overlayElement) {
-      overlayElement.id = overlayId;
       overlayContainer.appendChild(overlayElement);
       initOverlayListeners(overlayId);
       if (afterLoad) afterLoad(overlayElement);
@@ -28,6 +29,23 @@ export async function loadOverlayHtmlOnce(templatePath, overlayId, afterLoad) {
     console.error("Failed to load overlay HTML:", error);
   }
   return null;
+}
+
+/**
+ * Fetches the template and creates the overlay element.
+ * @param {string} templatePath - Path to the HTML template file.
+ * @param {string} overlayId - The ID to assign to the loaded overlay element.
+ * @returns {Promise<HTMLElement|null>} - The created overlay element or null.
+ */
+async function fetchAndCreateOverlay(templatePath, overlayId) {
+  const response = await fetch(templatePath);
+  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  const html = await response.text();
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = html;
+  const overlayElement = tempDiv.firstElementChild;
+  if (overlayElement) overlayElement.id = overlayId;
+  return overlayElement || null;
 }
 let currentOverlay = null;
 
@@ -291,21 +309,16 @@ function addSubtaskCheckboxListeners(overlay) {
  * Adds subtask checkbox listeners for task detail overlays.
  * @param {string} overlayId - The ID of the overlay to initialize.
  */
+/**
+ * Initializes event listeners for the overlay.
+ * Attaches listeners to the close button, background click, modal content, and Escape key.
+ * Adds subtask checkbox listeners for task detail overlays.
+ * @param {string} overlayId - The ID of the overlay to initialize.
+ */
 export function initOverlayListeners(overlayId) {
   const overlay = getValidatedElementById(overlayId);
   if (!overlay) return;
-
-  const modalContent = findModalContent(overlay);
-  const closeModalButton = getValidatedQuerySelector(
-    overlay,
-    ".close-modal-btn"
-  );
-
-  attachCloseButtonListener(closeModalButton, overlayId);
-  attachBackgroundClickListener(overlay, overlayId);
-  if (modalContent) attachModalContentStopper(modalContent);
-  attachEscapeKeyListener(overlay, overlayId);
-
+  setupOverlayListeners(overlay, overlayId);
   if (overlayId === "overlay-task-detail") {
     try {
       addSubtaskCheckboxListeners(overlay);
@@ -313,6 +326,23 @@ export function initOverlayListeners(overlayId) {
       console.error("Error adding subtask-checkbox listeners:", err);
     }
   }
+}
+
+/**
+ * Sets up listeners for close button, background, modal content, and Escape key.
+ * @param {HTMLElement} overlay - The overlay element.
+ * @param {string} overlayId - The ID of the overlay.
+ */
+function setupOverlayListeners(overlay, overlayId) {
+  const modalContent = findModalContent(overlay);
+  const closeModalButton = getValidatedQuerySelector(
+    overlay,
+    ".close-modal-btn"
+  );
+  attachCloseButtonListener(closeModalButton, overlayId);
+  attachBackgroundClickListener(overlay, overlayId);
+  if (modalContent) attachModalContentStopper(modalContent);
+  attachEscapeKeyListener(overlay, overlayId);
 }
 
 /** Loads and initializes the add-task overlay.

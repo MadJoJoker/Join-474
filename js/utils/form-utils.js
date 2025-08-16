@@ -64,11 +64,13 @@ function extractAssignedUsers(form, contactsObj) {
   if (assignedOptions && contactsObj) {
     return Array.from(assignedOptions)
       .map((option) => {
+        const id = option.getAttribute("data-id");
+        if (id && contactsObj[id]) return id;
         const name =
           option.getAttribute("data-name") || option.textContent.trim();
         return (
           Object.entries(contactsObj).find(
-            ([id, contact]) => contact.name === name
+            ([cid, contact]) => contact.name === name
           )?.[0] || null
         );
       })
@@ -83,26 +85,47 @@ function extractAssignedUsers(form, contactsObj) {
  * @param {object} taskToEdit - The original task object (for fallback values).
  * @returns {{ totalSubtasks: string[], checkedSubtasks: boolean[] }} Subtasks and their checked status.
  */
-function extractSubtasks(form, taskToEdit) {
-  const subtaskInputs = form.querySelectorAll(".subtask-input");
-  let totalSubtasks = Array.from(subtaskInputs)
+/**
+ * Gets subtasks from input fields in the form.
+ * @param {HTMLFormElement} form - The form element.
+ * @returns {string[]} Array of subtask strings.
+ */
+function getSubtasksFromInputs(form) {
+  return Array.from(form.querySelectorAll(".subtask-input"))
     .map((input) => input.value.trim())
     .filter((text) => text !== "");
+}
+
+/**
+ * Gets subtasks from text nodes in the form.
+ * @param {HTMLFormElement} form - The form element.
+ * @returns {string[]} Array of subtask strings.
+ */
+function getSubtasksFromTextNodes(form) {
+  return Array.from(form.querySelectorAll(".subtask-text"))
+    .map((node) => node.textContent.trim())
+    .filter((text) => text !== "");
+}
+
+/**
+ * Gets subtasks from item nodes in the form.
+ * @param {HTMLFormElement} form - The form element.
+ * @returns {string[]} Array of subtask strings.
+ */
+function getSubtasksFromItems(form) {
+  return Array.from(form.querySelectorAll(".subtask-item"))
+    .map((node) => node.textContent.trim())
+    .filter((text) => text !== "");
+}
+
+function extractSubtasks(form, taskToEdit) {
+  let totalSubtasks = getSubtasksFromInputs(form);
   let checkedSubtasks = Array.from(form.querySelectorAll(".subtask-text")).map(
     (node) => node.classList.contains("completed")
   );
   if (totalSubtasks.length === 0) {
-    const subtaskTextNodes = form.querySelectorAll(".subtask-text");
-    if (subtaskTextNodes.length > 0) {
-      totalSubtasks = Array.from(subtaskTextNodes)
-        .map((node) => node.textContent.trim())
-        .filter((text) => text !== "");
-    } else {
-      const subtaskItemNodes = form.querySelectorAll(".subtask-item");
-      totalSubtasks = Array.from(subtaskItemNodes)
-        .map((node) => node.textContent.trim())
-        .filter((text) => text !== "");
-    }
+    totalSubtasks = getSubtasksFromTextNodes(form);
+    if (totalSubtasks.length === 0) totalSubtasks = getSubtasksFromItems(form);
     if (totalSubtasks.length === 0) {
       totalSubtasks = Array.isArray(taskToEdit.totalSubtasks)
         ? [...taskToEdit.totalSubtasks]

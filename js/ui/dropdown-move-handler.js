@@ -35,13 +35,15 @@ export function handleDropdownClick(e, dropdownMenu, dropdownBtn) {
     .forEach((menu) => {
       if (menu !== dropdownMenu) menu.classList.remove("show");
     });
-  const closeDropdown = (ev) => {
-    if (!dropdownMenu.contains(ev.target) && ev.target !== dropdownBtn) {
-      dropdownMenu.classList.remove("show");
-      document.removeEventListener("click", closeDropdown);
-    }
-  };
-  setTimeout(() => document.addEventListener("click", closeDropdown), 0);
+  const card = dropdownBtn.closest(".task-card");
+  if (card) {
+    card.style.position = "relative";
+    dropdownMenu.style.position = "absolute";
+    dropdownMenu.style.top = "0";
+    dropdownMenu.style.left = "0";
+    dropdownMenu.style.zIndex = "10000";
+    dropdownMenu.style.width = `${card.offsetWidth}px`;
+  }
 }
 
 /**

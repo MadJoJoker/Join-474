@@ -1,5 +1,6 @@
 /**
  * Refreshes the board site by reloading and rendering all tasks.
+ * @returns {Promise<void>} Resolves when the board is refreshed.
  */
 export async function refreshBoardSite() {
   await loadAndRenderBoard();
@@ -261,8 +262,16 @@ export async function loadAndRenderBoard() {
  * Initializes the board when the DOM content is loaded.
  * @returns {Promise<void>} Resolves when the board is initialized.
  */
+/**
+ * Initializes the board when the DOM content is loaded.
+ * @returns {Promise<void>} Resolves when the board is initialized.
+ */
 async function initializeBoard() {
   await loadAndRenderBoard();
 }
 
+/**
+ * Event listener for DOMContentLoaded to initialize the board.
+ * @param {Event} event - The DOMContentLoaded event.
+ */
 document.addEventListener("DOMContentLoaded", initializeBoard);

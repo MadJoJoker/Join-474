@@ -40,16 +40,44 @@ function dragStart(event) {
  * Removes the dragging class and resets the current dragged element.
  * @param {DragEvent} event
  */
+/**
+ * Handles the drag end event.
+ * Removes the dragging class and resets the current dragged element.
+ * @param {DragEvent} event
+ */
 function dragEnd(event) {
-  if (event.target && event.target.classList) {
-    event.target.classList.remove("is-dragging");
-  }
+  removeDraggingClass(event.target);
   currentDraggedElement = null;
+  removeDragOverFromColumns();
+  updateTaskAfterDragEnd(event);
+}
+
+/**
+ * Removes the dragging class from the target element.
+ * @param {HTMLElement} target - The dragged element.
+ */
+function removeDraggingClass(target) {
+  if (target && target.classList) {
+    target.classList.remove("is-dragging");
+  }
+}
+
+/**
+ * Removes the drag-over class from all columns.
+ */
+function removeDragOverFromColumns() {
   document.querySelectorAll(".task-column").forEach((column) => {
     if (column && column.classList) {
       column.classList.remove("drag-over");
     }
   });
+}
+
+/**
+ * Updates the task data after drag end.
+ * @param {DragEvent} event - The drag end event.
+ */
+function updateTaskAfterDragEnd(event) {
   const taskId = event.target.id;
   const allData = window.allData;
   if (allData && allData.tasks && allData.tasks[taskId]) {
@@ -71,7 +99,6 @@ function dragEnd(event) {
       updatedAt: task.updatedAt,
     };
     CWDATA({ [taskId]: updatedTaskObj }, allData);
-  } else {
   }
 }
 
@@ -103,16 +130,30 @@ function dragLeave(event) {
  * Moves the dragged element to the new column and updates the task data.
  * @param {DragEvent} event
  */
+/**
+ * Handles the drop event.
+ * Moves the dragged element to the new column and updates the task data.
+ * @param {DragEvent} event
+ */
 async function drop(event) {
   event.preventDefault();
   const taskId = event.dataTransfer.getData("text/plain");
   const draggedElement = document.getElementById(taskId);
   const targetColumn = event.target.closest(".task-column");
+  await handleDropMove(draggedElement, targetColumn, taskId);
+  removeDragOverClass(targetColumn);
+}
 
+/**
+ * Handles moving the dragged element and updating the task data on drop.
+ * @param {HTMLElement} draggedElement - The dragged task card element.
+ * @param {HTMLElement} targetColumn - The target column element.
+ * @param {string} taskId - The ID of the dragged task.
+ */
+async function handleDropMove(draggedElement, targetColumn, taskId) {
   if (draggedElement && targetColumn) {
     const newColumnId = targetColumn.id;
     const oldColumnId = draggedElement.closest(".task-column").id;
-
     if (newColumnId !== oldColumnId) {
       targetColumn.appendChild(draggedElement);
       if (allData && allData.tasks && allData.tasks[taskId]) {
@@ -123,7 +164,13 @@ async function drop(event) {
       }
     }
   }
+}
 
+/**
+ * Removes the drag-over class from the target column.
+ * @param {HTMLElement} targetColumn - The target column element.
+ */
+function removeDragOverClass(targetColumn) {
   if (targetColumn) {
     targetColumn.classList.remove("drag-over");
   }

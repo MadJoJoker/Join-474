@@ -19,18 +19,28 @@ import {
   handleMoveTask,
 } from "./dropdown-move-handler.js";
 import { refreshBoardSite } from "./render-board.js";
-import { addedSubtasks } from "../events/subtask-handler.js";
-import { extractSubtasksFromTask } from "../utils/subtask-utils.js";
-import { extractTaskFormData } from "../utils/form-utils.js";
-import { getFormattedDate } from "../utils/date-utils.js";
+import {
+  setupSubtaskCheckboxListener,
+  handleSubtaskCheckboxChange,
+} from "./subtask-checkbox-handler.js";
+import {
+  setupEditButtonListener,
+  handleEditButtonClick,
+} from "./edit-button-handler.js";
+import {
+  setupDeleteButtonListener,
+  handleDeleteButtonClick,
+} from "./delete-button-handler.js";
+import { setupEditFormModules } from "./edit-form-modules.js";
+import {
+  setupCancelEditBtn,
+  setupTaskEditFormListener,
+  handleTaskEditFormSubmit,
+} from "./edit-form-handler.js";
 
 export let detailOverlayElement = null;
 export let editOverlayElement = null;
 
-/**
- * Loads the detail overlay HTML once and assigns it to detailOverlayElement.
- * @returns {Promise<void>} Resolves when the overlay is loaded.
- */
 /**
  * Loads the detail overlay HTML once and assigns it to detailOverlayElement.
  * @returns {Promise<void>} Resolves when the overlay is loaded.
@@ -43,10 +53,6 @@ async function loadDetailOverlayHtmlOnce() {
   );
 }
 
-/**
- * Loads the edit overlay HTML once and assigns it to editOverlayElement.
- * @returns {Promise<void>} Resolves when the overlay is loaded.
- */
 /**
  * Loads the edit overlay HTML once and assigns it to editOverlayElement.
  * @returns {Promise<void>} Resolves when the overlay is loaded.
@@ -65,13 +71,6 @@ async function loadEditOverlayHtmlOnce() {
  * @param {function} updateBoardFunction - Callback function to update the board after changes.
  * @returns {Promise<void>} Resolves when listeners are registered.
  */
-
-/**
- * Registers event listeners for task card detail overlays.
- * @param {object} boardData - The board data object containing tasks, contacts, etc.
- * @param {function} updateBoardFunction - Callback function to update the board after changes.
- * @returns {Promise<void>} Resolves when listeners are registered.
- */
 export async function registerTaskCardDetailOverlay(
   boardData,
   updateBoardFunction
@@ -80,7 +79,6 @@ export async function registerTaskCardDetailOverlay(
   await loadEditOverlayHtmlOnce();
   const cards = document.querySelectorAll(".task-card");
   cards.forEach((card) => {
-    // Verwende die modularen Dropdown- und Move-Handler
     setupDropdownMenuListeners(
       card,
       boardData,
@@ -104,6 +102,7 @@ export async function registerTaskCardDetailOverlay(
  * @param {Element} card - The task card DOM element.
  * @param {object} boardData - The board data object.
  * @param {function} updateBoardFunction - Callback to update the board.
+ * @returns {void}
  */
 function setupCardClickListener(card, boardData, updateBoardFunction) {
   const oldClickListener = card.getAttribute("data-has-click-listener");
@@ -123,6 +122,7 @@ function setupCardClickListener(card, boardData, updateBoardFunction) {
  * @param {Element} card - The task card DOM element.
  * @param {object} boardData - The board data object.
  * @param {function} updateBoardFunction - Callback to update the board.
+ * @returns {void}
  */
 function handleCardClick(e, card, boardData, updateBoardFunction) {
   if (
@@ -142,8 +142,9 @@ function handleCardClick(e, card, boardData, updateBoardFunction) {
  * @param {string} taskId - The ID of the task.
  * @param {object} boardData - The board data object.
  * @param {function} updateBoardFunction - Callback to update the board.
+ * @returns {void}
  */
-function renderDetailOverlay(taskId, boardData, updateBoardFunction) {
+export function renderDetailOverlay(taskId, boardData, updateBoardFunction) {
   openSpecificOverlay("overlay-task-detail");
   const task = boardData.tasks[taskId];
   const container = detailOverlayElement.querySelector("#task-container");
@@ -151,8 +152,13 @@ function renderDetailOverlay(taskId, boardData, updateBoardFunction) {
     renderTaskOverlayHtml(container, task, taskId, boardData);
     setupSubtaskCheckboxListener(container, task, taskId, boardData);
   }
-  setupEditButtonListener(taskId, boardData, updateBoardFunction);
-  setupDeleteButtonListener(taskId, boardData);
+  setupEditButtonListener(
+    detailOverlayElement,
+    taskId,
+    boardData,
+    updateBoardFunction
+  );
+  setupDeleteButtonListener(detailOverlayElement, taskId, boardData);
 }
 
 /**
@@ -161,6 +167,7 @@ function renderDetailOverlay(taskId, boardData, updateBoardFunction) {
  * @param {object} task - The task object.
  * @param {string} taskId - The ID of the task.
  * @param {object} boardData - The board data object.
+ * @returns {void}
  */
 function renderTaskOverlayHtml(container, task, taskId, boardData) {
   const html = getTaskOverlay(task, taskId, boardData.contacts);
@@ -174,108 +181,19 @@ function renderTaskOverlayHtml(container, task, taskId, boardData) {
  * @param {string} taskId - The ID of the task.
  * @param {object} boardData - The board data object.
  */
-function setupSubtaskCheckboxListener(container, task, taskId, boardData) {
-  container.addEventListener("change", function (e) {
-    if (e.target && e.target.classList.contains("subtask-checkbox")) {
-      handleSubtaskCheckboxChange(e, task, taskId, boardData, container);
-    }
-  });
-}
-
-/**
- * Handles change event for subtask checkbox.
- * @param {Event} e - The change event.
- * @param {object} task - The task object.
- * @param {string} taskId - The ID of the task.
- * @param {object} boardData - The board data object.
- * @param {Element} container - The container DOM element.
- */
-function handleSubtaskCheckboxChange(e, task, taskId, boardData, container) {
-  const subtaskIndex = Number(e.target.dataset.subtaskIndex);
-  const checked = e.target.checked;
-  if (task && Array.isArray(task.checkedSubtasks)) {
-    task.checkedSubtasks[subtaskIndex] = checked;
-    task.subtasksCompleted = task.checkedSubtasks.filter(Boolean).length;
-    CWDATA({ [taskId]: task }, boardData);
-    const progress = calculateSubtaskProgress(task);
-    const progressBar = container.querySelector(".progress-bar-fill");
-    if (progressBar) progressBar.style.width = `${progress.percent}%`;
-  }
-}
-
-/**
- * Sets up listener for the edit button in the detail overlay.
- * @param {string} taskId - The ID of the task.
- * @param {object} boardData - The board data object.
- * @param {function} updateBoardFunction - Callback to update the board.
- */
-function setupEditButtonListener(taskId, boardData, updateBoardFunction) {
-  const editButton = detailOverlayElement.querySelector(".edit-task-btn");
-  if (editButton) {
-    editButton.dataset.taskId = taskId;
-    editButton.onclick = null;
-    editButton.addEventListener("click", (event) =>
-      handleEditButtonClick(event, taskId, boardData, updateBoardFunction)
-    );
-  }
-}
-
-/**
- * Handles click event for the edit button.
- * @param {Event} event - The click event.
- * @param {string} taskId - The ID of the task.
- * @param {object} boardData - The board data object.
- * @param {function} updateBoardFunction - Callback to update the board.
- */
-function handleEditButtonClick(event, taskId, boardData, updateBoardFunction) {
-  event.stopPropagation();
-  closeSpecificOverlay("overlay-task-detail");
-  if (typeof refreshBoardSite === "function") refreshBoardSite();
-  renderEditOverlay(taskId, boardData, updateBoardFunction);
-}
-
-/**
- * Sets up listener for the delete button in the detail overlay.
- * @param {string} taskId - The ID of the task.
- * @param {object} boardData - The board data object.
- */
-function setupDeleteButtonListener(taskId, boardData) {
-  const deleteButton = detailOverlayElement.querySelector(".delete-task-btn");
-  if (deleteButton) {
-    deleteButton.dataset.taskId = taskId;
-    deleteButton.onclick = null;
-    deleteButton.addEventListener("click", (event) =>
-      handleDeleteButtonClick(event, boardData)
-    );
-  }
-}
-
-/**
- * Handles click event for the delete button.
- * @param {Event} event - The click event.
- * @param {object} boardData - The board data object.
- */
-function handleDeleteButtonClick(event, boardData) {
-  event.stopPropagation();
-  const deleteId = event.currentTarget.dataset.taskId;
-  if (boardData.tasks[deleteId]) {
-    CWDATA({ [deleteId]: null }, boardData);
-    delete boardData.tasks[deleteId];
-    if (window.firebaseData && window.firebaseData.tasks) {
-      delete window.firebaseData.tasks[deleteId];
-    }
-    closeSpecificOverlay("overlay-task-detail");
-    window.location.href = "board-site.html";
-  }
-}
 
 /**
  * Renders the edit overlay for a task.
  * @param {string} taskToEditId - The ID of the task to edit.
  * @param {object} boardData - The board data object.
  * @param {function} updateBoardFunction - Callback to update the board.
+ * @returns {void}
  */
-function renderEditOverlay(taskToEditId, boardData, updateBoardFunction) {
+export function renderEditOverlay(
+  taskToEditId,
+  boardData,
+  updateBoardFunction
+) {
   closeSpecificOverlay("overlay-task-detail");
   openSpecificOverlay("overlay-task-detail-edit");
   if (!editOverlayElement) return;
@@ -306,157 +224,8 @@ function renderEditOverlay(taskToEditId, boardData, updateBoardFunction) {
  * Renders the HTML for the edit form.
  * @param {Element} container - The container DOM element.
  * @param {object} taskToEdit - The task object to edit.
+ * @returns {void}
  */
 function renderEditFormHtml(container, taskToEdit) {
   container.innerHTML = getAddTaskFormHTML(taskToEdit);
-}
-
-/**
- * Sets up modules for the edit form (priority, dropdowns, date picker, subtasks).
- * @param {Element} container - The container DOM element.
- * @param {object} taskToEdit - The task object to edit.
- * @param {object} boardData - The board data object.
- */
-function setupEditFormModules(container, taskToEdit, boardData) {
-  import("../events/priorety-handler.js").then((mod) => {
-    mod.initPriorityButtons();
-    const prio = taskToEdit.priority || "medium";
-    const prioBtn = container.querySelector(
-      `.priority-btn[data-priority="${prio}"]`
-    );
-    if (prioBtn) mod.setPriority(prioBtn, prio);
-    mod.setButtonIconsMobile();
-    if (!window._hasSetButtonIconsMobileListener) {
-      window.addEventListener("resize", mod.setButtonIconsMobile);
-      window._hasSetButtonIconsMobileListener = true;
-    }
-  });
-  import("../events/dropdown-menu-auxiliary-function.js").then(async (mod) => {
-    await mod.initDropdowns(Object.values(boardData.contacts), container);
-    await setCategoryFromTaskForCard(taskToEdit.type);
-    await setAssignedContactsFromTaskForCard(taskToEdit.assignedUsers);
-  });
-  import("../templates/add-task-template.js").then((mod) => {
-    if (mod.initDatePicker) mod.initDatePicker(container);
-  });
-  import("../events/subtask-handler.js").then((mod) => {
-    mod.addedSubtasks.length = 0;
-    extractSubtasksFromTask(taskToEdit).forEach((st) =>
-      mod.addedSubtasks.push({ ...st })
-    );
-    mod.initSubtaskManagementLogic(container);
-    mod.renderSubtasks();
-  });
-}
-
-/**
- * Sets up the cancel button in the edit form.
- * @param {Element} container - The container DOM element.
- * @param {string} taskToEditId - The ID of the task to edit.
- * @param {object} boardData - The board data object.
- * @param {function} updateBoardFunction - Callback to update the board.
- */
-function setupCancelEditBtn(
-  container,
-  taskToEditId,
-  boardData,
-  updateBoardFunction
-) {
-  const cancelEditBtn = container.querySelector(".cancel-btn");
-  if (cancelEditBtn) {
-    cancelEditBtn.onclick = () => {
-      closeSpecificOverlay("overlay-task-detail-edit");
-      renderDetailOverlay(taskToEditId, boardData, updateBoardFunction);
-    };
-  }
-}
-
-/**
- * Sets up the submit listener for the edit task form.
- * @param {Element} container - The container DOM element.
- * @param {object} taskToEdit - The task object to edit.
- * @param {string} taskToEditId - The ID of the task to edit.
- * @param {object} boardData - The board data object.
- * @param {function} updateBoardFunction - Callback to update the board.
- */
-function setupTaskEditFormListener(
-  container,
-  taskToEdit,
-  taskToEditId,
-  boardData,
-  updateBoardFunction
-) {
-  const taskEditForm = container.querySelector("#add-task-form");
-  if (taskEditForm) {
-    taskEditForm.addEventListener("submit", (formEvent) =>
-      handleTaskEditFormSubmit(
-        formEvent,
-        taskEditForm,
-        taskToEdit,
-        taskToEditId,
-        boardData,
-        updateBoardFunction
-      )
-    );
-  }
-}
-
-/**
- * Handles the submit event for the edit task form.
- * @param {Event} formEvent - The submit event.
- * @param {Element} taskEditForm - The edit form DOM element.
- * @param {object} taskToEdit - The task object to edit.
- * @param {string} taskToEditId - The ID of the task to edit.
- * @param {object} boardData - The board data object.
- * @param {function} updateBoardFunction - Callback to update the board.
- */
-async function handleTaskEditFormSubmit(
-  formEvent,
-  taskEditForm,
-  taskToEdit,
-  taskToEditId,
-  boardData,
-  updateBoardFunction
-) {
-  const submitter = formEvent.submitter;
-  if (!submitter || submitter.type !== "submit") {
-    formEvent.preventDefault();
-    return;
-  }
-  formEvent.preventDefault();
-  const fetchData = window.firebaseData || boardData;
-  const contactsObj = fetchData && fetchData.contacts ? fetchData.contacts : {};
-  const {
-    title,
-    description,
-    deadline,
-    type,
-    priority,
-    assignedUsers,
-    totalSubtasks,
-    checkedSubtasks,
-  } = extractTaskFormData(taskEditForm, contactsObj, taskToEdit);
-  const subtasksCompleted = checkedSubtasks.filter(Boolean).length;
-  const updatedAt = getFormattedDate();
-  let currentTaskId = taskEditForm.getAttribute("data-task-id") || taskToEditId;
-  const editTaskObjekt = {
-    assignedUsers: Array.isArray(assignedUsers) ? assignedUsers : [],
-    boardID: "board-1",
-    checkedSubtasks,
-    columnID: taskToEdit.columnID || "inProgress",
-    createdAt: taskToEdit.createdAt || updatedAt,
-    deadline,
-    description,
-    priority,
-    subtasksCompleted: subtasksCompleted,
-    title,
-    totalSubtasks,
-    type,
-    updatedAt,
-  };
-  const objForCWDATA = { [currentTaskId]: editTaskObjekt };
-  await CWDATA(objForCWDATA, fetchData);
-  closeSpecificOverlay("overlay-task-detail-edit");
-  if (updateBoardFunction) await updateBoardFunction();
-  renderDetailOverlay(taskToEditId, boardData, updateBoardFunction);
 }
