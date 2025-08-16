@@ -52,4 +52,3 @@ export function handleCardClick(
   renderDetailOverlay(taskId, boardData, updateBoardFunction);
 }
 
-// ... weitere Funktionen wie renderDetailOverlay, renderTaskOverlayHtml, setupSubtaskCheckboxListener, handleSubtaskCheckboxChange, setupEditButtonListener, handleEditButtonClick, setupDeleteButtonListener, handleDeleteButtonClick können hier analog ausgelagert werden ...
