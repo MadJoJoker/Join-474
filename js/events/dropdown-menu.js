@@ -221,10 +221,7 @@ export function demoSelectAssignedContact(nameToSelect = "Anna Schmidt") {
  */
 export function isContactSelected(name, initials, avatarColor) {
   return selectedContacts.some(
-    (selected) =>
-      selected.name === name &&
-      selected.initials === initials &&
-      selected.avatarColor === avatarColor
+    (selected) => selected.name === name && selected.initials === initials && selected.avatarColor === avatarColor
   );
 }
 
@@ -254,10 +251,7 @@ export function toggleSelectContacts(contactElement, name, initials, avatarColor
  */
 function getContactIndex(selectedContacts, contact) {
   return selectedContacts.findIndex(
-    (selected) =>
-      selected.name === contact.name &&
-      selected.initials === contact.initials &&
-      selected.avatarColor === contact.avatarColor
+    (selected) => selected.name === contact.name && selected.initials === contact.initials && selected.avatarColor === contact.avatarColor
   );
 }
 
@@ -310,12 +304,7 @@ export function filterContacts(query) {
  */
 function renderFilteredContacts(container, filteredContacts) {
   filteredContacts.forEach((contact, i) => {
-    container.innerHTML += renderAssignedToContacts(
-      i,
-      contact.name,
-      contact.initials,
-      contact.avatarColor
-    );
+    container.innerHTML += renderAssignedToContacts(i, contact.name, contact.initials, contact.avatarColor);
   });
 }
 
@@ -384,7 +373,6 @@ function renderExtraCircle(extraCount, container) {
  * @param {number} index - The index of the contact to remove.
  */
 export function removeContact(index) {
-  // @param {number} index - Der Index des zu entfernenden Kontakts.
   selectedContacts.splice(index, 1);
   displaySelectedContacts();
 }

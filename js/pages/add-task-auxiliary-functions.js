@@ -1,4 +1,4 @@
-import { initTask, handleCreateTask, clearForm, startResize, openPicker, formatDate, handleInput, } from "./add-task.js";
+import { initTask, handleCreateTask, clearForm, startResize, openPicker, formatDate, handleInput } from "./add-task.js";
 import { initPriorityButtons, setButtonIconsMobile } from "../events/priorety-handler.js";
 import { filterContacts, toggleCategoryDropdown, toggleAssignedToDropdown, selectedContacts } from "../events/dropdown-menu.js";
 import { addSubtask, clearSubtask, toggleSubtaskEdit, deleteSubtask, toggleSubtaskInputIcons } from "../events/subtask-handler.js";
@@ -6,6 +6,8 @@ import { autofillForms } from "../events/autofill-add-task.js";
 
 export let picker = null;
 
+/** * Initializes the add task form by setting up various event listeners and functionalities.
+ */
 export async function initAddTaskForm() {
     await initTask();
     initDatePicker();
@@ -240,9 +242,6 @@ function handleSubtaskListClick(event) {
 export function initWindowResizeListeners() {
     document.querySelector(".resize-handle")?.addEventListener("mousedown", startResize);
 
-    syncMaxWidth();
-    window.addEventListener("resize", syncMaxWidth);
-
     handleSignInfoMobile();
     window.addEventListener("resize", handleSignInfoMobile);
 
@@ -344,39 +343,47 @@ export function handleDesktopView(mobile, desktop, autofillBtn) {
     }
 }
 
-/** * Synchronizes the max-width of the assigned-to area with the dropdown width.
- */
-export function syncMaxWidth() {
-    const source = document.getElementById("dropdown-assigned-to");
-    const target = document.getElementById("assigned-to-area");
-    const width = source.getBoundingClientRect().width;
-
-    target.style.maxWidth = width + "px";
-}
-
 /** * Toggles the full assigned area visibility.
  */
 function toggleAssignedAreaFull() {
     const areaThree = document.getElementById("assigned-to-area");
     const areaAll = document.getElementById("assigned-to-area-full");
-    const areaAllGrid = document.getElementsByClassName("assigned-main-container");
+    const areaAllGrid = Array.from(document.getElementsByClassName("assigned-main-container"));
 
     if (areaThree && areaAll) {
         if (areaAll.classList.contains("d-none")) {
-            Array.from(areaAllGrid).forEach((grid) => grid.classList.add("d-grid"));
-            areaAll.classList.remove("d-none");
-            areaThree.classList.add("d-none");
+            showFullAssignedArea(areaThree, areaAll, areaAllGrid);
         } else {
-            areaThree.classList.remove("d-none");
-            areaAll.classList.add("d-none");
-            Array.from(areaAllGrid).forEach((grid) => grid.classList.remove("d-grid"));
+            showCompactAssignedArea(areaThree, areaAll, areaAllGrid);
         }
     }
 }
 
+/** * Shows the full assigned area by updating the relevant classes.
+ * @param {HTMLElement} areaThree - The compact assigned area element.
+ * @param {HTMLElement} areaAll - The full assigned area element.
+ * @param {HTMLCollection} areaAllGrid - The grid elements within the full assigned area.
+ */
+function showFullAssignedArea(areaThree, areaAll, areaAllGrid) {
+    areaAllGrid.forEach((grid) => grid.classList.add("d-grid"));
+    areaAll.classList.remove("d-none");
+    areaThree.classList.add("d-none");
+}
+
+/** * Shows the compact assigned area by updating the relevant classes.
+ * @param {HTMLElement} areaThree - The compact assigned area element.
+ * @param {HTMLElement} areaAll - The full assigned area element.
+ * @param {HTMLCollection} areaAllGrid - The grid elements within the full assigned area.
+ */
+function showCompactAssignedArea(areaThree, areaAll, areaAllGrid) {
+    areaThree.classList.remove("d-none");
+    areaAll.classList.add("d-none");
+    areaAllGrid.forEach((grid) => grid.classList.remove("d-grid"));
+}
+
 /** * Initializes the contact toggle listener for the assigned area.
  */
-function initContactsToggleListener() {
+export function initContactsToggleListener() {
     const area = document.getElementById('assigned-to-area');
     const areaFull = document.getElementById('assigned-to-area-full');
 

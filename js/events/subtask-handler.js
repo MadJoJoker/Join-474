@@ -138,11 +138,7 @@ export function renderSubtasks() {
     return a.completed ? 1 : -1;
   });
   sortedSubtasks.forEach((subtask, index) => {
-    subtasksList.innerHTML += renderSubtask(
-      subtask.text,
-      index,
-      subtask.completed
-    );
+    subtasksList.innerHTML += renderSubtask(subtask.text, index, subtask.completed);
   });
 }
 
@@ -158,9 +154,7 @@ export function renderSubtask(text, index, completed) {
   return `
     <ul class="subtask-list" data-index="${index}">
       <div class="subtask-item-content">
-        <span class="subtask-text${
-          completed ? " completed" : ""
-        }">${text}</span>
+        <span class="subtask-text${completed ? " completed" : ""}">${text}</span>
         <div id="subtask-${index}" class="subtask-actions">
           <svg class="left" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.14453 17H3.54453L12.1695 8.375L10.7695 6.975L2.14453 15.6V17ZM16.4445 6.925L12.1945 2.725L13.5945 1.325C13.9779 0.941667 14.4487 0.75 15.007 0.75C15.5654 0.75 16.0362 0.941667 16.4195 1.325L17.8195 2.725C18.2029 3.10833 18.4029 3.57083 18.4195 4.1125C18.4362 4.65417 18.2529 5.11667 17.8695 5.5L16.4445 6.925ZM14.9945 8.4L4.39453 19H0.144531V14.75L10.7445 4.15L14.9945 8.4Z" fill="currentColor"/>
@@ -208,17 +202,9 @@ export function toggleSubtaskEdit(editIcon) {
   editInput.focus();
 
   const editIconsContainer = createEditIconsContainer();
-  listItem
-    .querySelector(".subtask-item-content")
-    .appendChild(editIconsContainer);
+  listItem.querySelector(".subtask-item-content").appendChild(editIconsContainer);
 
-  setupEditIconListeners(
-    editIconsContainer,
-    editInput,
-    subtaskTextSpan,
-    subtaskActions,
-    index
-  );
+  setupEditIconListeners(editIconsContainer, editInput, subtaskTextSpan, subtaskActions, index);
 }
 
 /**
@@ -271,31 +257,21 @@ function createEditIconsContainer() {
  * @param {HTMLElement} subtaskActions - The container for the subtask action icons.
  * @param {number} index - The index of the subtask being edited.
  */
-function setupEditIconListeners(
-  editIconsContainer,
-  editInput,
-  subtaskTextSpan,
-  subtaskActions,
-  index
-) {
-  editIconsContainer
-    .querySelector('[data-action="cancel-edit"]')
-    .addEventListener("click", () => {
-      subtaskTextSpan.style.display = "inline";
-      subtaskActions.style.display = "flex";
-      editInput.remove();
-      editIconsContainer.remove();
-    });
+function setupEditIconListeners(editIconsContainer, editInput, subtaskTextSpan, subtaskActions, index) {
+  editIconsContainer.querySelector('[data-action="cancel-edit"]').addEventListener("click", () => {
+    subtaskTextSpan.style.display = "inline";
+    subtaskActions.style.display = "flex";
+    editInput.remove();
+    editIconsContainer.remove();
+  });
 
-  editIconsContainer
-    .querySelector('[data-action="save-edit"]')
-    .addEventListener("click", () => {
-      saveSubtask(index, editInput.value);
-      subtaskTextSpan.style.display = "inline";
-      subtaskActions.style.display = "flex";
-      editInput.remove();
-      editIconsContainer.remove();
-    });
+  editIconsContainer.querySelector('[data-action="save-edit"]').addEventListener("click", () => {
+    saveSubtask(index, editInput.value);
+    subtaskTextSpan.style.display = "inline";
+    subtaskActions.style.display = "flex";
+    editInput.remove();
+    editIconsContainer.remove();
+  });
 }
 
 /**

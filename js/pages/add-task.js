@@ -213,8 +213,7 @@ function hideError(input, error) {
   error?.classList.remove("d-flex");
 }
 
-/**
- * Handles input validation for the title field.
+/** * Handles input validation for the title field.
  *
  * @param {HTMLInputElement} inputElement - The input element to validate.
  */
@@ -227,64 +226,86 @@ export function handleInput(inputElement) {
   }
 }
 
-/** * Creates a task object from the form data.
- * @returns {Object} - The task object containing all relevant data.
+/** * Retrieves the value of an input element by its ID.
+ * @param {string} id - The ID of the input element.
+ * @returns {string} - The value of the input element.
+ */
+function getInputValue(id) {
+  return document.getElementById(id).value;
+}
+
+/** * Formats a date as a string in the format DD.MM.YYYY.
+ * @param {Date} [date=new Date()] - The date to format.
+ * @returns {string} - The formatted date string.
+ */
+function getFormattedDate(date = new Date()) {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
+/** * Extracts information from an array of subtasks.
+ * @param {Array} subtasks - The array of subtasks to extract information from.
+ * @returns {Object} - An object containing the extracted information.
+ */
+function extractSubtasks(subtasks) {
+  const total = subtasks.map((s) => s.text);
+  const checked = subtasks.map((s) => s.completed);
+  const completed = checked.filter(Boolean).length;
+  return { total, checked, completed };
+}
+
+/** * Maps selected contacts to their corresponding IDs.
+ * @param {Array} selectedContacts - The array of selected contacts.
+ * @param {Object} fetchData - The fetched data containing contacts.
+ * @returns {Array} - An array of mapped contact IDs.
+ */
+function mapAssignedUsers(selectedContacts, fetchData) {
+  if (!fetchData || !fetchData.contacts) {
+    console.warn("WARNING: 'fetchData.contacts' fehlt oder ist leer.");
+    return [];
+  }
+
+  return selectedContacts
+    .map((contact) => {
+      for (const id in fetchData.contacts) {
+        if (fetchData.contacts[id].name === contact.name) return id;
+      }
+      return undefined;
+    })
+    .filter(Boolean);
+}
+
+/** * Creates a task object from the form inputs.
+ * @returns {Object} - The created task object.
  */
 function createTaskObject() {
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("task-description").value;
-  const dueDate = document.getElementById("datepicker").value;
+  const title = getInputValue("title");
+  const description = getInputValue("task-description");
+  const dueDate = getInputValue("datepicker");
+  const formattedDate = getFormattedDate();
 
-  const now = new Date();
-  const day = String(now.getDate()).padStart(2, "0");
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const year = now.getFullYear();
-  const formattedCreatedAt = `${day}.${month}.${year}`;
-
-  const totalSubtasks = addedSubtasks.map((subtask) => subtask.text);
-  const checkedSubtasks = addedSubtasks.map((subtask) => subtask.completed);
-  const subtasksCompleted = checkedSubtasks.filter(
-    (completed) => completed
-  ).length;
-  const assignedUsers = selectedContacts
-    .map((selectedContact) => {
-      let foundId = undefined;
-      if (fetchData && fetchData.contacts) {
-        for (const contactId in fetchData.contacts) {
-          if (
-            Object.prototype.hasOwnProperty.call(fetchData.contacts, contactId)
-          ) {
-            if (fetchData.contacts[contactId].name === selectedContact.name) {
-              foundId = contactId;
-              break;
-            }
-          }
-        }
-      } else {
-        console.warn(
-          "WARNING: 'fetchData.contacts' is undefined or empty. Assigned user IDs could not be determined."
-        );
-      }
-      return foundId;
-    })
-    .filter((id) => id !== undefined);
+  const { total, checked, completed } = extractSubtasks(addedSubtasks);
+  const assignedUsers = mapAssignedUsers(selectedContacts, fetchData);
 
   return {
-    assignedUsers: assignedUsers,
+    assignedUsers,
     boardID: "board-1",
-    checkedSubtasks: checkedSubtasks,
+    checkedSubtasks: checked,
     columnID: "inProgress",
-    createdAt: formattedCreatedAt,
+    createdAt: formattedDate,
     deadline: dueDate,
-    description: description,
+    description,
     priority: currentPriority,
-    subtasksCompleted: subtasksCompleted,
-    title: title,
-    totalSubtasks: totalSubtasks,
+    subtasksCompleted: completed,
+    title,
+    totalSubtasks: total,
     type: selectedCategory,
-    updatedAt: formattedCreatedAt,
+    updatedAt: formattedDate,
   };
 }
+
 
 /** * Handles the form submission for creating a new task.
  * @param {Event} event - The form submission event.
