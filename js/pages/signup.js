@@ -1,16 +1,5 @@
-let fetchedData = null;
-
-/**
- * onload-function: call database fetch function, store data in global variable "fetchedData"
- */
-async function initPage() {
-  const data = await getFirebaseData("users");
-  if (!data) {
-    console.error('No data received');
-    return;
-  }
-  fetchedData = data;
-}
+let fetchedUser = null;
+let emailString;
 
 /**
  * onclick-function on "signup"-button
@@ -69,7 +58,8 @@ function validateNamePattern(name) {
 }
 
 /**
- * helper function for "validateInputs"; check for valid pattern; if invalid: show red alerts
+ * helper function for "validateInputs"; check for valid pattern; if invalid: show red alerts.
+ * if valid: emailString = global variable emailString (for database request).
  * @param {string} email - user email
  * @returns boolean
  */
@@ -80,6 +70,7 @@ function validateEmailPattern(email) {
     blameInvalidInput('no-email', 'new-email', 'Invalid email pattern');
     return false;
   }
+  emailString = email;
   return true;
 }
 
@@ -120,9 +111,20 @@ function validateRegistrationPasswords() {
  * @param {string} nameToCheck - check name in data
  * @param {string} emailToCheck - check email in data
  */
-function checkUserData(nameToCheck, emailToCheck) {
+async function checkUserData(nameToCheck, emailToCheck) {
+  await checkUserInFirebase('users', 'email', emailString);
   const nameExists = doesValueExist(nameToCheck, 'displayName');
   const emailExists = doesValueExist(emailToCheck, 'email');
+  finishDataCheck(nameToCheck, nameExists, emailExists);
+}
+
+/**
+ * helper function for "checkUserData"; show messages.
+ * @param {string} nameToCheck - string from "name"-input.
+ * @param {boolean} nameExists - name is (not) in fetched dataset.
+ * @param {boolean} emailExists - email is (not) in fetche dataset.
+ */
+function finishDataCheck(nameToCheck, nameExists, emailExists) {
   if (nameExists && emailExists) {
     blameInvalidInput('no-name', 'new-name', 'You already signed up');
     goToPage("../index.html");
@@ -142,9 +144,11 @@ function checkUserData(nameToCheck, emailToCheck) {
  * @returns boolean
  */
 function doesValueExist(value, infoKey) {
-  return Object.keys(fetchedData).some(
-    key => fetchedData[key][infoKey].toLowerCase() == value.toLowerCase()
+  if (Object.keys(fetchedUser).length != 0) {
+    return Object.keys(fetchedUser).some(
+    key => fetchedUser[key][infoKey].toLowerCase() == value.toLowerCase()
   );
+  } else return false;
 }
 
 /**
@@ -162,7 +166,7 @@ function checkRequiredFields(storedEmail) {
  */
 function checkboxChecked() {
   document.getElementById("unchecked").classList.contains("d-none")
-    ? objectBuilding()
+    ? objectBuilding('users')
     : document.getElementById('no-privPolicy').classList.remove("d-none");
 }
 

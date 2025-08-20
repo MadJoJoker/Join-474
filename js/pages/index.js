@@ -26,7 +26,12 @@ function handleLogin(){
   const userPw = document.getElementById('login-password').value.trim();
   if (!userEmail) return blameEmptyInput('login-email', 'alert-login');
   if (!userPw) return blameEmptyInput('login-password', 'alert');
-  checkUserInFirebase('email', userEmail, userPw);
+  startValidation(userEmail, userPw);
+}
+
+async function startValidation(userEmail, userPw) {
+  await checkUserInFirebase('users', 'email', userEmail);
+  validateLogin(userPw);
 }
 
 /**
@@ -35,11 +40,11 @@ function handleLogin(){
  * @param {string} emailInput 
  * @param {string} passwordInput 
  */
-async function checkUserInFirebase(key, emailInput, passwordInput) {
-  const data = await checkLogin(key, emailInput);
-  fetchedUser = data;
-  console.log("to check: ", emailInput, passwordInput);  validateLogin(passwordInput);
-}
+// async function checkUserInFirebase(category, databaseKey, inputString) {
+//   let queryString = `?orderBy=%22${databaseKey}%22&equalTo=%22${encodeURIComponent(inputString.toLowerCase())}%22`;
+//   const data = await getFirebaseData(category, queryString);
+//   fetchedUser = data;
+// }
 
 /**
  * helper function for "checkUserInFirebase"; check wether login is valid.
